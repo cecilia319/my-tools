@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>盯盘作战台 · 2026-10-26</title>
+<style>
+:root{--bg:#0a0d14;--panel:#10141d;--panel2:#161b26;--border:#1f2736;--border2:#2a3448;
+--text:#dce3f2;--muted:#7d8aa5;--faint:#55607a;--accent:#f2b63d;--up:#f6465d;--down:#2ebd85;--blue:#4f8ef7;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;font-size:14px;padding:18px 22px 40px;min-width:960px;}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+h1{font-size:20px;letter-spacing:1px}h1 b{color:var(--accent)}
+.sub{color:var(--muted);font-size:12px;margin:6px 0 14px;line-height:1.6}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.card h3{font-size:14px;margin-bottom:10px}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+/* 时间轴 */
+.tl{display:flex;gap:0;margin:4px 0 2px;flex-wrap:wrap}
+.tp{flex:1;min-width:130px;background:var(--panel2);border:1px solid var(--border);padding:8px 10px;border-right:none;font-size:11.5px;line-height:1.5}
+.tp:first-child{border-radius:8px 0 0 8px}.tp:last-child{border-radius:0 8px 8px 0;border-right:1px solid var(--border)}
+.tp b{color:var(--accent);display:block;font-size:12px;margin-bottom:2px}
+/* 作战卡 */
+.wcard{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;padding:13px 16px;margin-bottom:12px;position:relative}
+.wcard.wz{border-left-color:var(--faint)}
+.wcard.ban::after{content:"⛔ 禁买区";position:absolute;top:11px;right:14px;font-size:11px;color:var(--up);border:1px solid rgba(246,70,93,.4);background:rgba(246,70,93,.13);padding:2px 8px;border-radius:6px}
+.wh{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.wname{flex:1}.wname .nm{font-size:17px;font-weight:700}.wname .nm span{font-size:11.5px;color:var(--faint);font-weight:400;margin-left:7px}
+.wname .gt{font-size:11.5px;color:var(--muted);margin-top:2px}
+.sc{font-size:22px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}.sc small{font-size:9px;color:var(--faint);display:block;text-align:center;letter-spacing:1px}
+.lines{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px}
+.ln{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:7px 9px;text-align:center}
+.ln .l{font-size:10px;color:var(--faint)}.ln .v{font-size:15.5px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:1px}
+.ln.stop .v{color:var(--down)}.ln.entry .v{color:var(--text)}.ln.t1 .v{color:var(--up)}.ln.t2 .v{color:var(--accent)}.ln.hi .v{color:var(--blue)}
+.chan{font-size:11.5px;color:var(--blue);background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.25);border-radius:6px;padding:5px 9px;margin-bottom:8px;line-height:1.5}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;color:var(--faint);font-size:11px;padding:6px 8px;border-bottom:1px solid var(--border2)}
+td{padding:6.5px 8px;border-bottom:1px solid var(--border);line-height:1.5}
+tr:hover td{background:var(--panel2)}
+td.trig{color:var(--up);font-weight:600;white-space:nowrap}
+td.act{color:var(--text)}
+.tag{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:10px;border:1px solid var(--border2);background:var(--panel2);color:var(--muted);margin-left:8px}
+.hot{color:var(--accent);border-color:rgba(242,182,61,.3);background:rgba(242,182,61,.12)}
+.rules{font-size:12px;color:var(--muted);line-height:2}
+.rules b{color:var(--text)}
+.warn{color:var(--faint);font-size:11.5px;margin-top:10px;line-height:1.7}
+h2.sec{font-size:15px;margin:20px 0 10px}
+</style>
+</head>
+<body>
+<!-- 访问密码门禁（前端门禁，防随手看，非机密级保护） -->
+<div id="gate" style="position:fixed;inset:0;z-index:9999;background:#0a0d14;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px">
+<div style="font-size:20px;font-weight:800;color:var(--accent)">🔒 盯盘作战台 · 访问密码</div>
+<div style="font-size:12.5px;color:var(--muted)">输入密码解锁（密码为独立访问口令）</div>
+<input type="password" id="gatePwd" placeholder="输入访问密码" style="width:260px;max-width:80vw;background:#161b26;border:1.5px solid var(--border2);border-radius:10px;color:#fff;font-size:16px;padding:12px 14px;text-align:center" onkeydown="if(event.key==='Enter')checkGate()">
+<button onclick="doGate()" style="background:linear-gradient(135deg,#8a5f0a,var(--accent));color:#0a0d14;border:none;border-radius:10px;padding:12px 34px;font-size:15px;font-weight:800;cursor:pointer">解锁</button>
+<div id="gateMsg" style="font-size:12.5px;color:#f6465d;min-height:18px"></div>
+</div>
+<script>
+var GATE_HASH='817e3455b7942a65ccc2cc1445d5eda1bd42f27dd53830b5808942c4a1b407ac'; // 密码tact1026的SHA-256
+function sha256Hex(str){
+ var buf=new TextEncoder().encode(str);
+ return crypto.subtle.digest('SHA-256',buf).then(function(digest){
+  return Array.prototype.map.call(new Uint8Array(digest),function(x){return ('0'+x.toString(16)).slice(-2)}).join('');
+ });
+}
+function doGate(){
+ var v=document.getElementById('gatePwd').value;
+ if(!v){document.getElementById('gateMsg').textContent='请输入密码';return}
+ sha256Hex(v).then(function(hash){
+  if(hash===GATE_HASH){
+   document.getElementById('gate').style.display='none';
+   try{sessionStorage.setItem('tact_unlocked','1')}catch(e){}
+  }else{
+   document.getElementById('gateMsg').textContent='密码错误，请重试';
+   document.getElementById('gatePwd').value='';
+  }
+ }).catch(function(){
+  document.getElementById('gateMsg').textContent='当前环境不支持校验，请刷新重试';
+ });
+}
+function initGate(){
+ try{if(sessionStorage.getItem('tact_unlocked')==='1'){document.getElementById('gate').style.display='none';return}}catch(e){}
+ // 默认显示门禁（除非已解锁）
+}
+initGate();
+</script>
+<h1>盯盘<b>作战台</b> <span style="font-size:13px;color:var(--muted);font-weight:400">2026-10-26 信号执行卡</span></h1>
+<div class="sub">价位为信号日收盘核算，<b style="color:var(--accent)">盘中不变</b>——实时价格对照同花顺看，触发即按卡执行，不临场思考。数据生成于 2026-10-26 15:21。
+配套：<b>股票助手工作台.html</b>（收盘后复盘用）+ 同花顺（实时价格下单用）。</div>
+
+<div class="card"><h3>⏰ 盘前 9:00-9:30 —— 竞价定战略</h3>
+<div class="tl">
+<div class="tp"><b>9:15-9:20</b>竞价可撤单期，虚假申报高发——只看不动</div>
+<div class="tp"><b>9:20-9:25</b>竞价定格(真实意图)：对照作战卡三档预案</div>
+<div class="tp"><b>9:25-9:30</b>定格后按档执行：高开&gt;5%小仓跟随(实测20日均值+2.4%最优档) / 平开±2%可入场 / 低开&lt;-3%暂缓(实测胜率33%)——档位阈值经池内101只×400日回测校准</div>
+</div></div>
+
+<div class="card"><h3>⏱ 盘中节奏 —— 两个黄金窗口</h3>
+<div class="tl">
+<div class="tp"><b>9:30-10:00</b>方向试金石：站稳分时均线+板块资金流入才动手</div>
+<div class="tp"><b>10:00 检查</b>量比&gt;1.5放量上攻=加仓确认；缩量滞涨=观望</div>
+<div class="tp"><b>13:00-14:30</b>午后与上午同向=健康；反向=警惕减仓</div>
+<div class="tp"><b>14:30-14:55</b>尾盘定走留：按作战卡执行，不隔夜侥幸</div>
+</div></div>
+
+<h2 class="sec">🎯 可操作信号（4 只）—— 按卡执行</h2>
+<div class="wcard">
+<div class="wh"><div class="wname">
+<div class="nm">掌阅科技<span>603533</span></div>
+<div class="gt">AI应用 · AI短剧/AI漫剧 · 回踩20日线 · 波段</div></div>
+<div class="sc">73.5<small>SCORE</small></div></div>
+<div class="lines">
+<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">24.84</div></div>
+<div class="ln entry"><div class="l">入场参考</div><div class="v">26.15</div></div>
+<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">28.24</div></div>
+<div class="ln t2"><div class="l">目标2</div><div class="v">—</div></div>
+<div class="ln hi"><div class="l">前高压力(90日)</div><div class="v">32.91</div></div>
+</div>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">竞价高开>5%</td><td class="act">可小仓跟随(池内回测r20均值+2.4%最优档)，回踩分时均线企稳再加</td></tr><tr><td class="trig">竞价高开2~5%</td><td class="act">谨慎(回测最差档r5均值-1.5%)，等回踩分时均线再定</td></tr><tr><td class="trig">竞价平开±2%</td><td class="act">按计划可入场(参考26.15)</td></tr><tr><td class="trig">竞价低开<-3%</td><td class="act">暂缓，9:30-9:45收复开盘价再评估</td></tr><tr><td class="trig">跌破 24.84（止损）</td><td class="act">⚡无条件卖出，不犹豫不摊平</td></tr><tr><td class="trig">到达 28.24（目标1）</td><td class="act">🎯卖出一半锁定利润</td></tr><tr><td class="trig">板块掉出资金前10+破分时均线</td><td class="act">减半仓位，趋势弱化信号</td></tr><tr><td class="trig">9:30-10:00放量上攻(量比>1.5)</td><td class="act">加仓确认信号(不超计划仓位)</td></tr><tr><td class="trig">14:30仍浮亏且缩量阴跌</td><td class="act">不抱侥幸，收盘前兑现止损纪律</td></tr></table>
+</div>
+<div class="wcard">
+<div class="wh"><div class="wname">
+<div class="nm">均胜电子<span>600699</span></div>
+<div class="gt">机器人 · 机器人总成 · 回踩20日线 · 波段</div></div>
+<div class="sc">66.1<small>SCORE</small></div></div>
+<div class="lines">
+<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">20.8</div></div>
+<div class="ln entry"><div class="l">入场参考</div><div class="v">21.9</div></div>
+<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">23.65</div></div>
+<div class="ln t2"><div class="l">目标2</div><div class="v">—</div></div>
+<div class="ln hi"><div class="l">前高压力(90日)</div><div class="v">25.58</div></div>
+</div>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">竞价高开>5%</td><td class="act">可小仓跟随(池内回测r20均值+2.4%最优档)，回踩分时均线企稳再加</td></tr><tr><td class="trig">竞价高开2~5%</td><td class="act">谨慎(回测最差档r5均值-1.5%)，等回踩分时均线再定</td></tr><tr><td class="trig">竞价平开±2%</td><td class="act">按计划可入场(参考21.9)</td></tr><tr><td class="trig">竞价低开<-3%</td><td class="act">暂缓，9:30-9:45收复开盘价再评估</td></tr><tr><td class="trig">跌破 20.8（止损）</td><td class="act">⚡无条件卖出，不犹豫不摊平</td></tr><tr><td class="trig">到达 23.65（目标1）</td><td class="act">🎯卖出一半锁定利润</td></tr><tr><td class="trig">板块掉出资金前10+破分时均线</td><td class="act">减半仓位，趋势弱化信号</td></tr><tr><td class="trig">9:30-10:00放量上攻(量比>1.5)</td><td class="act">加仓确认信号(不超计划仓位)</td></tr><tr><td class="trig">14:30仍浮亏且缩量阴跌</td><td class="act">不抱侥幸，收盘前兑现止损纪律</td></tr></table>
+</div>
+<div class="wcard">
+<div class="wh"><div class="wname">
+<div class="nm">泰凌微<span>688591</span></div>
+<div class="gt">算力半导体 · 芯片设计小盘71亿·九转确认型A · 九转低9见底回踩买 · 短线<span class="tag hot">最新价 30.11</span></div></div>
+<div class="sc">74<small>SCORE</small></div></div>
+<div class="lines">
+<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">25.7</div></div>
+<div class="ln entry"><div class="l">入场参考</div><div class="v">26.5</div></div>
+<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">29.4</div></div>
+<div class="ln t2"><div class="l">30日高33.65突破位</div><div class="v">33.0</div></div>
+<div class="ln hi"><div class="l">前高压力(90日)</div><div class="v">36.66</div></div>
+</div><div class="chan">🧠 缠论结构：10-16低9→10-19起收盘无新低完美确认→10-20放量+13.98%(量比1.94)启动，今日缩量回踩确认中(收日高24%位)。已站上MA20。低9至今+13.6%接近历史弹性+15%上沿，不追高，等回踩26.0~26.5。</div>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">回踩 26.0~26.5 缩量企稳(止跌阳/长下影)</td><td class="act">🎯介入点，首仓试探(灿芯仓位≤泰凌微规格)</td></tr><tr><td class="trig">回踩不触及区间即直接上攻放量</td><td class="act">不追，等回踩；错过等下一只，纪律优先</td></tr><tr><td class="trig">跌破 25.7（九转结构失效）</td><td class="act">⚡无条件离场，不摊平</td></tr><tr><td class="trig">到达 29.4（目标1）</td><td class="act">卖出一半锁定</td></tr><tr><td class="trig">站上MA20后放量突破 29.4</td><td class="act">看 30日高33.65突破位 位置 33.0</td></tr><tr><td class="trig">尾盘14:30仍阴跌且板块缩量</td><td class="act">今日不接，明日看能否收阳企稳</td></tr><tr><td class="trig">澜起跌破163(权重带动逻辑终结)</td><td class="act">板块内仓位全线减半——龙头塌了小票不留强</td></tr></table>
+</div>
+<div class="wcard">
+<div class="wh"><div class="wname">
+<div class="nm">灿芯股份<span>688691</span></div>
+<div class="gt">算力半导体 · 芯片设计小盘62亿·超跌反抽型B · 九转低9见底回踩买 · 短线<span class="tag hot">最新价 50.0</span></div></div>
+<div class="sc">62<small>SCORE</small></div></div>
+<div class="lines">
+<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">47.53</div></div>
+<div class="ln entry"><div class="l">入场参考</div><div class="v">50.2</div></div>
+<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">56.8</div></div>
+<div class="ln t2"><div class="l">9月反弹平台位</div><div class="v">63.0</div></div>
+<div class="ln hi"><div class="l">前高压力(90日)</div><div class="v">120.7</div></div>
+</div><div class="chan">🧠 缠论结构：10-14低9被破坏(10-16又新低)→真底10-16(低收47.53)。10-20放量+2.61%、10-21放量+5.87%连续进攻中(量比1.97/1.68)。距MA20(56.81)仅+9.4%空间，弹性未释放。仓位要低于泰凌微。</div>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">回踩 49.6~50.2 缩量企稳(止跌阳/长下影)</td><td class="act">🎯介入点，首仓试探(灿芯仓位≤泰凌微规格)</td></tr><tr><td class="trig">回踩不触及区间即直接上攻放量</td><td class="act">不追，等回踩；错过等下一只，纪律优先</td></tr><tr><td class="trig">跌破 47.53（九转结构失效）</td><td class="act">⚡无条件离场，不摊平</td></tr><tr><td class="trig">到达 56.8（目标1）</td><td class="act">卖出一半锁定</td></tr><tr><td class="trig">站上MA20后放量突破 56.8</td><td class="act">看 9月反弹平台位 位置 63.0</td></tr><tr><td class="trig">尾盘14:30仍阴跌且板块缩量</td><td class="act">今日不接，明日看能否收阳企稳</td></tr><tr><td class="trig">澜起跌破163(权重带动逻辑终结)</td><td class="act">板块内仓位全线减半——龙头塌了小票不留强</td></tr></table>
+</div>
+
+<h2 class="sec">⚪ 观察区（3 只）—— 禁买，只看解除条件</h2>
+<div class="wcard wz ban">
+<div class="wh"><div class="wname">
+<div class="nm">中大力德<span>002896</span></div>
+<div class="gt">机器人 · 电机/灵巧手 · 回踩20日线 · 波段</div></div>
+<div class="sc">41.1<small>SCORE</small></div></div>
+
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-3.16%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+</div>
+<div class="wcard wz ban">
+<div class="wh"><div class="wname">
+<div class="nm">长盛轴承<span>300718</span></div>
+<div class="gt">机器人 · 宇树链/本体 · 回踩20日线 · 波段</div></div>
+<div class="sc">41.1<small>SCORE</small></div></div>
+
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-1.51%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+</div>
+<div class="wcard wz ban">
+<div class="wh"><div class="wname">
+<div class="nm">杭叉集团<span>603298</span></div>
+<div class="gt">周期出海 · 工程机械 · 放量突破 · 短线</div></div>
+<div class="sc">33.4<small>SCORE</small></div></div>
+
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨7.66%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+</div>
+
+<div class="card"><h3>📜 通用纪律（凌驾于所有信号之上）</h3>
+<div class="rules">
+<b>防狼原则</b>：MACD零轴下方一律禁买；<b>止损铁律</b>：破止损价无条件卖出，不补仓不摊平；<b>止盈纪律</b>：目标1卖一半、目标2基本清仓，留住利润；<b>板块联动</b>：个股破位+板块掉出资金前10=系统性走弱，先减后看；<b>仓位原则</b>：单只不超计划仓位，永远不满仓单一信号。<br>
+⚠ 本作战台为纪律化交易辅助，不构成投资建议。数据为生成时点快照，请以同花顺实时行情为执行依据。
+</div></div>
+</body></html>

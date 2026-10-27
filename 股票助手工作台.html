@@ -22,6 +22,24 @@ body {
   font-family: "Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
   min-width: 1080px;
 }
+
+/* ============ 实时状态条(GitHub Pages手机访问核心) ============ */
+.livebar {
+  position: sticky; top: 0; z-index: 9;
+  background: rgba(13,17,25,.92); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 9px 14px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  font-size: 12.5px; overflow-x: auto;
+}
+.livebar .idx { display:flex; align-items:center; gap:6px; white-space:nowrap; }
+.livebar .idx .nm { color: var(--muted); }
+.livebar .idx .px { font-weight:700; font-variant-numeric: tabular-nums; }
+.livebar .st { margin-left:auto; display:flex; align-items:center; gap:7px; white-space:nowrap; }
+.livebar .dot-live { width:8px; height:8px; border-radius:50%; background:var(--down); animation: liveblink 1.6s infinite; }
+@keyframes liveblink { 0%,100%{opacity:1} 50%{opacity:.25} }
+.livebar .updtime { color: var(--faint); font-variant-numeric: tabular-nums; }
+.p-up { color: var(--up); } .p-down { color: var(--down); } .p-flat { color: var(--muted); }
+
 ::-webkit-scrollbar { width:8px; height:8px; }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius:4px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -199,6 +217,29 @@ code.k { background: var(--panel3); border: 1px solid var(--border2); padding: 1
 .divider { height: 1px; background: var(--border); margin: 20px 0; }
 .mt14 { margin-top: 14px; } .mt20 { margin-top: 20px; }
 .two-col { display:grid; grid-template-columns: 1.25fr 1fr; gap: 14px; }
+
+/* ============ 手机响应式(随时手机看盘) · 置尾确保覆盖 ============ */
+@media (max-width: 900px) {
+  body { min-width: 0 !important; }
+  .sidebar { position: sticky; top:0; bottom:auto; width:100%; height:auto;
+    flex-direction: row; overflow-x: auto; padding: 8px 10px; z-index: 20;
+    -webkit-overflow-scrolling: touch; border-right:none; border-bottom:1px solid var(--border); }
+  .brand { display:none; }
+  .nav { display:flex; padding:0; gap:2px; flex: 1; overflow-x:auto; }
+  .nav-group { display:none; }
+  .side-item { flex:none; padding: 7px 11px; font-size: 12.5px; margin:0; }
+  .side-foot { display:none; }
+  .main { margin-left:0; padding: 14px 12px 40px; }
+  .g2, .g3, .g4 { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr !important; }
+  .cols { grid-template-columns: 1fr !important; }
+  .tbl-wrap { overflow-x: auto; max-height:none; }
+  table { min-width: 620px; }
+  .stat .val { font-size: 22px; }
+  .page-head h2 { font-size: 18px; }
+  .page-head { flex-wrap: wrap; }
+  .livebar { padding: 8px 10px; font-size: 12px; top: 48px; }
+}
 </style>
 </head>
 <body>
@@ -213,6 +254,8 @@ code.k { background: var(--panel3); border: 1px solid var(--border2); padding: 1
 </aside>
 
 <main class="main">
+<div class="livebar" id="livebar"><span class="idx"><span class="nm">📡 实时行情连接中…</span></span><span class="st"><span class="updtime" id="liveUpd"></span></span></div>
+
   <section class="page active" id="page-overview"></section>
   <section class="page" id="page-signals"></section>
   <section class="page" id="page-holdings"></section>
@@ -594,6 +637,75 @@ function renderGuide() {
     <div class="hint" style="margin-top:16px">⚠ 本工具为个人研究辅助, 不构成投资建议。股市有风险, 入市需谨慎。数据快照生成于 ${esc(D.meta.built)}。</div>`;
 }
 
+/* ================= 实时行情模块(GitHub Pages随时看) ================= */
+/* 原理: 动态<script src=qt.gtimg.cn> JSONP直连腾讯行情, 无CORS限制.
+   盘中每60秒自动刷新, 池内价/涨跌幅实时覆盖, 大盘指数常驻顶栏.
+   注意: renderPool的pctCls/pctTxt在上方已定义, 直接复用. */
+const LIVE_IDX = [["sh000001","上证"],["sz399001","深成"],["sz399006","创业板"],["sh000688","科创50"]];
+let liveTimer = null, liveCount = 0;
+
+function fetchLive() {
+  const syms = LIVE_IDX.map(x=>x[0]).concat((D.pool.stocks||[]).map(s=>s.symbol).filter(Boolean));
+  if (!syms.length) return;
+  const cbName = "__qt_cb_" + Date.now();
+  const s = document.createElement("script");
+  s.src = "https://qt.gtimg.cn/q=" + syms.join(",") + "&_t=" + Date.now();
+  s.onload = function () {
+    const got = {};
+    syms.forEach(sym => {
+      const v = window["v_" + sym];
+      if (!v) return;
+      delete window["v_" + sym];
+      const f = v.split("~");
+      if (f.length < 39) return;
+      got[sym] = { name: f[1], price: parseFloat(f[3]), pct: parseFloat(f[32]),
+                   turn: parseFloat(f[38]), hi: parseFloat(f[33]), lo: parseFloat(f[34]) };
+    });
+    if (Object.keys(got).length) applyLive(got);
+    s.remove();
+  };
+  s.onerror = function () {
+    document.getElementById("livebar").innerHTML =
+      '<span class="idx"><span class="nm" style="color:var(--muted)">📡 实时行情暂不可达(接口被墙/无网), 显示收盘快照</span></span>';
+    s.remove();
+  };
+  document.head.appendChild(s);
+}
+
+function applyLive(got) {
+  liveCount++;
+  // 1) 大盘指数条
+  let bar = '';
+  LIVE_IDX.forEach(([sym, nm]) => {
+    const g = got[sym];
+    if (g) bar += `<span class="idx"><span class="nm">${nm}</span><span class="px ${pctCls(g.pct)}">${g.price.toFixed(2)}</span><span class="${pctCls(g.pct)}">${g.pct>0?'+':''}${g.pct.toFixed(2)}%</span></span>`;
+  });
+  // 2) 涨跌统计
+  const ps = (D.pool.stocks||[]);
+  let up=0, down=0, flt=0, live_reached=0;
+  ps.forEach(st => {
+    const g = got[st.symbol];
+    if (!g) return;
+    live_reached++;
+    st.price = g.price; st.pct = g.pct; st.turnover = g.turn;
+    if (g.pct>0) up++; else if (g.pct<0) down++; else flt++;
+  });
+  const hh = new Date().toTimeString().slice(0,8);
+  bar += `<span class="idx ${up>=down?'':''}"><span class="nm">池内</span><span class="p-up">${up}涨</span><span class="p-down">${down}跌</span></span>`;
+  bar += `<span class="st"><span class="dot-live"></span><span style="color:var(--down)">实时</span><span class="updtime">更新于 ${hh} · 每60秒</span></span>`;
+  document.getElementById("livebar").innerHTML = bar;
+  // 3) 重渲染受实时影响的页面(只渲染当前映射, 避免全部重跑)
+  try { renderOverview(); } catch(e) {}
+  try { renderPool(); } catch(e) {}
+}
+
+/* 开机拉一次 + 盘中每60秒滚动刷新 */
+function startLive() {
+  fetchLive();
+  if (liveTimer) clearInterval(liveTimer);
+  liveTimer = setInterval(fetchLive, 60*1000);
+}
+
 /* ================= 启动 ================= */
 renderNav();
 renderOverview();
@@ -604,6 +716,7 @@ renderUnlock();
 renderPool();
 renderBrain();
 renderGuide();
+startLive();
 </script>
 </body>
 </html>

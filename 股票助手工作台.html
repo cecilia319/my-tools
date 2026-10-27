@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>股票助手工作台 · 会成长的炒股决策台</title>
+<style>
+:root {
+  --bg: #0a0d14; --panel: #10141d; --panel2: #161b26; --panel3: #1b2130;
+  --border: #1f2736; --border2: #2a3448;
+  --text: #dce3f2; --muted: #7d8aa5; --faint: #55607a;
+  --accent: #f2b63d; --accent-dim: rgba(242,182,61,.14);
+  --up: #f6465d; --up-dim: rgba(246,70,93,.13);
+  --down: #2ebd85; --down-dim: rgba(46,189,133,.13);
+  --blue: #4f8ef7; --blue-dim: rgba(79,142,247,.13);
+  --radius: 10px;
+  font-size: 14px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: "Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+  min-width: 1080px;
+}
+::-webkit-scrollbar { width:8px; height:8px; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius:4px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ============ 侧边导航 ============ */
+.sidebar {
+  position: fixed; left:0; top:0; bottom:0; width: 232px;
+  background: linear-gradient(180deg, #0d1119 0%, #0a0d14 100%);
+  border-right: 1px solid var(--border);
+  display:flex; flex-direction:column; padding: 20px 0 12px; z-index: 10;
+}
+.brand { padding: 4px 20px 16px; border-bottom: 1px solid var(--border); }
+.brand h1 { font-size: 19px; letter-spacing: 1px; color: var(--text); }
+.brand h1 b { color: var(--accent); font-weight: 700; }
+.brand p { font-size: 11.5px; color: var(--muted); margin-top: 5px; line-height: 1.5; }
+.nav { flex: 1; padding: 14px 12px; overflow-y: auto; }
+.nav-group { font-size: 10.5px; color: var(--faint); letter-spacing: 2px; padding: 12px 10px 6px; }
+.side-item {
+  display:flex; align-items:center; gap:10px; padding: 9px 12px; margin: 2px 0;
+  border-radius: 8px; cursor: pointer; color: var(--muted); font-size: 13.5px;
+  transition: all .15s; border: 1px solid transparent; user-select: none;
+}
+.side-item:hover { background: var(--panel2); color: var(--text); }
+.side-item.active { background: var(--accent-dim); color: var(--accent); border-color: rgba(242,182,61,.25); font-weight: 600; }
+.side-item .ico { width: 18px; text-align:center; font-size: 14px; flex-shrink:0; }
+.badge {
+  margin-left:auto; font-size: 10.5px; padding: 1px 7px; border-radius: 10px;
+  background: var(--panel3); color: var(--muted); border: 1px solid var(--border2);
+}
+.badge.hot { background: var(--up-dim); color: var(--up); border-color: rgba(246,70,93,.3); }
+.badge.amber { background: var(--accent-dim); color: var(--accent); border-color: rgba(242,182,61,.3); }
+.side-foot { padding: 10px 20px; font-size: 10.5px; color: var(--faint); border-top: 1px solid var(--border); line-height: 1.7; }
+
+/* ============ 主区 ============ */
+.main { margin-left: 232px; padding: 26px 30px 50px; }
+.page { display: none; animation: fade .25s; }
+.page.active { display: block; }
+@keyframes fade { from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+.page-head { display:flex; align-items: baseline; gap: 14px; margin-bottom: 4px; }
+.page-head h2 { font-size: 21px; letter-spacing: .5px; }
+.page-head .en { font-size: 11px; color: var(--faint); letter-spacing: 3px; text-transform: uppercase; }
+.page-sub { color: var(--muted); font-size: 12.5px; margin: 6px 0 20px; line-height: 1.6; }
+
+/* 通用卡片 */
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+.card h3 { font-size: 14px; margin-bottom: 12px; display:flex; align-items:center; gap:8px; }
+.card h3 .dot { width:7px; height:7px; border-radius:50%; background: var(--accent); }
+.grid { display:grid; gap: 14px; }
+.g2 { grid-template-columns: 1fr 1fr; }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+
+/* 统计卡 */
+.stat { background: var(--panel); border:1px solid var(--border); border-radius: var(--radius); padding: 15px 18px 13px; }
+.stat .lb { font-size: 12px; color: var(--muted); display:flex; justify-content: space-between; align-items:center;}
+.stat .val { font-size: 27px; font-weight: 700; margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
+.stat .sub { font-size: 11.5px; color: var(--faint); }
+.stat .val.up { color: var(--up); } .stat .val.down { color: var(--down); }
+.stat .val.amber { color: var(--accent); } .stat .val.blue { color: var(--blue); }
+
+/* 管线(助手在做什么) */
+.pipeline { display:flex; align-items:stretch; gap:0; overflow-x:auto; padding: 4px 0 2px; }
+.pl-step { flex:1; min-width: 118px; position: relative; padding: 10px 14px 10px 26px;
+  background: var(--panel); border: 1px solid var(--border); border-right: none; }
+.pl-step:last-child { border-right: 1px solid var(--border); border-radius: 0 var(--radius) var(--radius) 0; }
+.pl-step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.pl-step::before { content:"✓"; position:absolute; left: 9px; top: 12px; color: var(--down); font-size: 11px; font-weight:700; }
+.pl-step .t { font-size: 12.5px; font-weight: 600; }
+.pl-step .tm { font-size: 10.5px; color: var(--accent); margin-top: 2px; font-variant-numeric: tabular-nums; }
+.pl-step .d { font-size: 10.5px; color: var(--faint); margin-top: 3px; line-height: 1.4; }
+
+/* 信号卡 */
+.sig-card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 17px; position: relative; overflow: hidden; }
+.sig-card::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; }
+.sig-card.lv-high::before { background: var(--accent); }
+.sig-card.lv-mid::before { background: var(--blue); }
+.sig-card.lv-watch::before { background: var(--faint); }
+.sig-top { display:flex; align-items:center; gap: 13px; }
+.ring { width: 56px; height:56px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; flex-direction:column;
+  border: 2.5px solid; background: var(--panel2); }
+.ring .sc { font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.ring .lb { font-size: 8.5px; color: var(--faint); letter-spacing:1px; }
+.ring.lv-high { border-color: var(--accent); } .ring.lv-high .sc { color: var(--accent); }
+.ring.lv-mid { border-color: var(--blue); } .ring.lv-mid .sc { color: var(--blue); }
+.ring.lv-watch { border-color: var(--faint); } .ring.lv-watch .sc { color: var(--muted); }
+.sig-name { flex: 1; }
+.sig-name .nm { font-size: 16.5px; font-weight: 700; }
+.sig-name .nm .cd { font-size: 11.5px; color: var(--faint); font-weight: 400; margin-left: 7px; font-variant-numeric: tabular-nums; }
+.sig-name .gt { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+.rule-tag { font-size: 11px; padding: 3px 9px; border-radius: 6px; background: var(--panel3); border:1px solid var(--border2); color: var(--muted); display:inline-block; margin-top: 5px; }
+.rule-tag.gold { color: var(--accent); border-color: rgba(242,182,61,.35); background: var(--accent-dim); }
+.sig-detail { font-size: 12px; color: var(--muted); margin: 10px 0; line-height: 1.55; }
+.px-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0 4px; }
+.px { background: var(--panel2); border:1px solid var(--border); border-radius: 8px; padding: 7px 10px; }
+.px .l { font-size: 10.5px; color: var(--faint); }
+.px .v { font-size: 15px; font-weight: 700; margin-top: 1px; font-variant-numeric: tabular-nums; }
+.px .s { font-size: 10.5px; }
+.px.now .v { color: var(--text); } .px.stop .v { color: var(--down); } .px.tgt .v { color: var(--up); }
+.chips { display:flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.chip { font-size: 10.8px; padding: 2.5px 9px; border-radius: 12px; border:1px solid var(--border2); color: var(--muted); background: var(--panel2); }
+.chip.hot { color: var(--accent); border-color: rgba(242,182,61,.3); background: var(--accent-dim); }
+.chip.risk { color: var(--up); border-color: rgba(246,70,93,.35); background: var(--up-dim); }
+.chip.ok { color: var(--down); border-color: rgba(46,189,133,.3); background: var(--down-dim); }
+.ban { position:absolute; top: 13px; right: 14px; font-size: 10.5px; color: var(--up);
+  border: 1px solid rgba(246,70,93,.4); background: var(--up-dim); padding: 2.5px 9px; border-radius: 6px; letter-spacing: 1px; }
+
+/* 表格 */
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th { text-align: left; color: var(--faint); font-weight: 600; font-size: 11.5px; padding: 8px 10px; border-bottom: 1px solid var(--border2); white-space: nowrap; }
+td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text); white-space: nowrap; }
+tr:hover td { background: var(--panel2); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.tbl-wrap { max-height: 520px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--panel); }
+.p-up { color: var(--up); } .p-down { color: var(--down); } .p-flat { color: var(--muted); }
+
+/* 板块资金条 */
+.flow-row { display:grid; grid-template-columns: 150px 1fr 92px 64px; align-items:center; gap: 10px; padding: 6.5px 4px; border-bottom: 1px solid var(--border); font-size: 12.5px; }
+.flow-row:last-child { border-bottom: none; }
+.flow-row .fn { color: var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.flow-bar { height: 9px; border-radius: 5px; background: var(--panel3); overflow:hidden; position: relative; }
+.flow-bar i { position:absolute; top:0; bottom:0; border-radius:5px; }
+.flow-bar i.in { background: linear-gradient(90deg, #b03048, var(--up)); left:0; }
+.flow-bar i.out { background: linear-gradient(90deg, var(--down), #1d7a58); right:0; }
+.flow-row .fv { text-align:right; font-variant-numeric: tabular-nums; }
+
+/* 分组卡片 */
+.grp { background: var(--panel); border:1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; cursor:pointer; transition: all .15s; }
+.grp:hover { border-color: var(--accent); }
+.grp.sel { border-color: var(--accent); background: var(--accent-dim); }
+.grp .n { font-size: 13.5px; font-weight: 600; display:flex; justify-content: space-between; align-items:center;}
+.grp .n .cnt { font-size: 10.5px; color: var(--faint); font-weight: 400; }
+.grp .m { font-size: 11.5px; margin-top: 5px; color: var(--muted); }
+.grp .m b { font-variant-numeric: tabular-nums; }
+
+/* 解禁 */
+.un-card { background: var(--panel); border:1px solid var(--border); border-radius: var(--radius); padding: 13px 15px; }
+.un-card .h { display:flex; justify-content: space-between; align-items: baseline; }
+.un-card .h .n { font-size: 15px; font-weight: 700; }
+.un-card .h .n .cd { font-size: 11px; color: var(--faint); font-weight:400; margin-left: 6px;}
+.un-row { display:flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px dashed var(--border); font-size: 12.5px; }
+.un-row:last-child { border-bottom:none; }
+.un-row .d { color: var(--text); font-variant-numeric: tabular-nums; }
+.un-row .r { color: var(--muted); }
+.tag-danger { color: var(--up); font-weight: 700; }
+.tag-warn { color: var(--accent); font-weight: 600; }
+.cal-row { display:flex; align-items:flex-end; gap: 3px; height: 110px; padding: 10px 4px 0; }
+.cal-col { flex:1; display:flex; flex-direction:column; align-items:center; gap: 4px; min-width: 0; }
+.cal-col .b { width: 100%; background: linear-gradient(180deg, #b03048, #7a2033); border-radius: 3px 3px 0 0; }
+.cal-col .dl { font-size: 9px; color: var(--faint); transform: rotate(-45deg) translate(-4px,-2px); white-space:nowrap; }
+.cal-col .ct { font-size: 9.5px; color: var(--muted); }
+
+/* 胜率种子 */
+.seed-row { display:grid; grid-template-columns: 88px 1fr 52px; align-items:center; gap: 10px; padding: 5.5px 0; font-size: 12.5px; }
+.seed-bar { height: 12px; background: var(--panel3); border-radius: 3px; overflow:hidden; }
+.seed-bar i { display:block; height: 100%; background: linear-gradient(90deg, #8a6420, var(--accent)); border-radius: 3px; }
+
+/* 学习笔记 */
+.md-box { background: var(--panel2); border:1px solid var(--border); border-radius: 8px; padding: 13px 15px;
+  font-size: 12.5px; color: var(--muted); line-height: 1.8; white-space: pre-wrap; max-height: 300px; overflow-y: auto; }
+.md-box b, .md-box strong { color: var(--text); }
+
+/* 待办 */
+.todo-item { display:flex; gap: 12px; padding: 10px 0; border-bottom: 1px dashed var(--border); font-size: 13px; align-items: flex-start; }
+.todo-item:last-child { border-bottom: none; }
+.todo-item .no { width: 22px; height:22px; border-radius: 50%; background: var(--accent-dim); color: var(--accent);
+  display:flex; align-items:center; justify-content:center; font-size: 11.5px; font-weight: 700; flex-shrink:0; margin-top: 1px;}
+.todo-item .bd .t { font-weight: 600; }
+.todo-item .bd .d { font-size: 11.8px; color: var(--muted); margin-top: 3px; line-height: 1.55; }
+
+code.k { background: var(--panel3); border: 1px solid var(--border2); padding: 1px 6px; border-radius: 5px; font-size: 11.5px; color: var(--accent); font-family: Consolas, monospace; }
+.hint { font-size: 11.5px; color: var(--faint); line-height: 1.7; margin-top: 10px; }
+.empty { text-align:center; padding: 42px 20px; color: var(--faint); font-size: 13px; line-height: 2.1; }
+.empty .big { font-size: 30px; display:block; margin-bottom: 8px; }
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+.mt14 { margin-top: 14px; } .mt20 { margin-top: 20px; }
+.two-col { display:grid; grid-template-columns: 1.25fr 1fr; gap: 14px; }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <h1>股票<b>助手</b></h1>
+    <p>会成长的炒股决策台<br>规则扫描 × 多因子 × 每周进化</p>
+  </div>
+  <nav class="nav" id="nav"></nav>
+  <div class="side-foot" id="sideFoot"></div>
+</aside>
+
+<main class="main">
+  <section class="page active" id="page-overview"></section>
+  <section class="page" id="page-signals"></section>
+  <section class="page" id="page-holdings"></section>
+  <section class="page" id="page-market"></section>
+  <section class="page" id="page-unlock"></section>
+  <section class="page" id="page-pool"></section>
+  <section class="page" id="page-brain"></section>
+  <section class="page" id="page-guide"></section>
+</main>
+
+<script src="data.js"></script>
+<script>
+/* ================= 工具 ================= */
+const $ = s => document.querySelector(s);
+const esc = t => String(t == null ? '' : t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const D = WB_DATA;
+const pctCls = p => p > 0 ? 'p-up' : (p < 0 ? 'p-down' : 'p-flat');
+const pctTxt = p => (p == null ? '--' : (p > 0 ? '+' : '') + p.toFixed(2) + '%');
+const priceTxt = p => p == null ? '--' : p.toFixed(2);
+const fmtYi = v => (v == null ? '--' : (v >= 0 ? '+' : '') + v.toFixed(1) + '亿');
+const lvOf = s => s.score >= 75 ? 'high' : (s.score >= 55 ? 'mid' : 'watch');
+const LV_TXT = { high: '高置信', mid: '中置信', watch: '观察区' };
+
+/* ================= 导航 ================= */
+const NAV = [
+  { id:'overview', ico:'📊', txt:'总览',          grp:'决策台' },
+  { id:'signals',  ico:'🎯', txt:'今日信号',      grp:'决策台', badge: () => D.summary.mid + D.summary.high },
+  { id:'holdings', ico:'💼', txt:'持仓跟踪',      grp:'决策台', badge: () => D.summary.holdings_count },
+  { id:'market',   ico:'💓', txt:'市场脉搏',      grp:'情报区' },
+  { id:'unlock',   ico:'🚨', txt:'解禁雷达',      grp:'情报区', badge: () => new Set((D.unlock.pool_hits||[]).map(u => u.code)).size, hot: () => (D.unlock.pool_hits||[]).length > 0 },
+  { id:'pool',     ico:'🗂️', txt:'股票池',        grp:'情报区', badge: () => D.summary.pool_count },
+  { id:'brain',    ico:'🧠', txt:'学习与进化',    grp:'助手大脑' },
+  { id:'guide',    ico:'📖', txt:'使用说明',      grp:'助手大脑' },
+];
+function renderNav() {
+  let html = '', lastGrp = '';
+  NAV.forEach(n => {
+    if (n.grp !== lastGrp) { html += `<div class="nav-group">${n.grp}</div>`; lastGrp = n.grp; }
+    let bd = '';
+    if (n.badge) { const v = n.badge(); if (v > 0) bd = `<span class="badge ${n.hot && n.hot() ? 'hot' : ''}">${v}</span>`; }
+    html += `<div class="side-item ${n.id==='overview'?'active':''}" data-page="${n.id}"><span class="ico">${n.ico}</span>${n.txt}${bd}</div>`;
+  });
+  $('#nav').innerHTML = html;
+  document.querySelectorAll('.side-item').forEach(el => el.onclick = () => {
+    document.querySelectorAll('.side-item').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+    el.classList.add('active');
+    $('#page-' + el.dataset.page).classList.add('active');
+  });
+  $('#sideFoot').innerHTML = `数据快照 ${esc(D.meta.date)}<br>下次自动运行 15:20`;
+}
+
+/* ================= 信号卡 ================= */
+function sigCard(s) {
+  const lv = lvOf(s);
+  const risks = (s.risks || []).map(r => `<span class="chip risk">⚠ ${esc(r)}</span>`).join('');
+  const hotc = (s.hot_hits || []).map(h => `<span class="chip hot">🔥 ${esc(h)}</span>`).join('');
+  const okc = s.risks && s.risks.length === 0 ? `<span class="chip ok">✓ 无风险标记</span>` : '';
+  const un = s.unlock ? `<span class="chip risk">🚨 30天内解禁 ${esc(s.unlock.date)} (${esc(s.unlock.ratio_pct)}%)</span>` : '';
+  const ban = lv === 'watch' ? `<div class="ban">⛔ 禁买</div>` : '';
+  const styleName = (D.brain.styles[s.style] || {}).name || s.style;
+  return `<div class="sig-card lv-${lv}">
+    ${ban}
+    <div class="sig-top">
+      <div class="ring lv-${lv}"><span class="sc">${s.score.toFixed(1)}</span><span class="lb">SCORE</span></div>
+      <div class="sig-name">
+        <div class="nm">${esc(s.name)}<span class="cd">${esc(s.code)}</span></div>
+        <div class="gt">${esc(s.group)} · ${esc(s.theme)}</div>
+        <span class="rule-tag ${s.rule==='shrink_pullback'?'gold':''}">${esc((D.brain.rules[s.rule]||{}).desc || s.rule)} · ${esc(styleName)}</span>
+      </div>
+    </div>
+    <div class="sig-detail">${esc(s.detail)}</div>
+    <div class="px-grid">
+      <div class="px now"><div class="l">现价(信号基准)</div><div class="v">${priceTxt(s.price)}</div><div class="s ${pctCls(s.pct_today)}">${pctTxt(s.pct_today)}</div></div>
+      <div class="px stop"><div class="l">止损价(纪律)</div><div class="v">${priceTxt(s.stop_price)}</div><div class="s">${s.stop_pct}% · 破线必走</div></div>
+      <div class="px tgt"><div class="l">目标价</div><div class="v">${priceTxt(s.target_price)}</div><div class="s">+${s.target_pct}% · 到位分批止盈</div></div>
+    </div>
+    <div class="chips">${hotc}${un}${risks}${okc}<span class="chip">行业胜率种子 ${(s.winrate_seed*100).toFixed(1)}%</span></div>
+  </div>`;
+}
+
+/* ================= 总览 ================= */
+function renderOverview() {
+  const sm = D.summary;
+  const top = (D.signals.high.concat(D.signals.mid)).slice(0, 3);
+  const hotArr = Object.entries(D.signals.hot_sectors || {}).slice(0, 10);
+  const lu = D.market.limitup;
+  const todoHtml = `
+    <div class="card mt14">
+      <h3><span class="dot"></span>今日你要做的</h3>
+      ${D.summary.holdings_count === 0 ? `<div class="todo-item"><span class="no">1</span><div class="bd"><div class="t">填写持仓 <code class="k">config/holdings.json</code></div><div class="d">把当前持仓(代码/成本价/股数/风格)填进去, 助手才会每天帮你盯止损止盈。空仓可跳过。</div></div></div>` : ''}
+      <div class="todo-item"><span class="no">${D.summary.holdings_count === 0 ? 2 : 1}</span><div class="bd"><div class="t">看「今日信号」决定是否出手</div><div class="d">重点看中/高置信信号: 现价附近买、跌到止损价必须卖、到目标价分批止盈。观察区信号是形态到了但被防狼原则拦截, 禁买。</div></div></div>
+      <div class="todo-item"><span class="no">${D.summary.holdings_count === 0 ? 3 : 2}</span><div class="bd"><div class="t">买卖后回填结果</div><div class="d">买了哪只、什么价、后来卖没卖——在微信里直接告诉助手。这是助手学习进化的养料, 每周五复盘会统计各规则真实胜率并调整权重。</div></div></div>
+    </div>`;
+  const pipelineHtml = `<div class="pipeline">` + D.meta.pipeline.map(p =>
+    `<div class="pl-step"><div class="t">${esc(p.step)}</div><div class="tm">${esc(p.time)}</div><div class="d">${esc(p.detail)}</div></div>`).join('') + `</div>`;
+  $('#page-overview').innerHTML = `
+    <div class="page-head"><h2>总览</h2><span class="en">Overview</span></div>
+    <div class="page-sub">${esc(D.meta.date)} 收盘数据 · ${esc(D.signals.generated)} 生成 · ${esc(D.meta.next_run)}</div>
+    <div class="card" style="padding:13px 14px">
+      <h3 style="margin-bottom:8px"><span class="dot" style="background:var(--blue)"></span>助手今天做了什么(已自动完成)</h3>
+      ${pipelineHtml}
+    </div>
+    <div class="grid g4 mt14">
+      <div class="stat"><div class="lb">今日信号<span class="badge amber">${sm.signals_total}</span></div><div class="val amber">${sm.high}高 / ${sm.mid}中</div><div class="sub">观察区 ${sm.watch} 条(防狼拦截)</div></div>
+      <div class="stat"><div class="lb">池内扫描</div><div class="val">${sm.pool_count}<span style="font-size:14px;color:var(--faint)"> 只</span></div><div class="sub">四规则 × 多因子打分</div></div>
+      <div class="stat"><div class="lb">涨停情绪</div><div class="val ${sm.seal_rate >= 70 ? 'up' : ''}">${sm.limitup_count}<span style="font-size:14px;color:var(--faint)"> 家</span></div><div class="sub">连板${sm.lianban || '--'} · 封板率${sm.seal_rate == null ? '--' : sm.seal_rate + '%'}</div></div>
+      <div class="stat"><div class="lb">持仓跟踪</div><div class="val ${sm.holdings_count ? 'up' : ''}">${sm.holdings_count}<span style="font-size:14px;color:var(--faint)"> 只</span></div><div class="sub">${sm.holdings_count ? '已盯止损止盈' : '未配置 · 见下方待办'}</div></div>
+    </div>
+    <div class="two-col mt14">
+      <div>
+        <div class="card"><h3><span class="dot"></span>今日焦点信号</h3>
+          ${top.length ? top.map(sigCard).join('') : '<div class="empty"><span class="big">🌧️</span>今日无中/高置信信号<br>空仓等待也是纪律</div>'}
+        </div>
+        ${todoHtml}
+      </div>
+      <div>
+        <div class="card"><h3><span class="dot"></span>市场脉搏</h3>
+          <div class="chips">${hotArr.map(([k,v]) => `<span class="chip hot">🔥 ${esc(k)} ×${v}</span>`).join('') || '<span class="chip">暂无热点合成</span>'}</div>
+          <div class="divider"></div>
+          <div style="font-size:12.5px;color:var(--muted);line-height:2">
+            涨停 ${sm.limitup_count} 家 · 连板 ${lu.lianban_count || '--'} · 封板率 ${lu.seal_rate_pct == null ? '--' : lu.seal_rate_pct + '%'}<br>
+            焦点梯队: ${((lu.focus)||[]).map(f => `${esc(f.name)} ${esc(f.board)}`).join(' / ') || '--'}<br>
+            活跃方向: ${((lu.active_boards)||[]).map(esc).join('、') || '--'}
+          </div>
+          <div class="hint">详情见左侧「市场脉搏」· 数据源: 东财板块资金 + 财联社涨停复盘(agent搜索补充)</div>
+        </div>
+        <div class="card mt14"><h3><span class="dot" style="background:var(--up)"></span>解禁雷达</h3>
+          <div style="font-size:12.5px;color:var(--muted);line-height:2">
+            未来30天全市场解禁 <b style="color:var(--text)">${sm.unlock_total}</b> 条<br>
+            池内命中 <b class="tag-warn">${sm.unlock_pool_count} 批</b>${(() => { const m = {}; (D.unlock.pool_hits||[]).forEach(u => { m[u.name] = (m[u.name]||0)+1; }); const s = Object.entries(m).map(([n,c]) => c>1 ? `${esc(n)}×${c}批` : esc(n)).join('、'); return s ? ' → ' + s : ''; })()}
+          </div>
+          <div class="hint">解禁占流通盘 ≥2% 计入风险扣分, ≥5% 重扣。解禁前不接飞刀。</div>
+        </div>
+        <div class="card mt14"><h3><span class="dot" style="background:var(--blue)"></span>助手怎么变聪明</h3>
+          <div style="font-size:12.5px;color:var(--muted);line-height:1.9">
+            每天: 数据抓取 → 涨停/板块情报 → 规则打分 → 微信推送(15:20)<br>
+            每周五: 统计本周信号真实胜率 → 调整规则权重与参数<br>
+            你反馈买卖结果 → 写入学习笔记 → 下周更准
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ================= 今日信号 ================= */
+function renderSignals() {
+  const h = D.signals.high, m = D.signals.mid, w = D.signals.watch;
+  const block = (arr, title, sub) => arr.length ? `<div class="mt20"><div class="page-head" style="margin-bottom:10px"><h2 style="font-size:16px">${title}</h2><span class="en">${sub}</span></div><div class="grid g2">${arr.map(sigCard).join('')}</div></div>` : '';
+  $('#page-signals').innerHTML = `
+    <div class="page-head"><h2>今日信号</h2><span class="en">Signals ${esc(D.meta.date)}</span></div>
+    <div class="page-sub">规则扫描 ${D.summary.scan} 只 → 命中 ${D.summary.signals_total} 条(高${D.summary.high}/中${D.summary.mid}/观察${D.summary.watch}) · 评分=规则权重×40 + 板块热度 + 行业胜率种子 − 风险扣分 · ${esc(D.signals.generated)} 生成</div>
+    ${block(h, '⭐ 高置信信号(≥75分)', 'High Confidence')}
+    ${h.length === 0 ? '<div class="empty mt14" style="text-align:left;padding:20px;background:var(--panel);border:1px solid var(--border);border-radius:10px">今日无高置信信号——好形态没遇上热板块, 宁缺毋滥。</div>' : ''}
+    ${block(m, '🔵 中置信信号(55~75分)', 'Mid Confidence')}
+    ${block(w, '⚪ 观察区(<55分·防狼拦截/低分)', 'Watchlist · 禁买')}
+    <div class="hint" style="margin-top:16px">⛔ 观察区说明: MACD 零轴下方 = 防狼原则禁买区(缠论纪律), 助手只记录不推荐; 待其站上零轴且形态重现, 才会进入正常信号区。</div>`;
+}
+
+/* ================= 持仓跟踪 ================= */
+function renderHoldings() {
+  const pos = D.holdings.positions || [];
+  let inner;
+  if (!pos.length) {
+    inner = `<div class="empty"><span class="big">💼</span>还没有配置持仓<br>
+      打开 <code class="k">D:\\投资理财资料\\股票助手\\config\\holdings.json</code>, 按下面格式填入:<br>
+      <code class="k">{"symbol":"sz002472","name":"双环传动","cost":26.80,"shares":1000,"style":"boduan"}</code><br>
+      保存即可——助手每个交易日 15:20 自动帮你盯: 触及止损提醒卖 / 达到目标提醒止盈 / 跌破20日线预警。</div>`;
+  } else {
+    inner = `<div class="tbl-wrap"><table><tr><th>名称/代码</th><th class="num">现价</th><th class="num">成本</th><th class="num">盈亏%</th><th class="num">止损价</th><th class="num">目标价</th><th>风格</th><th>今日提醒</th></tr>
+      ${pos.map(p => `<tr><td>${esc(p.name || p.symbol)}<span style="color:var(--faint);font-size:11px;margin-left:6px">${esc(p.symbol||'')}</span></td>
+      <td class="num">${priceTxt(p.price)}</td><td class="num">${priceTxt(p.cost)}</td>
+      <td class="num ${pctCls(p.pnl_pct)}">${pctTxt(p.pnl_pct)}</td>
+      <td class="num p-down">${priceTxt(p.stop_price)}</td><td class="num p-up">${priceTxt(p.target_price)}</td>
+      <td>${esc(p.style)}</td>
+      <td>${(p.alerts||[]).map(a=>`<span class="chip risk">${esc(a)}</span>`).join('') || '<span class="chip ok">正常持有</span>'}</td></tr>`).join('')}</table></div>`;
+  }
+  $('#page-holdings').innerHTML = `
+    <div class="page-head"><h2>持仓跟踪</h2><span class="en">Holdings</span></div>
+    <div class="page-sub">每个交易日收盘后自动核对: 止损纪律 / 止盈目标 / 20日线状态。破位必走, 到位分批, 不侥幸。</div>
+    ${inner}`;
+}
+
+/* ================= 市场脉搏 ================= */
+function flowTable(list, label) {
+  const maxAbs = Math.max(0.01, ...list.map(i => Math.abs(i.net_yi || 0)));
+  return `<div class="card"><h3><span class="dot"></span>${label}</h3>` +
+    list.map(i => {
+      const w = Math.max(1.5, Math.abs(i.net_yi || 0) / maxAbs * 100);
+      const inCls = (i.net_yi || 0) >= 0;
+      return `<div class="flow-row"><span class="fn">${esc(i.name)}</span>
+        <div class="flow-bar"><i class="${inCls ? 'in' : 'out'}" style="width:${w}%"></i></div>
+        <span class="fv ${inCls ? 'p-up' : 'p-down'}">${fmtYi(i.net_yi)}</span>
+        <span class="fv ${pctCls(i.pct)}">${pctTxt(i.pct)}</span></div>`;
+    }).join('') + `</div>`;
+}
+function renderMarket() {
+  const lu = D.market.limitup || {};
+  $('#page-market').innerHTML = `
+    <div class="page-head"><h2>市场脉搏</h2><span class="en">Market Pulse</span></div>
+    <div class="page-sub">主力资金与涨停情绪是短线择时的氧气面罩: 情绪冰点少动手, 高潮别追高。</div>
+    <div class="grid g4">
+      <div class="stat"><div class="lb">涨停家数</div><div class="val up">${lu.count || 0}</div><div class="sub">${esc(lu.source || '').includes('财联社') ? '财联社收盘口径(不含ST)' : ''}</div></div>
+      <div class="stat"><div class="lb">连板股</div><div class="val">${lu.lianban_count || '--'}</div><div class="sub">最高梯队 ${esc(((lu.focus||[])[0]||{}).board || '--')}</div></div>
+      <div class="stat"><div class="lb">封板率</div><div class="val ${(lu.seal_rate_pct||0) >= 70 ? 'up' : ((lu.seal_rate_pct||0) < 50 ? 'down' : '')}">${lu.seal_rate_pct == null ? '--' : lu.seal_rate_pct + '%'}</div><div class="sub">≥70%情绪高潮 · <50%退潮期</div></div>
+      <div class="stat"><div class="lb">炸板数</div><div class="val">${lu.failed_seal_count == null ? '--' : lu.failed_seal_count}</div><div class="sub">尾盘炸板=分歧加大</div></div>
+    </div>
+    <div class="two-col mt14">
+      <div class="card"><h3><span class="dot" style="background:var(--up)"></span>涨停焦点梯队</h3>
+        <table><tr><th>焦点股</th><th>梯队</th><th>概念</th><th>助手分组</th></tr>
+        ${(lu.focus||[]).map(f => `<tr><td style="font-weight:600">${esc(f.name)}</td><td class="p-up" style="font-weight:700">${esc(f.board)}</td><td>${esc(f.concept||'')}</td><td><span class="chip hot">${esc(f.hybk||'')}</span></td></tr>`).join('') || '<tr><td colspan="4" style="color:var(--faint)">--</td></tr>'}</table>
+        <div class="divider"></div>
+        <h3 style="margin-bottom:6px"><span class="dot" style="background:var(--down)"></span>池内今日强势股</h3>
+        <div class="chips">${(lu.pool_strong||[]).map(p => `<span class="chip ${p.pct >= 7 ? 'risk' : 'hot'}">${esc(p.name)} ${pctTxt(p.pct)} · ${esc(p.group)}</span>`).join('') || '<span class="chip">池内无≥5%个股</span>'}</div>
+        <div class="hint">活跃方向: ${(lu.active_boards||[]).join('、') || '--'}</div>
+      </div>
+      <div class="card"><h3><span class="dot"></span>今日热点合成(板块资金+涨停)</h3>
+        <div class="chips">${Object.entries(D.market.hot_sectors||{}).map(([k,v]) => `<span class="chip hot">🔥 ${esc(k)} <b>${v}</b></span>`).join('') || '<span class="chip">--</span>'}</div>
+        <div class="divider"></div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.9">合成规则: 资金榜前20且主力净流入为正记 2 分; 涨停池每出现 1 只记 1 分(单板块封顶5)。个股信号评分时, 命中所属组的热点板块才加分。</div>
+      </div>
+    </div>
+    <div class="two-col mt14">${flowTable(D.market.industry, '行业主力净流入 TOP12')}${flowTable(D.market.concept, '概念主力净流入 TOP12')}</div>`;
+}
+
+/* ================= 解禁雷达 ================= */
+function renderUnlock() {
+  const hits = D.unlock.pool_hits || [];
+  const byCode = {};
+  hits.forEach(u => { (byCode[u.code] = byCode[u.code] || { name: u.name, code: u.code, batches: [] }).batches.push(u); });
+  const hitStocks = Object.values(byCode);
+  const byDate = D.unlock.by_date || [];
+  const maxC = Math.max(1, ...byDate.map(x => x[1]));
+  $('#page-unlock').innerHTML = `
+    <div class="page-head"><h2>解禁雷达</h2><span class="en">Unlock Radar</span></div>
+    <div class="page-sub">未来30天全市场解禁 ${D.unlock.total} 条 · 池内命中 <b class="tag-warn">${hitStocks.length} 只(${hits.length}批)</b> · 风险规则: 占流通盘≥2%扣分、≥5%重扣, 解禁前一周原则上不新开仓。</div>
+    ${hitStocks.length ? `<div class="grid g3">${hitStocks.map(g => {
+      const maxR = Math.max(...g.batches.map(b => b.lift_ratio_pct || 0));
+      return `<div class="un-card">
+        <div class="h"><span class="n">${esc(g.name)}<span class="cd">${esc(g.code)}</span></span>
+          <span class="chip ${maxR >= 5 ? 'risk' : (maxR >= 2 ? 'hot' : '')}">${g.batches.length > 1 ? g.batches.length + '批 · ' : ''}${maxR ? '最大占流通盘 ' + maxR + '%' : '比例未知'}</span></div>
+        ${g.batches.map(b => `<div class="un-row"><span class="d">${esc(String(b.free_date).slice(0,10))}</span><span class="r">${esc(b.free_type || '')} ${b.lift_mv_yi != null ? '· ' + b.lift_mv_yi + '亿元 · 占' + (b.lift_ratio_pct == null ? '--' : b.lift_ratio_pct + '%') : ''}</span></div>`).join('')}
+      </div>`; }).join('')}</div>`
+    : '<div class="empty"><span class="big">✅</span>池内股票未来30天无解禁</div>'}
+    <div class="card mt20"><h3><span class="dot" style="background:var(--up)"></span>未来30天解禁日历(全市场)</h3>
+      <div class="cal-row">${byDate.map(([d, c]) => `
+        <div class="cal-col"><div class="ct">${c}</div><div class="b" style="height:${Math.max(6, c / maxC * 78)}px"></div><div class="dl">${d.slice(5)}</div></div>`).join('')}</div>
+      <div class="hint">数据源: 东方财富 datacenter 接口 · ${esc(D.meta.date)} 抓取</div>
+    </div>`;
+}
+
+/* ================= 股票池 ================= */
+let poolFilter = '全部';
+function renderPool() {
+  const groups = D.pool.groups || [];
+  const stocks = D.pool.stocks || [];
+  const shown = poolFilter === '全部' ? stocks : stocks.filter(s => s.group === poolFilter);
+  const chips = `<div class="chips" style="margin-bottom:14px"><span class="chip ${poolFilter === '全部' ? 'hot' : ''}" data-g="全部" style="cursor:pointer">全部 ${stocks.length}</span>` +
+    groups.map(g => `<span class="chip ${poolFilter === g.name ? 'hot' : ''}" data-g="${esc(g.name)}" style="cursor:pointer">${esc(g.name)} ${g.count}</span>`).join('') + `</div>`;
+  const grpCards = `<div class="grid g4">${groups.map(g => `
+    <div class="grp" data-g="${esc(g.name)}">
+      <div class="n">${esc(g.name)}<span class="cnt">${g.count}只 · ${g.up}涨${g.down}跌</span></div>
+      <div class="m">组内均涨 <b class="${pctCls(g.avg_pct)}">${pctTxt(g.avg_pct)}</b> · 领涨 ${g.best ? esc(g.best.name) + ' ' + pctTxt(g.best.pct) : '--'} · 胜率种子 ${((D.brain.seeds||{})[g.name] * 100 || 0).toFixed(1)}%</div>
+    </div>`).join('')}</div>`;
+  $('#page-pool').innerHTML = `
+    <div class="page-head"><h2>股票池</h2><span class="en">Universe · ${D.summary.pool_count}</span></div>
+    <div class="page-sub">精选 300亿内龙头 · 按组管理 · 点击分组卡片可筛选(再次点击还原)</div>
+    ${grpCards}
+    <div class="card mt14">${chips}
+      <div class="tbl-wrap" style="max-height:560px"><table>
+        <tr><th>#</th><th>名称</th><th>代码</th><th>分组</th><th>题材</th><th class="num">现价</th><th class="num">今日涨跌</th><th class="num">换手%</th></tr>
+        ${shown.map((s, i) => `<tr><td style="color:var(--faint)">${i + 1}</td><td style="font-weight:600">${esc(s.name)}</td>
+          <td style="color:var(--faint);font-variant-numeric:tabular-nums">${esc(s.code)}</td>
+          <td><span class="chip">${esc(s.group)}</span></td><td style="color:var(--muted)">${esc(s.theme)}</td>
+          <td class="num">${priceTxt(s.price)}</td><td class="num ${pctCls(s.pct)}" style="font-weight:700">${pctTxt(s.pct)}</td>
+          <td class="num" style="color:var(--muted)">${s.turnover == null ? '--' : s.turnover.toFixed(1)}</td></tr>`).join('')}
+      </table></div>
+      <div class="hint">换池子/调单只股票: 编辑 <code class="k">config/pool.json</code> 后次日生效</div>
+    </div>`;
+  document.querySelectorAll('[data-g]').forEach(el => el.onclick = () => {
+    const g = el.dataset.g;
+    poolFilter = (poolFilter === g) ? '全部' : g;
+    renderPool();
+  });
+}
+
+/* ================= 学习与进化 ================= */
+function renderBrain() {
+  const b = D.brain;
+  const ruleRows = Object.entries(b.rules || {}).map(([k, r]) => {
+    const ps = Object.entries(r.params || {}).map(([pk, pv]) => `${esc(pk)}=${esc(pv)}`).join(' · ');
+    return `<tr><td style="font-weight:600">${esc(r.desc)}<div style="color:var(--faint);font-size:11px">${esc(k)}</div></td>
+      <td style="color:var(--muted)">${ps}</td><td class="num">${(r.init_weight||1).toFixed(1)}</td>
+      <td class="num p-up">${((r.init_winrate||0)*100).toFixed(1)}%</td></tr>`;
+  }).join('');
+  const seeds = Object.entries(b.seeds || {}).sort((a, c) => c[1] - a[1]);
+  const logChips = Object.entries(b.log_stats.rules || {}).map(([k, v]) =>
+    `<span class="chip">${esc((b.rules[k]||{}).desc || k)} ×${v}</span>`).join('');
+  const recentRows = (b.log_recent || []).map(e => `<tr><td>${esc(e.date)}</td><td style="font-weight:600">${esc(e.name)}</td>
+    <td style="color:var(--muted)">${esc((b.rules[e.rule]||{}).desc || e.rule)}</td><td class="num">${e.score}</td>
+    <td class="num">${priceTxt(e.price)}</td><td class="num p-down">${priceTxt(e.stop)}</td><td class="num p-up">${priceTxt(e.target)}</td>
+    <td><span class="chip">${esc(e.status)}</span></td></tr>`).join('');
+  $('#page-brain').innerHTML = `
+    <div class="page-head"><h2>学习与进化</h2><span class="en">Learning Loop</span></div>
+    <div class="page-sub">初始权重来自《A股龙头回测报告》(${esc(D.meta.date)}部署) · 每周五收盘后统计信号真实胜率并自动调整权重 · 你的每次买卖反馈都是训练数据</div>
+    <div class="grid g4">
+      <div class="stat"><div class="lb">累计信号</div><div class="val amber">${b.log_stats.total}</div><div class="sub">条(含观察区)</div></div>
+      <div class="stat"><div class="lb">待验证(open)</div><div class="val">${b.log_stats.open}</div><div class="sub">5日/20日后自动回看结果</div></div>
+      <div class="stat"><div class="lb">规则分布</div><div class="val" style="font-size:15px;line-height:2.2">${logChips}</div></div>
+      <div class="stat"><div class="lb">防狼过滤</div><div class="val ${b.filters.macd_below_zero_block ? 'up' : ''}">${b.filters.macd_below_zero_block ? '开启' : '关闭'}</div><div class="sub">MACD零轴下方一律禁买并扣25分</div></div>
+    </div>
+    <div class="grid g2 mt14">
+      <div class="card"><h3><span class="dot"></span>四大规则当前参数</h3>
+        <table><tr><th>规则</th><th>参数</th><th class="num">权重</th><th class="num">种子胜率</th></tr>${ruleRows}</table>
+        <div class="hint">三种风格: 短线(止损-3%/止盈+8%/持5天) · 波段(-5%/+8%/20天) · ETF(-4%/+10%/30天)。到期或破位即关闭信号。</div>
+      </div>
+      <div class="card"><h3><span class="dot" style="background:var(--accent)"></span>行业胜率种子(回测)</h3>
+        ${seeds.map(([g, v]) => `<div class="seed-row"><span>${esc(g)}</span><div class="seed-bar"><i style="width:${v*100*2}%"></i></div><span class="p-up">${(v*100).toFixed(1)}%</span></div>`).join('')}
+        <div class="hint">个股评分时按所属组加成(seed×40分)。周五复盘后用真实数据覆盖种子值。</div>
+      </div>
+    </div>
+    <div class="grid g2 mt14">
+      <div class="card"><h3><span class="dot" style="background:var(--blue)"></span>最近信号日志(学习素材)</h3>
+        <div class="tbl-wrap" style="max-height:320px"><table><tr><th>日期</th><th>名称</th><th>规则</th><th class="num">分</th><th class="num">价</th><th class="num">止损</th><th class="num">目标</th><th>状态</th></tr>${recentRows || '<tr><td colspan="8" style="color:var(--faint)">暂无</td></tr>'}</table></div>
+      </div>
+      <div class="card"><h3><span class="dot" style="background:var(--down)"></span>学习笔记(每周五更新)</h3>
+        <div class="md-box">${esc(b.learnings)}</div>
+        <div class="hint">文件: <code class="k">signals/learnings.md</code> · 记录规则命中/漏选复盘与参数调整决策</div>
+      </div>
+    </div>`;
+}
+
+/* ================= 使用说明 ================= */
+function renderGuide() {
+  $('#page-guide').innerHTML = `
+    <div class="page-head"><h2>使用说明</h2><span class="en">How It Works</span></div>
+    <div class="grid g2">
+      <div class="card"><h3><span class="dot" style="background:var(--blue)"></span>助手每天自动做的(15:20收盘后)</h3>
+        <div class="todo-item"><span class="no">1</span><div class="bd"><div class="t">抓数据</div><div class="d">腾讯行情/K线 → 东财板块资金/解禁 → agent搜索财联社涨停复盘(接口失效的兜底方案)</div></div></div>
+        <div class="todo-item"><span class="no">2</span><div class="bd"><div class="t">算信号</div><div class="d">四规则扫描(回踩20日线/放量突破后缩量回调★最看重/放量突破/板块轮动) × 因子叠加(板块热度/解禁/防狼/行业胜率)打分排序</div></div></div>
+        <div class="todo-item"><span class="no">3</span><div class="bd"><div class="t">推送微信 + 刷新本工作台</div><div class="d">微信收信号摘要(重点股+操作要点), 打开本页看完整卡片。错过窗口可让助手补跑。</div></div></div>
+        <div class="todo-item"><span class="no">4</span><div class="bd"><div class="t">周五加做: 周复盘</div><div class="d">统计本周信号 5日/20日真实涨跌 → 计算各规则胜率 → 调整权重参数 → 写学习笔记 → 推送复盘报告</div></div></div>
+      </div>
+      <div class="card"><h3><span class="dot" style="background:var(--accent)"></span>你要做的(三件事)</h3>
+        <div class="todo-item"><span class="no">1</span><div class="bd"><div class="t">配置持仓(一次性)</div><div class="d">编辑 <code class="k">config/holdings.json</code> 填入持仓成本/股数/风格; 或者直接在微信里发给我, 我帮你填。</div></div></div>
+        <div class="todo-item"><span class="no">2</span><div class="bd"><div class="t">每天看信号做决定</div><div class="d">高/中置信信号按卡片纪律执行: 现价附近买、止损价必走、目标价分批止盈。观察区=禁买, 只看不动。</div></div></div>
+        <div class="todo-item"><span class="no">3</span><div class="bd"><div class="t">反馈结果(帮助手进化)</div><div class="d">"双环传动26.8买了1000股"、"引力传媒21块止盈了"——发微信即可, 我记入日志, 周五复盘时算真实胜率。</div></div></div>
+      </div>
+    </div>
+    <div class="grid g3 mt14">
+      <div class="card"><h3><span class="dot"></span>文件地图</h3>
+        <div style="font-size:12.5px;line-height:2.1;color:var(--muted)">
+          <code class="k">config/pool.json</code> 股票池(101只)<br>
+          <code class="k">config/config.json</code> 规则参数/权重<br>
+          <code class="k">config/holdings.json</code> 你的持仓<br>
+          <code class="k">signals/信号日志+学习笔记</code><br>
+          <code class="k">data/日期/</code> 每日原始数据
+        </div>
+      </div>
+      <div class="card"><h3><span class="dot" style="background:var(--up)"></span>评分怎么算</h3>
+        <div style="font-size:12.5px;line-height:2;color:var(--muted)">
+          基础分 = 规则权重×40<br>
+          + 板块热度(最高20分)<br>
+          + 行业胜率种子(最高~17分)<br>
+          − 防狼区25 / 解禁15~40 / 大跌10<br>
+          <b style="color:var(--text)">≥75高置信 · 55~75中置信 · &lt;55观察区</b>
+        </div>
+      </div>
+      <div class="card"><h3><span class="dot" style="background:var(--down)"></span>纪律第一</h3>
+        <div style="font-size:12.5px;line-height:2;color:var(--muted)">
+          MACD零轴下方 = 禁买(防狼原则)<br>
+          破止损价无条件走<br>
+          到目标价分批止盈不贪<br>
+          解禁≥5%的股票不接飞刀<br>
+          <b style="color:var(--text)">助手给的是纪律化参考, 仓位与最终决定权在你</b>
+        </div>
+      </div>
+    </div>
+    <div class="hint" style="margin-top:16px">⚠ 本工具为个人研究辅助, 不构成投资建议。股市有风险, 入市需谨慎。数据快照生成于 ${esc(D.meta.built)}。</div>`;
+}
+
+/* ================= 启动 ================= */
+renderNav();
+renderOverview();
+renderSignals();
+renderHoldings();
+renderMarket();
+renderUnlock();
+renderPool();
+renderBrain();
+renderGuide();
+</script>
+</body>
+</html>

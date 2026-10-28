@@ -1,0 +1,524 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>写作作战室 · 小奕专属</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0b1220;color:#e2e8f0;font-family:"Microsoft YaHei",-apple-system,sans-serif;line-height:1.75}
+.wrap{max-width:1060px;margin:0 auto;padding:26px 20px 70px}
+header{background:linear-gradient(135deg,#7c2d12 0%,#dc2626 45%,#f59e0b 100%);border-radius:20px;padding:26px 30px;position:relative;overflow:hidden;box-shadow:0 10px 40px rgba(220,38,38,.25)}
+header h1{font-size:32px;letter-spacing:2px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+header .sub{font-size:15px;color:#fff2d9;margin-top:6px}
+header .badge{position:absolute;right:24px;top:24px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.4);color:#ffe9c7;border-radius:12px;padding:6px 14px;font-size:13px;letter-spacing:1px}
+nav{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+nav button{flex:1;min-width:150px;background:#151f36;border:1.5px solid #2d3b57;color:#94a3b8;padding:12px 10px;border-radius:13px;font-size:15.5px;font-weight:700;cursor:pointer;transition:.18s;letter-spacing:1px}
+nav button:hover{border-color:#f59e0b;color:#fbbf24}
+nav button.on{background:linear-gradient(135deg,#b45309,#f59e0b);color:#fff;border-color:#f59e0b;box-shadow:0 4px 18px rgba(245,158,11,.35)}
+.panel{display:none;animation:fade .25s}
+.panel.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{background:#111a2e;border:1px solid #243050;border-radius:16px;padding:22px;margin-bottom:16px}
+.card h2{font-size:21px;color:#fbbf24;margin-bottom:10px;letter-spacing:1px}
+.card h3{font-size:17.5px;color:#7dd3fc;margin:16px 0 8px}
+.tip{background:rgba(245,158,11,.08);border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;padding:12px 16px;font-size:15px;color:#fde68a;margin:10px 0}
+.eg{background:rgba(15,52,96,.35);border-left:4px solid #3b82f6;border-radius:0 10px 10px 0;padding:12px 16px;font-size:15px;color:#bfdbfe;margin:10px 0}
+.eg b, .tip b{color:#fff}
+.old{color:#94a3b8;text-decoration:line-through;text-decoration-color:rgba(239,68,68,.7);text-decoration-thickness:2px}
+.new{color:#4ade80;font-weight:700}
+.step{display:flex;gap:14px;margin:14px 0}
+.step .n{flex:none;width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#b45309,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff}
+.step .b{flex:1}
+.step .b h4{font-size:17px;color:#fbbf24;margin-bottom:4px}
+.step .b p{font-size:15px;color:#cbd5e1}
+input[type=text]{width:100%;background:#0d1528;border:1.5px solid #2d3b57;border-radius:12px;color:#fff;font-size:17px;padding:13px 16px;font-family:inherit}
+input[type=text]:focus{outline:none;border-color:#f59e0b}
+.btn{background:linear-gradient(135deg,#b91c1c,#ef4444);color:#fff;border:none;border-radius:12px;padding:12px 30px;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:2px;box-shadow:0 4px 16px rgba(239,68,68,.3)}
+.btn:hover{filter:brightness(1.12)}
+.qa{background:#0d1528;border:1px dashed #3b4d75;border-radius:12px;padding:13px 17px;font-size:15.5px;color:#dbe4f3;margin:9px 0}
+.qa::before{content:"👉 ";} 
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.tag{background:#1c2a47;border:1px solid #33507e;color:#93b4e3;border-radius:9px;padding:5px 13px;font-size:14px;cursor:pointer}
+.tag.on{background:#0e7490;border-color:#22d3ee;color:#fff}
+#matList{margin-top:12px;max-height:520px;overflow-y:auto;padding-right:6px}
+.mcard{background:#0d1528;border:1px solid #2b3a5c;border-radius:11px;padding:11px 15px;margin:8px 0;font-size:15px}
+.mcard .mt{color:#fbbf24;font-weight:800;font-size:16px}
+.mcard .mk{color:#34d399;margin-top:2px;font-size:14px}
+.mcard .md{color:#7f8fae;font-size:13px;margin-top:2px}
+.mcard .ms{color:#7dd3fc;font-size:13px;margin-top:5px;background:rgba(14,116,144,.13);border-radius:8px;padding:5px 10px;cursor:pointer}
+.mcard .ms:hover{background:rgba(14,116,144,.35)}
+#matList::-webkit-scrollbar{width:8px}
+#matList::-webkit-scrollbar-thumb{background:#2d3b57;border-radius:4px}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px}
+th{background:#1c2a47;color:#7dd3fc;padding:9px 12px;text-align:left;border:1px solid #2d3b57}
+td{padding:9px 12px;border:1px solid #243050;color:#cbd5e1;vertical-align:top}
+.ck{display:flex;align-items:flex-start;gap:12px;background:#0d1528;border:1px solid #2b3a5c;border-radius:11px;padding:12px 16px;margin:8px 0;cursor:pointer;font-size:15.5px}
+.ck input{width:20px;height:20px;accent-color:#f59e0b;margin-top:4px;flex:none}
+.ck.done{border-color:#f59e0b;background:rgba(245,158,11,.08)}
+.ck.done span{color:#fde68a}
+.big{font-size:17px}
+.gold{color:#fbbf24}
+.green{color:#4ade80}
+.cyan{color:#22d3ee}
+.red{color:#f87171}
+.arch{position:relative}
+.arch .arrow{display:flex;justify-content:space-between;margin:6px 0;color:#64748b;font-size:22px}
+.archseg{border-radius:13px;padding:14px 18px;margin:8px 0}
+.seg1{background:linear-gradient(135deg,rgba(59,130,246,.2),rgba(59,130,246,.05));border:1px solid #2563eb}
+.seg2{background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(34,197,94,.05));border:1px solid #16a34a}
+.seg3{background:linear-gradient(135deg,rgba(239,68,68,.25),rgba(239,68,68,.06));border:1px solid #dc2626}
+.seg4{background:linear-gradient(135deg,rgba(168,85,247,.22),rgba(168,85,247,.05));border:1px solid #9333ea}
+.segseg h4{font-size:17px}
+.foot{text-align:center;color:#475569;font-size:13px;margin-top:36px}
+.pct{font-size:13px;float:right;color:#64748b}
+.gbtn{background:#1e293b;color:#cbd5e1;border:1px solid #334155;border-radius:10px;padding:7px 14px;font-size:14px;cursor:pointer;font-family:inherit}
+.gbtn.on{background:rgba(245,158,11,.18);border-color:#f59e0b;color:#fbbf24;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>⚔️ 写作作战室</h1>
+    <div class="sub">拿到题目不懵：五道关卡，从破题到交卷全流程攻略 · 记叙文/写景文双文体自动分流 · 按福州中考标准校准（作文60分制）· 弹药库111发</div>
+<div class="badge">PILOT · 小奕</div>
+</header>
+
+<nav>
+<button class="on" data-p="p1">🎯 关卡1 · 破题</button>
+<button data-p="p2">📦 关卡2 · 选材</button>
+<button data-p="p3">🗺️ 关卡3 · 结构</button>
+<button data-p="p4">🛠️ 关卡4 · 写法武器库</button>
+<button data-p="p5">✅ 关卡5 · 出击自查</button>
+<button data-p="p7">📖 每日一背默</button>
+<button data-p="p6">📮 交卷 · AI批改</button>
+</nav>
+
+<!-- ============ 关卡1 破题 ============ -->
+<div class="panel on" id="p1">
+<div class="card">
+<h2>🎯 第一步：破题 —— 拿到题目，先别写，先"拆"</h2>
+<p style="font-size:15.5px;color:#cbd5e1">懵，是因为题目像一个"整体"砸过来。把它拆成零件，就会写了。<b>题目是截图？直接粘贴或上传。</b>语文书上有<b class="gold">范文或讲解提示</b>？一并挂进来——那是编书人"递到你手里"的参考答案，不用白不用，但记住：<b>学它的写法，不搬它的内容</b>。</p>
+<div style="margin:14px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+  <label class="btn" style="display:inline-block" for="topicImg">📷 题目图（1张）</label>
+  <input type="file" id="topicImg" accept="image/*" style="display:none" onchange="loadTopicImg(this)">
+  <label class="btn" style="display:inline-block;background:#15803d" for="hintImg">📚 提示/范文图（可多张）</label>
+  <input type="file" id="hintImg" accept="image/*" multiple style="display:none" onchange="loadHintImg(this)">
+  <span style="color:#64748b;font-size:14px">或 <b class="gold">Ctrl+V 粘贴</b>（首张进题目槽，之后自动进提示槽）</span>
+  <button class="btn" style="background:#64748b;padding:12px 18px" onclick="clearTopicImgs()">✕ 全部清除</button>
+</div>
+<div id="topicImgBox" style="display:none;margin:10px 0;text-align:center"></div>
+<div id="hintImgBox" style="display:none;margin:10px 0"></div>
+<div style="margin:14px 0">
+<input type="text" id="topicIn" placeholder="（可选）把题目要求敲一遍（贴图看不清时必须敲）：记叙文例：以「转」为题写记叙文不少于600字；写景文例：学习描写景物，以《窗外》为题写一篇作文不少于500字">
+</div>
+<div style="margin:12px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+<span style="font-size:14px;color:#fbbf24;font-weight:700">文体：</span>
+<button class="gbtn on" id="gAuto" onclick="setGenre('auto')">🤖 自动识别</button>
+<button class="gbtn" id="gNarr" onclick="setGenre('narr')">📝 记叙文·写人记事</button>
+<button class="gbtn" id="gScen" onclick="setGenre('scen')">🏞️ 写景文·描写景物</button>
+<span style="font-size:12px;color:#64748b">贴图题默认按记叙文走，写景题请手动点🏞️</span>
+</div>
+<button class="btn" onclick="startCrack()">启动破题引擎</button>
+<div id="crackOut" style="margin-top:16px"></div>
+</div>
+<div class="card">
+<h2>📖 实战录像：那篇《转》是怎么破题的</h2>
+<p style="font-size:15px;color:#cbd5e1">你上次写的《转》（写樊锦诗那篇，AI老师给了31分）——先看看破题这道关你当时做得怎么样：</p>
+<p style="font-size:13.5px;color:#94a3b8;margin:4px 0">📉 换算福州中考标尺：校内40分制31分 ≈ 中考60分制 <b class="gold">46.5分</b>，落在<b class="gold">三类卷（42-47）上部</b>、够到二类卷（48-53）的门槛——差的就是下面要练的两关。</p>
+<table>
+<tr><th>破题动作</th><th>你当时的操作</th><th>判定</th></tr>
+<tr><td>圈关键词</td><td>"转"+导语里苏轼/鲁迅/南仁东</td><td class="green">✔ 抓住了"转变"核心</td></tr>
+<tr><td>本义→引申义</td><td>"转"=换路 → 换一种方式坚持</td><td class="green">✔ 立意甚至有点思辨味</td></tr>
+<tr><td>翻经历库存</td><td>敦煌旅游+妈妈讲樊锦诗</td><td class="green">✔ 有自己的经历触发</td></tr>
+<tr><td>一句话中心</td><td>"转不是背弃，是新路上守住本心"</td><td class="green">✔ 中心清晰</td></tr>
+</table>
+<div class="tip"><b>结论：你的破题关卡早就通关了！</b>那为什么只有31分？——问题出在<b>关卡3（结构）</b>和<b>关卡4（细节）</b>：中间段全是"概述"，像说明书。AI老师原话："骨架有余而血肉不足"。所以接下来两关是你的练级重点。</div>
+</div>
+</div>
+
+<!-- ============ 关卡2 选材 ============ -->
+<div class="panel" id="p2">
+<div class="card">
+<h2>📦 第二步：选材 —— 挑什么"事"来写</h2>
+<div class="qa" id="scenNote2" style="display:none"><b>🏞️ 写景文看这里（选景，不是选事！）：</b>选景三优先——①<b>最熟的景</b>：天天从窗口看得见的（一棵树／一段巷／一个操场），细节张嘴就来；②<b>有变化的景</b>：分晨昏、晴雨、四季的，天然好写层次；③<b>有情绪记忆的景</b>：你在它面前开心过／难过过，感情有处安放。口诀改一改："这片景，我闭眼能放电影吗？"能放＝选它；只有一张照片＝换。下面弹药库是给记叙文备的人物素材，写景文不用翻。</div>
+<h3>记叙文选材优先级（从熟到生）</h3>
+<div class="step"><div class="n">1</div><div class="b"><h4>自己的事（最优先）</h4><p>自己亲历的，才有细节可挖、有真情实感可写。中考阅卷人最想看到"真实的你"。</p></div></div>
+<div class="step"><div class="n">2</div><div class="b"><h4>身边人的事（次选）</h4><p>家人、同学、老师的转变故事——你观察到的细节越具体越好。</p></div></div>
+<div class="step"><div class="n">3</div><div class="b"><h4>名人素材（做升华用，不做主角）</h4><p>樊锦诗、苏轼这类素材的正确用法：放在文章<b>开头引入</b>或<b>结尾点题升华</b>，而不是通篇复述名人事迹。《转》一文的教训：樊锦诗成了绝对主角，"我"反而消失了——记叙文一定要"我在场"。</p></div></div>
+<div class="tip"><b>选材自检一句口诀："这事，我能不能演出来？"</b>能脑补出画面、声音、对话的事，才选；只有"知道这件事"没有画面的，果断换。</div>
+</div>
+<div class="card">
+<h2>🧰 你的弹药库 <span class="pct">来自素材推送·按主题筛选</span></h2>
+<p style="font-size:14.5px;color:#94a3b8">写作文前先来"翻弹药"——某个主题没思路时，点标签看素材，用标题+口诀快速找感觉（详细内容在对应的期数PDF里）。</p>
+<div style="margin:10px 0;display:flex;gap:8px"><span class="tag on" id="modePick" onclick="setMode(1)">⭐ 精选30条</span><span class="tag" id="modeAll" onclick="setMode(0)">📚 全部111条</span></div>
+<div id="newWeekBox"></div>
+<input type="text" id="matSearch" placeholder="🔍 搜索：标题 / 主题 / 口诀，如：信仰、航天、坚持" oninput="renderMats()">
+<div class="tags" id="catTags"></div>
+<div id="matList"></div>
+</div>
+</div>
+
+<!-- ============ 关卡3 结构 ============ -->
+<div class="panel" id="p3">
+<div class="card">
+<h2>🗺️ 第三步：结构 —— 记叙文黄金四段流</h2>
+<div class="qa" id="scenNote3" style="display:none"><b>🏞️ 写景文结构三选一：</b>①<b>时段流（最稳）</b>：同一片景，晨→午→暮→夜跟着时间走，末段回到看景的“我”；②<b>远近流</b>：从主视角出发，由近到远（或由高到低）移镜头，一段一个景深；③<b>对比流</b>：平常的一天＋特别的一天（暴雨／台风／大雪），同景不同性格。写景提纲超简单——四个时段／四个景深，各配一个五感细节＋一个情绪词。<b>结尾必须回到“我”</b>：一两句心事收束，就是“景语皆情语”。</div>
+<p style="font-size:15px;color:#cbd5e1">600+字的记叙文，按这个地图走，就不会写着写着"散架"：</p>
+<div class="arch">
+<div class="archseg seg1"><h4 class="cyan">【起】开头段 · 约15%篇幅（≈100字）</h4><p style="font-size:14.5px">任务：设一个"起点状态"——通常是<b>误解、轻视、不懂</b>，为后面的"变"留出空间。你的《转》开头("我之前一直以为转是否定")就是标准操作✔</p></div>
+<div class="arrow">↓</div>
+<div class="archseg seg2"><h4 class="green">【承】发展段 · 约50%篇幅（≈300字）</h4><p style="font-size:14.5px">任务：事件展开，<b>用场景推进，不要用概述推进</b>。这是全文的"粮仓"——细节、画面、对话全堆在这里。<span class="red">你的《转》问题就在这："横跨数朝""不断增补"全是概述，一整段粮仓几乎没粮。</span></p></div>
+<div class="arrow">↓</div>
+<div class="archseg seg3"><h4 class="red">【转】高潮段 · 约20%篇幅（≈120字）</h4><p style="font-size:14.5px">任务：全文最关键的"心理时刻"——你内心被击中的那一瞬。<b>必须有"我"的心理描写</b>。<span class="red">《转》缺的就是这个瞬间：从"觉得没区别"到"被震撼"中间跳档了，读者看不到你变化的轨迹。</span></p></div>
+<div class="arrow">↓</div>
+<div class="archseg seg4"><h4 style="color:#c084fc">【合】结尾段 · 约15%篇幅（≈100字）</h4><p style="font-size:14.5px">任务：回扣标题+一句话升华。你的结尾（"转，从来不是背弃初心"）是全文最好的部分✔</p></div>
+</div>
+<div class="tip"><b>一句话记住：《转》的失分不在地图，而在"承转"两段没按地图行军。</b></div>
+</div>
+<div class="card">
+<h2>📐 提纲30秒速成模板</h2>
+<p style="font-size:15px;color:#cbd5e1">写之前用30秒填这几行，动笔就顺（填完拍照存档，A篇反复用）：</p>
+<div class="qa">起：我先______（误解/轻视/害怕）→</div>
+<div class="qa">承：然后发生了______（事件）→ 重点写哪2个镜头：①____ ②____</div>
+<div class="qa">转：看到/听到______，我内心______（心理原话写下来）</div>
+<div class="qa">合：原来，______（题目的关键词）意味着______（我的新理解）</div>
+</div>
+</div>
+
+<!-- ============ 关卡4 写法 ============ -->
+<div class="panel" id="p4">
+<div class="card">
+<h2>🛠️ 第四步：写法武器库 —— 5件常备武器</h2>
+
+<h3>🔫 武器1 · 开头三式</h3>
+<table>
+<tr><th>式子</th><th>你的原文</th><th>升级示范（AI老师改的）</th></tr>
+<tr><td><b>欲扬先抑</b><br>（你用的这式）</td><td>"我之前一直以为<span class="old">转是否定原来的一道路</span>"</td><td>"曾经，我以为'转'意味着对过往的彻底否定，是毅然决然地斩断旧路，另起炉灶。直到那个大漠深处的身影，彻底颠覆了我的认知。"<br><span class="new">↑同样的套路，语言变凝练，气势就出来了</span></td></tr>
+<tr><td><b>场景切入</b></td><td>—</td><td>"石青颜料还在暗处泛着千年前的微光……"（直接从敦煌的画面写起）</td></tr>
+<tr><td><b>追问开路</b></td><td>—</td><td>"转，是背弃还是坚守？那个夏天之前，我想都不想就会选前者。"</td></tr>
+</table>
+
+<h3>🔬 武器2 · 细节放大镜（你的最强补刀装）</h3>
+<p style="font-size:15px;color:#cbd5e1">你的失分核心：概述多、场景少。三招把"说明书"变"电影"：</p>
+<div class="step"><div class="n">A</div><div class="b"><h4>五感法</h4><p>盯着一个点写：看到什么（颜色/光线/线条）→听到什么→摸到什么。</p></div></div>
+<div class="eg"><b>原文：</b>"壁画横跨数朝，从十六国到元代不断增补"<br><b>升级：</b>"顺着讲解员的手电光望向洞壁，我忽然屏住了呼吸——<span class="new">石青颜料还在暗处泛着千年前的微光，飞天的衣袂线条流畅得像正顺着风势扬起</span>。"<br><b>为什么强：</b>从"资料卡"变成了"我在现场"，这就是画面感。</div>
+<div class="step"><div class="n">B</div><div class="b"><h4>动作慢镜头</h4><p>一个动作拆成三个。AI老师写樊锦诗："她<span class="new">举着相机蹲在洞窟里调整角度，连额前碎发落了灰也顾不上拂</span>，一点一点把44万平方米的壁画拍下来。"</p></div></div>
+<div class="step"><div class="n">C</div><div class="b"><h4>心理独白</h4><p>把心里的OS直接写出来。AI老师补的例子："站在洞窟的凉风中，<span class="new">我先前漫不经心的心态全然消散，脸颊甚至泛起发烫的愧意</span>。"——你的文章里"我"的情绪变化必须是实感的。</p></div></div>
+<div class="tip"><b>口诀：概述让位，场景上场；每300字里，至少要有1个镜头级细节。</b></div>
+
+<h3>🌉 武器3 · 过渡桥</h3>
+<p style="font-size:15px;color:#cbd5e1">段落切换别硬拐，加句桥：《转》里从"看壁画"跳到"樊锦诗"就用了一句"妈妈还告诉我"——可以升级成：<b>"就在我盯着那尊斑驳的飞天出神时，妈妈的声音从身后传来：'你知道吗，有人守了它们一辈子。'"</b>——一句话把画面的"我"和人物的"她"缝起来了。</p>
+
+<h3>🏁 武器4 · 结尾两式（你已经很强）</h3>
+<p style="font-size:15px;color:#cbd5e1">你的结尾式样："转，从来不是背弃初心，而是走一条新路，坚持住本心的热爱"——这是<b>金句重定义式</b>，保持。可选另一式：<b>画面回放式</b>（"离开洞窟时我又回头看了一眼。千年的飞天还在飞，而守着她的人，换了一种方式让她继续飞下去。"——把开头画面再放一遍，结构感拉满）。</p>
+
+<h3>🩹 武器5 · 防低级失误</h3>
+<p style="font-size:15px;color:#e2e8f0">《转》的硬伤清单（每一条都被AI老师抓了现行）：<span class="red">"他25岁"→她</span>（樊锦诗是女性，通篇错了4次）；"了个月"→过几个月；"有这样一个"缺"人"字；"字"→守。写完<strong>必须</strong>过一遍关卡5。</p>
+</div>
+</div>
+
+<!-- ============ 关卡5 自查 ============ -->
+<div class="panel" id="p5">
+<div class="card">
+<h2>✅ 第五步：出击前自查（全勾再交卷）</h2>
+<p style="font-size:15px;color:#cbd5e1">写完别急着交，30秒过一遍。每勾一项涨战力，全勾=一类文预备役：</p>
+<h3>基础层（每项1战力）</h3>
+<div id="ckLayer1">
+<label class="ck"><input type="checkbox" onchange="ckDone(this)"><span>🖋️ 通读一遍，<b>他/她/它</b>全部核对（写人素材，性别指代错一次扣一次印象分）</span></label>
+<label class="ck"><input type="checkbox" onchange="ckDone(this)"><span>🔤 扫一遍<b>错字/多字/缺字</b>（重点：的/地/得、同音字）</span></label>
+<label class="ck"><input type="checkbox" onchange="ckDone(this)"><span>📏 字数达标？格子写到要求线以上才算数</span></label>
+</div>
+<h3>血肉层（每项2战力 · 你的主战场）</h3>
+<div id="ckLayer2">
+<label class="ck"><input type="checkbox" onchange="ckDone(this)"><span>🎥 找出文中的<b>镜头级细节≥2处</b>（有颜色/声音/光线/动作分解的那种，"概括词"不算）</span></label>
+<label class="ck"><input type="checkbox" onchange="ckDone(this)"><span>💭 找出<b>"我"的心理描写≥1处</b>（内心被触动的那一瞬，必须有原话）</span></label>
+<label class="ck"><input type="checkbox" onchange="ckDone(this)"><span>👤 名人素材是<b>场景</b>还是<b>罗列</b>？（如果一段里全是年份+数字+头衔=罗列，回头用"动作慢镜头"改）</span></label>
+<label class="ck"><input type="checkbox" onchange="ckDone(this)"><span>😀 "我"的情绪有<b>变化轨迹</b>？（开头什么心情→结尾什么心情，中间必须有拐点瞬间）</span></label>
+</div>
+<h3>结构层（每项2战力）</h3>
+<div id="ckLayer3">
+<label class="ck"><input type="checkbox" onchange="ckDone(this)"><span>🌉 段落之间有<b>过渡句</b>（尤其从"见闻"跳到"人物"的那一处）</span></label>
+<label class="ck"><input type="checkbox" onchange="ckDone(this)"><span>🔁 <b>首尾呼应</b>：结尾回扣了开头的状态/画面/误解</span></label>
+<label class="ck"><input type="checkbox" onchange="ckDone(this)"><span>🎯 <b>题目关键词</b>在全文出现≥3次（开头必现+结尾必现）</span></label>
+</div>
+<div id="powerBox" style="margin-top:18px;background:linear-gradient(135deg,rgba(220,38,38,.15),rgba(245,158,11,.08));border:1.5px solid #b45309;border-radius:14px;padding:16px 20px">
+<div style="font-size:19px;font-weight:900;color:#fbbf24" id="powerVal">当前战力：0 / 18</div>
+<div style="font-size:14.5px;color:#fde68a;margin-top:4px" id="powerMsg">开始打勾，看你的战力条 ↑</div>
+</div>
+</div>
+<div class="card">
+<h2>📏 福州中考标尺（作文60分制 · 省统考）</h2>
+<p style="font-size:14.5px;color:#94a3b8">你现在是初二，一切训练都对着这张表打。你的《转》换算后 ≈ <b class="gold">46.5分（三类卷上部）</b>，目标：中考前把稳定输出提到<b class="gold">二类卷48+</b>。</p>
+<table>
+<tr><th>等档</th><th>分数</th><th>特征（阅卷人三秒判定）</th></tr>
+<tr><td><b class="green">一类卷</b></td><td>54-60</td><td>切合题意，中心突出，内容充实，感情真挚；结构严谨，语言流畅生动</td></tr>
+<tr><td><b class="gold">二类卷</b>（目标线）</td><td>48-53</td><td>符合题意，中心明确，内容具体，感情真实；结构完整，语言通顺</td></tr>
+<tr><td class="cyan">三类卷</td><td>42-47</td><td>基本符合题意，内容较具体，偶有语病 ← <b>你现在的位置（上部）</b></td></tr>
+<tr><td class="red">四类卷</td><td>36-41</td><td>偏离题意／中心不明／内容空泛／语病较多</td></tr>
+<tr><td class="red">五类卷</td><td>≤35</td><td>文不对题／结构混乱／严重语病／字数不足300</td></tr>
+</table>
+<h3>⚠️ 白丢分硬规则（每一条都在扣你的真金白银）</h3>
+<div class="qa">❶ <b>错别字：每3个扣1分</b>，重现不计，最多扣3分——《转》里的"他／她"错4处+"了个月"们，已经扣到上限边缘</div>
+<div class="qa">❷ <b>字数不足600：每少50字扣1分</b>（先写够，再谈写好）</div>
+<div class="qa">❸ <b>无标题扣2分</b>；卷面潦草影响阅读的酌情再扣</div>
+<div class="qa">❹ <b>套作、抄轰、泄露个人信息</b>＝情节性扣分，直接打到四类以下</div>
+<div class="tip"><b>战力⇄分数换算心法：</b>血肉层（细节+心理）全部达标+基础层零失误 ≈ 二类卷；再有一处让人心里一动的镜头 ≈ 冲一类。你的立意思辨本来就在一类水平，丢的全在"血肉"和"规范"上——这就是作战室把武器库和自查做这么重的原因。</div>
+</div>
+</div>
+
+<!-- ============ 交卷 ============ -->
+<div class="panel" id="p6">
+<div class="card">
+<h2>📮 交卷流程：让 AI 老师批改</h2>
+<div class="step"><div class="n">1</div><div class="b"><h4>写完 → 拍照（题目图、提示图一起）</h4><p>手写作文拍照（整页、光线足、字端正）；<b>试卷上的作文题原图</b>也拍一张——AI老师要害原题才能判你有没有跑题；这次写作时参考了<b>课本提示/范文</b>的话，那页也拍上。电子稿直接复制文字。</p></div></div>
+<div class="step"><div class="n">2</div><div class="b"><h4>发给爸爸/妈妈微信</h4><p>写一句"帮小奕批改作文"，附<b>作文照片＋题目照片＋提示/范文照片</b>，并说清楚<b>哪张是题目、哪张是提示</b>（例："第1张作文，第2张题目，第3-4张是课本范文提示"）——AI老师会对照范文看你是"借鉴写法"还是"套作内容"。</p></div></div>
+<div class="step"><div class="n">3</div><div class="b"><h4>拿到批改报告（Word）</h4><p>AI老师按<b>福州中考标准（60分制五类卷）</b>出报告：<b>总评 → 中考分档定位 → 五维星级表 → 逐段点评+建议+示范 → 全文润色对照 → 下次提醒</b>。存档在 D:\个人\小奕\语文\作文批改\。</p></div></div>
+<div class="tip"><b>报告使用法：</b>先看总评抓方向 → 星级表看哪维最弱 → 逐段对照"示范"想想自己会怎么写 → 最后合上报告<b>自己重写一遍最差的那段</b>——这最后一步才是涨分最快的动作。</div>
+</div>
+</div>
+
+
+<!-- ============ 每日一背默 ============ -->
+<div class="panel" id="p7">
+<div class="card">
+<h2>📖 每日一背默 1-30 <span class="pct">老师发的写法训练 · 每天5分钟</span></h2>
+<p style="font-size:15px;color:#cbd5e1">15组技法训练：每组 = <b class="gold">名家原文（学结构）</b> + <b class="cyan">同款仿写（学迁移）</b> + <b class="green">思路口诀（学套路）</b>。背法建议：读原文2遍→遮住仿写给句子→对照找差距→把思路口诀抄进积累本。</p>
+<p style="font-size:14px;color:#94a3b8;margin:6px 0">🎯 <b>今日必背：<span id="todayBeimo" style="color:#fbbf24"></span></b>（按天轮换，一天一组，一月一轮）</p>
+<div class="tags" id="beimoTags"></div>
+<div id="beimoList"></div>
+</div>
+<div class="card">
+<h2>🧠 背默怎么用在作文里</h2>
+<p style="font-size:15px;color:#cbd5e1">背了不会用＝白背。三个挂接点：</p>
+<div class="step"><div class="n">1</div><div class="b"><h4>写景段落 → 用day1-2/15-16/27-28/29-30</h4><p>作文写到环境（场景开头、氛围铺垫）时，直接套口诀结构，例"黄昏的小区里……"照day2句式起笔。</p></div></div>
+<div class="step"><div class="n">2</div><div class="b"><h4>写人瞬间 → 用day11-12/23-26</h4><p>要感动/要点题的那一段：动作慢镜头（背影式）或眼神特写，把"概述"变"镜头"。</p></div></div>
+<div class="step"><div class="n">3</div><div class="b"><h4>升华抒情 → 用day5-6/9-10/21-22</h4><p>结尾或感悟段：对比转折、时间流逝排比、拟人化自然元素——这三招最能拉高"表达"星级。</p></div></div>
+<div class="tip"><b>与关卡4联动：</b>关卡4"写法武器库"的每一件武器，这里都有对应的背默原文——写作前先翻这里，找一组合手的句式起笔，比空想快得多。</div>
+</div>
+</div>
+
+<div class="foot">写作作战室 · 小奕专属 · 数据源：素材推送1-15期（111条）+《转》批改实录 · 双击即用</div>
+</div>
+
+<script>
+const MATERIALS=[{"c":"成长感悟","t":"赵一曼英勇就义90周年","d":"革命文化","k":"信仰·坚贞不屈","m":"赵一曼，信仰不灭","q":"第004期"},{"c":"成长感悟","t":"时代楷模王戟——轮椅上的科研尖兵","d":"社会主义先进文化","k":"自强·科技报国","m":"王戟，轮椅冲锋","q":"第004期"},{"c":"成长感悟","t":"深山洞库里的「守油人」","d":"革命文化","k":"忠诚·坚守","m":"洞库兵，深夜守油罐","q":"第006期"},{"c":"成长感悟","t":"《诗经》的图像世界","d":"中华优秀传统文化","k":"经典·传承","m":"《诗经》图，千年画不倦","q":"第006期"},{"c":"成长感悟","t":"青春接力，守护「钢铁驼队」","d":"社会主义先进文化","k":"青春·传承","m":"钢铁驼，三代守国门","q":"第006期"},{"c":"成长感悟","t":"抗战胜利81周年：铭记历史、珍爱和平","d":"革命文化","k":"铭记·和平","m":"抗战八十一，和平来不易","q":"第008期"},{"c":"成长感悟","t":"昆剧《顾炎武》——八年打磨跨界传承","d":"中华优秀传统文化","k":"守正·创新","m":"八年磨一戏，昆曲焕新章","q":"第008期"},{"c":"成长感悟","t":"青年挑大梁——把创新写在祖国大地上","d":"社会主义先进文化","k":"青年·报国","m":"青年挑大梁，创新铸国魂","q":"第008期"},{"c":"成长感悟","t":"邓稼先：隐姓埋名28年，无人处深耕，一生只做一件事","d":"社会主义先进文化","k":"坚守·科技报国","m":"邓稼先，一材五传","q":"精读第005期"},{"c":"成长感悟","t":"《开学第一课》：走好我们的长征路","d":"革命文化","k":"长征精神·接棒","m":"长征好新时代，接棒向未来","q":"第009期"},{"c":"成长感悟","t":"景德镇手工瓷业遗存申遗成功","d":"中华优秀传统文化","k":"守正·创新","m":"千年窑火，让千年传承","q":"第009期"},{"c":"成长感悟","t":"把青春华章写在祖国大地上","d":"社会主义先进文化","k":"青春·报国","m":"青春建功，青年担当","q":"第009期"},{"c":"成长感悟","t":"历史经典产业焕发新生","d":"中华优秀传统文化","k":"守正·创新","m":"老手艺，长出新芽","q":"第010期"},{"c":"成长感悟","t":"2026服贸会：科技让生活更有温度","d":"社会主义先进文化","k":"科技向善·青年担当","m":"科技有温度，生活更美好","q":"第010期"},{"c":"成长感悟","t":"湘江边，她找到了「小爷爷」的名字","d":"革命文化","k":"铭记·红色基因","m":"湘江寻亲，基因代传","q":"第010期"},{"c":"成长感悟","t":"梁丹丹：退伍后讲爷爷的英雄故事","d":"革命文化","k":"铭记·传承","m":"退伍讲述，基因代传","q":"第011期"},{"c":"成长感悟","t":"于漪老师：从教70余年初心滚烫","d":"社会主义先进文化","k":"坚守·师者微光","m":"于漪七十载，初心滚烫","q":"第011期"},{"c":"成长感悟","t":"方志敏：在贫瘠土地上种下志向","d":"革命文化","k":"成长·立志","m":"方志敏，贫土立志","q":"精读第006期"},{"c":"成长感悟","t":"名古屋亚运气步枪团体破世界纪录","d":"社会主义先进文化","k":"青春热血·热爱","m":"杜雨宸，枪破世界纪录","q":"第013期"},{"c":"成长感悟","t":"黎锦非遗“转正”","d":"中华优秀传统文化","k":"匠心·文化自信","m":"黎锦三千年，转正入名录","q":"第013期"},{"c":"成长感悟","t":"长征胜利90周年·瑞金—延安高铁首发","d":"革命文化","k":"接续·从草鞋到复兴号","m":"草鞋上高铁，长征精神传","q":"第014期"},{"c":"成长感悟","t":"非遗“十五五”规划发布·当AI遇见非遗","d":"中华优秀传统文化","k":"科技赋能·守正创新","m":"AI存模样，人存意义","q":"第014期"},{"c":"成长感悟","t":"“人造太阳”环流三号35岁团队·最该追的星","d":"社会主义先进文化","k":"硬核青春·科技报国","m":"35岁，点亮亿度太阳","q":"第014期"},{"c":"成长感悟","t":"樊锦诗：25岁那次“逆行”","d":"中华优秀传统文化","k":"成长·选择","m":"樊锦诗，大漠逆行","q":"精读第007期"},{"c":"成长感悟","t":"花江峡谷大桥：625米缝合“地球裂缝”","d":"社会主义先进文化","k":"极致·超级工程","m":"六百米高，三年缝合","q":"第015期"},{"c":"成长感悟","t":"商业航天发射61次·火箭回收","d":"社会主义先进文化","k":"探索·从烟花到公交","m":"收回来，为飞更远","q":"第015期"},{"c":"成长感悟","t":"盛李豪亚运三金·三破世界纪录","d":"社会主义先进文化","k":"松弛与极致","m":"干饭哥，练到不紧张","q":"第015期"},{"c":"成长感悟","t":"廖俊杰：把中国精度刻进世界赛场","d":"社会主义先进文化","k":"赛道·另一条路","m":"廖俊杰，另一条赛道","q":"精读第008期"},{"c":"成长感悟","t":"廖俊杰：精度就是尊严","d":"社会主义先进文化","k":"极致·工匠精神","m":"廖俊杰，细过头发丝","q":"精读第008期"},{"c":"成长感悟","t":"廖俊杰：把失误变成工序","d":"社会主义先进文化","k":"复盘·失败","m":"廖俊杰，意外刀具","q":"精读第008期"},{"c":"成长感悟","t":"闫林泽：0:59.55破赛会纪录再夺金","d":"社会主义先进文化","k":"突破·坚持","m":"泳池没有捷径","q":"时政第005期"},{"c":"情感体验","t":"邓稼先：对家国深沉的爱，为万家安宁甘舍团圆","d":"社会主义先进文化","k":"深沉·家国深情","m":"邓稼先，深情守国","q":"精读第005期"},{"c":"情感体验","t":"廖俊杰：追那道光，成为那道光","d":"社会主义先进文化","k":"榜样·传承","m":"廖俊杰，追光成光","q":"精读第008期"},{"c":"情感体验","t":"闫林泽：清晨六点的划水声","d":"社会主义先进文化","k":"热爱·坚持","m":"泳池冷，清晨最燃","q":"时政第005期"},{"c":"生活哲思","t":"赵一曼英勇就义90周年","d":"革命文化","k":"信仰·坚贞不屈","m":"赵一曼，信仰不灭","q":"第004期"},{"c":"生活哲思","t":"时代楷模王戟——轮椅上的科研尖兵","d":"社会主义先进文化","k":"自强·科技报国","m":"王戟，轮椅冲锋","q":"第004期"},{"c":"生活哲思","t":"红山文化大会——五千年文明曙光","d":"中华优秀传统文化","k":"文明·文化自信","m":"红山玉龙，文明曙光","q":"第004期"},{"c":"生活哲思","t":"深山洞库里的「守油人」","d":"革命文化","k":"忠诚·坚守","m":"洞库兵，深夜守油罐","q":"第006期"},{"c":"生活哲思","t":"抗战胜利81周年：铭记历史、珍爱和平","d":"革命文化","k":"铭记·和平","m":"抗战八十一，和平来不易","q":"第008期"},{"c":"生活哲思","t":"湘江边，她找到了「小爷爷」的名字","d":"革命文化","k":"铭记·红色基因","m":"湘江寻亲，基因代传","q":"第010期"},{"c":"生活哲思","t":"辽沈战役：民心是胜利最深厚的根基","d":"革命文化","k":"民心·根基","m":"军民同心，胜利根基","q":"第011期"},{"c":"生活哲思","t":"方志敏：为「光明前途」坚守信仰","d":"革命文化","k":"信念·信仰","m":"方志敏，信仰光明","q":"精读第006期"},{"c":"生活哲思","t":"名古屋亚运气步枪团体破世界纪录","d":"社会主义先进文化","k":"青春热血·热爱","m":"杜雨宸，枪破世界纪录","q":"第013期"},{"c":"生活哲思","t":"长征胜利90周年·瑞金—延安高铁首发","d":"革命文化","k":"接续·从草鞋到复兴号","m":"草鞋上高铁，长征精神传","q":"第014期"},{"c":"生活哲思","t":"樊锦诗：慢，是另一种快","d":"中华优秀传统文化","k":"沉心·扎根","m":"樊锦诗，慢到深处","q":"精读第007期"},{"c":"生活哲思","t":"上召窑秦陵·排除法锁定华阳太后","d":"中华优秀传统文化","k":"考古实证·文明溯源","m":"两千年后，找回名字","q":"第015期"},{"c":"生活哲思","t":"廖俊杰：五年与四小时","d":"社会主义先进文化","k":"积累·时间的答案","m":"廖俊杰，五年四小时","q":"精读第008期"},{"c":"生活哲思","t":"把努力做成日课：22个‘一级’少年","d":"社会主义先进文化","k":"重复·日常","m":"泳池不会说谎","q":"时政第005期"},{"c":"家国情怀","t":"赵一曼英勇就义90周年","d":"革命文化","k":"信仰·坚贞不屈","m":"赵一曼，信仰不灭","q":"第004期"},{"c":"家国情怀","t":"时代楷模王戟——轮椅上的科研尖兵","d":"社会主义先进文化","k":"自强·科技报国","m":"王戟，轮椅冲锋","q":"第004期"},{"c":"家国情怀","t":"深山洞库里的「守油人」","d":"革命文化","k":"忠诚·坚守","m":"洞库兵，深夜守油罐","q":"第006期"},{"c":"家国情怀","t":"青春接力，守护「钢铁驼队」","d":"社会主义先进文化","k":"青春·传承","m":"钢铁驼，三代守国门","q":"第006期"},{"c":"家国情怀","t":"抗战胜利81周年：铭记历史、珍爱和平","d":"革命文化","k":"铭记·和平","m":"抗战八十一，和平来不易","q":"第008期"},{"c":"家国情怀","t":"青年挑大梁——把创新写在祖国大地上","d":"社会主义先进文化","k":"青年·报国","m":"青年挑大梁，创新铸国魂","q":"第008期"},{"c":"家国情怀","t":"邓稼先：放弃美国优厚待遇回国，28年撑起中国核盾","d":"社会主义先进文化","k":"科技报国·使命担当","m":"邓稼先，核盾报国","q":"精读第005期"},{"c":"家国情怀","t":"《开学第一课》：走好我们的长征路","d":"革命文化","k":"长征精神·接棒","m":"长征好新时代，接棒向未来","q":"第009期"},{"c":"家国情怀","t":"把青春华章写在祖国大地上","d":"社会主义先进文化","k":"青春·报国","m":"青春建功，青年担当","q":"第009期"},{"c":"家国情怀","t":"2026服贸会：科技让生活更有温度","d":"社会主义先进文化","k":"科技向善·青年担当","m":"科技有温度，生活更美好","q":"第010期"},{"c":"家国情怀","t":"湘江边，她找到了「小爷爷」的名字","d":"革命文化","k":"铭记·红色基因","m":"湘江寻亲，基因代传","q":"第010期"},{"c":"家国情怀","t":"辽沈战役纪念馆：把红色基因传承下去","d":"革命文化","k":"军民同心·信仰","m":"苹果树下，军民团结打胜仗","q":"第011期"},{"c":"家国情怀","t":"第42个教师节：教育家精神","d":"社会主义先进文化","k":"师者微光·尊师重教","m":"讲台有光，初心滚烫","q":"第011期"},{"c":"家国情怀","t":"方志敏：把祖国称作「母亲」的爱","d":"革命文化","k":"家国·深情","m":"方志敏，祖国如母","q":"精读第006期"},{"c":"家国情怀","t":"名古屋亚运气步枪团体破世界纪录","d":"社会主义先进文化","k":"青春热血·热爱","m":"杜雨宸，枪破世界纪录","q":"第013期"},{"c":"家国情怀","t":"长征胜利90周年·瑞金—延安高铁首发","d":"革命文化","k":"接续·从草鞋到复兴号","m":"草鞋上高铁，长征精神传","q":"第014期"},{"c":"家国情怀","t":"“人造太阳”环流三号35岁团队·最该追的星","d":"社会主义先进文化","k":"硬核青春·科技报国","m":"35岁，点亮亿度太阳","q":"第014期"},{"c":"家国情怀","t":"樊锦诗：守文明就是守家国","d":"中华优秀传统文化","k":"家国·守护","m":"樊锦诗，为国护宝","q":"精读第007期"},{"c":"家国情怀","t":"花江峡谷大桥：625米缝合“地球裂缝”","d":"社会主义先进文化","k":"极致·超级工程","m":"六百米高，三年缝合","q":"第015期"},{"c":"家国情怀","t":"商业航天发射61次·火箭回收","d":"社会主义先进文化","k":"探索·从烟花到公交","m":"收回来，为飞更远","q":"第015期"},{"c":"家国情怀","t":"盛李豪亚运三金·三破世界纪录","d":"社会主义先进文化","k":"松弛与极致","m":"干饭哥，练到不紧张","q":"第015期"},{"c":"家国情怀","t":"廖俊杰：精度就是尊严","d":"社会主义先进文化","k":"极致·工匠精神","m":"廖俊杰，细过头发丝","q":"精读第008期"},{"c":"家国情怀","t":"廖俊杰：追那道光，成为那道光","d":"社会主义先进文化","k":"榜样·传承","m":"廖俊杰，追光成光","q":"精读第008期"},{"c":"家国情怀","t":"中国航天牵制释放0.3秒：一周37颗星回应质疑","d":"社会主义先进文化","k":"科技自立·大爱","m":"火箭拴0.3秒，37星作答","q":"时政第005期"},{"c":"想象作文","t":"机器人开始“打卡上班”","d":"社会主义先进文化","k":"智能时代·实干","m":"会跳舞是热闹，能上班是时代","q":"第015期"},{"c":"想象作文","t":"特斯拉Roadster飞行跑车：0.59秒腾空","d":"社会主义先进文化","k":"飞天·科技想象","m":"跑车十年梦，飞天终成真","q":"时政第005期"},{"c":"传统文化","t":"红山文化大会——五千年文明曙光","d":"中华优秀传统文化","k":"文明·文化自信","m":"红山玉龙，文明曙光","q":"第004期"},{"c":"传统文化","t":"《诗经》的图像世界","d":"中华优秀传统文化","k":"经典·传承","m":"《诗经》图，千年画不倦","q":"第006期"},{"c":"传统文化","t":"昆剧《顾炎武》——八年打磨跨界传承","d":"中华优秀传统文化","k":"守正·创新","m":"八年磨一戏，昆曲焕新章","q":"第008期"},{"c":"传统文化","t":"邓稼先：淡泊名利、为国为民的士人风骨","d":"社会主义先进文化","k":"淡泊·风骨","m":"邓稼先，淡泊风骨","q":"精读第005期"},{"c":"传统文化","t":"景德镇手工瓷业遗存申遗成功","d":"中华优秀传统文化","k":"守正·创新","m":"千年窑火，让千年传承","q":"第009期"},{"c":"传统文化","t":"历史经典产业焕发新生","d":"中华优秀传统文化","k":"守正·创新","m":"老手艺，长出新芽","q":"第010期"},{"c":"传统文化","t":"珠耀南北：汉代珠饰展","d":"中华优秀传统文化","k":"文明互鉴·文化自信","m":"一粒小珠越千年","q":"第011期"},{"c":"传统文化","t":"方志敏：狱中著书的士人风骨","d":"革命文化","k":"气节·风骨","m":"方志敏，狱中气节","q":"精读第006期"},{"c":"传统文化","t":"黎锦非遗“转正”","d":"中华优秀传统文化","k":"匠心·文化自信","m":"黎锦三千年，转正入名录","q":"第013期"},{"c":"传统文化","t":"非遗“十五五”规划发布·当AI遇见非遗","d":"中华优秀传统文化","k":"科技赋能·守正创新","m":"AI存模样，人存意义","q":"第014期"},{"c":"传统文化","t":"樊锦诗：给千年石窟“冻龄”","d":"中华优秀传统文化","k":"守正·创新","m":"樊锦诗，数字敦煌","q":"精读第007期"},{"c":"传统文化","t":"上召窑秦陵·排除法锁定华阳太后","d":"中华优秀传统文化","k":"考古实证·文明溯源","m":"两千年后，找回名字","q":"第015期"},{"c":"理性思辨","t":"红山文化大会——五千年文明曙光","d":"中华优秀传统文化","k":"文明·文化自信","m":"红山玉龙，文明曙光","q":"第004期"},{"c":"理性思辨","t":"《诗经》的图像世界","d":"中华优秀传统文化","k":"经典·传承","m":"《诗经》图，千年画不倦","q":"第006期"},{"c":"理性思辨","t":"青春接力，守护「钢铁驼队」","d":"社会主义先进文化","k":"青春·传承","m":"钢铁驼，三代守国门","q":"第006期"},{"c":"理性思辨","t":"昆剧《顾炎武》——八年打磨跨界传承","d":"中华优秀传统文化","k":"守正·创新","m":"八年磨一戏，昆曲焕新章","q":"第008期"},{"c":"理性思辨","t":"青年挑大梁——把创新写在祖国大地上","d":"社会主义先进文化","k":"青年·报国","m":"青年挑大梁，创新铸国魂","q":"第008期"},{"c":"理性思辨","t":"邓稼先：何为真正的价值，名与利之外还有更大意义","d":"社会主义先进文化","k":"价值·思辨","m":"邓稼先，价值之辩","q":"精读第005期"},{"c":"理性思辨","t":"《开学第一课》：走好我们的长征路","d":"革命文化","k":"长征精神·接棒","m":"长征好新时代，接棒向未来","q":"第009期"},{"c":"理性思辨","t":"景德镇手工瓷业遗存申遗成功","d":"中华优秀传统文化","k":"守正·创新","m":"千年窑火，让千年传承","q":"第009期"},{"c":"理性思辨","t":"把青春华章写在祖国大地上","d":"社会主义先进文化","k":"青春·报国","m":"青春建功，青年担当","q":"第009期"},{"c":"理性思辨","t":"历史经典产业焕发新生","d":"中华优秀传统文化","k":"守正·创新","m":"老手艺，长出新芽","q":"第010期"},{"c":"理性思辨","t":"2026服贸会：科技让生活更有温度","d":"社会主义先进文化","k":"科技向善·青年担当","m":"科技有温度，生活更美好","q":"第010期"},{"c":"理性思辨","t":"汉代珠饰展：小与大","d":"中华优秀传统文化","k":"小与大·包容","m":"最渺小物件，最辽阔胸怀","q":"第011期"},{"c":"理性思辨","t":"方志敏：清贫究竟是不是富有","d":"革命文化","k":"清贫·价值","m":"方志敏，清贫即富","q":"精读第006期"},{"c":"理性思辨","t":"黎锦非遗“转正”","d":"中华优秀传统文化","k":"匠心·文化自信","m":"黎锦三千年，转正入名录","q":"第013期"},{"c":"理性思辨","t":"非遗“十五五”规划发布·当AI遇见非遗","d":"中华优秀传统文化","k":"科技赋能·守正创新","m":"AI存模样，人存意义","q":"第014期"},{"c":"理性思辨","t":"“人造太阳”环流三号35岁团队·最该追的星","d":"社会主义先进文化","k":"硬核青春·科技报国","m":"35岁，点亮亿度太阳","q":"第014期"},{"c":"理性思辨","t":"樊锦诗：一辈子只做一件事值不值","d":"中华优秀传统文化","k":"价值·思辨","m":"樊锦诗，一生一件","q":"精读第007期"},{"c":"理性思辨","t":"机器人开始“打卡上班”","d":"社会主义先进文化","k":"智能时代·实干","m":"会跳舞是热闹，能上班是时代","q":"第015期"},{"c":"理性思辨","t":"盛李豪亚运三金·三破世界纪录","d":"社会主义先进文化","k":"松弛与极致","m":"干饭哥，练到不紧张","q":"第015期"},{"c":"理性思辨","t":"上召窑秦陵·排除法锁定华阳太后","d":"中华优秀传统文化","k":"考古实证·文明溯源","m":"两千年后，找回名字","q":"第015期"},{"c":"理性思辨","t":"廖俊杰：把失误变成工序","d":"社会主义先进文化","k":"复盘·失败","m":"廖俊杰，意外刀具","q":"精读第008期"},{"c":"理性思辨","t":"一周37颗星，实力用行动回答“玩不转”","d":"社会主义先进文化","k":"实力·理性","m":"质疑半悬空，星辰作答","q":"时政第005期"},{"c":"科技强国","t":"花江峡谷大桥：625米缝合“地球裂缝”","d":"社会主义先进文化","k":"极致·超级工程","m":"六百米高，三年缝合","q":"第015期"},{"c":"科技强国","t":"机器人开始“打卡上班”","d":"社会主义先进文化","k":"智能时代·实干","m":"会跳舞是热闹，能上班是时代","q":"第015期"},{"c":"科技强国","t":"商业航天发射61次·火箭回收","d":"社会主义先进文化","k":"探索·从烟花到公交","m":"收回来，为飞更远","q":"第015期"}];;
+
+// nav
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("on"));
+  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");
+  document.getElementById(b.dataset.p).classList.add("on");
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+// ---- 关卡1 破题引擎（题目图 + 提示/范文图，均本地显示） ----
+let topicImg=null, hintImgs=[];
+function loadTopicImg(inp){
+  const f=inp.files&&inp.files[0];
+  if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>showTopicImg(e.target.result);
+  r.readAsDataURL(f);
+}
+function showTopicImg(dataUrl){
+  topicImg=dataUrl;
+  const box=document.getElementById("topicImgBox");
+  box.style.display="block";
+  box.innerHTML='<img src="'+dataUrl+'" style="max-width:100%;border:2px solid #f59e0b;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.4)"><div style="margin:6px 0;color:#fbbf24;font-size:14px">📖 题目已挂图，圈词步骤<b>对着这张图</b>走</div>';
+  box.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function loadHintImg(inp){
+  const fs=inp.files; if(!fs||!fs.length)return;
+  [...fs].forEach(f=>{const r=new FileReader();r.onload=e=>addHintImg(e.target.result);r.readAsDataURL(f);});
+}
+function addHintImg(dataUrl){
+  hintImgs.push(dataUrl);
+  renderHints();
+}
+function renderHints(){
+  const box=document.getElementById("hintImgBox");
+  if(!hintImgs.length){box.style.display="none";box.innerHTML="";return;}
+  box.style.display="block";
+  box.innerHTML='<div style="text-align:left;color:#4ade80;font-size:14px;margin-bottom:6px">📚 课本提示/范文已挂 '+hintImgs.length+' 张（学写法，不搬内容）</div>'+
+    hintImgs.map((u,i)=>'<div style="position:relative;margin:8px 0"><img src="'+u+'" style="max-width:100%;border:2px solid #22c55e;border-radius:12px"><button onclick="delHint('+i+')" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.65);color:#fff;border:none;border-radius:8px;padding:4px 10px;font-size:13px;cursor:pointer">✕ 第'+(i+1)+'张</button></div>').join("");
+}
+function delHint(i){hintImgs.splice(i,1);renderHints();}
+function clearTopicImgs(){
+  topicImg=null;hintImgs=[];
+  document.getElementById("topicImgBox").style.display="none";document.getElementById("topicImgBox").innerHTML="";
+  renderHints();
+  document.getElementById("topicImg").value="";document.getElementById("hintImg").value="";
+}
+document.addEventListener("paste",e=>{
+  const items=(e.clipboardData||{}).items||[];
+  for(const it of items){
+    if(it.type&&it.type.startsWith("image")){
+      const f=it.getAsFile();
+      if(f){const r=new FileReader();
+        r.onload=ev=>{ if(!topicImg) showTopicImg(ev.target.result); else addHintImg(ev.target.result); };
+        r.readAsDataURL(f);
+        document.querySelector('nav button[data-p="p1"]').click();break;}
+    }
+  }
+});
+// ---- 文体分流：记叙文 / 写景文（2026-10-25 升级） ----
+let GENRE='auto';
+function setGenre(g){GENRE=g;document.getElementById('gAuto').classList.toggle('on',g==='auto');document.getElementById('gNarr').classList.toggle('on',g==='narr');document.getElementById('gScen').classList.toggle('on',g==='scen');showGenreNotes(g==='auto'?null:g);}
+function showGenreNotes(g){var on=(g==='scen');['scenNote2','scenNote3'].forEach(function(id){var el=document.getElementById(id);if(el){el.style.display=on?'block':'none';}});}
+function buildScenerySteps(){
+  var h='';
+  h+='<div class="qa"><b>✅ 文体判定：🏞️ 写景文（描写景物单元）</b>——这类题的破题路数跟记叙文不一样：<b>不找“事”，改找“景”；不挖“人生道理”，改定“景的基调＋我的感情”</b>。六步走完，去关卡2“选景”、关卡3“写景结构”。</div>';
+  h+='<div class="qa"><b>STEP 1 · 圈词：</b>①<b>核心词</b>＝题目让你写的<b>景</b>（“窗外”“校园一景”）；②<b>限定词</b>＝“不少于500字”这类硬要求；③<b>导语关键词</b>＝题目举的例子（车水马龙的道路／花木茂盛的园圃／小伙伴玩耍的场地）——那是出题人暗示：<b>这几个方向的景，随便挑一个</b>。</div>';
+  h+='<div class="qa"><b>STEP 2 · 定范围（课本提示1）：</b>把窗户当“<b>画框</b>”。二选一：只写<b>画框内</b>（范围小、写得细）／把视野放大到<b>整个窗外</b>（整体勾勒）。500字的建议：<b>选一个局部细描</b>（一棵树、一个修车摊、一段巷子），最多再加一点远近层次。口诀：<b>范围越小，写得越细</b>。</div>';
+  h+='<div class="qa"><b>STEP 3 · 定视角（课本提示2）：</b>你的窗口在几楼、朝哪？先定<b>一个主视角</b>（俯视／平视／仰视），再让视线<b>由近到远、由高到低</b>走一遍当辅助。把主视角写下来，正文就按这个顺序“移镜头”。</div>';
+  h+='<div class="qa"><b>STEP 4 · 调感官（课本提示2）：</b>草稿纸画五列——<b>看到</b>（颜色／形状／光线／动静）、<b>听到</b>、<b>闻到</b>、<b>摸到（温度）</b>、特殊项（味）。对着要写的景，每列至少挤1条，并标注“<b>什么时段最明显</b>”——这决定了正文能不能分时段写。<b>四感以下，正文必空</b>。</div>';
+  h+='<div class="qa"><b>STEP 5 · 定基调融情感（课本提示3）：</b>先问：这片景<b>最主要的特点</b>是什么——安静？热闹？生机？忙碌？这就是全文<b>基调</b>，所有描写往它上面靠。再补一句<b>情绪记忆</b>：在这个景前，你心情最好／最差的一次？一句话就够——“一切景语皆情语”，它就是你的情感钩子。</div>';
+  h+='<div class="qa"><b>STEP 6 · 一句话中心（写景版）：</b>套句式——“我要写＿＿（哪个景／局部），主视角＿＿，基调是＿＿，融进我＿＿的感情。”写不出这句话＝范围还没定小，回 STEP 2。</div>';
+  h+='<div class="tip">📖 课文就是最好的范文，<b>偷写法、别搬句子</b>：《春》用比喻写雨（像牛毛、像花针、像细丝）；《紫藤萝瀑布》把视觉和嗅觉打通（香气似乎也是浅紫色的）；《三峡》写不同季节的不同景；《雨的四季》给雨定性格。写景文里“我”不当主角，但要<b>在场</b>——结尾回到看景的你，一两句心事收束。</div>';
+  h+='<div class="tip">六步走完 → <b>关卡2（已解锁写景选景卡）→ 关卡3（已解锁写景结构卡）</b> → 开写。破题慢五分钟，正文快半小时。</div>';
+  return h;
+}
+function startCrack(){
+  const t=document.getElementById("topicIn").value.trim();
+  const out=document.getElementById("crackOut");
+  if(!topicImg&&!hintImgs.length&&!t){out.innerHTML='<div class="tip">先粘贴/上传题目图片（有范文提示也一起挂），或把题目敲进来～截图后直接 Ctrl+V</div>';return;}
+  let genre=GENRE==='auto'?(/描写景物|写景|景物|风景|景致|园圃|校园一景|窗外|踏遍青山/.test(t)?'scen':'narr'):GENRE;
+  showGenreNotes(genre);
+  if(genre==='scen'){out.innerHTML=buildScenerySteps();out.scrollIntoView({behavior:"smooth",block:"start"});return;}
+  let html='';
+  // STEP 1 圈词（记叙文）
+  if(topicImg){
+    html+='<div class="qa"><b>STEP 1 · 看图圈词（题目图）：</b>盯着上面的题目图，拿笔在草稿纸上抄三类词——①<b>核心词</b>（图里被反复强调/出现在标题中的词）②<b>限定词</b>（"记叙文""不少于600字"这类硬要求，别漏）③<b>导语关键词</b>（图里举的例子、名人、引语——出题人疯狂暗示"素材往这想"）<br><span style="color:#fbbf24">💡 抄下来才算圈，过眼不算。</span></div>';
+  } else {
+    html+='<div class="qa"><b>STEP 1 · 圈词：</b>把题目里的三类词画出来——①<b>核心词</b>（"'+esc(t)+'"里最重要的一两个词）②<b>限定词</b>（"记叙文/不少于600字"这类硬要求）③<b>导语关键词</b>（题目给你举的例子、引语——那是出题人疯狂暗示"这里可以用素材"）</div>';
+  }
+  // STEP 2 双译
+  html+='<div class="qa"><b>STEP 2 · 双译：</b>核心词先写<b>本义</b>（字典意思），再推<b>引申义</b>（放在"人/人生"上是什么意思？往精神层面想一层）。"转"→换方向→人生的转向/方式的转变/精神突围，就是这一步。</div>';
+  // STEP 3 啃提示（有提示/范文图才出现）
+  let next=3;
+  if(hintImgs.length){
+    html+='<div class="qa"><b>STEP 3 · 啃提示（对着上方的📚提示/范文图）：</b>课本递过来的"参考答案"，逐张问三个问题——<br>①<b>方向：</b>范文写了一件什么类的事？（家人？比赛？一段经历？）——这是编书人觉得"安全的选材方向"<br>②<b>写法：</b>范文用了什么结构（起承转合怎么安排）？哪个技法值得偷？（比如它怎么开头、怎么结尾、细节放哪）<br>③<b>重点：</b>讲解/旁批里画了什么重点？被红笔圈的要求就是<b>评分点</b>！<br><span style="color:#f87171">⚠️ 最后一课：把范文的<u>事例</u>搬进你的作文＝<b>套作</b>，福州中考直接降档打四类卷以下！偷的是写法，不是故事。</span></div>';
+    next=4;
+  }
+  // STEP 翻库存
+  html+='<div class="qa"><b>STEP '+next+' · 翻库存（最重要，别跳）：</b>依次问自己4个问题——①我自己经历过一件什么___的事？②我身边的家人/同学/老师有没有？③我读过的书、新闻、素材库里谁___过？（翻关卡2弹药库）④这件事的前后，"我"或"他"变好了什么？<br>每个问题至少挤一个答案（再烂的答案都行，白纸上先有字），再从中挑<b>画面感最强</b>的那个。<br><span style="color:#fbbf24">💡 有提示图的同学：你的事可以和范文同一方向（比如都是"家人"），但必须是<b>你自己的事</b>。</span></div>';
+  next++;
+  // STEP 一句话中心
+  html+='<div class="qa"><b>STEP '+next+' · 一句话中心：</b>用这个句式钉死中心——<b>"我要通过______（选的那件事），写出一个道理：______"</b>。写不出这句话=还没想清楚，回到上一步。</div>';
+  if(topicImg||hintImgs.length){html+='<div class="tip">🖼️ 图看不清或想偷懒？——把<b>题目图和提示图一起</b>发给爸爸微信（说清楚哪张是题目、哪张是提示），AI老师会识别后直接回你一张破题卡（含范文可借鉴写法清单）。</div>';}
+  html+='<div class="tip">步骤全过完，再进<b>关卡3画提纲</b>。破题慢五分钟，正文快半小时。</div>';
+  out.innerHTML=html;
+  out.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+const PICKS=[{"q": "第015期", "t": "商业航天发射61次·火箭回收", "k": "探索·从烟花到公交", "m": "收回来，为飞更远", "c": "科技强国"}, {"q": "第014期", "t": "“人造太阳”环流三号35岁团队·最该追的星", "k": "硬核青春·科技报国", "m": "35岁，点亮亿度太阳", "c": "科技强国"}, {"q": "第015期", "t": "花江峡谷大桥：625米缝合“地球裂缝”", "k": "极致·超级工程", "m": "六百米高，三年缝合", "c": "科技强国"}, {"q": "时政第005期", "t": "中国航天牵制释放0.3秒：一周37颗星回应质疑", "k": "科技自立·用行动回应质疑", "m": "火箭拴0.3秒，37星作答", "c": "科技强国"}, {"q": "第013期", "t": "名古屋亚运气步枪团体破世界纪录", "k": "青春热血·热爱", "m": "杜雨宸，枪破世界纪录", "c": "成长感悟"}, {"q": "第015期", "t": "盛李豪亚运三金·三破世界纪录", "k": "松弛与极致", "m": "干饭哥，练到不紧张", "c": "成长感悟"}, {"q": "时政第005期", "t": "闫林泽：0:59.55破赛会纪录再夺金", "k": "突破·坚持", "m": "泳池没有捷径", "c": "成长感悟"}, {"q": "精读第008期", "t": "廖俊杰：把中国精度刻进世界赛场", "k": "极致·工匠精神", "m": "廖俊杰，细过头发丝", "c": "成长感悟"}, {"q": "精读第007期", "t": "樊锦诗：25岁那次“逆行”", "k": "成长·选择", "m": "樊锦诗，大漠逆行", "c": "成长感悟"}, {"q": "精读第005期", "t": "邓稼先：隐姓埋名28年，无人处深耕，一生只做一件事", "k": "坚守·科技报国", "m": "邓稼先，一材五传", "c": "家国情怀"}, {"q": "精读第006期", "t": "方志敏：在贫瘠土地上种下志向", "k": "成长·立志", "m": "方志敏，贫土立志", "c": "成长感悟"}, {"q": "第004期", "t": "时代楷模王戟——轮椅上的科研尖兵", "k": "自强·反差感", "m": "王戟，轮椅冲锋", "c": "成长感悟"}, {"q": "第011期", "t": "于漪老师：从教70余年初心滚烫", "k": "坚守·师者微光", "m": "于漪七十载，初心滚烫", "c": "家国情怀"}, {"q": "第010期", "t": "历史经典产业焕发新生", "k": "守正·创新", "m": "老手艺，长出新芽", "c": "传统文化"}, {"q": "第014期", "t": "非遗“十五五”规划发布·当AI遇见非遗", "k": "科技赋能·守正创新", "m": "AI存模样，人存意义", "c": "传统文化"}, {"q": "第010期", "t": "湘江边，她找到了「小爷爷」的名字", "k": "铭记·红色基因", "m": "湘江寻亲，基因代传", "c": "家国情怀"}, {"q": "第004期", "t": "赵一曼英勇就义90周年", "k": "信仰·坚贞不屈", "m": "赵一曼，信仰不灭", "c": "家国情怀"}, {"q": "第006期", "t": "青春接力，守护「钢铁驼队」", "k": "青春·传承", "m": "钢铁驼，三代守国门", "c": "家国情怀"}, {"q": "精读第007期", "t": "樊锦诗：慢，是另一种快", "k": "沉心·扎根", "m": "樊锦诗，慢到深处", "c": "生活哲思"}, {"q": "精读第005期", "t": "邓稼先：何为真正的价值，名与利之外还有更大意义", "k": "价值·思辨", "m": "邓稼先，价值之辩", "c": "理性思辨"}, {"q": "精读第008期", "t": "廖俊杰：把失误变成工序", "k": "复盘·失败", "m": "廖俊杰，意外刀具", "c": "理性思辨"}, {"q": "第011期", "t": "汉代珠饰展：小与大", "k": "小与大·包容", "m": "最渺小物件，最辽阔胸怀", "c": "理性思辨"}, {"q": "时政第005期", "t": "把努力做成日课：22个‘一级’少年", "k": "重复·日常", "m": "泳池不会说谎", "c": "生活哲思"}, {"q": "第009期", "t": "景德镇手工瓷业遗存申遗成功", "k": "守正·创新", "m": "千年窑火，让千年传承", "c": "传统文化"}, {"q": "第013期", "t": "黎锦非遗“转正”", "k": "匠心·文化自信", "m": "黎锦三千年，转正入名录", "c": "传统文化"}, {"q": "第004期", "t": "红山文化大会——五千年文明曙光", "k": "文明·文化自信", "m": "红山玉龙，文明曙光", "c": "传统文化"}, {"q": "第015期", "t": "机器人开始“打卡上班”", "k": "智能时代·实干", "m": "会跳舞是热闹，能上班是时代", "c": "想象作文"}, {"q": "时政第005期", "t": "特斯拉Roadster飞行跑车：0.59秒腾空", "k": "飞天·科技想象", "m": "跑车十年梦，飞天终成真", "c": "想象作文"}, {"q": "精读第008期", "t": "廖俊杰：追那道光，成为那道光", "k": "榜样·传承", "m": "廖俊杰，追光成光", "c": "情感体验"}, {"q": "精读第005期", "t": "邓稼先：对家国深沉的爱，为万家安宁甘舍团圆", "k": "深沉·家国深情", "m": "邓稼先，深情守国", "c": "情感体验"}];
+
+const BEIMO=[{"n": "day1-2", "theme": "背景画面·氛围提炼","suit": "写景开头/场景铺垫（任何题材的场面描写）", "tag": "环境描写", "src": "雨后的小巷（时间与环境背景设定），湿漉漉的石板路上反射着昏黄的路灯（视觉冲击力元素），空气中弥漫着泥土和花香的味道，偶尔有几滴雨水从屋檐上滴落（嗅觉与听觉），打破了这份静谧（动态与静态的对比）。", "src_from": "《雨后的小巷》", "imitate": "黄昏的古街（时间地点），湿润的青石板路上铺满了柔和的夕阳余晖，空气中漂浮着木槿花的甜香与远处饭菜的香气，偶尔一阵微风拂过，带动着屋檐下的风铃轻轻摇曳，其清脆的声音穿透了这份即将降临的夜幕前的宁静。", "idea": "时间、场景设定 + 环境描写（具体景象的特征）+ 五感法 + 动静结合 + 情感色彩"}, {"n": "day3-4", "theme": "给树不一样的生命","suit": "托物言志（坚持/成长/生命类主题）", "tag": "托物言志", "src": "冬天的树，已经出了一些比米粒还小的芽孢，裹在黑暗的鞘壳里，偷偷地露出一点娇红。【对比手法描述形状】冬天的树，很快就会吐出一朵一朵透明的、嫩绿的新叶，像一朵火焰，飘动在天空中。很快，就会满树都是繁华的、丰盛的浓密的绿叶，在丽日和风之中，兴高采烈，大声地喧哗。【拟人手法，表达出作者愉悦的心情】", "src_from": "宗璞《冬天的树》", "imitate": "秋天的林间，已悄然挂上细如发丝的叶芽，藏在斑驳的秋色里（季节转换的细腻捕捉）。这些叶芽，不久将化作一片片轻盈的落叶，如同漫舞的蝴蝶，飘洒在林间小径上。很快，整个林间将被染上金黄与深红交织的华章，繁茂的、浓烈的叶海在阳光下闪烁。在微凉的秋风中，它们轻轻摇曳，低语着季节的更迭，庆祝着这一场关于色彩的盛宴（细节+情感+节奏）。", "idea": "季节转换的细腻捕捉 + 细节的生动性 + 比喻与想象 + 情感色彩 + 语言节奏"}, {"n": "day5-6", "theme": "环境对比·烘托人物情感","suit": "心理孤独/情感反差段（写热闹衬孤独）", "tag": "对比反衬", "src": "树缝里也漏着一两点路灯光，没精打彩的，是渴睡人的眼（对比与反衬+拟人化）。这时候最热闹的，要数树上的蝉声与水里的蛙声（借景抒情）；但热闹的是它们的，我什么也没有（环境与自我对比，突出内心的孤独和无奈）。", "src_from": "朱自清《荷塘月色》", "imitate": "街角那盏昏黄的路灯，孤零零地亮着，像是夜归人心中那抹不灭的忧愁。此刻，最喧嚣的莫过于远处人群的欢声笑语与近处车流的轰鸣（对比）；然而这份喧嚣与我无关，我仿佛置身于另一个世界，只有手中紧握的那杯咖啡还残留着一丝温暖。", "idea": "环境具象描写（采用修辞）+ 对比转折 + 人物情感"}, {"n": "day7-8", "theme": "跟着名人练文笔·温度感","suit": "抒情过渡段/书信体开头", "tag": "名家仿写", "src": "如果你来访我，我不在，请和我门外的花坐一会儿，它们很温暖，我注视它们很多很多日子了。", "src_from": "汪曾祺", "imitate": "当月光洒满空荡的街道，你若寻我未见，不妨与天边那轮明月对酌，它见证了我无数个思念的夜晚。", "idea": "情感共鸣与场景构建 + 自然元素的借用 + 时间感与情感的累积"}, {"n": "day9-10", "theme": "跟着朱自清练《匆匆》","suit": "结尾时间流逝感慨（毕业/离别/成长感悟）", "tag": "名家仿写", "src": "早上我起来的时候，小屋里射进两三方斜斜的太阳。太阳他有脚啊，轻轻悄悄地挪移了；我也茫茫然跟着旋转。于是——洗手的时候，日子从水盆里过去；吃饭的时候，日子从饭碗里过去；默默时，便从凝然的双眼前过去。我察觉他去的匆匆了，伸出手遮挽时，他又从遮挽着的手边过去。", "src_from": "朱自清《匆匆》", "imitate": "清晨我醒来的刹那，房间内溜进了几缕柔和的晨光。晨光它有翅膀啊，悄悄默默地飞翔着；我也懵懵懂懂地随着流转。于是——穿衣的时候，时光从衣缝间溜走；阅读的时候，时光从书页间滑落；沉思时，便从沉思者的思绪间飘逝。我感知到他离去的匆匆，企图用双手挽留……", "idea": "引入场景 + 拟人化手法 + 具体生活场景的排比描绘 + 对时间流逝的感知与感慨"}, {"n": "day11-12", "theme": "一句话扩展成一段话·电影画面","suit": "人物动作段（亲情必杀技：写父母/祖辈的瞬间）", "tag": "细节描写", "src": "我看见他戴着黑布小帽，穿着黑布大马褂，深青布棉袍（人物外观描写），蹒跚地走到铁道边，慢慢探身下去，尚不大难。可是他穿过铁道，要爬上那边月台，就不容易了。他用两手攀着上面，两脚再向上缩；他肥胖的身子向左微倾，显出努力的样子（动作细节描写+情感）。", "src_from": "朱自清《背影》", "imitate": "我看见她披着白色的围巾，穿着蓝色的长裙，脚踏一双精致的皮鞋，缓缓走到河边，轻轻跨过小溪，稳稳地踩在石头上。虽然水流有些湍急，但她依然保持着平衡，继续前行。然而，当她要攀上那块陡峭的岩石时，就显得格外吃力了。她双手紧紧抓着岩石的缝隙，双脚用力蹬着……", "idea": "人物动作细节描写（衣着、配饰等显著特征+动词精准）+ 字里行间的人物情感"}, {"n": "day13-14", "theme": "人物恐惧状态仿写","suit": "写紧张/恐惧的瞬间（比赛/考试/危险经历）", "tag": "情感表达", "src": "额头冰凉，眼冒金星（五官表现），被无名的恐惧死死揪住（强烈的情感表达），她吓得心头恰像千万个铁锤在打似的（生动的比喻与夸张），一回儿上一回儿下。", "src_from": "", "imitate": "手心湿透，心跳如鼓，被无形的噩梦紧紧缠绕（比喻夸张），他惊得全身仿佛被万道闪电劈中，一时沉一时浮，仿佛置身于狂风巨浪中的一叶扁舟，随时可能被吞噬（对上一句补充说明，深化\"恐惧\"）。", "idea": "多感官结合 + 抽象人物情感 + 修辞手法凸显（学会对情境补充说明，深化主题）"}, {"n": "day15-16", "theme": "环境描写·细节描绘","suit": "春景/生机段（开头定场景）", "tag": "环境描写", "src": "小草偷偷地从土里钻出来，嫩嫩的，绿绿的（主题拟人+状态词）。园子里，田野里，瞧去，一大片一大片满是的（场景的扩展延伸）。坐着，躺着，打两个滚，踢几脚球，赛几趟跑，捉几回迷藏（人物活动）。风轻悄悄的，草绵软软的（环境氛围）。", "src_from": "朱自清《春》", "imitate": "花瓣羞答答地从花萼中探出身，粉粉的，柔柔的（主题拟人+状态词）。花园里，河畔边，望去，一簇簇一团团尽是缤纷（场景扩展）。站着，漫步，嗅几缕芬芳，绘几笔春色，跳几支欢快的舞，编几段美丽的梦（人物活动）。风暖洋洋的，花软绵绵的（氛围收尾）。", "idea": "主题直接描述（拟人+状态词）+ 场景的扩展 + 人物活动的展现 + 环境氛围的渲染收尾"}, {"n": "day17-18", "theme": "学会加入第二人\"你\"","suit": "游记/推荐文（写地点+召唤读者）", "tag": "视角技巧", "src": "所以我劝你上鸡鸣寺去，最好选一个微雨天或月夜。在朦胧里，才酝酿着那一缕幽幽的古味。你坐在一排明窗的豁蒙楼上，吃一碗茶，看面前苍然蜿蜒着的台城。", "src_from": "朱自清", "imitate": "因此，我诚挚地推荐你前往那古韵悠长的寒山寺（地点），最好是在一个细雨绵绵或是月光皎洁的夜晚（时间氛围）。你大可安坐于临窗的幽静雅座，手中捧一盏温热的香茗，目光穿过轻纱般的雾气，悠然观赏着脚下……", "idea": "选择地点 + 营造时间氛围 + 环境氛围 + 具体活动或体验（\"你\"一出现，读者就身临其境）"}, {"n": "day19-20", "theme": "情景交融·花的描写","suit": "情景交融段（生活小事的雅趣：品茶/赏花/美食）", "tag": "情景交融", "src": "那时圆通寺山道石阶的两旁（时间地点），杂乱地长着朱槿花，我们一路走，顺手拈下一朵熟透的朱槿花，吸着花朵底部的花露，其甜如蜜，而清香胜蜜，轻轻地含着朵花的滋味（环境描写细节+人物动作），心里遂有一种只有春天才会有的欢愉（人物情感）。", "src_from": "林清玄《清欢》", "imitate": "彼时，在灵隐寺林间小径的两侧，随意地散布着野樱花，我们缓缓行，不经意间摘下一朵绽放正艳的野樱花，品尝着花瓣尖端上的晨露，那露水甘甜赛过琼浆，而芬芳又超越琼浆。悄悄地品味着这朵花的韵味，内心便生出一种唯有初夏才能体会到的惬意。", "idea": "电影镜头法 + 人物动作细节 + 环境描写 + 修辞手法（包含人物情感）"}, {"n": "day21-22", "theme": "让\"声音\"有画面感","suit": "声音描写（钟声/雨声/音乐/比赛现场）", "tag": "五感描写", "src": "这时候，寺庙的晨钟\"当\"的一声破空而来，当，当，当，沉厚悠长的钟声遂一声接一声地震响了长空（听觉，声音的细致描写），我才深刻地知觉到这平时扰我清梦的钟声是如此纯明，好像人已站在极高的峰顶，那钟声却又用力拉拔，要把人超度到无限的青空之中（联想与抽象意境）。", "src_from": "", "imitate": "此时，天际最后一抹残阳如血，突然间，一阵清风徐来，带着远方山林的清新与凉爽，轻轻拂过面颊（五感+细节）。风，它似乎携带了万籁俱寂前的最后密语，低语、吟唱，直至化作一曲悠扬的山歌，穿越林梢，响彻山谷（修辞）。仿佛我已置身于云端之上……", "idea": "五感（细节描写）+ 修辞 + 加入人物元素的联想、抽象意境"}, {"n": "day23-24", "theme": "会征服人的\"眼神\"","suit": "长辈眼神（祖辈守望远望/老师目光）", "tag": "人物描写", "src": "那一双眼睛，那一双守望的眼睛（重复与强调），眼角有着蜘蛛网的皱纹（细节描绘），眼中的目光好似柔道，慢慢将你折服（比喻象征），令你无法动弹，无法躲避（人物情感），就是那种守望把你压在五指山下，你只能乖乖让这种目光给你压力（夸张与对比）。", "src_from": "", "imitate": "那一双眸子，那一双深邃如海的眸子，眼尾轻垂，藏着岁月的细纹（细节），眼中的光芒犹如温柔的漩涡，缓缓将你卷入其中，让你在不经意间沉醉，无法自拔。它就像夜空中最亮的星，用那不可抗拒的引力，将你的心紧紧牵引……", "idea": "对象 + 细节描绘（用词丰富）+ 修辞手法 + 人物情感 + 表现手法：夸张与对比"}, {"n": "day25-26", "theme": "迷人的\"眼神\"","suit": "同龄人/女性形象（同学/母亲/偶遇的人）", "tag": "人物描写", "src": "蓦见面前一张芙蓉秀脸，双颊晕红，星眼如波（比喻），眼光中又是怜惜，又是羞涩（情感融合）。（具体而富有想象力的细节描写）", "src_from": "金庸《天龙八部》", "imitate": "乍然映入眼帘的是一幅月华般温婉的容颜，面颊上泛着淡淡的桃花色，双眸明亮如夜空中最亮的星辰，眼波流转间，既有温柔似水的关怀（情感融合），又含着几分难以言喻的矜持与羞涩，仿佛春日里初绽的樱花（比喻），既美丽又带着几分青涩。", "idea": "蓦见面前[比喻的面部特征] + [面部细节一：颜色、状态] + [面部细节二：眼睛] + 眼光中[情感一] + [情感二]"}, {"n": "day27-28", "theme": "环境描写·黄昏","suit": "黄昏收尾段（集体场景/乡愁/结尾铺垫）", "tag": "环境描写", "src": "当他们看到远处弥漫着白茫茫的烟，树梢上淡淡涂上了一层金黄色（自然景象变化），一群群的暮鸦驮着日色飞回来的时候，仿佛有什么东西轻轻地压在他们心头（象征与隐喻）。他们知道：夜来了。他们渴望着静息，渴望着梦的来临（人物内心的微妙变化）。", "src_from": "", "imitate": "当他们望见天边渐渐泛起了温柔的蓝紫色，星星点点的灯光开始在远处闪烁，一群归巢的鸟儿唱着悠扬的歌谣掠过天际（自然景象变化），那一刻，一股莫名的宁静悄然降临在他们心间（象征隐喻）。他们深知：夜，正以它独有的方式缓缓铺展……", "idea": "自然景象变化 + 用景象象征与隐喻 + 人物心理活动"}, {"n": "day29-30", "theme": "景物描写·想象展开","suit": "景物铺陈段（新环境/季节全景）", "tag": "景物描写", "src": "自从移家朗润园（场景环境转换），每年在春夏之交的时候，我一出门向西走，总是清香飘浮，溢满鼻官。抬眼一看（感官体验的细腻刻画），在流满绿水的荷塘岸边，在高高低低的土山上面就能看到成片的洋槐，满树繁花，闪着银光（特定季节的特色与氛围）；花朵缀满高树枝头，开上去……", "src_from": "季羡林《清塘荷韵》", "imitate": "自从迁居至悠然谷，每年在深秋之际，我漫步于林间小径（时间地点），总能感受到一股清新而略带凉意的空气。抬眼望去，满山的枫叶如火如荼，红得耀眼，仿佛是大自然最热烈的笔触。而那山脚下，一片片金黄的稻田随风起伏，宛如金色的海洋（相连景物的特征+修辞）。", "idea": "时间地点 + 相连景物的特征描写 + 修辞 + 联想与比喻（视觉/听觉/触觉多角度刻画感官体验）"}];
+
+// ---- 每日一背默 ----
+function beimoToday(){
+  const start = new Date(2026,9,25); // 10/25起背
+  const diff = Math.max(0, Math.floor((Date.now()-start)/(24*3600*1000)));
+  return BEIMO[diff % BEIMO.length];
+}
+let curBTag = "全部";
+function renderBeimoTags(){
+  const tags = ["全部", ...Object.keys(BEIMO.reduce((a,b)=>{a[b.tag]=1;return a},{}))];
+  document.getElementById("beimoTags").innerHTML = tags.map(t=>'<span class="tag'+(t===curBTag?" on":"")+'" onclick="setBTag(\''+t+'\')">'+t+'</span>').join("");
+}
+function setBTag(t){curBTag=t;renderBeimoTags();renderBeimo();}
+function renderBeimo(){
+  const list = document.getElementById("beimoList");
+  const today = beimoToday();
+  const rows = BEIMO.filter(b=>curBTag==="全部"||b.tag===curBTag);
+  list.innerHTML = rows.map(b=>{
+    const isToday = b.n===today.n;
+    return '<div class="mcard" style="'+(isToday?'border:2px solid #f59e0b;background:rgba(245,158,11,.06)':'')+'">'+
+    '<div class="mt">📘 '+b.n+' · '+b.theme+(isToday?' <span style="background:#f59e0b;color:#fff;border-radius:6px;padding:1px 8px;font-size:12px">今天背这组</span>':'')+'</div>'+
+    '<div style="margin:8px 0 4px;font-size:14px;color:#fbbf24">📜 原文'+(b.src_from?'（'+b.src_from+'）':'')+'</div>'+
+    '<div style="font-size:14.5px;color:#dbe4f3;background:rgba(37,99,235,.12);border-radius:10px;padding:10px 13px;white-space:pre-wrap">'+esc(b.src.replace(/【/g,"【💡").replace(/（/g,"（🔸"))+'</div>'+
+    '<div style="margin:8px 0 4px;font-size:14px;color:#7dd3fc">✍️ 同款仿写</div>'+
+    '<div style="font-size:14.5px;color:#dbe4f3;background:rgba(14,116,144,.14);border-radius:10px;padding:10px 13px;white-space:pre-wrap">'+esc(b.imitate)+'</div>'+
+    '<div style="margin:8px 0 0;font-size:14px;color:#4ade80">🧠 思路口诀：'+esc(b.idea)+'</div>'+
+    '<div style="margin:5px 0 0;font-size:13.5px;color:#7dd3fc">🎯 适合写：'+esc(b.suit)+'</div>'+
+    '</div>';
+  }).join("");
+}
+document.getElementById("todayBeimo").textContent = beimoToday().n + " · " + beimoToday().theme;
+renderBeimoTags();renderBeimo();
+
+// ---- 素材→背默句式匹配 ----
+function beimoFor(m){
+  var map=[
+    [/革命|长征|抗战|英烈|铭记|红色基因/, ["day5-6","day27-28"]],
+    [/坚守|忠诚|守望|初心|匠心|传承/, ["day11-12","day23-24"]],
+    [/青春|热血|热爱|拼搏|报国|担当/, ["day9-10","day13-14"]],
+    [/文化自信|非遗|经典|守正/, ["day19-20","day29-30"]],
+    [/科技|航天|智能|创新/, ["day21-22","day3-4"]]
+  ];
+  var txt=(m.k||"")+(m.c||"");
+  for(var i=0;i<map.length;i++){
+    if(map[i][0].test(txt)){
+      var hits=BEIMO.filter(function(b){return map[i][1].indexOf(b.n)>=0;});
+      if(hits.length) return "✍️ 搭配句式："+hits.map(function(h){return h.n+"·"+h.theme.split("·")[0];}).join(" ｜ ")+" 📖";
+    }
+  }
+  return "✍️ 搭配句式：day1-2·氛围（开头）｜day21-22·声音（细节） 📖";
+}
+function gotoBeimo(){var b=document.querySelector('nav button[data-p="p7"]');if(b)b.click();window.scrollTo({top:0,behavior:"smooth"});}
+
+// ---- 关卡2 素材 ----
+let curCat="全部";
+function allCats(){return ["全部",...Object.keys(MATERIALS.reduce((a,m)=>{a[m.c]=1;return a},{}))];}
+function renderTags(){
+  const box=document.getElementById("catTags");
+  box.innerHTML=allCats().map(c=>'<span class="tag'+(c===curCat?" on":"")+'" onclick="setCat(\''+c+'\')">'+c+'</span>').join("");
+}
+function setCat(c){curCat=c;renderTags();renderMats();}
+var showPick=1;
+function setMode(m){
+  showPick=m;
+  document.getElementById("modePick").classList.toggle("on",m===1);
+  document.getElementById("modeAll").classList.toggle("on",m===0);
+  renderNewWeek();renderMats();
+}
+function weekIdx(){var start=new Date(2026,9,26);return Math.max(0,Math.floor((Date.now()-start)/(7*24*3600*1000)));}
+function renderNewWeek(){
+  var box=document.getElementById("newWeekBox");
+  if(!box)return;
+  if(showPick!==1){box.style.display="none";return;}
+  box.style.display="block";
+  var w=weekIdx();
+  var a=PICKS[(w*2)%PICKS.length], b=PICKS[(w*2+1)%PICKS.length];
+  box.innerHTML='<div style="font-size:15px;font-weight:800;color:#fbbf24;background:linear-gradient(135deg,rgba(220,38,38,.15),rgba(245,158,11,.08));border:1.5px solid #b45309;border-radius:12px;padding:12px 16px">🔥 本周主打（第'+(w+1)+'周 · 每周轮换2条，重点吃透这组）</div>'+
+  [a,b].map(function(m){return '<div style="display:flex;gap:10px;margin-top:8px;align-items:flex-start;background:rgba(220,38,38,.08);border:1px solid #7c2d12;border-radius:12px;padding:10px 14px"><span style="background:#dc2626;color:#fff;border-radius:6px;padding:1px 8px;font-size:12.5px;font-weight:700;flex:none">NEW</span><div><span style="color:#fff;font-weight:700;font-size:15px">'+esc(m.t)+'</span> <span style="background:#1c2a47;border:1px solid #33507e;color:#93b4e3;border-radius:6px;padding:1px 8px;font-size:12px">'+esc(m.c)+'</span><div style="color:#34d399;font-size:13.5px;margin-top:2px">🎯 '+esc(m.k)+' ｜ 🧠 '+esc(m.m)+' ｜ '+esc(m.q)+'</div></div></div>';}).join("");
+}
+function renderMats(){
+  const q=document.getElementById("matSearch").value.trim();
+  const box=document.getElementById("matList");
+  const pool = showPick===1 ? PICKS.map(function(p){return {c:p.c,t:p.t,d:"精选",k:p.k,m:p.m,q:p.q};}) : MATERIALS;
+  let rows=pool.filter(m=>(curCat==="全部"||m.c===curCat)&&(!q||(m.t+m.k+m.m+m.c+m.d).includes(q)));
+  box.innerHTML=rows.length?rows.slice(0,120).map(m=>'<div class="mcard"><div class="mt">'+esc(m.t)+'</div><div class="mk">🎯 '+esc(m.k)+' <span style="color:#fbbf24">｜🧠 '+esc(m.m)+'</span></div><div class="md">'+esc(m.d)+' · '+esc(m.q)+' · '+esc(m.c)+'</div><div class="ms" onclick="gotoBeimo()">'+beimoFor(m)+'</div></div>').join(""):'<div class="qa">没搜到，换个关键词试试（提示：用主题词，如"坚持""航天""家风"）</div>';
+}
+renderTags();renderNewWeek();renderMats();
+
+// ---- 关卡5 战力 ----
+function ckDone(el){
+  el.parentElement.classList.toggle("done",el.checked);
+  const v1=[...document.querySelectorAll("#ckLayer1 input")].filter(x=>x.checked).length;
+  const v2=[...document.querySelectorAll("#ckLayer2 input")].filter(x=>x.checked).length;
+  const v3=[...document.querySelectorAll("#ckLayer3 input")].filter(x=>x.checked).length;
+  const power=v1+ v2*2+v3*2;
+  const msg=document.getElementById("powerMsg"),val=document.getElementById("powerVal");
+  val.textContent="当前战力："+power+" / 18";
+  if(power===18){msg.innerHTML="🔥 <b>满战力出击！</b>这篇的结构与细节都到位了——按福州中考标尺，这就是二类卷48+的成色，交卷！";}
+  else if(power>=12){msg.innerHTML="⚡ 已具备冲二类卷（48+）的骨架，血肉层是你的主战场，重点打勾那四项。";}
+  else if(power>=6){msg.innerHTML="🛡️ 基础防住了，但血肉层（细节+心理）是你的主战场，重点打勾那四项。";}
+  else{msg.innerHTML="⏳ 自查还没开始～从头过一遍，别偷懒。";}
+}
+</script>
+</body>
+</html>

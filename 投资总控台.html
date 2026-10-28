@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投资总控台</title>
+<script src="投资总控台数据.js"></script>
+<style>
+:root{--bg:#0b0f14;--panel:#121924;--panel2:#182231;--border:#233044;--border2:#2f4057;
+--text:#e3ecf5;--muted:#8aa0b5;--faint:#5a7085;--accent:#f2b63d;--up:#f6465d;--down:#2ebd85;--blue:#4f8ef7;--purple:#a78bfa;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;font-size:14px;padding:16px 18px 60px}
+h1{font-size:22px;letter-spacing:1px}h1 b{color:var(--accent)}
+.sub{color:var(--muted);font-size:12px;margin:5px 0 16px;line-height:1.6}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g4{grid-template-columns:1fr 1fr}.g3,.g2{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.card h3{font-size:14.5px;margin-bottom:10px;color:var(--accent)}
+.stat{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center}
+.stat .n{font-size:13px;color:var(--faint)}
+.stat .v{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;margin:2px 0}
+.stat .v.up{color:var(--up)}.stat .v.down{color:var(--down)}
+.stat .p{font-size:12px;font-weight:700}
+.stat .p.up{color:var(--up)}.stat .p.down{color:var(--down)}
+.kf{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--border)}
+.kf:last-child{border:none}.kf .p{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
+.kf .p sup{font-size:10px;color:var(--faint);font-weight:400}
+.kf .r{font-size:11.5px;color:var(--muted)}
+.bar{background:var(--panel2);border-radius:4px;height:6px;margin-top:3px}
+.bar i{display:block;height:6px;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--up))}
+.tag{display:inline-block;font-size:11px;padding:2px 9px;border-radius:10px;border:1px solid var(--border2);background:var(--panel2);color:var(--muted);margin:0 4px 4px 0}
+.tag.hot{color:var(--accent);border-color:rgba(242,182,61,.35);background:rgba(242,182,61,.1)}
+.tag.warn{color:var(--up);border-color:rgba(246,70,93,.35);background:rgba(246,70,93,.1)}
+.tag.good{color:var(--down);border-color:rgba(46,189,133,.35);background:rgba(46,189,133,.1)}
+.alert{background:rgba(246,70,93,.1);border:1px solid rgba(246,70,93,.35);border-radius:10px;padding:10px 14px;font-size:12.5px;color:#f8b4ae;line-height:1.7;margin-bottom:12px}
+.info{background:rgba(79,142,247,.09);border:1px solid rgba(79,142,247,.3);border-radius:10px;padding:10px 14px;font-size:12.5px;color:#b8d8f7;line-height:1.7;margin-bottom:12px}
+.nav a{display:block;background:var(--panel2);border:1px solid var(--border);border-radius:9px;padding:9px 12px;margin:5px 0;color:var(--text);text-decoration:none;font-size:13px}
+.nav a:hover{border-color:var(--accent)}
+.nav a small{color:var(--faint);font-size:11px;margin-left:6px}
+.live{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:7px 12px;margin-bottom:10px;font-size:12px}
+.live .idx{display:inline-flex;align-items:center;gap:5px}
+.live .nm{color:var(--faint)}
+.live .st{margin-left:auto;color:var(--faint);white-space:nowrap;display:inline-flex;align-items:center}
+.dot-live{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--down);margin-right:5px;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--faint);text-align:left;padding:5px 7px;border-bottom:1px solid var(--border2);font-size:11.5px}
+td{padding:6px 7px;border-bottom:1px solid var(--border)}
+</style>
+</head>
+<body>
+<h1>📊 投资<b>总控台</b> <span style="font-size:13px;color:var(--muted);font-weight:400" id="todaySpan"></span></h1>
+<div class="live" id="livebar"><span class="idx"><span class="nm">📡 实时行情连接中…</span></span></div>
+<div class="sub" id="subLine">聚合：指数 / 科创50ETF / 九转 / 缠论 / 筹码 / 今日信号 / 抖音情报</div>
+
+<div id="warnBox"></div>
+<div class="info" id="jzInfo"></div>
+
+<!-- 指数 -->
+<div class="card"><h3>📈 今日指数</h3><div class="grid g4" id="idxGrid"></div></div>
+
+<!-- 信号 -->
+<div class="card"><h3>🎯 今日信号 <span id="sigCount" style="font-size:12px;color:var(--faint)"></span></h3><div id="sigBox"></div></div>
+
+<!-- 科创50ETF 深度 -->
+<div class="card"><h3>🔬 科创50ETF(588000) 深度 <span style="font-size:12px;color:var(--faint)" id="etfDate"></span></h3>
+<div class="grid g2">
+<div>
+<div class="stat" style="margin-bottom:8px"><div class="n">现价</div><div class="v" id="etfPrice"></div><div class="p" id="etfPct"></div></div>
+<div class="kf"><span>日线TD9计数</span><span class="p" id="td9d"></span></div>
+<div class="kf"><span>周线TD9计数</span><span class="p" id="td9w"></span></div>
+<div class="kf"><span>MA5 / MA20</span><span class="p" id="etfMa"></span></div>
+<div class="kf"><span>250日低 / 高</span><span class="p" id="etfHL"></span></div>
+</div>
+<div>
+<div class="lbl" style="font-size:12px;color:var(--accent2,#f2b63d);font-weight:700;margin:2px 0 6px">📊 筹码密集区（近250日）</div>
+<div id="chipBox"></div>
+<div style="font-size:12px;color:var(--muted);margin-top:8px" id="srText"></div>
+</div>
+</div></div>
+
+<!-- 方法论状态卡 -->
+<div class="grid g3">
+<div class="card"><h3>🔢 九转窗口</h3><div class="rec" id="jzCard" style="font-size:12.5px;line-height:1.8"></div></div>
+<div class="card"><h3>🧠 缠论状态</h3><div class="rec" id="clCard" style="font-size:12.5px;line-height:1.8"></div></div>
+<div class="card"><h3>🌊 波浪/回测结论</h3><div class="rec" style="font-size:12.5px;line-height:1.8" id="wlCard"></div></div>
+</div>
+
+<!-- 抖音情报 -->
+<div class="card"><h3>📱 今日抖音情报（晨扫+午扫+晚扫）</h3><div id="dyBox" style="font-size:12.5px;color:var(--muted);line-height:1.8;max-height:340px;overflow-y:auto;padding-right:6px"></div></div>
+
+<!-- 工具导航 -->
+<div class="card"><h3>🧰 工具导航</h3>
+<div class="nav" id="navBox">
+<a href="file:///D:/投资理财资料/股票助手/盯盘作战台.html">🎯 盯盘作战台 <small>盘中执行卡 · 信号日收盘核算</small></a>
+<a href="file:///D:/投资理财资料/股票助手/股票助手工作台.html">📈 股票助手工作台 <small>101只池 · 信号/防狼/持仓/解禁</small></a>
+<a href="file:///D:/投资理财资料/股票助手/抖音情报/抖音情报看板.html">📱 抖音情报看板 <small>博主观点/方法论库/转写</small></a>
+<a href="file:///D:/投资理财资料/盯盘工具/科创反转盯盘台.html">🔬 科创反转盯盘台 <small>科创50/材料/芯片</small></a>
+<a href="file:///D:/投资理财资料/盯盘工具/九转低9反转策略回测报告_20261020.html">🔄 九转低9回测报告 <small>窗口/买点/弹性</small></a>
+<a href="file:///D:/投资理财资料/盯盘工具/历年波浪全样本回测报告_20261020.html">🌊 历年波浪回测</a>
+<a href="file:///D:/投资理财资料/盯盘工具/上证第3波下跌-反弹测算_20261020.html">📉 上证第3波测算</a>
+<a href="file:///D:/投资理财资料/盯盘工具/股指期权持仓PCR布林带.html">📊 期权PCR布林</a>
+<a href="file:///D:/投资理财资料/盯盘工具/A股龙头K线速查.html">🔍 A股龙头K线速查</a>
+</div>
+</div>
+
+<script>
+var D=TOTAL_DATA||{};
+document.getElementById('todaySpan').textContent=D.date||'';
+// 指数
+var g=document.getElementById('idxGrid'),gid=D.idxnames||{};
+Object.keys(D.idxs||{}).forEach(function(k){
+ var r=D.idxs[k]||{};var up=r.pct>=0;
+ g.innerHTML+='<div class="stat" data-k="'+k+'"><div class="n">'+(gid[k]||r.name||k)+'</div><div class="v '+(up?'up':'down')+'">'+r.price+'</div><div class="p '+(up?'up':'down')+'">'+(up?'+':'')+r.pct+'%</div><div style="font-size:10.5px;color:var(--faint)">成交 '+(r.amount_yi||'-')+'亿</div></div>';
+});
+// 信号
+var sbox=document.getElementById('sigBox');
+var n=D.signal_count||0;
+document.getElementById('sigCount').textContent='（'+n+'条，含观察）';
+if(D.signals&&D.signals.length){
+  var h='<table><tr><th>规则</th><th>名称</th><th>介入</th><th>止损</th><th>目标</th><th>级别</th></tr>';
+  D.signals.forEach(function(x){
+    h+='<tr><td>'+x.rule+'</td><td>'+(x.name||x.code||'')+'</td><td>'+(x.entry_ref||x.entry||x.price||'')+'</td><td>'+(x.stop_price||x.stop||'')+'</td><td>'+(x.target_price||x.target||'')+'</td><td>'+x.tier+'</td></tr>';
+  });
+  document.getElementById('sigBox').innerHTML=h;
+}else{document.getElementById('sigBox').innerHTML='<div class="mut" style="color:var(--faint)">今日无新增信号（防狼区6只观察）。</div>';}
+// ETF
+var e=D.etf||{};
+document.getElementById('etfPrice').textContent=e.price;
+document.getElementById('etfPct').textContent=(e.pct===undefined?'':'今日 '+(e.pct>0?'+':'')+e.pct+'%');
+document.getElementById('etfPct').className=(e.pct||0)>=0?'p up':'p down';
+document.getElementById('td9d').textContent=e.td9_daily;document.getElementById('td9w').textContent=e.td9_weekly;
+document.getElementById('etfMa').textContent=(e.ma5)+' / '+(e.ma20);
+
+document.getElementById('etfHL').textContent=(e.low250)+' / '+(e.high250);
+// 筹码
+var cb=document.getElementById('chipBox');cb.innerHTML='';
+(D.chips||[]).forEach(function(c,i){
+  if(i>6)return;
+  cb.innerHTML+='<div class="kf"><span style="font-size:12px;color:var(--muted)">'+c.price+'</span><span class="p" style="font-size:15px">'+c.ratio+'%</span><div class="bar" style="width:60%"><i style="width:'+Math.min(100,c.ratio*4)+'%"></i></div></div>';
+});
+document.getElementById('srText').textContent='支撑: '+(D.support||[]).join(' / ')+' ｜ 压力: '+(D.resist||[]).join(' / ');
+// 九转窗口
+document.getElementById('jzCard').innerHTML=D.jz_window?('<b>'+D.jz_window.status+'</b><br>'+D.jz_window.detail):'';
+// 缠论
+document.getElementById('clCard').innerHTML=D.chanlun?D.chanlun.note:'';
+// 波浪
+document.getElementById('wlCard').innerHTML='回测结论(10-20)：第4浪调整时间窗口10-26/27；科创50-20.2%、材料-21.8%；科创系反弹弹性+11%~+39%（历史上两次低点窗口）';
+// 抖音（md文本转纯文本显示）
+var dyBox=document.getElementById('dyBox');
+var dyTxt=(D.dy||'今日无抖音情报').replace(/#+/g,'').replace(/\*\*/g,'').replace(/[>\-]+\s*/g,'');
+dyBox.innerHTML=dyTxt.split('\n').map(function(l){return '<div>'+l+'</div>';}).join('');
+// 警示（动态化）
+var w='';
+var jzD=D.jz_window||{};
+if(jzD.status&&jzD.status.indexOf('破位')>=0){w+='<div class="rec">⚠️ 九转窗口日已破位：588000/科创50收盘创出新低，买入前提不成立，本次窗口不买，等待止跌信号。</div>';}
+if(!D.signal_count){w+='<div class="rec">ℹ️ 今日无高/中置信信号，仅观察区。</div>';}
+document.getElementById('warnBox').innerHTML=w;
+// 今日关键（动态化）
+var jzbox=document.getElementById('jzInfo');
+if(jzbox&&D.etf){
+  var ept=(D.etf.pct!==undefined)?('（'+(D.etf.pct>0?'+':'')+D.etf.pct+'%）'):'';
+  jzbox.innerHTML='<b>📌 今日关键</b>：588000 收 '+D.etf.price+' '+ept+'；周线TD9='+(D.etf.td9_weekly||'-')+'、日线TD9='+(D.etf.td9_daily||'-')+'；支撑 '+(D.support||[]).join('/')+'；'+(jzD.status||'')+(jzD.detail?'（'+jzD.detail+'）':'');
+}
+// 动态标题与副标题
+if(D.date){document.title='投资总控台 · '+D.date;document.getElementById('todaySpan').textContent=D.date;}
+var sub=document.getElementById('subLine');
+sub.innerHTML='聚合：指数 / 科创50ETF / 九转 / 缠论 / 筹码 / 今日信号 / 抖音情报 · 分析快照 '+(D.date||'');
+// ===== 工具导航：GitHub(https) 与本地(file) 两套 =====
+var isGit=(location.protocol==='https:');
+var nav=document.getElementById('navBox');
+var links=isGit?[
+ ['盯盘作战台.html','🎯 盯盘作战台','盘中执行卡 · 信号日收盘核算'],
+ ['股票助手工作台.html','📈 股票助手工作台','101只池 · 信号/防狼/持仓/复盘'],
+ ['https://cecilia319.github.io/my-tools/','📊 本总控台','实时行情+分析快照']
+]:[
+ ['file:///D:/投资理财资料/股票助手/盯盘作战台.html','🎯 盯盘作战台','盘中执行卡 · 信号日收盘核算'],
+ ['file:///D:/投资理财资料/股票助手/股票助手工作台.html','📈 股票助手工作台','101只池 · 信号/防狼/持仓/解禁'],
+ ['file:///D:/投资理财资料/股票助手/抖音情报/抖音情报看板.html','📱 抖音情报看板','博主观点/方法论库/转写'],
+ ['file:///D:/投资理财资料/盯盘工具/科创反转盯盘台.html','🔬 科创反转盯盘台','科创50/材料/芯片'],
+ ['file:///D:/投资理财资料/盯盘工具/九转低9反转策略回测报告_20261020.html','🔄 九转低9回测报告','窗口/买点/弹性'],
+ ['file:///D:/投资理财资料/盯盘工具/历年波浪全样本回测报告_20261020.html','🌊 历年波浪回测','全样本'],
+ ['file:///D:/投资理财资料/盯盘工具/上证第3波下跌-反弹测算_20261020.html','📉 上证第3波测算',''],
+ ['file:///D:/投资理财资料/盯盘工具/股指期权持仓PCR布林带.html','📊 期权PCR布林',''],
+ ['file:///D:/投资理财资料/盯盘工具/A股龙头K线速查.html','🔍 A股龙头K线速查','']
+];
+nav.innerHTML=links.map(function(l){return '<a href="'+l[0]+'">'+l[1]+' <small>'+l[2]+'</small></a>';}).join('');
+// ===== 实时行情：JSONP直连腾讯（指数+ETF 60秒）=====
+var livebar=document.getElementById('livebar');
+function fetchLive(){
+  var syms=Object.keys(D.idxs||{}).concat(['sh588000']);
+  var s=document.createElement('script');
+  s.src='https://qt.gtimg.cn/q='+syms.join(',')+'&_t='+Date.now();
+  s.onload=function(){
+    var got={};
+    syms.forEach(function(sym){
+      var v=window['v_'+sym];if(!v)return;
+      delete window['v_'+sym];
+      var f=v.split('~');if(f.length<39)return;
+      got[sym]={price:parseFloat(f[3]),pct:parseFloat(f[32])};
+    });
+    if(Object.keys(got).length)applyLive(got);
+    s.remove();
+  };
+  s.onerror=function(){livebar.innerHTML='<span class="idx"><span class="nm">📡 实时行情不可达（无网/接口被墙），显示分析快照</span></span>';s.remove();};
+  document.head.appendChild(s);
+}
+function applyLive(got){
+  Object.keys(D.idxs||{}).forEach(function(k){
+    var g=got[k];if(!g)return;
+    var card=document.querySelector('#idxGrid .stat[data-k="'+k+'"]');if(!card)return;
+    var up=g.pct>=0;
+    var v=card.querySelector('.v'),p=card.querySelector('.p');
+    if(v){v.textContent=g.price;v.className='v '+(up?'up':'down');}
+    if(p){p.textContent=(up?'+':'')+g.pct+'%';p.className='p '+(up?'up':'down');}
+  });
+  var g=got['sh588000'];
+  if(g){
+    var up=g.pct>=0;
+    var ep=document.getElementById('etfPrice');if(ep)ep.textContent=g.price;
+    var epp=document.getElementById('etfPct');if(epp){epp.textContent=(up?'+':'')+g.pct+'%';epp.className='p '+(up?'up':'down');}
+  }
+  var hh=new Date().toTimeString().slice(0,8);
+  livebar.innerHTML='<span class="idx"><span class="nm">📡 指数/ETF 实时</span></span><span class="st"><span class="dot-live"></span><span>实时 · 更新于 '+hh+' · 每60秒</span></span>';
+}
+fetchLive();
+setInterval(fetchLive,60*1000);
+</script>
+</body>
+</html>

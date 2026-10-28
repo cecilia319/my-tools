@@ -62,6 +62,22 @@ td{padding:6px 7px;border-bottom:1px solid var(--border)}
 <!-- 信号 -->
 <div class="card"><h3>🎯 今日信号 <span id="sigCount" style="font-size:12px;color:var(--faint)"></span></h3><div id="sigBox"></div></div>
 
+<!-- 指数/ETF 强弱监测 -->
+<div class="card"><h3>📊 指数/ETF 强弱监测 · 大盘研判+ETF操作建议</h3>
+<div style="font-size:11.5px;color:var(--faint);line-height:1.7;margin-bottom:8px" id="emonStd"></div>
+<div style="overflow-x:auto"><table id="emonTable"></table></div>
+<div style="font-size:11.5px;color:var(--faint);margin:6px 0 10px" id="emonEvent"></div>
+<div class="grid g2" id="emonAdv"></div>
+</div>
+
+<!-- 指数/ETF 强弱监测 -->
+<div class="card"><h3>📊 指数/ETF 强弱监测 · 大盘研判+ETF操作建议</h3>
+<div style="font-size:11.5px;color:var(--faint);line-height:1.7;margin-bottom:8px" id="emonStd"></div>
+<div style="overflow-x:auto"><table id="emonTable"></table></div>
+<div style="font-size:11.5px;color:var(--faint);margin:6px 0 10px" id="emonEvent"></div>
+<div class="grid g2" id="emonAdv"></div>
+</div>
+
 <!-- 科创50ETF 深度 -->
 <div class="card"><h3>🔬 科创50ETF(588000) 深度 <span style="font-size:12px;color:var(--faint)" id="etfDate"></span></h3>
 <div class="grid g2">
@@ -95,7 +111,6 @@ td{padding:6px 7px;border-bottom:1px solid var(--border)}
 <a href="file:///D:/投资理财资料/股票助手/盯盘作战台.html">🎯 盯盘作战台 <small>盘中执行卡 · 信号日收盘核算</small></a>
 <a href="file:///D:/投资理财资料/股票助手/股票助手工作台.html">📈 股票助手工作台 <small>101只池 · 信号/防狼/持仓/解禁</small></a>
 <a href="file:///D:/投资理财资料/股票助手/抖音情报/抖音情报看板.html">📱 抖音情报看板 <small>博主观点/方法论库/转写</small></a>
-<a href="file:///D:/投资理财资料/盯盘工具/科创反转盯盘台.html">🔬 科创反转盯盘台 <small>科创50/材料/芯片</small></a>
 <a href="file:///D:/投资理财资料/盯盘工具/九转低9反转策略回测报告_20261020.html">🔄 九转低9回测报告 <small>窗口/买点/弹性</small></a>
 <a href="file:///D:/投资理财资料/盯盘工具/历年波浪全样本回测报告_20261020.html">🌊 历年波浪回测</a>
 <a href="file:///D:/投资理财资料/盯盘工具/上证第3波下跌-反弹测算_20261020.html">📉 上证第3波测算</a>
@@ -133,6 +148,41 @@ document.getElementById('td9d').textContent=e.td9_daily;document.getElementById(
 document.getElementById('etfMa').textContent=(e.ma5)+' / '+(e.ma20);
 
 document.getElementById('etfHL').textContent=(e.low250)+' / '+(e.high250);
+var etfD=document.getElementById('etfDate');
+var _k588=((D.etf_monitor||{}).rows||[]).filter(function(x){return x.sym==='sh588000';})[0];
+if(etfD){etfD.textContent=(e.date||'')+(_k588?('·强弱分 '+_k588.score+' '+_k588.grade):'');}
+// ===== 指数/ETF强弱监测 =====
+var em=D.etf_monitor||{};
+function tf(v){return (v>0?'+':'')+Number(v).toFixed(2)+'%';}
+function tc(v){return v>0?'p up':'p down';}
+var emT=document.getElementById('emonTable');
+if(emT&&em.rows&&em.rows.length){
+ document.getElementById('emonStd').innerHTML='<b>强弱分</b>（全体ETF横向百分位）＝15%今日动量＋30%5日动量＋15%20日动量＋20%超额(5日跑赢沪深300ETF)＋10%量能(今量÷5日均量)＋10%趋势(站上MA5/MA20/MA60各3分)；<b>评级≥70强 / 50-70中 / <50弱</b>（盘中数据收盘后校准）';
+ document.getElementById('emonEvent').innerHTML='📌 <b>建仓规则</b>：首笔≤2成分批，止损=收盘破MA20或-5%；九转右侧信号=放量站上MA20当日买入，不左侧猜底'+(em.event?('　⚠️ '+em.event):'');
+ var h='<tr><th>ETF</th><th>强弱分</th><th>评级</th><th>当日</th><th>5日</th><th>20日</th><th>超额5日</th><th>量比</th><th>站MA</th><th>日/周TD9</th><th>现价</th></tr>';
+ em.rows.forEach(function(r,i){
+  h+='<tr><td>'+r.name+'<div style="font-size:10.5px;color:var(--faint)">'+r.code+'</div></td>'
+   +'<td><b style="font-size:14px">'+r.score+'</b></td>'
+   +'<td><span class="tag '+(r.grade=='强'?'good':(r.grade=='中'?'':'warn'))+'">'+r.grade+'</span></td>'
+   +'<td class="'+tc(r.pct)+'" data-live="'+r.sym+'">'+tf(r.pct)+'</td>'
+   +'<td class="'+tc(r.chg5)+'">'+tf(r.chg5)+'</td>'
+   +'<td class="'+tc(r.chg20)+'">'+tf(r.chg20)+'</td>'
+   +'<td class="'+tc(r.ex5)+'">'+tf(r.ex5)+'</td>'
+   +'<td>'+Number(r.volr).toFixed(2)+'</td>'
+   +'<td>'+Math.round(r.trend)+'/3</td>'
+   +'<td>'+r.td9d+'/'+r.td9w+'</td>'
+   +'<td data-price="'+r.sym+'">'+r.price+'</td></tr>';
+ });
+ emT.innerHTML=h;
+ var adv=(em.rows||[]).map(function(r,i){
+  var top=(r.grade=='强'&&i<3);
+  return '<div class="stat" style="text-align:left">'
+   +'<div style="font-weight:700;font-size:13.5px;color:'+(top?'var(--down)':'var(--muted)')+'">'+(i+1)+'. '+r.name+' '+(top?'★':'')+'</div>'
+   +'<div style="font-size:12px;line-height:1.7;color:var(--muted);margin-top:4px">'+r.adv+'</div>'
+   +'<div style="font-size:11px;color:var(--faint);margin-top:3px">MA20='+r.ma20+'｜MA60='+r.ma60+'｜250日高低 '+r.low250+'~'+r.high250+'</div></div>';
+ });
+ document.getElementById('emonAdv').innerHTML=adv.join('');
+}
 // 筹码
 var cb=document.getElementById('chipBox');cb.innerHTML='';
 (D.chips||[]).forEach(function(c,i){
@@ -177,7 +227,6 @@ var links=isGit?[
  ['file:///D:/投资理财资料/股票助手/盯盘作战台.html','🎯 盯盘作战台','盘中执行卡 · 信号日收盘核算'],
  ['file:///D:/投资理财资料/股票助手/股票助手工作台.html','📈 股票助手工作台','101只池 · 信号/防狼/持仓/解禁'],
  ['file:///D:/投资理财资料/股票助手/抖音情报/抖音情报看板.html','📱 抖音情报看板','博主观点/方法论库/转写'],
- ['file:///D:/投资理财资料/盯盘工具/科创反转盯盘台.html','🔬 科创反转盯盘台','科创50/材料/芯片'],
  ['file:///D:/投资理财资料/盯盘工具/九转低9反转策略回测报告_20261020.html','🔄 九转低9回测报告','窗口/买点/弹性'],
  ['file:///D:/投资理财资料/盯盘工具/历年波浪全样本回测报告_20261020.html','🌊 历年波浪回测','全样本'],
  ['file:///D:/投资理财资料/盯盘工具/上证第3波下跌-反弹测算_20261020.html','📉 上证第3波测算',''],
@@ -185,10 +234,11 @@ var links=isGit?[
  ['file:///D:/投资理财资料/盯盘工具/A股龙头K线速查.html','🔍 A股龙头K线速查','']
 ];
 nav.innerHTML=links.map(function(l){return '<a href="'+l[0]+'">'+l[1]+' <small>'+l[2]+'</small></a>';}).join('');
-// ===== 实时行情：JSONP直连腾讯（指数+ETF 60秒）=====
+// ===== 实时行情：JSONP直连腾讯（指数+全部ETF 60秒）=====
 var livebar=document.getElementById('livebar');
 function fetchLive(){
-  var syms=Object.keys(D.idxs||{}).concat(['sh588000']);
+  var syms=Object.keys(D.idxs||{}).concat(((D.etf_monitor||{}).rows||[]).map(function(r){return r.sym;}).filter(function(s){return s!=='sh588000';}));
+  syms=syms.concat(['sh588000']);
   var s=document.createElement('script');
   s.src='https://qt.gtimg.cn/q='+syms.join(',')+'&_t='+Date.now();
   s.onload=function(){
@@ -220,6 +270,14 @@ function applyLive(got){
     var ep=document.getElementById('etfPrice');if(ep)ep.textContent=g.price;
     var epp=document.getElementById('etfPct');if(epp){epp.textContent=(up?'+':'')+g.pct+'%';epp.className='p '+(up?'up':'down');}
   }
+  // ETF排行表实时覆盖当日%/现价
+  Object.keys(got).forEach(function(sym){
+    var gg=got[sym];
+    var td=document.querySelector('#emonTable td[data-live="'+sym+'"]');
+    if(td){td.textContent=tf(gg.pct);td.className=tc(gg.pct);}
+    var tdp=document.querySelector('#emonTable td[data-price="'+sym+'"]');
+    if(tdp){tdp.textContent=gg.price;}
+  });
   var hh=new Date().toTimeString().slice(0,8);
   livebar.innerHTML='<span class="idx"><span class="nm">📡 指数/ETF 实时</span></span><span class="st"><span class="dot-live"></span><span>实时 · 更新于 '+hh+' · 每60秒</span></span>';
 }

@@ -40,7 +40,7 @@ h1{font-size:22px;letter-spacing:1px}h1 b{color:var(--accent)}
 .dot-live{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--down);margin-right:5px;animation:pulse 1.6s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 table{width:100%;border-collapse:collapse;font-size:12.5px}
-th{color:var(--faint);text-align:left;padding:5px 7px;border-bottom:1px solid var(--border2);font-size:11.5px}
+th{color:var(--faint);text-align:left;padding:5px 7px;border-bottom:1px solid var(--border2);font-size:11.5px}#cfgTable td{word-break:break-word;font-size:11.5px;line-height:1.6}
 td{padding:6px 7px;border-bottom:1px solid var(--border)}
 .p.up{color:var(--up)}.p.down{color:var(--down)}
 .buy{border-left:3px solid var(--border2);}
@@ -67,7 +67,7 @@ td{padding:6px 7px;border-bottom:1px solid var(--border)}
 <!-- ③ 中长线配置 模型B -->
 <div class="card"><h3>③ 🧭 中长线配置参考 · 模型B</h3>
 <div style="font-size:11.5px;color:var(--faint);line-height:1.7;margin-bottom:8px" id="cfgStd"></div>
-<div style="overflow-x:auto"><table id="cfgTable"></table></div>
+<div style="overflow-x:auto"><table id="cfgTable" style="width:100%;table-layout:fixed"></table></div>
 </div>
 
 <!-- ④ 今日盯盘清单 -->
@@ -147,7 +147,7 @@ var et=D.etf_trend||{};
 var ct=document.getElementById('cfgTable');
 if(et.rows&&et.rows.length){
  document.getElementById('cfgStd').innerHTML='<b>配置分</b>＝25%超额(5日跑赢沪深300ETF)+15%5日+15%20日+15%量能+30%均线结构；回答的是「长期配置买哪个方向、右侧信号是什么」，与模型A短线买点分工。<br>当前右侧确认＝收盘站上MA20且在MA60上方。';
- var h='<tr><th>ETF</th><th>配置分</th><th>评级</th><th>超额5日</th><th>20日</th><th>均线(MA5/20/60)</th><th>配置建议</th></tr>';
+ var h='<colgroup><col style="width:13%"><col style="width:8%"><col style="width:8%"><col style="width:11%"><col style="width:8%"><col style="width:17%"><col style="width:35%"></colgroup><tr><th>ETF</th><th>配置分</th><th>评级</th><th>超额5日</th><th>20日</th><th>均线(MA5/20/60)</th><th>配置建议</th></tr>';
  et.rows.forEach(function(r){
   h+='<tr><td>'+r.name+'</td><td><b>'+r.config_score+'</b></td><td><span class="tag '+(r.cfg_grade=='配置强'?'good':'')+'">'+r.cfg_grade+'</span></td>'
    +'<td class="'+tc(r.ex5)+'">'+tf(r.ex5)+'</td><td class="'+tc(r.chg20)+'">'+tf(r.chg20)+'</td><td>'+r.trend_cnt+'/3</td><td style="font-size:11.5px;color:var(--muted)">'+r.cfg_adv+'</td></tr>';

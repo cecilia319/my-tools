@@ -50,7 +50,7 @@ h2.sec{font-size:15px;margin:20px 0 10px}
 </head>
 <body>
 <h1>盯盘<b>作战台</b> <span style="font-size:13px;color:var(--muted);font-weight:400">2026-10-28 信号执行卡</span></h1>
-<div class="sub">价位为信号日收盘核算，<b style="color:var(--accent)">盘中不变</b>——实时价格对照同花顺看，触发即按卡执行，不临场思考。数据生成于 2026-10-28 23:59。
+<div class="sub">价位为信号日收盘核算，<b style="color:var(--accent)">盘中不变</b>——实时价格对照同花顺看，触发即按卡执行，不临场思考。数据生成于 2026-10-29 00:08。
 配套：<b>股票助手工作台.html</b>（收盘后复盘用）+ 同花顺（实时价格下单用）。</div>
 
 <div class="card"><h3>⏰ 盘前 9:00-9:30 —— 竞价定战略</h3>
@@ -659,6 +659,28 @@ h2.sec{font-size:15px;margin:20px 0 10px}
 
 <table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.99%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
+
+<h2 class="sec">📊 ETF观察仓（指数仓位·独立规则）</h2>
+<div class="card"><h3>科创50ETF 588000 · 1.354 (+2.58%)</h3>
+<div class="rules">
+<b>今日状态：</b>MACD零轴下多头｜日线TD卖方计数3｜周线低9已到(10-27确认)｜量比1.05｜60日区间1.319-1.899｜MA10=1.396 MA20=1.495<br>
+<b>三轨买卖规则（明文化）：</b><br>
+①左侧低吸：周线TD≥8低9 + 日线不创新低 → 观察区 1.319-1.354<br>
+②修复单买入：零轴下金叉 + 放量站上MA10 → 触发位 1.396（今日✗ 未到）<br>
+③趋势单买入：放量站上MA20且MA20走平上拐 → 触发位 1.495（今日✗ 未到）<br>
+<b>卖出：</b>修复单收盘跌回MA10下方离场；跌破前低1.319全清重新观察；趋势单破MA20离场。止盈看斐波回撤位分批。<br>
+<b>仓位：</b>单笔≤2成（3322指数仓）；<b>禁买：</b>议息等重大事件落地前不加仓。<br>
+<b>当前判定：<b style="color:#b8860b">①等待触发：未入场</b>（金叉已✓，等放量站上1.396即②成立）</b>
+</div></div>
+
+<h2 class="sec">🔥 涨停基因动态池（每日随涨停进出·今日62家新面孔）</h2>
+<div class="card"><h3>📌 核心池涨停基因筛查：46/101 只有基因 · 僵尸55只（92日无涨停）</h3>
+<table class="tbl" style="width:100%;font-size:12px;border-collapse:collapse">
+<tr style="background:#eef3fb"><td><b>标的</b></td><td><b>92日涨停</b></td><td><b>最近涨停</b></td><td><b>距今</b></td></tr><tr><td>新华传媒(600825)</td><td>11次</td><td>2026-10-16</td><td>距12天</td></tr><tr><td>上海洗霸(603200)</td><td>8次</td><td>2026-10-26</td><td>距2天</td></tr><tr><td>慈文传媒(002343)</td><td>8次</td><td>2026-10-23</td><td>距5天</td></tr><tr><td>掌阅科技(603533)</td><td>8次</td><td>2026-10-28</td><td>距-天</td></tr><tr><td>风语筑(603466)</td><td>7次</td><td>2026-10-23</td><td>距5天</td></tr><tr><td>天娱数科(002354)</td><td>5次</td><td>2026-10-23</td><td>距5天</td></tr><tr><td>上海电影(601595)</td><td>5次</td><td>2026-10-12</td><td>距16天</td></tr><tr><td>电魂网络(603258)</td><td>4次</td><td>2026-10-26</td><td>距2天</td></tr></table></div>
+<div class="card"><h3>🆕 今日全市场涨停新面孔 62 家入池（已剔市值&gt;300亿）—— 全部<b>次日不追</b>，等回踩触发信号</h3>
+<table class="tbl" style="width:100%;font-size:12px;border-collapse:collapse">
+<tr style="background:#eef3fb"><td><b>标的</b></td><td><b>涨幅</b></td><td><b>高度</b></td><td><b>类型</b></td><td><b>市值</b></td><td><b>题材</b></td></tr><tr><td>东南电子(301359)</td><td>+20.0%</td><td>首板</td><td>换手板</td><td>23亿</td><td>三季报增长+微动开关+募投变更</td></tr><tr><td>徕木股份(603633)</td><td>+10.0%</td><td>首板</td><td>换手板</td><td>27亿</td><td>人形机器人+汽车连接器</td></tr><tr><td>联明股份(603006)</td><td>+10.0%</td><td>首板</td><td>换手板</td><td>27亿</td><td>三季报增长+新能源水冷板+供应链服务</td></tr><tr><td>长缆科技(002879)</td><td>+10.0%</td><td>首板</td><td>换手板</td><td>29亿</td><td>管道机器人+浸没液冷+电缆附件+三季报</td></tr><tr><td>长江材料(001296)</td><td>+10.0%</td><td>首板</td><td>换手板</td><td>30亿</td><td>3D打印砂+覆膜砂+油气勘探</td></tr><tr><td>泰山石油(000554)</td><td>+10.0%</td><td>首板</td><td>换手板</td><td>32亿</td><td>三季报增长+成品油+充换电</td></tr><tr><td>凯众股份(603037)</td><td>+10.0%</td><td>2天2板</td><td>换手板</td><td>35亿</td><td>机器人零部件+汽车减震+拟收购拓盛</td></tr><tr><td>振邦智能(003028)</td><td>+10.0%</td><td>首板</td><td>换手板</td><td>37亿</td><td>三季报+人形机器人+智能控制器</td></tr><tr><td>澳洋健康(002172)</td><td>+9.9%</td><td>首板</td><td>换手板</td><td>37亿</td><td>脑机接口+医疗服务+国资控股+“羊”字辈</td></tr><tr><td>五方光电(002962)</td><td>+10.0%</td><td>首板</td><td>换手板</td><td>37亿</td><td>三季报增长+TGV光学+红外截止滤光片</td></tr><tr><td>神驰机电(603109)</td><td>+10.0%</td><td>首板</td><td>换手板</td><td>37亿</td><td>机器人+小型发电机+户用储能</td></tr><tr><td>东贝集团(601956)</td><td>+9.9%</td><td>2天2板</td><td>换手板</td><td>38亿</td><td>机器人电机+制冷压缩机+商用制冷</td></tr><tr><td>福莱蒽特(605566)</td><td>+10.0%</td><td>首板</td><td>换手板</td><td>38亿</td><td>三季报增长+机器人传感+服务器采购+分散染料</td></tr><tr><td>卧龙新能(600173)</td><td>+10.1%</td><td>首板</td><td>换手板</td><td>38亿</td><td>储能并网+海外储能+氢能</td></tr><tr><td>必易微(688045)</td><td>+20.0%</td><td>首板</td><td>换手板</td><td>39亿</td><td>模拟芯片+数字电源+机器人传感</td></tr></table>
+<div class="rules">出池规则：距最近涨停&gt;60交易日自动移出 | 数据源：同花顺涨停池（每日收盘后更新）</div></div>
 
 <div class="card"><h3>📜 通用纪律（凌驾于所有信号之上）</h3>
 <div class="rules">

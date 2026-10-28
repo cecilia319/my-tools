@@ -4,7 +4,8 @@
 // 说明: 从 v2 起页面会把记录实时写入 localStorage 并同步回本文件; meals 由"餐别+精确时间+吃什么"构成, 支持一天多餐。
 var FITNESS_DATA = {
   version: 2,
-  records: [],
+  records: [
+  {date:'2026-10-28', time:'20:00', type:'臀腿力量', minutes:20, intensity:6, note:'史密斯箱式深蹲30kg 3×12；臀推30kg 3×12；哑铃单腿10kg 2×10。全程20分钟，下肢臀腿日。'}],
   meals: [],
   prefs: { defaultDuration: 40, defaultIntensity: 'normal' }
 };

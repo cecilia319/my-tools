@@ -67,7 +67,7 @@ td{padding:6px 7px;border-bottom:1px solid var(--border)}
 <!-- ③ 中长线配置 模型B -->
 <div class="card"><h3>③ 🧭 中长线配置参考 · 模型B</h3>
 <div style="font-size:11.5px;color:var(--faint);line-height:1.7;margin-bottom:8px" id="cfgStd"></div>
-<div style="overflow-x:auto"><table id="cfgTable" style="width:100%;table-layout:fixed"></table></div>
+<div style="overflow-x:auto"><table id="cfgTable" style="width:100%;table-layout:fixed"><colgroup><col style="width:12%"><col style="width:7%"><col style="width:7%"><col style="width:10%"><col style="width:7%"><col style="width:16%"><col style="width:41%"></colgroup><tbody id="cfgBody"></tbody></table></div>
 </div>
 
 <!-- ④ 今日盯盘清单 -->
@@ -152,7 +152,7 @@ if(et.rows&&et.rows.length){
   h+='<tr><td>'+r.name+'</td><td><b>'+r.config_score+'</b></td><td><span class="tag '+(r.cfg_grade=='配置强'?'good':'')+'">'+r.cfg_grade+'</span></td>'
    +'<td class="'+tc(r.ex5)+'">'+tf(r.ex5)+'</td><td class="'+tc(r.chg20)+'">'+tf(r.chg20)+'</td><td>'+r.trend_cnt+'/3</td><td style="font-size:11.5px;color:var(--muted)">'+r.cfg_adv+'</td></tr>';
  });
- ct.innerHTML=h;
+ document.getElementById('cfgBody').innerHTML=h;
 }
 // ④ 盯盘清单
 var wl=D.watchlist||{};

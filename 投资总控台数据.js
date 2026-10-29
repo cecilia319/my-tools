@@ -3,57 +3,57 @@ var TOTAL_DATA={
  "idxs": {
   "sh000001": {
    "name": "上证指数",
-   "price": 3653.7,
+   "price": 3657.06,
    "prev": 3681.47,
-   "pct": -0.75,
+   "pct": -0.66,
    "high": 3676.77,
    "low": 3648.64,
-   "amount_yi": 3003.1
+   "amount_yi": 3325.5
   },
   "sz399001": {
    "name": "深证成指",
-   "price": 11196.96,
+   "price": 11209.38,
    "prev": 11473.18,
-   "pct": -2.41,
+   "pct": -2.3,
    "high": 11379.0,
    "low": 11175.37,
-   "amount_yi": 3722.2
+   "amount_yi": 4099.7
   },
   "sz399006": {
    "name": "创业板指",
-   "price": 2539.7,
+   "price": 2542.58,
    "prev": 2634.76,
-   "pct": -3.61,
+   "pct": -3.5,
    "high": 2597.45,
    "low": 2532.21,
-   "amount_yi": 1905.7
+   "amount_yi": 2097.9
   },
   "sh000688": {
    "name": "科创50",
-   "price": 1231.98,
+   "price": 1231.48,
    "prev": 1282.93,
-   "pct": -3.97,
+   "pct": -4.01,
    "high": 1271.81,
-   "low": 1229.9,
-   "amount_yi": 299.5
+   "low": 1229.19,
+   "amount_yi": 331.4
   },
   "sh000300": {
    "name": "沪深300",
-   "price": 4036.57,
+   "price": 4039.08,
    "prev": 4083.87,
-   "pct": -1.16,
+   "pct": -1.1,
    "high": 4075.47,
    "low": 4030.23,
-   "amount_yi": 1584.6
+   "amount_yi": 1756.4
   },
   "sh000016": {
    "name": "上证50",
-   "price": 2743.72,
+   "price": 2744.21,
    "prev": 2753.01,
-   "pct": -0.34,
+   "pct": -0.32,
    "high": 2769.78,
    "low": 2734.56,
-   "amount_yi": 441.8
+   "amount_yi": 492.3
   }
  },
  "idxnames": {
@@ -2544,25 +2544,6 @@ var TOTAL_DATA={
     "pnl_pct": -0.76,
     "days_held": 1,
     "note": "T+1按条件触发成交(误判已回滚恢复)"
-   },
-   {
-    "id": "2026-10-26-sh600699",
-    "type": "个股",
-    "symbol": "sh600699",
-    "name": "均胜电子",
-    "rule": "pullback_ma20",
-    "signal_date": "2026-10-26",
-    "entry_price": 21.9,
-    "stop_price": 20.8,
-    "target_price": 23.65,
-    "note": "历史补录(回测): T+1(10-27)回踩区间成交(低21.48高22.65), 平铺试错",
-    "status": "open",
-    "buy_date": "2026-10-27",
-    "latest_price": 21.3,
-    "latest_date": "2026-10-29",
-    "pct_day": -2.61,
-    "pnl_pct": -2.74,
-    "days_held": 2
    }
   ],
   "closed": [
@@ -2590,16 +2571,40 @@ var TOTAL_DATA={
     "close_price": 25.48,
     "reason": "去弱留强(T+1浮盈最低且为负, 野人策略)",
     "win": false
+   },
+   {
+    "id": "2026-10-26-sh600699",
+    "type": "个股",
+    "symbol": "sh600699",
+    "name": "均胜电子",
+    "rule": "pullback_ma20",
+    "signal_date": "2026-10-26",
+    "entry_price": 23.69,
+    "stop_price": 22.979,
+    "target_price": 23.65,
+    "note": "历史补录(回测): T+1(10-27)回踩区间成交(低21.48高22.65), 平铺试错 | 去弱留强(新规则重演): 卖出掌阅科技资金集中于此(×2仓), 加权成本23.690, 止损上移20.80→22.98",
+    "status": "open",
+    "buy_date": "2026-10-27",
+    "latest_price": 21.3,
+    "latest_date": "2026-10-29",
+    "pct_day": -2.61,
+    "pnl_pct": -7.68,
+    "days_held": 2,
+    "style": "boduan",
+    "close_date": "2026-10-28",
+    "close_price": 21.87,
+    "reason": "止损(去弱留强集中后止损上移至22.98, 10-28收盘21.87触发)",
+    "win": false
    }
   ],
   "stats": {
-   "total_closed": 1,
-   "open": 1,
+   "total_closed": 2,
+   "open": 3,
    "pending": 3,
    "wins": 0,
-   "losses": 1,
+   "losses": 2,
    "winrate": 0.0,
-   "avg_pnl": -2.56,
+   "avg_pnl": -5.12,
    "avg_win": null,
    "avg_loss": -2.56,
    "profit_factor": 0.0,

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>单摆测重力加速度——虚拟实验互动课件 | TA教育版</title>
+<style>
+:root{
+  --blue:#283593; --blue-d:#1A237E; --blue-l:#E8EAF6; --blue-m:#C5CAE9;
+  --orange:#F57C00; --orange-d:#E65100;
+  --ink:#263238; --gray:#78909C; --bg:#F5F7FA; --line:#DDE3EC;
+  --green:#2E7D32; --red:#C62828;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Segoe UI","Microsoft YaHei","PingFang SC","Hiragino Sans GB",sans-serif;background:var(--bg);color:var(--ink);padding-bottom:64px;font-size:15px;line-height:1.65}
+.wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+b,strong{font-weight:700}
+/* ---------- 页头 ---------- */
+header.top{background:linear-gradient(120deg,#1A237E,#283593 55%,#303F9F);color:#fff;padding:26px 0 24px;box-shadow:0 2px 10px rgba(26,35,126,.25)}
+.head-in{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+h1{font-size:26px;font-weight:800;letter-spacing:.5px}
+h1 .dash{color:#FFB74D;font-weight:400}
+.sub{font-size:14px;color:#C5CAE9;margin-top:6px;letter-spacing:.5px}
+.badges{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.badge{font-size:13px;padding:5px 14px;border-radius:999px;white-space:nowrap}
+.badge.hot{background:var(--orange);color:#fff;font-weight:700;box-shadow:0 2px 8px rgba(245,124,0,.4)}
+.badge.dim{background:rgba(255,255,255,.14);color:#E8EAF6;border:1px solid rgba(255,255,255,.25)}
+/* ---------- 小节 ---------- */
+.sec{margin:30px 0}
+.sec-h{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+.sec-h .bar{width:5px;height:20px;background:var(--orange);border-radius:2px;align-self:center}
+.sec-h h2{font-size:19px;color:var(--blue-d);font-weight:800;letter-spacing:.5px}
+.sec-h .en{font-size:11px;color:#B0BEC5;letter-spacing:2px;font-weight:600}
+/* ---------- 实验目的 ---------- */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:0 1px 3px rgba(40,53,147,.06);display:flex;gap:14px;align-items:flex-start}
+.pcard .no{font-size:24px;font-weight:800;color:var(--orange);font-family:Consolas,monospace;line-height:1.1;flex:none}
+.pcard p{font-size:14px;color:#37474F}
+/* ---------- 原理 ---------- */
+.principle{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+.pf-main,.pf-side,.pf-der,.pf-graph{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;box-shadow:0 1px 3px rgba(40,53,147,.06)}
+.pf-main{grid-row:span 2;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px}
+.bigformula{display:flex;align-items:center;gap:8px;color:var(--blue-d);font-family:"Cambria Math",Cambria,"Times New Roman",serif;font-size:34px;padding:8px 4px}
+.bigformula .it{font-style:italic}
+.bigformula .num{font-style:normal}
+.cond{display:inline-block;background:var(--orange);color:#fff;font-size:13px;font-weight:700;font-family:"Segoe UI","Microsoft YaHei",sans-serif;padding:4px 12px;border-radius:999px;margin-left:10px;white-space:nowrap}
+.pf-note{font-size:13px;color:var(--gray);text-align:center}
+.rt{display:inline-flex;align-items:stretch;color:inherit}
+.rt svg{width:.44em;min-width:12px;height:auto;align-self:stretch;display:block}
+.rd{border-top:2.4px solid currentColor;padding:2px 10px 0 3px;display:inline-flex;align-items:center}
+.frac{display:inline-flex;flex-direction:column;text-align:center;line-height:1.12;font-size:.68em;margin:0 3px;vertical-align:middle}
+.frac .fn{border-bottom:2px solid currentColor;padding:0 8px 1px}
+.frac .fd{padding-top:1px}
+.pf-side h4,.pf-der h4,.pf-graph h4{font-size:15px;color:var(--blue-d);margin-bottom:8px}
+.pf-side p,.pf-der p,.pf-graph p{font-size:13.5px;color:#455A64}
+.mini-f{font-family:"Cambria Math",Cambria,"Times New Roman",serif;font-size:17px;color:var(--blue-d);white-space:nowrap}
+.mini-f.it{font-style:italic}
+.pf-der .step{margin:5px 0;padding-left:10px;border-left:2px solid var(--blue-l)}
+.pf-der .step b{color:var(--blue-d)}
+/* ---------- 核心提示条 ---------- */
+.demo-tip{background:linear-gradient(90deg,#FFF3E0,#FFF8F0);border:1px solid #FFE0B2;border-left:4px solid var(--orange);border-radius:10px;padding:11px 16px;font-size:13.5px;color:#8D5B00;margin-bottom:16px}
+.demo-tip b{color:var(--orange-d)}
+/* ---------- 实验区布局 ---------- */
+.lab{display:grid;grid-template-columns:600px 1fr;gap:16px;margin-bottom:16px}
+.rcol{display:flex;flex-direction:column;gap:16px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 1px 4px rgba(40,53,147,.07)}
+.p-title{font-size:15px;font-weight:800;color:var(--blue-d);margin-bottom:12px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.p-title .pn{color:var(--orange);font-family:Consolas,monospace}
+.p-sub{font-size:12px;font-weight:500;color:var(--gray);font-family:Consolas,monospace}
+#pend{width:100%;height:456px;display:block;background:linear-gradient(180deg,#FDFEFF,#F7F9FC);border:1px solid var(--line);border-radius:10px}
+.meters{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.meter{background:var(--blue-l);border-radius:9px;padding:7px 6px;text-align:center}
+.meter .k{font-size:11px;color:#5C6BC0}
+.meter .v{font-family:Consolas,monospace;font-weight:700;color:var(--blue-d);font-size:17px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ctrl-row{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.tiny{font-size:12px;color:var(--gray);margin-top:10px}
+/* ---------- 按钮 ---------- */
+.btn{border:0;border-radius:9px;padding:10px 18px;font-size:15px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit;letter-spacing:.5px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.primary{background:var(--orange);color:#fff;min-width:112px;box-shadow:0 3px 8px rgba(245,124,0,.35)}
+.btn.primary:hover:not(:disabled){background:var(--orange-d)}
+.btn.blue{background:var(--blue);color:#fff}
+.btn.blue:hover:not(:disabled){background:var(--blue-d)}
+.btn.ghost{background:#fff;color:var(--blue);border:1.5px solid var(--blue-m)}
+.btn.ghost:hover:not(:disabled){border-color:var(--blue);background:var(--blue-l)}
+.btn.big{padding:12px 22px;font-size:16px}
+/* ---------- 分段选择 ---------- */
+.seg{display:inline-flex;background:#EDF0F7;border-radius:9px;padding:3px;gap:3px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:6px 12px;border-radius:7px;cursor:pointer;font-size:13px;color:#5C6470;font-weight:600;font-family:inherit;transition:.15s;white-space:nowrap}
+.seg button.on{background:var(--blue);color:#fff;box-shadow:0 2px 6px rgba(40,53,147,.35)}
+.seg button:not(.on):hover{color:var(--blue-d)}
+#massSeg button.on{background:var(--orange);box-shadow:0 2px 6px rgba(245,124,0,.35)}
+/* ---------- 滑块 ---------- */
+.ctl{margin-bottom:16px}
+.ctl label{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;font-weight:700;color:#37474F;margin-bottom:7px}
+.ctl label .val{font-family:Consolas,monospace;color:var(--orange-d);font-size:15px;font-weight:700}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--blue) 0%,var(--blue) var(--p,50%),#DDE3EC var(--p,50%),#DDE3EC 100%);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:6px;background:#fff;border:3px solid var(--orange);box-shadow:0 1px 5px rgba(0,0,0,.28);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:6px;background:#fff;border:3px solid var(--orange);box-shadow:0 1px 5px rgba(0,0,0,.28);cursor:pointer}
+input[type=range]::-moz-range-track{background:transparent}
+.hint{font-size:12px;color:var(--gray);margin-top:6px}
+.hint.warn{color:var(--orange-d)}
+.hint.ok{color:var(--green)}
+.glabel{font-size:13px;font-weight:800;color:var(--blue-d);margin:14px 0 7px;padding-top:12px;border-top:1px dashed var(--line)}
+.glabel .pn{color:var(--orange);font-family:Consolas,monospace}
+/* ---------- 测量 ---------- */
+.sw-display{display:flex;align-items:baseline;gap:14px;background:var(--blue-d);border-radius:10px;padding:10px 16px;margin-bottom:12px}
+.sw-big{font-family:Consolas,monospace;font-size:30px;font-weight:700;color:#FFB74D;font-variant-numeric:tabular-nums;line-height:1}
+.sw-big small{font-size:15px;color:#9FA8DA;font-weight:400}
+.sw-sub{font-size:13px;color:#C5CAE9}
+.sw-sub b{color:#fff;font-family:Consolas,monospace}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+select{font-family:inherit;font-size:13.5px;padding:8px 10px;border:1.5px solid var(--blue-m);border-radius:8px;background:#fff;color:var(--blue-d);cursor:pointer}
+/* ---------- 数据 + 图 ---------- */
+.datagrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tbl-wrap{max-height:308px;overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:4px}
+.dtable{width:100%;border-collapse:collapse;font-size:13px}
+.dtable th{background:var(--blue);color:#fff;padding:9px 10px;font-weight:600;position:sticky;top:0;white-space:nowrap;font-size:12.5px}
+.dtable td{padding:8px 10px;border-bottom:1px solid var(--line);background:#fff}
+.dtable .num{font-family:Consolas,monospace;text-align:right;font-variant-numeric:tabular-nums}
+.dtable .strong{color:var(--blue-d);font-weight:700}
+.dtable .good{color:var(--green);font-weight:700}
+.dtable .mid{color:var(--orange-d);font-weight:700}
+.dtable .bad{color:var(--red);font-weight:700}
+.dtable .empty-row td{padding:34px 10px;text-align:center;color:var(--gray);font-size:13px}
+.chip{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;color:#fff}
+.chip.earth{background:var(--blue)}
+.chip.moon{background:#78909C}
+.chip.mars{background:var(--orange-d)}
+.del{border:0;background:transparent;color:#B0BEC5;font-size:15px;cursor:pointer;padding:0 6px;line-height:1}
+.del:hover{color:var(--red)}
+#chart{width:100%;height:352px;display:block;background:#fff;border:1px solid var(--line);border-radius:10px}
+.fitbox{margin-top:10px;background:var(--blue-l);border-radius:10px;padding:10px 14px;font-size:13px}
+.fitbox .line{margin:3px 0;color:#37474F}
+.fitbox .line b{font-family:Consolas,monospace;color:var(--blue-d)}
+.fitbox .good{color:var(--green);font-weight:700}
+.fitbox .bad{color:var(--red);font-weight:700}
+.fitbox .empty{color:var(--gray)}
+/* ---------- 折叠卡 ---------- */
+details.fold{background:#fff;border:1px solid var(--line);border-radius:14px;margin:18px 0;box-shadow:0 1px 4px rgba(40,53,147,.06);overflow:hidden}
+details.fold summary{padding:15px 20px;cursor:pointer;font-weight:800;font-size:15.5px;color:var(--blue-d);list-style:none;display:flex;align-items:center;gap:10px;user-select:none}
+details.fold summary::-webkit-details-marker{display:none}
+details.fold summary::after{content:"▸";margin-left:auto;color:var(--orange);font-size:15px;transition:transform .2s}
+details.fold[open] summary::after{transform:rotate(90deg)}
+.fold-body{padding:4px 22px 18px;border-top:1px dashed var(--line)}
+.fold-body h4{font-size:14.5px;color:var(--blue-d);margin:14px 0 5px}
+.fold-body p{font-size:13.5px;color:#455A64;margin-bottom:6px}
+.fold-body .hl{color:var(--orange-d);font-weight:700}
+.talk-item{border-left:3px solid var(--orange);background:#FFF8F0;border-radius:0 10px 10px 0;padding:10px 14px;margin:12px 0;font-size:14px}
+.talk-item .tk{font-size:12px;color:var(--orange-d);font-weight:800;letter-spacing:1px;margin-bottom:3px}
+/* ---------- 小测 ---------- */
+.score-pill{margin-left:auto;background:var(--blue-l);border-radius:999px;padding:5px 14px;font-size:13px;color:var(--blue-d);font-weight:600}
+.score-pill b{font-family:Consolas,monospace;color:var(--orange-d);font-size:14px}
+.btn.tiny2{font-size:12.5px;padding:5px 12px;border-radius:999px;margin-left:8px}
+.quiz-q{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;box-shadow:0 1px 3px rgba(40,53,147,.05)}
+.q-title{font-size:14.5px;font-weight:700;color:#37474F;margin-bottom:10px}
+.q-no{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:12.5px;align-items:center;justify-content:center;margin-right:9px;flex:none}
+.opt{display:block;width:100%;text-align:left;padding:9px 14px;border:1.5px solid var(--line);border-radius:9px;background:#FAFBFD;cursor:pointer;margin:7px 0;font-size:13.5px;font-family:inherit;color:#455A64;transition:.15s}
+.opt:not(:disabled):hover{border-color:var(--blue);color:var(--blue-d)}
+.opt:disabled{cursor:default}
+.opt.correct{background:#E8F5E9;border-color:var(--green);color:var(--green);font-weight:700}
+.opt.wrong{background:#FFEBEE;border-color:var(--red);color:var(--red)}
+.explain{margin-top:10px;padding:10px 14px;border-radius:9px;font-size:13px;background:var(--blue-l);border-left:4px solid var(--blue);color:#37474F;line-height:1.7}
+.explain .ok{color:var(--green)}
+.explain .bad{color:var(--red)}
+.explain b{color:var(--blue-d)}
+#quizFinal{margin-top:12px;padding:12px 16px;border-radius:10px;background:linear-gradient(90deg,#E8F5E9,#F1F8E9);border:1px solid #A5D6A7;color:#1B5E20;font-weight:700;font-size:14px}
+/* ---------- 页脚 ---------- */
+footer.foot-bar{position:fixed;left:0;right:0;bottom:0;background:var(--blue-d);color:#C5CAE9;font-size:13px;padding:11px 0;z-index:50;text-align:center;letter-spacing:.3px}
+footer.foot-bar b{color:#fff}
+/* ---------- toast ---------- */
+#toasts{position:fixed;right:16px;bottom:60px;z-index:99;display:flex;flex-direction:column;gap:8px;max-width:340px}
+.toast{background:#263238;color:#fff;padding:10px 14px;border-radius:9px;font-size:13px;box-shadow:0 6px 18px rgba(0,0,0,.3);border-left:4px solid var(--orange);animation:tin .25s ease;line-height:1.5}
+.toast.ok{border-left-color:#66BB6A}
+.toast.warn{border-left-color:#EF5350}
+@keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* ---------- 响应式 ---------- */
+@media(max-width:1020px){.lab{grid-template-columns:1fr}.principle{grid-template-columns:1fr}.datagrid{grid-template-columns:1fr}}
+@media(max-width:700px){.cards{grid-template-columns:1fr}.meters{grid-template-columns:repeat(2,1fr)}.head-in{flex-direction:column;align-items:flex-start}.badges{flex-direction:row;align-items:center}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap head-in">
+    <div>
+      <h1>单摆测重力加速度 <span class="dash">——</span> 虚拟实验互动课件</h1>
+      <p class="sub">大学物理实验 · 振动与波 · 适用物理 / 工科基础课</p>
+    </div>
+    <div class="badges">
+      <span class="badge hot">建议演示：5 分钟</span>
+      <span class="badge dim">本地单文件 · 无需联网 · 双击即用</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 一、实验目的 -->
+  <section class="sec">
+    <div class="sec-h"><span class="bar"></span><h2>实验目的</h2><span class="en">OBJECTIVES</span></div>
+    <div class="cards">
+      <div class="pcard"><span class="no">01</span><p>研究单摆周期 <b>T</b> 与摆长 <b>L</b> 的定量关系（T ∝ √L）；</p></div>
+      <div class="pcard"><span class="no">02</span><p>验证周期与初始摆角 <b>θ₀</b>、摆球质量 <b>m</b> 的关系（理论上均无关）；</p></div>
+      <div class="pcard"><span class="no">03</span><p>用 <b>T²–L 图解法</b> 测定当地重力加速度 <b>g</b>。</p></div>
+    </div>
+  </section>
+
+  <!-- 二、实验原理 -->
+  <section class="sec">
+    <div class="sec-h"><span class="bar"></span><h2>实验原理</h2><span class="en">PRINCIPLE</span></div>
+    <div class="principle">
+      <div class="pf-main">
+        <div class="bigformula">
+          <span class="it">T</span><span>=</span><span class="num">2π</span><span class="rt"><svg viewBox="0 0 14 26" preserveAspectRatio="none" aria-hidden="true"><path d="M1 14 L4.5 19 L10 5 L13.5 1.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="rd"><span class="frac"><span class="fn it">L</span><span class="fd it">g</span></span></span></span>
+          <span class="cond">θ &lt; 5°（小角度近似）</span>
+        </div>
+        <p class="pf-note">式中 <i>L</i> 为悬点到<b>球心</b>的距离（摆长），<i>g</i> 为当地重力加速度</p>
+      </div>
+      <div class="pf-side">
+        <h4>为什么要求 θ &lt; 5°</h4>
+        <p>公式成立的前提是 <span class="mini-f">sin <i>θ</i> ≈ <i>θ</i></span>。当 θ = 5° 时该近似的误差仅约 <b>0.13%</b>；θ = 30° 时误差增大到约 15%，周期将明显偏离公式——这正是实验规定小摆角的物理依据。</p>
+      </div>
+      <div class="pf-der">
+        <h4>推导要点</h4>
+        <p class="step">θ 很小时 <span class="mini-f">sin <i>θ</i> ≈ <i>θ</i></span>，恢复力 <span class="mini-f"><i>F</i> = −<i>mg</i>·sin <i>θ</i> ≈ −(<i>mg</i>/<i>L</i>)·<i>x</i></span></p>
+        <p class="step">由牛顿第二定律得 <span class="mini-f"><i>x</i>″ + (<i>g</i>/<i>L</i>)·<i>x</i> = 0</span> —— <b>简谐振动方程</b></p>
+        <p class="step">故角频率 <span class="mini-f"><i>ω</i> = √(<i>g</i>/<i>L</i>)</span>，周期 <span class="mini-f"><i>T</i> = 2π/<i>ω</i></span>，得左式。<b>注意：T 与质量 m 无关。</b></p>
+      </div>
+      <div class="pf-graph">
+        <h4>图解法测 g</h4>
+        <p>把公式改写为 <span class="mini-f"><i>T</i>² = (4π²/<i>g</i>)·<i>L</i></span>：<b>T² 与 L 成正比</b>，图像是过原点的直线，斜率 <span class="mini-f"><i>k</i> = 4π²/<i>g</i></span>，故 <span class="mini-f"><i>g</i> = 4π²/<i>k</i></span>。多组 (L, T) 数据做直线拟合，即可消除单次测量的偶然误差。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 三、核心交互实验区 -->
+  <section class="sec">
+    <div class="sec-h"><span class="bar"></span><h2>核心交互实验区</h2><span class="en">INTERACTIVE LAB</span></div>
+    <div class="demo-tip">▶ 核心演示点：<b>θ₀ 与质量 m 都不改变周期 T —— 只有摆长 L 和重力 g 决定它</b>。请按 ①→⑥ 顺序体验：释放摆球 → 调 L / θ₀ / 重力环境 → 切换质量 → 秒表计时 → 记录数据 → 自动绘图。</div>
+
+    <div class="lab">
+      <!-- 左：动画 -->
+      <div class="panel">
+        <div class="p-title"><span class="pn">①</span>虚拟单摆 <span class="p-sub">θ″ = −(g/L)·sinθ · RK4 实时数值积分（非摆线动画）</span></div>
+        <canvas id="pend"></canvas>
+        <div class="meters">
+          <div class="meter"><div class="k">摆角 θ(t)</div><div class="v" id="mTheta">+5.0°</div></div>
+          <div class="meter"><div class="k">理论周期 T（小角度）</div><div class="v" id="mTth">2.006 s</div></div>
+          <div class="meter"><div class="k">实测周期 T</div><div class="v" id="mTm">—</div></div>
+          <div class="meter"><div class="k">重力环境 g</div><div class="v" id="mG">9.80 m/s²</div></div>
+        </div>
+        <div class="ctrl-row">
+          <button id="btnGo" class="btn primary big">释放摆球</button>
+          <button id="btnReset" class="btn ghost">复位</button>
+          <div class="seg" id="spdSeg">
+            <button data-s="0.5">0.5×</button>
+            <button data-s="1" class="on">1×</button>
+            <button data-s="2">2×</button>
+          </div>
+        </div>
+        <p class="tiny">改变 L、θ₀ 或重力环境会自动复位摆球（等您重新释放）；切换质量不会中断摆动与计时。</p>
+      </div>
+
+      <!-- 右：参数 + 测量 -->
+      <div class="rcol">
+        <div class="panel">
+          <div class="p-title"><span class="pn">②</span>参数调谐 <span class="p-sub">改参数 → 立即复位 → 观察 T 变化</span></div>
+          <div class="ctl">
+            <label>摆长 L（0.5 – 2.0 m）<span class="val" id="valL">1.00 m</span></label>
+            <input type="range" id="rangeL" min="0.5" max="2" step="0.05" value="1">
+          </div>
+          <div class="ctl">
+            <label>初始摆角 θ₀（2° – 30°）<span class="val" id="valTh">5°</span></label>
+            <input type="range" id="rangeTh" min="2" max="30" step="1" value="5">
+            <p class="hint" id="thHint">当前 θ₀ = 5°，满足小角度条件，T 与理论公式一致。</p>
+          </div>
+          <div class="glabel">重力环境（决定 g）</div>
+          <div class="seg" id="envSeg">
+            <button data-e="0" class="on">地球 · g = 9.80</button>
+            <button data-e="1">月球 · g = 1.62</button>
+            <button data-e="2">火星 · g = 3.71</button>
+          </div>
+          <div class="glabel"><span class="pn">③</span> 摆球质量 m（不改变周期！）</div>
+          <div class="seg" id="massSeg">
+            <button data-m="0.1">0.1 kg</button>
+            <button data-m="0.5" class="on">0.5 kg</button>
+            <button data-m="1.0">1.0 kg</button>
+          </div>
+          <p class="hint ok" id="massHint">✔ T 与质量 m 无关——即使正在摆动、正在计时，切换质量也不会中断任何状态，请直观验证。</p>
+        </div>
+
+        <div class="panel">
+          <div class="p-title"><span class="pn">④</span>虚拟测量（模拟秒表）<span class="p-sub">T = t / n</span></div>
+          <div class="sw-display">
+            <div class="sw-big"><span id="watchTime">0.0</span><small> s</small></div>
+            <div class="sw-sub">已完成周期：<b id="watchCycles">0</b></div>
+          </div>
+          <div class="row">
+            <button id="btnWatchStart" class="btn blue">开始计时</button>
+            <button id="btnWatchStop" class="btn ghost" disabled>停止并记录</button>
+          </div>
+          <div class="row">
+            <select id="autoN">
+              <option value="5">5 个周期</option>
+              <option value="10" selected>10 个周期</option>
+              <option value="20">20 个周期</option>
+            </select>
+            <button id="btnAuto" class="btn ghost">自动采集 10 个周期</button>
+          </div>
+          <p class="tiny">手动秒表存在 ±0.2 s 的人为反应误差，建议累计多周期取平均（见误差分析）；【自动采集】由程序在摆的过零点精确计时，无人为误差。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 数据 + 图 -->
+    <div class="datagrid">
+      <div class="panel">
+        <div class="p-title"><span class="pn">⑤</span>数据记录表 <span class="p-sub">每行 g = 4π²L/T²</span>
+          <button id="btnClear" class="btn ghost tiny2" style="margin-left:auto">清空数据</button>
+        </div>
+        <div class="tbl-wrap">
+          <table class="dtable">
+            <thead><tr><th>#</th><th>环境</th><th>L / m</th><th>周期数 n</th><th>T / s</th><th>g / (m/s²)</th><th>与标准值偏差</th><th></th></tr></thead>
+            <tbody id="dBody"></tbody>
+          </table>
+        </div>
+        <p class="tiny">建议操作：保持地球环境，依次取 L = 0.5 / 1.0 / 1.5 / 2.0 m 各采一组 → 在右侧图中观察 T²–L 直线。</p>
+      </div>
+      <div class="panel">
+        <div class="p-title"><span class="pn">⑥</span>T²–L 自动绘图与线性拟合 <span class="p-sub" id="chartEnv">当前环境：地球（g=9.80）</span></div>
+        <canvas id="chart"></canvas>
+        <div class="fitbox" id="fitBox"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 四、误差分析 -->
+  <details class="fold">
+    <summary>误差分析（为什么这样做实验）</summary>
+    <div class="fold-body">
+      <h4>1. 为什么初始摆角 θ₀ 必须小</h4>
+      <p><span class="hl">T = 2π√(L/g) 是 θ→0 时的近似结果。</span>真实周期为 T = T₀·[1 + θ₀²/16 + 11θ₀⁴/3072 + …]（θ₀ 用弧度）：θ₀ = 5° 时仅偏大约 0.05%，θ₀ = 30° 时偏大约 1.7%。摆角偏大的直接后果是<b>测得的 g 系统性偏小</b>。可把课件中的 θ₀ 滑到 30° 对比"理论 T"与"实测 T"复现这一效应。</p>
+      <h4>2. 模型忽略了哪些因素</h4>
+      <p>推导把摆视为理想模型，忽略：<b>空气阻力</b>（选小而密的摆球可忽略）、<b>摆线质量与弹性伸长</b>（线要细、轻、不易伸长）、<b>摆球尺寸</b>（球径远小于摆长，视为质点）、<b>悬点摩擦</b>（可用摆幅是否明显衰减来检查）。注意摆长 L 应从悬点量到<b>球心</b>，量到球面是初学者最常见的错误。</p>
+      <h4>3. 计时的人为误差</h4>
+      <p>手按秒表的反应误差约 ±0.2 s。若只测 1 个周期（T ≈ 2 s），相对误差可达 10%，且 g 的相对误差会放大到约 20%。解决办法是<b>累计计时法</b>：一次连续测 n = 30~50 个周期，T = t/n，误差缩小为原来的 1/n。本课件的【自动采集】用程序在过零点计时，把这一误差降为零——正好现场对比两种方式的偏差列。</p>
+    </div>
+  </details>
+
+  <!-- 五、随堂小测 -->
+  <section class="sec">
+    <div class="sec-h"><span class="bar"></span><h2>随堂小测</h2><span class="en">QUICK CHECK</span>
+      <span class="score-pill">得分 <b id="quizScore">0/3</b> · 已答 <b id="quizDone">0/3</b></span>
+      <button id="btnQuizReset" class="btn ghost tiny2">重新作答</button>
+    </div>
+    <div id="quizBox"></div>
+    <div id="quizFinal" hidden></div>
+  </section>
+
+  <!-- 六、演示者话术 -->
+  <details class="fold">
+    <summary>给演示者的 3 个话术点（对物理系 / 基础教学部 / 教务处沟通用）</summary>
+    <div class="fold-body">
+      <div class="talk-item"><div class="tk">话术 ①</div>"<b>物理实验课前预演</b>——学生先在课件里理解规律，再到实验室动手，实验课效率翻倍。"</div>
+      <div class="talk-item"><div class="tk">话术 ②</div>"<b>参数随便调</b>：月球、火星上的单摆，一句话的事——这是 PPT 做不到的。"</div>
+      <div class="talk-item"><div class="tk">话术 ③</div>"<b>同类课件可按大纲定制</b>：光学、电磁学、热学均可生成。"</div>
+      <p style="margin-top:10px;color:#90A4AE;font-size:12.5px">提示：演示主线建议——①释放摆球看 T≈2 s → ②调 L 看变化 → ③切月球（T 变 2.5 倍）→ ④切质量（T 不变，制造"哇"点）→ ⑤自动采集 3~4 组 → ⑥展示拟合出的 g 与偏差。</p>
+    </div>
+  </details>
+
+</main>
+
+<footer class="foot-bar">本课件由 <b>TeleAgent（TA）教育版</b> 生成 · 本地单文件运行、数据不出校 · 学科教师可共创定制</footer>
+<div id="toasts"></div>
+
+<script>
+'use strict';
+var $=function(id){return document.getElementById(id);};
+var DEG=Math.PI/180, RAD=180/Math.PI;
+var ENV=[{name:'地球',g:9.8},{name:'月球',g:1.62},{name:'火星',g:3.71}];
+var MASS_R={0.1:11,0.5:15,1.0:20};
+var records=[];
+
+/* ================= 物理内核 ================= */
+var sim={
+  L:1.0, th0:5*DEG, m:0.5, env:ENV[0],
+  th:5*DEG, om:0, t:0, phase:'idle', speed:1,
+  lastCross:null, measT:null,
+  sw:{on:false,startT:0,cycles:0},
+  auto:{active:false,armed:false,startT:0,cycles:0,need:10}
+};
+function TTheory(){return 2*Math.PI*Math.sqrt(sim.L/sim.env.g);}
+function deriv(s){return [s[1], -(sim.env.g/sim.L)*Math.sin(s[0])];}
+function stepPhysics(dt){
+  var s=[sim.th,sim.om];
+  var k1=deriv(s);
+  var k2=deriv([s[0]+k1[0]*dt/2, s[1]+k1[1]*dt/2]);
+  var k3=deriv([s[0]+k2[0]*dt/2, s[1]+k2[1]*dt/2]);
+  var k4=deriv([s[0]+k3[0]*dt,   s[1]+k3[1]*dt]);
+  var thPrev=sim.th;
+  sim.th=s[0]+dt*(k1[0]+2*k2[0]+2*k3[0]+k4[0])/6;
+  sim.om=s[1]+dt*(k1[1]+2*k2[1]+2*k3[1]+k4[1])/6;
+  sim.t+=dt;
+  if(thPrev<0&&sim.th>=0){ /* 正向过零：从左向右经过最低点 */
+    var f=thPrev/(thPrev-sim.th);
+    var tc=sim.t-dt+f*dt;
+    onPositiveCross(tc);
+  }
+}
+function onPositiveCross(tc){
+  if(sim.lastCross!==null) sim.measT=tc-sim.lastCross;
+  sim.lastCross=tc;
+  if(sim.auto.active){
+    if(!sim.auto.armed){sim.auto.armed=true;sim.auto.startT=tc;sim.auto.cycles=0;}
+    else{
+      sim.auto.cycles++;
+      if(sim.auto.cycles>=sim.auto.need) finishAuto(tc);
+    }
+  }
+  if(sim.sw.on) sim.sw.cycles++;
+}
+
+/* ================= 状态控制 ================= */
+function resetSwing(silent){
+  var had=sim.sw.on||sim.auto.active;
+  sim.sw.on=false; sim.auto.active=false; sim.auto.armed=false;
+  if(had&&!silent) toast('参数已变化，本次计时已中止','warn');
+  sim.th=sim.th0; sim.om=0; sim.t=0; sim.phase='idle';
+  sim.lastCross=null; sim.measT=null;
+  updateGoBtn(); updateMeasureUI();
+}
+function go(){
+  if(sim.phase==='idle'){sim.phase='running';toast('已释放——观察小幅度摆动下 T 与理论值的吻合','info');}
+  else if(sim.phase==='running'){sim.phase='paused';}
+  else{sim.phase='running';}
+  updateGoBtn(); updateMeasureUI();
+}
+function updateGoBtn(){
+  var b=$('btnGo');
+  if(sim.phase==='idle'){b.textContent='释放摆球';}
+  else if(sim.phase==='running'){b.textContent='暂停';}
+  else{b.textContent='继续';}
+}
+
+/* ================= 参数 ================= */
+function fillRange(r){var p=(r.value-r.min)/(r.max-r.min)*100;r.style.setProperty('--p',p+'%');}
+function setL(v){
+  sim.L=v; $('valL').textContent=v.toFixed(2)+' m'; fillRange($('rangeL'));
+  resetSwing();
+}
+function setTheta(v){
+  sim.th0=v*DEG; $('valTh').textContent=v+'°'; fillRange($('rangeTh'));
+  var h=$('thHint');
+  if(v<=5){h.className='hint ok';h.textContent='当前 θ₀ = '+v+'°，满足小角度条件（θ<5°），实测 T 与理论公式一致。';}
+  else if(v<=10){h.className='hint warn';h.textContent='当前 θ₀ = '+v+'°，略超小角度范围：实测 T 将比小角度理论值大约 '+(100*v*v*DEG*DEG/16).toFixed(2)+'%。';}
+  else{h.className='hint warn';h.textContent='当前 θ₀ = '+v+'°，超出小角度范围：实测 T 将比理论值大约 '+(100*v*v*DEG*DEG/16).toFixed(1)+'%，测得的 g 会偏小——见"误差分析"第 1 条。';}
+  resetSwing();
+}
+function segActivate(seg,btn){seg.querySelectorAll('button').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');}
+function setEnv(i,btn){
+  sim.env=ENV[i]; segActivate($('envSeg'),btn);
+  var had=sim.sw.on||sim.auto.active;
+  resetSwing(true);
+  toast('已切换到'+sim.env.name+'（g = '+sim.env.g+' m/s²）'+(had?'，进行中的计时已中止':'')+'——点击【释放摆球】，看周期变化','info');
+  drawChart();
+}
+function setMass(v,btn){
+  sim.m=v; segActivate($('massSeg'),btn);
+  toast('质量切换为 '+v.toFixed(1)+' kg —— 请注意看：摆动节奏完全没有变化（T 与 m 无关）','ok');
+}
+function setSpeed(s,btn){sim.speed=s;segActivate($('spdSeg'),btn);}
+
+/* ================= 测量 ================= */
+function watchStart(){
+  if(sim.phase==='idle'){toast('请先点击【释放摆球】','warn');return;}
+  if(sim.auto.active){toast('自动采集进行中，请等待完成','warn');return;}
+  sim.sw.on=true; sim.sw.startT=sim.t; sim.sw.cycles=0;
+  updateMeasureUI();
+}
+function watchStop(){
+  if(!sim.sw.on) return;
+  sim.sw.on=false;
+  var el=sim.t-sim.sw.startT, n=sim.sw.cycles;
+  if(n<1){toast('尚未完成一个完整周期（n=0），未记录','warn');updateMeasureUI();return;}
+  addRecord(el/n,n);
+  updateMeasureUI();
+}
+function autoStart(){
+  if(sim.phase==='idle'){toast('请先点击【释放摆球】','warn');return;}
+  if(sim.sw.on){toast('请先停止手动计时','warn');return;}
+  sim.auto.active=true; sim.auto.armed=false; sim.auto.cycles=0;
+  sim.auto.need=parseInt($('autoN').value,10);
+  toast('自动采集已启动：等待过零点开始计时，将连续采集 '+sim.auto.need+' 个周期','info');
+  updateMeasureUI();
+}
+function finishAuto(tc){
+  var T=(tc-sim.auto.startT)/sim.auto.cycles;
+  var n=sim.auto.cycles;
+  sim.auto.active=false; sim.auto.armed=false;
+  addRecord(T,n);
+}
+function addRecord(T,n){
+  var g=4*Math.PI*Math.PI*sim.L/(T*T);
+  records.push({env:sim.env.name,gStd:sim.env.g,L:sim.L,n:n,T:T,g:g});
+  renderTable(); drawChart();
+  toast('已记录：L = '+sim.L.toFixed(2)+' m，n = '+n+'，T = '+T.toFixed(3)+' s → g = '+g.toFixed(2)+' m/s²','ok');
+}
+function updateMeasureUI(){
+  var sw=sim.sw, au=sim.auto, t=0, n=0, waiting=false;
+  if(sw.on){t=sim.t-sw.startT;n=sw.cycles;}
+  else if(au.active){if(au.armed){t=sim.t-au.startT;n=au.cycles;}else waiting=true;}
+  $('watchTime').textContent=waiting?'—':t.toFixed(1);
+  $('watchCycles').textContent=waiting?'等待过零…':n;
+  $('btnWatchStart').disabled=sw.on||au.active;
+  $('btnWatchStart').textContent=sw.on?'计时中…':'开始计时';
+  $('btnWatchStop').disabled=!sw.on;
+  $('btnAuto').disabled=sw.on||au.active;
+  $('btnAuto').textContent=au.active?('采集中 '+n+' / '+au.need):('自动采集 '+au.need+' 个周期');
+}
+
+/* ================= 数据表 ================= */
+function renderTable(){
+  var tb=$('dBody');
+  if(!records.length){
+    tb.innerHTML='<tr class="empty-row"><td colspan="8">暂无数据 —— 释放单摆后，用【开始 / 停止计时】或【自动采集】记录 (L, T)</td></tr>';
+    return;
+  }
+  tb.innerHTML=records.map(function(r,i){
+    var dev=(r.g-r.gStd)/r.gStd*100;
+    var dc=Math.abs(dev)<=1?'good':(Math.abs(dev)<=3?'mid':'bad');
+    var ec=r.env==='地球'?'earth':(r.env==='月球'?'moon':'mars');
+    return '<tr><td class="num">'+(i+1)+'</td><td><span class="chip '+ec+'">'+r.env+'</span></td>'+
+      '<td class="num">'+r.L.toFixed(2)+'</td><td class="num">'+r.n+'</td><td class="num">'+r.T.toFixed(3)+'</td>'+
+      '<td class="num strong">'+r.g.toFixed(2)+'</td><td class="num '+dc+'">'+(dev>0?'+':'')+dev.toFixed(2)+'%</td>'+
+      '<td class="num"><button class="del" data-del="'+i+'">×</button></td></tr>';
+  }).join('');
+}
+
+/* ================= 绘图 ================= */
+function fitCanvas(c){
+  var d=window.devicePixelRatio||1, w=c.clientWidth, h=c.clientHeight;
+  if(c.width!==Math.round(w*d)||c.height!==Math.round(h*d)){c.width=Math.round(w*d);c.height=Math.round(h*d);}
+  var cx=c.getContext('2d'); cx.setTransform(d,0,0,d,0,0); return cx;
+}
+function linFit(ps){
+  var n=ps.length,sx=0,sy=0,sxx=0,sxy=0;
+  ps.forEach(function(p){sx+=p.x;sy+=p.y;sxx+=p.x*p.x;sxy+=p.x*p.y;});
+  var d=n*sxx-sx*sx; if(Math.abs(d)<1e-12) return null;
+  var a=(n*sxy-sx*sy)/d, b=(sy-a*sx)/n; return {a:a,b:b};
+}
+function niceCeil(v){
+  var e=Math.pow(10,Math.floor(Math.log10(v))), f=v/e;
+  var nf=f<=1?1:f<=1.5?1.5:f<=2?2:f<=2.5?2.5:f<=3?3:f<=4?4:f<=5?5:f<=8?8:10;
+  return nf*e;
+}
+function drawChart(){
+  var c=$('chart'), ctx=fitCanvas(c);
+  var W=c.clientWidth, H=c.clientHeight;
+  ctx.clearRect(0,0,W,H);
+  var padL=56,padR=14,padT=32,padB=44, xMax=2.3;
+  var pts=records.map(function(r){return {x:r.L,y:r.T*r.T,env:r.env};});
+  var cur=pts.filter(function(p){return p.env===sim.env.name;});
+  var yMax=4.5;
+  if(pts.length) yMax=Math.max(yMax,Math.max.apply(null,pts.map(function(p){return p.y;})));
+  yMax=niceCeil(yMax*1.12);
+  var X=function(v){return padL+(W-padL-padR)*v/xMax;};
+  var Y=function(v){return H-padB-(H-padT-padB)*v/yMax;};
+  ctx.font='11px Consolas,monospace';
+  /* 网格 */
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  for(var gx=0;gx<=2.001;gx+=0.5){
+    ctx.strokeStyle='#F0F3F7'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(X(gx),Y(0)); ctx.lineTo(X(gx),Y(yMax)); ctx.stroke();
+    ctx.fillStyle='#90A4AE'; ctx.fillText(gx.toFixed(1),X(gx),H-padB+8);
+  }
+  var yStep=yMax/5;
+  ctx.textAlign='right';
+  for(var i=0;i<=5;i++){
+    var yv=yStep*i;
+    ctx.strokeStyle=i===0?'#B0BEC5':'#F0F3F7';
+    ctx.beginPath(); ctx.moveTo(X(0),Y(yv)); ctx.lineTo(X(xMax),Y(yv)); ctx.stroke();
+    ctx.fillStyle='#90A4AE'; ctx.fillText(yv.toFixed(yMax<10?1:0),padL-8,Y(yv)+4);
+  }
+  /* 轴线与轴名 */
+  ctx.strokeStyle='#78909C'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(X(0),Y(0)); ctx.lineTo(X(xMax),Y(0)); ctx.moveTo(X(0),Y(0)); ctx.lineTo(X(0),Y(yMax)); ctx.stroke();
+  ctx.textAlign='left'; ctx.fillStyle='#546E7A'; ctx.font='12px "Segoe UI","Microsoft YaHei",sans-serif';
+  ctx.fillText('L / m',X(xMax)-38,H-padB+24);
+  ctx.fillText('T² / s²',padL+6,padT-24);
+  /* 理论参考线（当前环境 g） */
+  var k0=4*Math.PI*Math.PI/sim.env.g;
+  ctx.setLineDash([6,5]); ctx.strokeStyle='#B0BEC5'; ctx.lineWidth=1.6;
+  var y0=k0*xMax;
+  ctx.beginPath(); ctx.moveTo(X(0),Y(0)); ctx.lineTo(X(xMax),Y(Math.min(y0,yMax))); ctx.stroke();
+  ctx.setLineDash([]);
+  /* 拟合线 */
+  var ft=null;
+  if(cur.length>=2){ ft=linFit(cur); }
+  if(ft){
+    ctx.strokeStyle='#283593'; ctx.lineWidth=2.2;
+    var yA=ft.a*0+ft.b, yB=ft.a*xMax+ft.b;
+    ctx.beginPath(); ctx.moveTo(X(0),Y(Math.max(0,Math.min(yMax,yA)))); ctx.lineTo(X(xMax),Y(Math.max(0,Math.min(yMax,yB)))); ctx.stroke();
+  }
+  /* 数据点 */
+  pts.forEach(function(p){
+    var isCur=p.env===sim.env.name;
+    ctx.beginPath();
+    ctx.arc(X(p.x),Y(Math.min(p.y,yMax)),4.5,0,7);
+    if(isCur){ctx.fillStyle='#F57C00';ctx.fill();ctx.strokeStyle='#E65100';ctx.lineWidth=1.5;ctx.stroke();}
+    else{ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#B0BEC5';ctx.lineWidth=1.5;ctx.stroke();}
+  });
+  /* 图例 */
+  var lx=X(xMax)-148, ly=padT+4;
+  ctx.font='11px "Segoe UI","Microsoft YaHei",sans-serif'; ctx.textAlign='left';
+  ctx.strokeStyle='#283593';ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(lx,ly+4);ctx.lineTo(lx+22,ly+4);ctx.stroke();
+  ctx.fillStyle='#37474F';ctx.fillText('拟合线（当前环境）',lx+28,ly);
+  ctx.setLineDash([5,4]);ctx.strokeStyle='#B0BEC5';ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(lx,ly+20);ctx.lineTo(lx+22,ly+20);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='#78909C';ctx.fillText('理论线 k=4π²/g',lx+28,ly+16);
+  ctx.beginPath();ctx.arc(lx+11,ly+36,4,0,7);ctx.fillStyle='#F57C00';ctx.fill();
+  ctx.fillStyle='#37474F';ctx.fillText('当前环境数据点',lx+28,ly+32);
+  ctx.beginPath();ctx.arc(lx+11,ly+52,4,0,7);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#B0BEC5';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillStyle='#78909C';ctx.fillText('其他环境数据点',lx+28,ly+48);
+  /* 空态提示 */
+  if(!pts.length){
+    ctx.fillStyle='#B0BEC5'; ctx.font='14px "Segoe UI","Microsoft YaHei",sans-serif'; ctx.textAlign='center';
+    ctx.fillText('暂无数据 —— 释放单摆并采集 (L, T) 后自动绘图',X(xMax/2),Y(yMax/2));
+  }
+  updateFitBox(cur,ft);
+}
+function updateFitBox(cur,ft){
+  var fb=$('fitBox');
+  $('chartEnv').textContent='当前环境：'+sim.env.name+'（g='+sim.env.g.toFixed(2)+'）';
+  if(!cur.length){
+    fb.innerHTML='<p class="empty">当前环境（'+sim.env.name+'）暂无数据点。释放单摆 → 计时采集 → 本图自动更新；理论参考斜率 k₀ = 4π²/g = '+(4*Math.PI*Math.PI/sim.env.g).toFixed(2)+' s²/m。</p>';
+    return;
+  }
+  if(cur.length===1){
+    var p=cur[0], g1=4*Math.PI*Math.PI*p.x/p.y;
+    fb.innerHTML='<p class="line">单点结果：L = <b>'+p.x.toFixed(2)+' m</b>，T = <b>'+Math.sqrt(p.y).toFixed(3)+' s</b> → g = 4π²L/T² = <b>'+g1.toFixed(2)+' m/s²</b>（再采一组不同 L 的数据即可线性拟合）</p>';
+    return;
+  }
+  var gFit=4*Math.PI*Math.PI/ft.a;
+  var dev=(gFit-sim.env.g)/sim.env.g*100;
+  var dc=Math.abs(dev)<=2?'good':'bad';
+  fb.innerHTML=
+    '<p class="line">拟合数据点：<b>'+cur.length+'</b> 组（仅采用当前环境） | 理论斜率 k₀ = <b>'+(4*Math.PI*Math.PI/sim.env.g).toFixed(3)+'</b> s²/m</p>'+
+    '<p class="line">拟合结果：斜率 k = <b>'+ft.a.toFixed(3)+'</b> s²/m，截距 b = <b>'+ft.b.toFixed(3)+'</b> s²（理想为 0）</p>'+
+    '<p class="line">测得重力加速度 <b>g = 4π²/k = '+gFit.toFixed(2)+' m/s²</b>，对比标准值 '+sim.env.g.toFixed(2)+'：偏差 <span class="'+dc+'">'+(dev>0?'+':'')+dev.toFixed(2)+'%</span></p>';
+}
+
+/* ================= 单摆动画 ================= */
+function drawPendulum(){
+  var c=$('pend'), ctx=fitCanvas(c);
+  var W=c.clientWidth, H=c.clientHeight;
+  ctx.clearRect(0,0,W,H);
+  var px={x:W/2,y:46};
+  var pxm=(H-118)/2;
+  var Lpx=sim.L*pxm;
+  var th=sim.th;
+  var bx=px.x+Lpx*Math.sin(th), by=px.y+Lpx*Math.cos(th);
+  var r=MASS_R[sim.m]||15;
+  var groundY=px.y+2*pxm+30;
+  /* 天花板支架 */
+  ctx.strokeStyle='#B0BEC5'; ctx.lineWidth=1.2;
+  for(var hx=-92;hx<=88;hx+=12){
+    ctx.beginPath(); ctx.moveTo(px.x+hx,px.y-22); ctx.lineTo(px.x+hx+8,px.y-32); ctx.stroke();
+  }
+  ctx.strokeStyle='#546E7A'; ctx.lineWidth=6;
+  ctx.beginPath(); ctx.moveTo(px.x-96,px.y-22); ctx.lineTo(px.x+96,px.y-22); ctx.stroke();
+  /* 竖直基准虚线 */
+  ctx.setLineDash([5,5]); ctx.strokeStyle='#CFD8DC'; ctx.lineWidth=1.2;
+  ctx.beginPath(); ctx.moveTo(px.x,px.y); ctx.lineTo(px.x,px.y+Lpx+24); ctx.stroke();
+  ctx.setLineDash([]);
+  /* 摆动轨迹弧 */
+  ctx.strokeStyle='#ECEFF1'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(px.x,px.y,Lpx,Math.PI/2-30*DEG,Math.PI/2+30*DEG); ctx.stroke();
+  /* 量角器 */
+  ctx.strokeStyle='#B0BEC5'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.arc(px.x,px.y,66,Math.PI/2-30*DEG,Math.PI/2+30*DEG); ctx.stroke();
+  ctx.font='10px Consolas,monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  for(var d=-30;d<=30;d+=5){
+    var a=Math.PI/2-d*DEG, long=(d%10===0);
+    var r1=long?56:60;
+    ctx.strokeStyle=long?'#90A4AE':'#CFD8DC'; ctx.lineWidth=long?1.6:1;
+    ctx.beginPath();
+    ctx.moveTo(px.x+r1*Math.cos(a),px.y+r1*Math.sin(a));
+    ctx.lineTo(px.x+66*Math.cos(a),px.y+66*Math.sin(a));
+    ctx.stroke();
+    if(long){ctx.fillStyle='#78909C';ctx.fillText(String(d),px.x+80*Math.cos(a),px.y+80*Math.sin(a));}
+  }
+  /* 当前角度弧 + 指针点 */
+  if(Math.abs(th)>0.4*DEG){
+    ctx.beginPath(); ctx.arc(px.x,px.y,40,Math.PI/2-th,Math.PI/2,th<0);
+    ctx.strokeStyle='#F57C00'; ctx.lineWidth=2.5; ctx.stroke();
+    var aP=Math.PI/2-th;
+    ctx.beginPath(); ctx.arc(px.x+66*Math.cos(aP),px.y+66*Math.sin(aP),3.8,0,7);
+    ctx.fillStyle='#F57C00'; ctx.fill();
+  }
+  /* 地面 */
+  ctx.strokeStyle='#CFD8DC'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(px.x-Lpx-40,groundY); ctx.lineTo(px.x+Lpx+40,groundY); ctx.stroke();
+  /* 球影 */
+  var hn=Math.max(0,Math.min(1,(groundY-by)/(2*pxm)));
+  ctx.beginPath();
+  ctx.ellipse(bx,groundY+4,r*(1.25-0.75*hn),5*(1.1-0.6*hn),0,0,7);
+  ctx.fillStyle='rgba(55,71,79,'+(0.05+0.14*(1-hn))+')'; ctx.fill();
+  /* 摆线 */
+  ctx.strokeStyle='#37474F'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(px.x,px.y); ctx.lineTo(bx,by); ctx.stroke();
+  /* 悬点 */
+  ctx.beginPath(); ctx.arc(px.x,px.y,4.5,0,7); ctx.fillStyle='#37474F'; ctx.fill();
+  /* 摆球 */
+  var grad=ctx.createRadialGradient(bx-r/3,by-r/3,r*0.15,bx,by,r);
+  grad.addColorStop(0,'#FFCC80'); grad.addColorStop(0.55,'#F57C00'); grad.addColorStop(1,'#E65100');
+  ctx.beginPath(); ctx.arc(bx,by,r,0,7);
+  ctx.fillStyle=grad; ctx.fill();
+  ctx.strokeStyle='#BF360C'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(bx-r/3,by-r/3.2,r*0.28,r*0.18,-0.6,0,7);
+  ctx.fillStyle='rgba(255,255,255,.65)'; ctx.fill();
+  /* 球旁读数 */
+  ctx.font='12px Consolas,monospace'; ctx.textAlign='center';
+  var lbl=Math.max(34,Math.min(W-34,bx+(th>=0?1:-1)*(r+40)));
+  ctx.fillStyle='#455A64';
+  ctx.fillText('θ='+(th>=0?'+':'')+(th*RAD).toFixed(1)+'°',lbl,Math.max(16,by-10));
+  ctx.fillStyle='#90A4AE'; ctx.font='11px Consolas,monospace';
+  ctx.fillText('m='+sim.m.toFixed(2)+'kg',lbl,by+8);
+  /* HUD 左上 */
+  ctx.textAlign='left'; ctx.font='11px Consolas,monospace'; ctx.fillStyle='#B0BEC5';
+  ctx.fillText('L='+sim.L.toFixed(2)+'m  g='+sim.env.g.toFixed(2)+'m/s²  m='+sim.m.toFixed(2)+'kg',12,16);
+  /* 底部状态行 */
+  ctx.textAlign='center'; ctx.font='bold 13px "Segoe UI","Microsoft YaHei",sans-serif';
+  if(sim.phase==='idle'){
+    ctx.fillStyle='#F57C00';
+    ctx.fillText('已就绪：θ₀ = '+(sim.th0*RAD).toFixed(0)+'° · 点击【释放摆球】开始实验',W/2,H-14);
+  }else if(sim.phase==='paused'){
+    ctx.fillStyle='#5C6BC0'; ctx.fillText('已暂停（计时同步暂停）',W/2,H-14);
+  }else{
+    ctx.fillStyle='#90A4AE'; ctx.font='12px Consolas,monospace';
+    ctx.fillText('运行中 · t = '+sim.t.toFixed(1)+' s'+(sim.measT?' · 实测 T = '+sim.measT.toFixed(3)+' s':''),W/2,H-14);
+  }
+}
+
+/* ================= 仪表读数 ================= */
+function updateMeters(){
+  $('mTheta').textContent=(sim.th>=0?'+':'')+(sim.th*RAD).toFixed(1)+'°';
+  $('mTth').textContent=TTheory().toFixed(3)+' s';
+  $('mTm').textContent=sim.measT?sim.measT.toFixed(3)+' s':'—';
+  $('mG').textContent=sim.env.g.toFixed(2)+' m/s²';
+}
+
+/* ================= 主循环 ================= */
+var lastTs=performance.now(), acc=0, FIXED=0.001;
+function loop(ts){
+  var dtReal=Math.min((ts-lastTs)/1000,0.05); lastTs=ts;
+  if(sim.phase==='running'){
+    acc+=dtReal*sim.speed;
+    var guard=0;
+    while(acc>=FIXED&&guard<600){stepPhysics(FIXED);acc-=FIXED;guard++;}
+    if(guard>=600) acc=0;
+  }
+  drawPendulum(); updateMeters(); updateMeasureUI();
+  requestAnimationFrame(loop);
+}
+
+/* ================= toast ================= */
+var lastCancelToast=0;
+function toast(msg,type){
+  var box=$('toasts'), t=document.createElement('div');
+  t.className='toast '+(type||'');
+  t.textContent=msg; box.appendChild(t);
+  setTimeout(function(){t.style.transition='opacity .4s';t.style.opacity='0';
+    setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},400);},3200);
+}
+
+/* ================= 随堂小测 ================= */
+var QUIZ=[
+  {q:'同一单摆从地球移到月球（g 由 9.8 m/s² 变为 1.62 m/s²），其周期将？',
+   opts:['变长','变短','保持不变','先变长后变短'], ans:0,
+   exp:'由 T = 2π√(L/g)：g 减小而 L 不变，周期<b>变长</b>，且与摆球质量、摆角无关。月球上周期约为地球的 √(9.8/1.62) ≈ <b>2.46 倍</b>——回到课件顶部把重力环境切到"月球"再释放，单摆明显变慢，可直接验证。'},
+  {q:'把单摆的初始摆角从 3° 增大到 25°（摆长、质量不变），其周期将？',
+   opts:['明显增大','基本不变（仅略微增大）','明显减小','先减小后增大'], ans:1,
+   exp:'小角度近似下 T 与 θ₀ 无关；实际上大摆角时周期略增：θ₀ = 25° 约增大 <b>1.2%</b>（θ₀ = 30° 约增大 1.7%），肉眼几乎不可分辨，但对 g 的精确测量已是显著误差——这就是实验要求 <b>θ &lt; 5°</b> 的原因。可在课件中把 θ₀ 滑到 30°，对比"理论 T"与"实测 T"。'},
+  {q:'要使单摆周期增大到原来的 2 倍，摆长应调整为原来的？',
+   opts:['2 倍','4 倍','√2 倍','1/2 倍'], ans:1,
+   exp:'因 T ∝ √L，T 变为 2 倍需要 L 变为 <b>4 倍</b>（2² = 4）。用课件验证：L = 0.50 m 时 T ≈ 1.42 s，L = 2.00 m（恰为 4 倍）时 T ≈ 2.84 s，比值恰为 2:1；在 T²–L 图上两组数据落在同一条过原点直线上。'}
+];
+var answered=[];
+function buildQuiz(){
+  var box=$('quizBox'); box.innerHTML=''; answered=[null,null,null];
+  QUIZ.forEach(function(item,qi){
+    var div=document.createElement('div'); div.className='quiz-q';
+    var opts=item.opts.map(function(o,oi){
+      return '<button class="opt" data-q="'+qi+'" data-o="'+oi+'">'+String.fromCharCode(65+oi)+'. '+o+'</button>';
+    }).join('');
+    div.innerHTML='<div class="q-title"><span class="q-no">'+(qi+1)+'</span>'+item.q+'</div>'+opts+'<div class="explain" id="exp'+qi+'" hidden></div>';
+    box.appendChild(div);
+  });
+  updateScore();
+}
+function updateScore(){
+  var done=0,right=0;
+  answered.forEach(function(a){if(a!==null){done++;if(a)right++;}});
+  $('quizScore').textContent=right+'/3';
+  $('quizDone').textContent=done+'/3';
+  var fin=$('quizFinal');
+  if(done===3){
+    fin.hidden=false;
+    fin.textContent = right===3?'3/3 全对！规律已经吃透——这正是"先虚拟预演、再进实验室"想要达到的效果。':'完成作答：'+right+'/3。答错的题目请展开解析，回到上方课件里亲手验证一遍。';
+  }else fin.hidden=true;
+}
+$('quizBox').addEventListener('click',function(e){
+  var b=e.target.closest('.opt'); if(!b) return;
+  var qi=parseInt(b.dataset.q,10), oi=parseInt(b.dataset.o,10);
+  if(answered[qi]!==null) return;
+  var ok=(oi===QUIZ[qi].ans);
+  answered[qi]=ok;
+  var box=$('quizBox');
+  box.querySelectorAll('.opt[data-q="'+qi+'"]').forEach(function(x){
+    x.disabled=true;
+    if(parseInt(x.dataset.o,10)===QUIZ[qi].ans)x.classList.add('correct');
+    else if(parseInt(x.dataset.o,10)===oi)x.classList.add('wrong');
+  });
+  var exp=$('exp'+qi); exp.hidden=false;
+  exp.innerHTML=(ok?'<b class="ok">回答正确。</b> ':'<b class="bad">正确答案是 '+String.fromCharCode(65+QUIZ[qi].ans)+'，再想一想——</b> ')+QUIZ[qi].exp;
+  updateScore();
+});
+
+/* ================= 事件绑定 ================= */
+$('btnGo').addEventListener('click',go);
+$('btnReset').addEventListener('click',function(){resetSwing();toast('已复位到初始摆角','info');});
+$('rangeL').addEventListener('input',function(e){setL(parseFloat(e.target.value));});
+$('rangeTh').addEventListener('input',function(e){setTheta(parseInt(e.target.value,10));});
+$('envSeg').addEventListener('click',function(e){var b=e.target.closest('button');if(b)setEnv(parseInt(b.dataset.e,10),b);});
+$('massSeg').addEventListener('click',function(e){var b=e.target.closest('button');if(b)setMass(parseFloat(b.dataset.m),b);});
+$('spdSeg').addEventListener('click',function(e){var b=e.target.closest('button');if(b)setSpeed(parseFloat(b.dataset.s),b);});
+$('btnWatchStart').addEventListener('click',watchStart);
+$('btnWatchStop').addEventListener('click',watchStop);
+$('btnAuto').addEventListener('click',autoStart);
+$('btnClear').addEventListener('click',function(){records=[];renderTable();drawChart();toast('数据已清空','info');});
+$('dBody').addEventListener('click',function(e){
+  var b=e.target.closest('.del'); if(!b) return;
+  records.splice(parseInt(b.dataset.del,10),1);
+  renderTable(); drawChart();
+});
+$('btnQuizReset').addEventListener('click',function(){buildQuiz();toast('小测已重置','info');});
+window.addEventListener('resize',drawChart);
+
+/* ================= 初始化 ================= */
+fillRange($('rangeL')); fillRange($('rangeTh'));
+updateGoBtn(); updateMeasureUI(); renderTable(); buildQuiz();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

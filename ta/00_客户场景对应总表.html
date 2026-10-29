@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TA教育版 · 高校客户×演示场景对应总表（销售手册 2026-10-29）</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Microsoft YaHei","微软雅黑",sans-serif; background:#F4F6FA; color:#1F2937; line-height:1.65; }
+  a { color:#0B57A4; text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .container { max-width:1200px; margin:0 auto; padding:24px 20px 80px; }
+  header.hero { background:linear-gradient(135deg,#0A2E5C 0%,#0B57A4 60%,#1273D1 100%); color:#fff; border-radius:14px; padding:30px 34px; margin-bottom:22px; box-shadow:0 6px 24px rgba(10,46,92,.22); }
+  header.hero h1 { font-size:26px; letter-spacing:.5px; }
+  header.hero .sub { font-size:14px; opacity:.92; margin-top:8px; }
+  header.hero .badges { margin-top:14px; display:flex; flex-wrap:wrap; gap:8px; }
+  .badge { background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.35); border-radius:999px; padding:3px 14px; font-size:12.5px; }
+  .badge b { color:#FFD54F; }
+  nav.quick { background:#fff; border-radius:12px; padding:12px 18px; margin-bottom:22px; box-shadow:0 2px 10px rgba(15,40,80,.08); position:sticky; top:8px; z-index:50; display:flex; flex-wrap:wrap; gap:6px 14px; font-size:13.5px; }
+  nav.quick a { color:#0B57A4; font-weight:600; }
+  section.card { background:#fff; border-radius:14px; padding:26px 30px; margin-bottom:22px; box-shadow:0 2px 12px rgba(15,40,80,.07); }
+  h2.sec { font-size:19px; color:#0A2E5C; border-left:5px solid #1273D1; padding-left:12px; margin-bottom:16px; }
+  h3 { font-size:15.5px; color:#0B57A4; margin:18px 0 8px; }
+  p.note { font-size:13.5px; color:#4B5563; }
+  .legend { display:flex; flex-wrap:wrap; gap:10px; margin:10px 0 14px; font-size:12.5px; }
+  .tag { display:inline-block; border-radius:4px; padding:1px 8px; font-size:12px; font-weight:600; margin-right:4px; white-space:nowrap; }
+  .tg-A { background:#E3F2FD; color:#0B57A4; }
+  .tg-B { background:#E8F5E9; color:#1B5E20; }
+  .tg-C { background:#FFF3E0; color:#E65100; }
+  .tg-new { background:#C62828; color:#fff; }
+  .tg-online { background:#F3E5F5; color:#6A1B9A; }
+  table { width:100%; border-collapse:collapse; font-size:13px; margin:10px 0; }
+  th { background:#0A2E5C; color:#fff; padding:8px 10px; text-align:left; font-weight:600; border:1px solid #0A2E5C; }
+  td { border:1px solid #D7DEE8; padding:8px 10px; vertical-align:top; background:#fff; }
+  tr:nth-child(even) td { background:#F8FAFD; }
+  td.k { font-weight:700; color:#0A2E5C; white-space:nowrap; }
+  .cust { margin-bottom:14px; border:1px solid #D7DEE8; border-radius:10px; overflow:hidden; }
+  .cust .head { background:linear-gradient(90deg,#EAF3FC,#F7FAFE); padding:10px 14px; display:flex; flex-wrap:wrap; align-items:center; gap:8px; border-bottom:1px solid #D7DEE8; }
+  .cust .head .name { font-size:15.5px; font-weight:700; color:#0A2E5C; }
+  .cust .head .pos { font-size:12.5px; background:#0B57A4; color:#fff; border-radius:4px; padding:2px 8px; }
+  .cust .body { padding:12px 14px; font-size:13px; }
+  .cust .body b.lbl { color:#1B5E20; }
+  .cust .row { margin:4px 0; }
+  .demo-list { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0; }
+  .demo-pill { background:#EAF3FC; border:1px solid #B9D4EE; border-radius:6px; padding:3px 10px; font-size:12.5px; }
+  .demo-pill a { font-weight:600; }
+  .path-note { font-size:12px; color:#6B7280; }
+  .arrowflow { display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:12.5px; margin:8px 0; }
+  .step { background:#fff; border:1px solid #B9D4EE; border-radius:6px; padding:4px 10px; }
+  .step b { color:#0B57A4; }
+  .flow-arrow { color:#0B57A4; font-weight:700; }
+  .decision li { margin:6px 0; font-size:13.5px; }
+  .warn { background:#FFF8E1; border-left:4px solid #F9A825; border-radius:6px; padding:10px 14px; font-size:13px; margin:10px 0; }
+  .ok { background:#E8F5E9; border-left:4px solid #43A047; border-radius:6px; padding:10px 14px; font-size:13px; margin:10px 0; }
+  footer { text-align:center; font-size:12px; color:#6B7280; padding:20px 0 10px; }
+  .small { font-size:12px; color:#6B7280; }
+  @media print { nav.quick{display:none} body{background:#fff} section.card{box-shadow:none;border:1px solid #ccc} }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header class="hero">
+  <h1>TA教育版 高校客户 × 演示场景对应总表</h1>
+  <div class="sub">销售/产品经理拜访手册 · 依据《TA教育版高校场景与实现依赖清单（20261029）》编制 · 2026年10月29日</div>
+  <div class="badges">
+    <span class="badge">定位：中国电信自研 <b>私有化部署</b> 高校AI智能体平台（数据不出校）</span>
+    <span class="badge">本次新增演示物 <b>8 件</b>（本库内双击即开）</span>
+    <span class="badge">覆盖客户 <b>13 类</b>（在库 10 + 拓展 3）</span>
+    <span class="badge">口诀：<b>进门看人、学科看表、收口看板</b></span>
+  </div>
+</header>
+
+<nav class="quick">
+  <a href="#howto">使用说明</a>·
+  <a href="#main">客户对应总表（核心）</a>·
+  <a href="#six">六大场景索引</a>·
+  <a href="#new">本次新增 8 件</a>·
+  <a href="#exist">已有资产盘点</a>·
+  <a href="#gap">缺口与边界</a>·
+  <a href="#tree">30 秒选场景</a>
+</nav>
+
+<section class="card" id="howto">
+  <h2 class="sec">一、使用说明（拜访前 3 分钟看这里）</h2>
+  <p class="note"><b>演示物分级：</b></p>
+  <div class="legend">
+    <span><span class="tag tg-A">A 标准技能</span>TA 现场跑（公文/纪要/批改/学情等，装好即用，无需准备）</span>
+    <span><span class="tag tg-B">B 本地演示物</span>单文件网页，<b>双击即开</b>，内网可用，本库 8 件 + 工作空间既有成品</span>
+    <span><span class="tag tg-C">C 线上演示页</span>已发布 GitHub Pages，可现场联网打开，也可拷本地</span>
+  </div>
+  <p class="note"><b>15 分钟标准拜访节奏</b>（可按对象裁剪）：</p>
+  <div class="arrowflow">
+    <span class="step"><b>0-2'</b> 开场：校级运营看板或专场单页（领导在就看板）</span><span class="flow-arrow">→</span>
+    <span class="step"><b>2-7'</b> 学科主场：按客户学科打开对应演示物（本文第二部分选）</span><span class="flow-arrow">→</span>
+    <span class="step"><b>7-10'</b> 场景扩散：教学/科研/行政 A 级技能现场跑一件</span><span class="flow-arrow">→</span>
+    <span class="step"><b>10-13'</b> 试点路径：一期小切口（行政办公+备课批改+制度问答）</span><span class="flow-arrow">→</span>
+    <span class="step"><b>13-15'</b> 收口：约定试点学院 + 设备/制度/图库定制清单</span>
+  </div>
+  <div class="warn"><b>三条纪律：</b>①诊断识别类（病虫害/病历）必须先声明"正式版依赖贵校教师共建图库"，演示版是样板；②MCP 查课表/会议需对方系统开放接口，POC 由 FDE 承担，不做过度承诺；③与真实设备联动控制、成绩回写属二开边界，如实说明。</div>
+</section>
+
+<section class="card" id="main">
+  <h2 class="sec">二、客户 × 场景对应总表（核心：什么客户用什么）</h2>
+
+  <div class="cust">
+    <div class="head"><span class="name">1. 闽江大学（先进制造学院）</span><span class="pos">在库 · 工科机电【王牌场景】</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">客户背景：</b>智能制造实训平台校企合作论证已完成，TA 私有化部署建议书推进中；切入点=机电一体化、机器人及智能制造、工业数字孪生三类实训。</div>
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">① SCARA 机械臂拾放码垛 3D 实训单元 <a href="https://cecilia319.github.io/my-tools/demo/scara-robot-light.html" target="_blank">[线上版]</a><span class="tag tg-C">C</span></span>
+        <span class="demo-pill">⑥ 五轴数控加工数字孪生 <a href="学科演示物/06_工科_五轴数控加工数字孪生演示.html">[本地打开]</a><span class="tag tg-new">本次新增</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>SCARA 开机即演"设备数字化孪生"→ 切五轴数控讲"参数联动+G 代码教学"→ 话术"按你们实训室设备清单，数控/AGV/工业机器人每台都能做，单项约半天"。</div>
+      <div class="row"><b class="lbl">辅助：</b>课题申报全流程（A）、公文纪要（A）、机电仿真实验室与 5G 远程监测两场景先行试点方案。</div>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="head"><span class="name">2. 福建警察学院</span><span class="pos">在库 · 公安特色【课程级成品最全】</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">客户背景：</b>10-28 走访完成 TA 上门讲解；在谈=AI 赋能教育试点申报（任务 6 生成课程+任务 9 智能体分身）、AI 大赛 token、课程建设与数字人方案、视频关键字截取（FDE）、网络仿真教学 AI 辅助。</div>
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">视频侦查技术第 5 章互动课（信息研判·10·16 金铺案）<span class="tag tg-B">B</span><span class="path-note">（工作空间：视频侦查技术第5章互动课-信息研判.html）</span></span>
+        <span class="demo-pill">课程整体设计网页版 <span class="tag tg-B">B</span><span class="path-note">（工作空间）</span></span>
+        <span class="demo-pill">情报分析初步互动课件 <span class="tag tg-B">B</span><span class="path-note">（10-28 成品）</span></span>
+        <span class="demo-pill">⑦ 心脏解剖交互演示（法医/刑事科学技术方向拓展）<a href="学科演示物/01_医学_心脏解剖结构交互演示.html">[本地打开]</a><span class="tag tg-new">本次新增</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>信息研判互动课走一遍"虚拟案件-四轮决策-决策留痕"→ 这就是<b>试点任务 6"生成一门课"的样子</b>：一门课拆成若干交互单元，决策链留痕=公安教学"程序合规"天然契合 → 教师数字分身=任务 9"智能体分身"（答疑、安全培训）。</div>
+      <div class="row"><b class="lbl">辅助：</b>专网/脱敏（A）、制度问答（校规校纪入库）、警校 TA 专场单页 v2.2（TeleAgent1014 目录）。</div>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="head"><span class="name">3. 福州大学</span><span class="pos">在库 · 教师办公减负 + 化学学院</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">客户背景：</b>已完成 4 位教师走访（人文/外语/土木/体育）；知途好课+数算一体化平台合同推进中；主打"上课用知途，办公用 TA"差异化。</div>
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">4 学科 8 份演示成果（学情报告/作文四维诊断/课题申报书/文献综述/实验报告/毕设预警/体测分析/运动会编排）<span class="tag tg-B">B</span><span class="path-note">（teleagent\培训素材\）</span></span>
+        <span class="demo-pill">③ 酸碱滴定互动实验（化学学院/环资）<a href="学科演示物/03_化学_酸碱中和滴定互动实验.html">[本地打开]</a><span class="tag tg-new">本次新增</span></span>
+        <span class="demo-pill">② 单摆实验（理工基础课）<a href="学科演示物/02_物理_单摆测重力加速度互动实验.html">[本地打开]</a><span class="tag tg-new">本次新增</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>用苏文亮老师的课题申报书、翁凡茸老师的作文诊断开场（"你上次说 90 分钟批一班作业，TA 是 5 分钟"）→ 化学学院专场滴定实验"突跃动画把教材静态图变活"。</div>
+      <div class="row"><b class="lbl">辅助：</b>论文格式校准秒级报告（TeleAgent1014 交互版 v2.2）、文献链路、Excel 汇总。</div>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="head"><span class="name">4. 福建农林大学</span><span class="pos">在库 · 农林海洋【本次新增定制】</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">客户背景：</b>信创包 3（306 万）长期合作；客户覆盖农学院/植保方向；农林为 TA 学科空白，本件即补位样板。</div>
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">④ 作物病虫害智能识别问答（水稻/柑橘/茶叶·福建作物）<a href="学科演示物/04_农林_作物病虫害智能识别问答.html">[本地打开]</a><span class="tag tg-new">本次新增</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>现场走"问诊决策树"：作物→部位→特征 → 疑似病害 TOP3 → 再演示"图像识别模拟"（置信度 83% 出结果）→ 话术"植保专家经验做成知识库沉淀，样本图库需学院共建——共建本身就是我们校企合作的切入点"。<b>必须先讲明框架依赖图库共建（页面顶部已声明）</b>。</div>
+      <div class="row"><b class="lbl">辅助：</b>海洋帆船情境视频（成品）、文献链路（农学综述）、课题申报。</div>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="head"><span class="name">5. 福建师范大学</span><span class="pos">在库 · 财务处 B 端 + C 端讲座</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">客户背景：</b>TA 私有化复用闽江方案推进；B 端=财务处应用场景研究（鸿信先上→FDE 评估），C 端=借部署开 AI 讲座（李亮/许佳客情）。</div>
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">行政办公 16 项技能之财务四件套：Excel 汇总合并/图表、数据脱敏外发、报表填报、公文审核 <span class="tag tg-A">A 现场跑</span></span>
+        <span class="demo-pill">⑧ 校级 Token 运营看板（给校领导）<a href="校级运营/08_校级_TOKEN与技能运营治理看板.html">[本地打开]</a><span class="tag tg-new">本次新增</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>财务处场景先跑脱敏（"报销数据外发一键脱敏"）→ 领导层场景打开 Token 看板："钱花在哪、谁在用、能力边界在哪，一目了然——这是学校能管能控能运营"。</div>
+      <div class="row"><b class="lbl">辅助：</b>师范版备课五件套（同第 10 条师范定位）、微格教学分身陪练。</div>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="head"><span class="name">6. 福建教育学院</span><span class="pos">在库 · 师范教育主战场</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">客户背景：</b>10-21 来访（吴承祯书记）已完成 TA 专场+调研报告；商机=新校区信息化（3.798 亿）+AI 智慧校园；学院本身就是教师培训基地=k12 技能族 96 项的直接买方。</div>
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">备课五件套：智能备课/教案助写/互动课件/作业批改/学情分析 <span class="tag tg-A">A 现场跑</span></span>
+        <span class="demo-pill">教师数字分身（模拟学生陪练/7×24 答疑）<span class="tag tg-A">A</span></span>
+        <span class="demo-pill">⑧ 校级运营看板（面向校长培训班讲解"学校怎么管 AI"）<a href="校级运营/08_校级_TOKEN与技能运营治理看板.html">[本地打开]</a><span class="tag tg-new">本次新增</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>这里是唯一"96 项 K12 技能族全量适用"的客户——对着教师培训课程表现场生成一件教案 → 分身扮演学生让老师提问 → 话术"你们培训全省教师，TA 就是教师们的 AI 工作台"。</div>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="head"><span class="name">7. 三明学院</span><span class="pos">在库 · AI 讲座 + 计算机</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">客户背景：</b>10-25 已完成 AI 讲座支撑（FDE 调度）；师范+应用型综合院校。</div>
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">AI 讲座成套交付（组织流程+课件）<span class="tag tg-B">B</span><span class="path-note">（teleagent\培训素材\三明学院\）</span></span>
+        <span class="demo-pill">iCAN 大赛 TA 能力对比页<span class="tag tg-B">B</span><span class="path-note">（工作空间：iCAN大赛-TeleAgent能力对比.html）</span></span>
+        <span class="demo-pill">托卡马克交互动画（理工讲座互动素材）<span class="tag tg-B">B</span><span class="path-note">（工作空间）</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>讲座模式跑通后，向教务/信息中心推"讲座→选修课→学院试点"三级路径；计算机学院用"TA 教思路+实训平台练手"组合口径（不承诺代码评测，属边界）。</div>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="head"><span class="name">8. 闽西职业技术学院</span><span class="pos">在库 · 高职实训</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">客户背景：</b>龙岩（曾文姬）商机跟进；人工智能实训室建设方案及报价已在谈；职教定位"TA+AI 实训平台"绑定销售。</div>
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">AI 创课 Demo（学生一天出参赛作品）<span class="tag tg-A">A</span></span>
+        <span class="demo-pill">⑥ 五轴数控 <a href="学科演示物/06_工科_五轴数控加工数字孪生演示.html">[本地打开]</a><span class="tag tg-new">本次新增</span></span>
+        <span class="demo-pill">SCARA 机械臂 <a href="https://cecilia319.github.io/my-tools/demo/scara-robot-light.html" target="_blank">[线上版]</a><span class="tag tg-C">C</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>职校正解=实训演示物+实训平台报价单一起带；按专业换皮快（数控/机电/汽修）。</div>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="head"><span class="name">9. 福建海洋职业技术学校</span><span class="pos">在库 · 高职海洋特色【本次新增定制】</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">客户背景：</b>AI 赋能教育试点申报（10-30 截止，任务 6 教学模式变革+任务 11 创新工具），3000 万二期项目统筹；海洋特色专业（航海/水产/海洋工程）。</div>
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">⑦ 潮汐原理与潮汐能交互演示<a href="学科演示物/07_海洋_潮汐原理与潮汐能交互演示.html">[本地打开]</a><span class="tag tg-new">本次新增</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>打开潮汐课件直接讲：<b>"这就是试点任务 6'生成一门课'的样子——海洋水文课拆成若干这样的交互单元"</b>→ 引潮力动画→大潮小潮→潮汐能（平潭潮汐电站是福建名片）→ 收口"航海气象、水产养殖都能按专业方向定制"。</div>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="head"><span class="name">10. 泉州师范学院（及全省师范类）</span><span class="pos">拓展 · 师范版本标杆客户</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">客户背景：</b>师范类院校"K12 技能族迁移成本最低"（全景文档 P0 判断）；微格教学、教资备考、教学法课程是特色抓手。</div>
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">备课五件套+数字分身陪练 <span class="tag tg-A">A</span></span>
+        <span class="demo-pill">⑤ 模拟法庭情境推演（政法/社科兼用）<a href="学科演示物/05_经管法_模拟法庭情境推演.html">[本地打开]</a><span class="tag tg-new">本次新增</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>微格教室场景：分身扮演"模拟学生"让师范生试讲 → AI 从学生视角追问 → 教学法即时点评；话术"未来教师的 AI 教练"。</div>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="head"><span class="name">11. 福建医科大学（及医学院校）</span><span class="pos">拓展 · 学科最大空白=最大卖点</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">客户背景：</b>全景文档判定"优先级最高的一项学科孵化：解剖 3D 演示物+病例引导讨论"；当前无任何在库医学客户，本件为敲门砖。</div>
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">① 心脏解剖结构交互演示（15 结构点读+血流动画+心动周期）<a href="学科演示物/01_医学_心脏解剖结构交互演示.html">[本地打开]</a><span class="tag tg-new">本次新增</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>点二尖瓣→临床意义弹出（二尖瓣狭窄）"课件自带临床钩子" → 血流循环动画 2 倍速 → 话术"呼吸系统、神经系统、病例讨论都能按教研室定制，与医学教师共创是前提"。<b>正式版依赖多模态模型与校本素材库，先声明再演示</b>。</div>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="head"><span class="name">12. 高校行政条线（全校通用：校办/教务/科研处）</span><span class="pos">通用 · 见效最快的小切口</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">客户背景：</b>清单文档判定"校务治理=见效最快的切入"；16 项行政技能全部即装即用。</div>
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">公文写作/会议纪要（录音转纪要）/工作总结/PPT/Excel 汇总/数据脱敏 <span class="tag tg-A">A 现场跑</span></span>
+        <span class="demo-pill">校本制度问答（制度文件入库即答，附条款出处）<span class="tag tg-A">A</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>给教务处现场演示"一份通知 30 秒出稿"；制度问答需校方提供制度文件（一句话收集口径）。</div>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="head"><span class="name">13. 校领导/合作洽谈场合（来访汇报、展厅、立项会）</span><span class="pos">通用 · 门面与顶层</span></div>
+    <div class="body">
+      <div class="row"><b class="lbl">主打演示物：</b></div>
+      <div class="demo-list">
+        <span class="demo-pill">⑧ 校级 Token 运营治理看板（1326 万 Token 怎么管）<a href="校级运营/08_校级_TOKEN与技能运营治理看板.html">[本地打开]</a><span class="tag tg-new">本次新增</span></span>
+        <span class="demo-pill">按校定制 TA 专场单页（警校 v2.2 等多版本）<span class="tag tg-B">B</span><span class="path-note">（TeleAgent1014\ 目录，当日可换头图换数据）</span></span>
+      </div>
+      <div class="row"><b class="lbl">演示动线：</b>领导只关心三件事：钱花哪了/风险可控吗/资产沉淀在哪——看板三块正好回答（额度可查、技能按角色授权+内容安全审计、三级资料库）。</div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="six">
+  <h2 class="sec">三、六大场景覆盖索引（对齐清单文档）</h2>
+  <table>
+    <tr><th style="width:14%">场景类别</th><th style="width:40%">演示什么</th><th style="width:25%">演示物/载体</th><th>打动对象</th></tr>
+    <tr><td class="k">教师教学</td><td>备课→课件→互动课件→批改→学情闭环；互动课件发布手机即玩</td><td>A 级技能五件套；02/03 物理/化学课件</td><td>教师、教务处</td></tr>
+    <tr><td class="k">学生学习</td><td>引导式学习、费曼检验、错题变式、校园事务问答</td><td>A 级学习技能族（需开学生账号）</td><td>学工、团委</td></tr>
+    <tr><td class="k">科研学术</td><td>课题申报→文献链路→论文校准→润色去 AI 化</td><td>A 级科研 6 项；学位论文校准 v2.2</td><td>科研处、教师</td></tr>
+    <tr><td class="k">校务治理</td><td>公文 16 项、制度问答、跨系统查询（MCP 打样）</td><td>A 级行政族；MCP 查课表 POC（FDE）</td><td>校办、信息中心</td></tr>
+    <tr><td class="k">实训学科数字化</td><td>设备孪生、实验预演、解剖 3D、病虫害识别、模拟法庭、潮汐</td><td>SCARA、01-07 号演示物（本库）</td><td>各学院、实训中心</td></tr>
+    <tr><td class="k">校级管理运营</td><td>Token 看板、技能治理、安全审计、知识资产</td><td>08 号看板（本库）；管理后台</td><td>校领导</td></tr>
+  </table>
+</section>
+
+<section class="card" id="new">
+  <h2 class="sec">四、本次新增演示物（8 件，2026-10-29 由 TA 生成）</h2>
+  <p class="note">全部为<b>单文件 HTML：双击即开、纯本地、零外部依赖、内网可用</b>；源自 TA 教育版生成能力，即是"TA 能生成什么样内容"的自我证明。</p>
+  <table>
+    <tr><th>#</th><th>演示物</th><th>学科/场景</th><th>适用客户</th><th>核心交互</th><th>大小</th></tr>
+    <tr><td>01</td><td><a href="学科演示物/01_医学_心脏解剖结构交互演示.html">医学心脏解剖交互演示</a></td><td>医学（学科最大空白）</td><td>医学院校拓展、警校刑技</td><td>15 结构点读 / 血流动画 / 心动周期 / 小测</td><td>41KB</td></tr>
+    <tr><td>02</td><td><a href="学科演示物/02_物理_单摆测重力加速度互动实验.html">物理单摆实验</a></td><td>理科·物理</td><td>福大、师院、理工院校</td><td>RK4 真实摆动 / 地月火切换 / 质量不改周期 / 自动拟合 g</td><td>50KB</td></tr>
+    <tr><td>03</td><td><a href="学科演示物/03_化学_酸碱中和滴定互动实验.html">化学酸碱滴定实验</a></td><td>理科·化学</td><td>福大化学、药学环资</td><td>逐滴滴定 / pH 实时 / 强弱酸曲线对比 / 终点判断</td><td>52KB</td></tr>
+    <tr><td>04</td><td><a href="学科演示物/04_农林_作物病虫害智能识别问答.html">农林病虫害识别问答</a></td><td>农林（福建作物）</td><td>福建农林大学</td><td>问诊决策树 / 图像识别模拟 / 防治日历 / 小测</td><td>62KB</td></tr>
+    <tr><td>05</td><td><a href="学科演示物/05_经管法_模拟法庭情境推演.html">模拟法庭情境推演</a></td><td>经管法（空白孵化）</td><td>法学院、师院政法</td><td>4 决策点 / 民法典 6 条自动弹出 / 证据链评分</td><td>52KB</td></tr>
+    <tr><td>06</td><td><a href="学科演示物/06_工科_五轴数控加工数字孪生演示.html">五轴数控加工孪生</a></td><td>工科机电</td><td>闽江、闽西职院</td><td>3 工序 / 参数联动质量警示 / 三轴vs五轴 / G 代码高亮</td><td>62KB</td></tr>
+    <tr><td>07</td><td><a href="学科演示物/07_海洋_潮汐原理与潮汐能交互演示.html">海洋潮汐与潮汐能</a></td><td>海洋特色</td><td>海洋职校</td><td>地月日动画 / 大小潮 / 潮位曲线 / 潮汐能发电</td><td>47KB</td></tr>
+    <tr><td>08</td><td><a href="校级运营/08_校级_TOKEN与技能运营治理看板.html">校级 Token 运营看板</a></td><td>校级管理运营</td><td>全部校领导场合</td><td>时间档切换 / 部门下钻 / 技能治理抽屉 / 个人画像</td><td>47KB</td></tr>
+  </table>
+</section>
+
+<section class="card" id="exist">
+  <h2 class="sec">五、既有演示物资产盘点（已验证成品，勿重复制作）</h2>
+  <table>
+    <tr><th>资产</th><th>类型</th><th>形式</th><th>位置</th><th>适用客户</th></tr>
+    <tr><td>SCARA 机械臂拾放码垛 3D 实训单元（明暗双主题）</td><td>实训·王牌</td><td class="k">C 线上</td><td>GitHub Pages（cecilia319/my-tools）</td><td>闽江、闽西职院、机电类</td></tr>
+    <tr><td>浮力实验互动课件</td><td>理科</td><td class="k">C 线上</td><td>GitHub Pages（同上）</td><td>物理基础课</td></tr>
+    <tr><td>视频侦查技术·课程大纲/一页演示/第 5 章互动课</td><td>公安课程级</td><td class="k">B 本地</td><td>TeleAgent 工作空间</td><td>警察学院（试点任务 6 样板）</td></tr>
+    <tr><td>情报分析初步互动课件</td><td>公安</td><td class="k">B 本地</td><td>TeleAgent 工作空间</td><td>警察学院</td></tr>
+    <tr><td>学位论文格式校准交互报告 v2.2</td><td>科研</td><td class="k">B 本地</td><td>teleagent\TeleAgent1014\</td><td>科研处、毕业论文季</td></tr>
+    <tr><td>警校 TA 专场单页 v2.2（可换皮多校版）</td><td>门面</td><td class="k">B 本地</td><td>teleagent\TeleAgent1014\</td><td>来访接待、汇报</td></tr>
+    <tr><td>福大 4 学科演示素材 + 8 份成果</td><td>教师减负</td><td class="k">B 本地</td><td>teleagent\培训素材\</td><td>福州大学及同类高校</td></tr>
+    <tr><td>三明学院 AI 讲座成套素材</td><td>讲座</td><td class="k">B 本地</td><td>teleagent\培训素材\三明学院\</td><td>三明学院、讲座类推广</td></tr>
+    <tr><td>iCAN 大赛 TA 能力对比页</td><td>大赛</td><td class="k">B 本地</td><td>TeleAgent 工作空间</td><td>双创学院、团委</td></tr>
+    <tr><td>托卡马克交互动画</td><td>理科拓展</td><td class="k">B 本地</td><td>TeleAgent 工作空间</td><td>理工讲座互动素材</td></tr>
+    <tr><td>海洋帆船情境视频 / 簪花文创全流程</td><td>多模态</td><td class="k">B 本地</td><td>成品库（多模态生成）</td><td>农林海洋、大赛双创</td></tr>
+    <tr><td>文旅 AI 导游全流程示范（应用+需求+产品文档）</td><td>应用开发</td><td class="k">B 本地</td><td>成品库</td><td>计算机学院、双创</td></tr>
+  </table>
+  <p class="path-note">注：GitHub Pages 入口 https://cecilia319.github.io/my-tools/demo/ （scara/浮力实验）；本地"工作空间"指 TeleAgent 工作空间根目录。带客户信息的专场页面勿公网外发。</p>
+</section>
+
+<section class="card" id="gap">
+  <h2 class="sec">六、缺口与边界（诚实口径，先讲依赖再演示）</h2>
+  <table>
+    <tr><th>场景</th><th>依赖前提</th><th>口径要点</th></tr>
+    <tr><td>病虫害识别 / 病例引导 / 标本鉴别</td><td><b>校本图库与素材库共建</b>（无图库不成立）</td><td>演示版明示为样板；共建即校企合作切入点</td></tr>
+    <tr><td>制度问答 / 课程知识问答</td><td>制度文件、教材讲义<b>入库</b>（校办/教务/学工提供）</td><td>收集口径一句话：给文件就能答</td></tr>
+    <tr><td>跨系统查询（课表/会议/工资）</td><td><b>MCP+对方系统开放接口</b>，接口开放权在原厂商</td><td>每校选 1 个高频系统 FDE 先行 POC；老系统定制网关单独评估</td></tr>
+    <tr><td>备课素材前沿性 / 开放学术检索</td><td>受控互联网出口（域名白名单）或图书馆专线</td><td>全文走图书馆已购库；无出口时管理员定期导入</td></tr>
+    <tr><td>课堂实时中控（抢答/投票大屏）、成绩回写</td><td><b>二开边界</b>（专门二开团队+运维）</td><td>放二期，不承诺一期</td></tr>
+    <tr><td>与真实实训设备联动控制</td><td>设备协议与安全，<b>二开评估</b></td><td>演示版定位=教学演示与数字课件</td></tr>
+    <tr><td>编程实训/代码评测</td><td>非 TA 承载（属 AI 实训平台）</td><td>组合口径："TA 教思路 + 实训平台练手"</td></tr>
+  </table>
+  <div class="ok"><b>下一步建议（对齐全景文档"一个月目标"）：</b>①医学/农林样板课带教师共创一轮出正式版；②完成五学科版（师范/医学）专场演示脚本；③P2 二开项（课堂闭环、MCP 教务查课表样板）整理立项需求。</div>
+</section>
+
+<section class="card" id="tree">
+  <h2 class="sec">七、30 秒选场景决策树</h2>
+  <ul class="decision">
+    <li>对方是<b>校领导/要顶层立项</b> → <a href="校级运营/08_校级_TOKEN与技能运营治理看板.html">08 Token 看板</a> + 专场单页</li>
+    <li>对方是<b>机电/制造/数控学院</b> → SCARA（线上）→ <a href="学科演示物/06_工科_五轴数控加工数字孪生演示.html">06 五轴数控</a></li>
+    <li>对方是<b>医学院/刑技</b> → <a href="学科演示物/01_医学_心脏解剖结构交互演示.html">01 心脏解剖</a></li>
+    <li>对方是<b>农林/植保</b> → <a href="学科演示物/04_农林_作物病虫害智能识别问答.html">04 病虫害问答</a></li>
+    <li>对方是<b>法学/商科</b> → <a href="学科演示物/05_经管法_模拟法庭情境推演.html">05 模拟法庭</a></li>
+    <li>对方是<b>理科基础教学</b> → <a href="学科演示物/02_物理_单摆测重力加速度互动实验.html">02 单摆</a> / <a href="学科演示物/03_化学_酸碱中和滴定互动实验.html">03 滴定</a></li>
+    <li>对方是<b>海洋特色</b> → <a href="学科演示物/07_海洋_潮汐原理与潮汐能交互演示.html">07 潮汐</a></li>
+    <li>对方是<b>公安院校</b> → 视频侦查互动课（工作空间）→ <a href="学科演示物/01_医学_心脏解剖结构交互演示.html">01</a>（法医方向）</li>
+    <li>对方是<b>教师群体（师范/教务）</b> → 备课五件套现场跑 + 福大 4 学科成果</li>
+    <li>对方是<b>行政条线（校办/财务/信息中心）</b> → 16 项行政技能现场跑 + 制度问答</li>
+  </ul>
+</section>
+
+<footer>
+  TA教育版高校演示物库 · 客户场景对应总表 ｜ 编制：TeleAgent（TA）· 2026-10-29 ｜ 依据《TA教育版高校场景与实现依赖清单_20261029》《高校场景化全景与孵化方向》《场景化演示专项》 ｜ 内部销售支持材料，请勿外发客户
+</footer>
+</div>
+</body>
+</html>

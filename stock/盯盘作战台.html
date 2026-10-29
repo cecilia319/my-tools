@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>盯盘作战台 · 2026-10-28</title>
+<title>盯盘作战台 · 2026-10-29</title>
 <style>
 :root{--bg:#0a0d14;--panel:#10141d;--panel2:#161b26;--border:#1f2736;--border2:#2a3448;
 --text:#dce3f2;--muted:#7d8aa5;--faint:#55607a;--accent:#f2b63d;--up:#f6465d;--down:#2ebd85;--blue:#4f8ef7;}
@@ -49,8 +49,8 @@ h2.sec{font-size:15px;margin:20px 0 10px}
 </style>
 </head>
 <body>
-<h1>盯盘<b>作战台</b> <span style="font-size:13px;color:var(--muted);font-weight:400">2026-10-28 信号执行卡</span></h1>
-<div class="sub">价位为信号日收盘核算，<b style="color:var(--accent)">盘中不变</b>——实时价格对照同花顺看，触发即按卡执行，不临场思考。数据生成于 2026-10-29 14:13。
+<h1>盯盘<b>作战台</b> <span style="font-size:13px;color:var(--muted);font-weight:400">2026-10-29 信号执行卡</span></h1>
+<div class="sub">价位为信号日收盘核算，<b style="color:var(--accent)">盘中不变</b>——实时价格对照同花顺看，触发即按卡执行，不临场思考。数据生成于 2026-10-29 15:39。
 配套：<b>股票助手工作台.html</b>（收盘后复盘用）+ 同花顺（实时价格下单用）。</div>
 
 <div class="card"><h3>⏰ 盘前 9:00-9:30 —— 竞价定战略</h3>
@@ -68,34 +68,62 @@ h2.sec{font-size:15px;margin:20px 0 10px}
 <div class="tp"><b>14:30-14:55</b>尾盘定走留：按作战卡执行，不隔夜侥幸</div>
 </div></div>
 
-<h2 class="sec">🎯 可操作信号（6 只）—— 按卡执行</h2>
+<h2 class="sec">🎯 可操作信号（7 只）—— 按卡执行</h2>
 <div class="wcard">
 <div class="wh"><div class="wname">
 <div class="nm">华力创通<span>300045</span></div>
-<div class="gt">军工空天 · 军工人气/航电 · 放量突破后缩量回调⭐ · 波段</div></div>
-<div class="sc">63.2<small>SCORE</small></div></div>
+<div class="gt">机器人 · 军工人气/航电 · batch_surge · chaoduan</div></div>
+<div class="sc">72<small>SCORE</small></div></div>
 <div class="lines">
-<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">12.71</div></div>
-<div class="ln entry"><div class="l">入场参考</div><div class="v">13.1</div></div>
-<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">14.41</div></div>
+<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">13.12</div></div>
+<div class="ln entry"><div class="l">入场参考</div><div class="v">13.81</div></div>
+<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">15.88</div></div>
 <div class="ln t2"><div class="l">目标2</div><div class="v">—</div></div>
-<div class="ln hi"><div class="l">前高压力(90日)</div><div class="v">18.69</div></div>
+<div class="ln hi"><div class="l">前高压力(90日)</div><div class="v">18.6</div></div>
 </div>
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">竞价高开>5%</td><td class="act">可小仓跟随(池内回测r20均值+2.4%最优档)，回踩分时均线企稳再加</td></tr><tr><td class="trig">竞价高开2~5%</td><td class="act">谨慎(回测最差档r5均值-1.5%)，等回踩分时均线再定</td></tr><tr><td class="trig">竞价平开±2%</td><td class="act">按计划可入场(参考13.1)</td></tr><tr><td class="trig">竞价低开<-3%</td><td class="act">暂缓，9:30-9:45收复开盘价再评估</td></tr><tr><td class="trig">跌破 12.71（止损）</td><td class="act">⚡无条件卖出，不犹豫不摊平</td></tr><tr><td class="trig">到达 14.41（目标1）</td><td class="act">🎯卖出一半锁定利润</td></tr><tr><td class="trig">板块掉出资金前10+破分时均线</td><td class="act">减半仓位，趋势弱化信号</td></tr><tr><td class="trig">9:30-10:00放量上攻(量比>1.5)</td><td class="act">加仓确认信号(不超计划仓位)</td></tr><tr><td class="trig">14:30仍浮亏且缩量阴跌</td><td class="act">不抱侥幸，收盘前兑现止损纪律</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">竞价高开>5%</td><td class="act">可小仓跟随(池内回测r20均值+2.4%最优档)，回踩分时均线企稳再加</td></tr><tr><td class="trig">竞价高开2~5%</td><td class="act">谨慎(回测最差档r5均值-1.5%)，等回踩分时均线再定</td></tr><tr><td class="trig">竞价平开±2%</td><td class="act">按计划可入场(参考13.81)</td></tr><tr><td class="trig">竞价低开<-3%</td><td class="act">暂缓，9:30-9:45收复开盘价再评估</td></tr><tr><td class="trig">跌破 13.12（止损）</td><td class="act">⚡无条件卖出，不犹豫不摊平</td></tr><tr><td class="trig">到达 15.88（目标1）</td><td class="act">🎯卖出一半锁定利润</td></tr><tr><td class="trig">板块掉出资金前10+破分时均线</td><td class="act">减半仓位，趋势弱化信号</td></tr><tr><td class="trig">9:30-10:00放量上攻(量比>1.5)</td><td class="act">加仓确认信号(不超计划仓位)</td></tr><tr><td class="trig">14:30仍浮亏且缩量阴跌</td><td class="act">不抱侥幸，收盘前兑现止损纪律</td></tr></table>
 </div>
 <div class="wcard">
 <div class="wh"><div class="wname">
-<div class="nm">光洋股份<span>002708</span></div>
-<div class="gt">算力半导体 · 人形机器人+PCB+汽车零部件+“羊”字辈 · macd_golden_cross · 短线</div></div>
-<div class="sc">56.5<small>SCORE</small></div></div>
+<div class="nm">五洲新春<span>603667</span></div>
+<div class="gt">机器人 · 三季报业绩+机器人丝杠+轴承主业 · batch_surge · chaoduan</div></div>
+<div class="sc">72<small>SCORE</small></div></div>
 <div class="lines">
-<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">18.18</div></div>
-<div class="ln entry"><div class="l">入场参考</div><div class="v">18.94</div></div>
-<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">20.83</div></div>
+<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">50.45</div></div>
+<div class="ln entry"><div class="l">入场参考</div><div class="v">53.11</div></div>
+<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">61.08</div></div>
 <div class="ln t2"><div class="l">目标2</div><div class="v">—</div></div>
-<div class="ln hi"><div class="l">前高压力(90日)</div><div class="v">18.94</div></div>
+<div class="ln hi"><div class="l">前高压力(90日)</div><div class="v">77.2</div></div>
 </div>
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">竞价高开>5%</td><td class="act">可小仓跟随(池内回测r20均值+2.4%最优档)，回踩分时均线企稳再加</td></tr><tr><td class="trig">竞价高开2~5%</td><td class="act">谨慎(回测最差档r5均值-1.5%)，等回踩分时均线再定</td></tr><tr><td class="trig">竞价平开±2%</td><td class="act">按计划可入场(参考18.94)</td></tr><tr><td class="trig">竞价低开<-3%</td><td class="act">暂缓，9:30-9:45收复开盘价再评估</td></tr><tr><td class="trig">跌破 18.18（止损）</td><td class="act">⚡无条件卖出，不犹豫不摊平</td></tr><tr><td class="trig">到达 20.83（目标1）</td><td class="act">🎯卖出一半锁定利润</td></tr><tr><td class="trig">板块掉出资金前10+破分时均线</td><td class="act">减半仓位，趋势弱化信号</td></tr><tr><td class="trig">9:30-10:00放量上攻(量比>1.5)</td><td class="act">加仓确认信号(不超计划仓位)</td></tr><tr><td class="trig">14:30仍浮亏且缩量阴跌</td><td class="act">不抱侥幸，收盘前兑现止损纪律</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">竞价高开>5%</td><td class="act">可小仓跟随(池内回测r20均值+2.4%最优档)，回踩分时均线企稳再加</td></tr><tr><td class="trig">竞价高开2~5%</td><td class="act">谨慎(回测最差档r5均值-1.5%)，等回踩分时均线再定</td></tr><tr><td class="trig">竞价平开±2%</td><td class="act">按计划可入场(参考53.11)</td></tr><tr><td class="trig">竞价低开<-3%</td><td class="act">暂缓，9:30-9:45收复开盘价再评估</td></tr><tr><td class="trig">跌破 50.45（止损）</td><td class="act">⚡无条件卖出，不犹豫不摊平</td></tr><tr><td class="trig">到达 61.08（目标1）</td><td class="act">🎯卖出一半锁定利润</td></tr><tr><td class="trig">板块掉出资金前10+破分时均线</td><td class="act">减半仓位，趋势弱化信号</td></tr><tr><td class="trig">9:30-10:00放量上攻(量比>1.5)</td><td class="act">加仓确认信号(不超计划仓位)</td></tr><tr><td class="trig">14:30仍浮亏且缩量阴跌</td><td class="act">不抱侥幸，收盘前兑现止损纪律</td></tr></table>
+</div>
+<div class="wcard">
+<div class="wh"><div class="wname">
+<div class="nm">襄阳轴承<span>000678</span></div>
+<div class="gt">机器人 · 机器人轴承+汽车轴承+“羊”字辈 · batch_surge · chaoduan</div></div>
+<div class="sc">72<small>SCORE</small></div></div>
+<div class="lines">
+<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">17.81</div></div>
+<div class="ln entry"><div class="l">入场参考</div><div class="v">18.75</div></div>
+<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">21.56</div></div>
+<div class="ln t2"><div class="l">目标2</div><div class="v">—</div></div>
+<div class="ln hi"><div class="l">前高压力(90日)</div><div class="v">19.37</div></div>
+</div>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">竞价高开>5%</td><td class="act">可小仓跟随(池内回测r20均值+2.4%最优档)，回踩分时均线企稳再加</td></tr><tr><td class="trig">竞价高开2~5%</td><td class="act">谨慎(回测最差档r5均值-1.5%)，等回踩分时均线再定</td></tr><tr><td class="trig">竞价平开±2%</td><td class="act">按计划可入场(参考18.75)</td></tr><tr><td class="trig">竞价低开<-3%</td><td class="act">暂缓，9:30-9:45收复开盘价再评估</td></tr><tr><td class="trig">跌破 17.81（止损）</td><td class="act">⚡无条件卖出，不犹豫不摊平</td></tr><tr><td class="trig">到达 21.56（目标1）</td><td class="act">🎯卖出一半锁定利润</td></tr><tr><td class="trig">板块掉出资金前10+破分时均线</td><td class="act">减半仓位，趋势弱化信号</td></tr><tr><td class="trig">9:30-10:00放量上攻(量比>1.5)</td><td class="act">加仓确认信号(不超计划仓位)</td></tr><tr><td class="trig">14:30仍浮亏且缩量阴跌</td><td class="act">不抱侥幸，收盘前兑现止损纪律</td></tr></table>
+</div>
+<div class="wcard">
+<div class="wh"><div class="wname">
+<div class="nm">宁波东力<span>002164</span></div>
+<div class="gt">机器人 · 三季报增长+精密减速器+齿轮传动+机器人 · batch_surge · chaoduan</div></div>
+<div class="sc">72<small>SCORE</small></div></div>
+<div class="lines">
+<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">17.09</div></div>
+<div class="ln entry"><div class="l">入场参考</div><div class="v">17.99</div></div>
+<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">20.69</div></div>
+<div class="ln t2"><div class="l">目标2</div><div class="v">—</div></div>
+<div class="ln hi"><div class="l">前高压力(90日)</div><div class="v">18.59</div></div>
+</div>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">竞价高开>5%</td><td class="act">可小仓跟随(池内回测r20均值+2.4%最优档)，回踩分时均线企稳再加</td></tr><tr><td class="trig">竞价高开2~5%</td><td class="act">谨慎(回测最差档r5均值-1.5%)，等回踩分时均线再定</td></tr><tr><td class="trig">竞价平开±2%</td><td class="act">按计划可入场(参考17.99)</td></tr><tr><td class="trig">竞价低开<-3%</td><td class="act">暂缓，9:30-9:45收复开盘价再评估</td></tr><tr><td class="trig">跌破 17.09（止损）</td><td class="act">⚡无条件卖出，不犹豫不摊平</td></tr><tr><td class="trig">到达 20.69（目标1）</td><td class="act">🎯卖出一半锁定利润</td></tr><tr><td class="trig">板块掉出资金前10+破分时均线</td><td class="act">减半仓位，趋势弱化信号</td></tr><tr><td class="trig">9:30-10:00放量上攻(量比>1.5)</td><td class="act">加仓确认信号(不超计划仓位)</td></tr><tr><td class="trig">14:30仍浮亏且缩量阴跌</td><td class="act">不抱侥幸，收盘前兑现止损纪律</td></tr></table>
 </div>
 <div class="wcard">
 <div class="wh"><div class="wname">
@@ -103,32 +131,18 @@ h2.sec{font-size:15px;margin:20px 0 10px}
 <div class="gt">军工空天 · 地面兵装/弹药 · 回踩20日线 · 波段</div></div>
 <div class="sc">55.2<small>SCORE</small></div></div>
 <div class="lines">
-<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">11.2</div></div>
-<div class="ln entry"><div class="l">入场参考</div><div class="v">11.79</div></div>
-<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">12.73</div></div>
+<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">11.22</div></div>
+<div class="ln entry"><div class="l">入场参考</div><div class="v">11.81</div></div>
+<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">12.75</div></div>
 <div class="ln t2"><div class="l">目标2</div><div class="v">—</div></div>
 <div class="ln hi"><div class="l">前高压力(90日)</div><div class="v">13.08</div></div>
 </div>
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">竞价高开>5%</td><td class="act">可小仓跟随(池内回测r20均值+2.4%最优档)，回踩分时均线企稳再加</td></tr><tr><td class="trig">竞价高开2~5%</td><td class="act">谨慎(回测最差档r5均值-1.5%)，等回踩分时均线再定</td></tr><tr><td class="trig">竞价平开±2%</td><td class="act">按计划可入场(参考11.79)</td></tr><tr><td class="trig">竞价低开<-3%</td><td class="act">暂缓，9:30-9:45收复开盘价再评估</td></tr><tr><td class="trig">跌破 11.2（止损）</td><td class="act">⚡无条件卖出，不犹豫不摊平</td></tr><tr><td class="trig">到达 12.73（目标1）</td><td class="act">🎯卖出一半锁定利润</td></tr><tr><td class="trig">板块掉出资金前10+破分时均线</td><td class="act">减半仓位，趋势弱化信号</td></tr><tr><td class="trig">9:30-10:00放量上攻(量比>1.5)</td><td class="act">加仓确认信号(不超计划仓位)</td></tr><tr><td class="trig">14:30仍浮亏且缩量阴跌</td><td class="act">不抱侥幸，收盘前兑现止损纪律</td></tr></table>
-</div>
-<div class="wcard">
-<div class="wh"><div class="wname">
-<div class="nm">茂业商业<span>600828</span></div>
-<div class="gt">大消费 · 百货零售+全渠道运营+自有物业 · macd_golden_cross · 波段</div></div>
-<div class="sc">55.0<small>SCORE</small></div></div>
-<div class="lines">
-<div class="ln stop"><div class="l">止损线·破必走</div><div class="v">4.72</div></div>
-<div class="ln entry"><div class="l">入场参考</div><div class="v">4.92</div></div>
-<div class="ln t1"><div class="l">目标1·卖半</div><div class="v">5.41</div></div>
-<div class="ln t2"><div class="l">目标2</div><div class="v">—</div></div>
-<div class="ln hi"><div class="l">前高压力(90日)</div><div class="v">5.43</div></div>
-</div>
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">竞价高开>5%</td><td class="act">可小仓跟随(池内回测r20均值+2.4%最优档)，回踩分时均线企稳再加</td></tr><tr><td class="trig">竞价高开2~5%</td><td class="act">谨慎(回测最差档r5均值-1.5%)，等回踩分时均线再定</td></tr><tr><td class="trig">竞价平开±2%</td><td class="act">按计划可入场(参考4.92)</td></tr><tr><td class="trig">竞价低开<-3%</td><td class="act">暂缓，9:30-9:45收复开盘价再评估</td></tr><tr><td class="trig">跌破 4.72（止损）</td><td class="act">⚡无条件卖出，不犹豫不摊平</td></tr><tr><td class="trig">到达 5.41（目标1）</td><td class="act">🎯卖出一半锁定利润</td></tr><tr><td class="trig">板块掉出资金前10+破分时均线</td><td class="act">减半仓位，趋势弱化信号</td></tr><tr><td class="trig">9:30-10:00放量上攻(量比>1.5)</td><td class="act">加仓确认信号(不超计划仓位)</td></tr><tr><td class="trig">14:30仍浮亏且缩量阴跌</td><td class="act">不抱侥幸，收盘前兑现止损纪律</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">竞价高开>5%</td><td class="act">可小仓跟随(池内回测r20均值+2.4%最优档)，回踩分时均线企稳再加</td></tr><tr><td class="trig">竞价高开2~5%</td><td class="act">谨慎(回测最差档r5均值-1.5%)，等回踩分时均线再定</td></tr><tr><td class="trig">竞价平开±2%</td><td class="act">按计划可入场(参考11.81)</td></tr><tr><td class="trig">竞价低开<-3%</td><td class="act">暂缓，9:30-9:45收复开盘价再评估</td></tr><tr><td class="trig">跌破 11.22（止损）</td><td class="act">⚡无条件卖出，不犹豫不摊平</td></tr><tr><td class="trig">到达 12.75（目标1）</td><td class="act">🎯卖出一半锁定利润</td></tr><tr><td class="trig">板块掉出资金前10+破分时均线</td><td class="act">减半仓位，趋势弱化信号</td></tr><tr><td class="trig">9:30-10:00放量上攻(量比>1.5)</td><td class="act">加仓确认信号(不超计划仓位)</td></tr><tr><td class="trig">14:30仍浮亏且缩量阴跌</td><td class="act">不抱侥幸，收盘前兑现止损纪律</td></tr></table>
 </div>
 <div class="wcard">
 <div class="wh"><div class="wname">
 <div class="nm">泰凌微<span>688591</span></div>
-<div class="gt">算力半导体 · 芯片设计小盘71亿·九转确认型A · 九转低9见底回踩买 · 短线<span class="tag hot">最新价 28.87</span></div></div>
+<div class="gt">算力半导体 · 芯片设计小盘71亿·九转确认型A · 九转低9见底回踩买 · 短线<span class="tag hot">最新价 27.34</span></div></div>
 <div class="sc">74<small>SCORE</small></div></div>
 <div class="lines">
 <div class="ln stop"><div class="l">止损线·破必走</div><div class="v">25.7</div></div>
@@ -142,7 +156,7 @@ h2.sec{font-size:15px;margin:20px 0 10px}
 <div class="wcard">
 <div class="wh"><div class="wname">
 <div class="nm">灿芯股份<span>688691</span></div>
-<div class="gt">算力半导体 · 芯片设计小盘62亿·超跌反抽型B · 九转低9见底回踩买 · 短线<span class="tag hot">最新价 57.27</span></div></div>
+<div class="gt">算力半导体 · 芯片设计小盘62亿·超跌反抽型B · 九转低9见底回踩买 · 短线<span class="tag hot">最新价 55.2</span></div></div>
 <div class="sc">62<small>SCORE</small></div></div>
 <div class="lines">
 <div class="ln stop"><div class="l">止损线·破必走</div><div class="v">47.53</div></div>
@@ -154,238 +168,78 @@ h2.sec{font-size:15px;margin:20px 0 10px}
 <table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">回踩 49.6~50.2 缩量企稳(止跌阳/长下影)</td><td class="act">🎯介入点，首仓试探(灿芯仓位≤泰凌微规格)</td></tr><tr><td class="trig">回踩不触及区间即直接上攻放量</td><td class="act">不追，等回踩；错过等下一只，纪律优先</td></tr><tr><td class="trig">跌破 47.53（九转结构失效）</td><td class="act">⚡无条件离场，不摊平</td></tr><tr><td class="trig">到达 56.8（目标1）</td><td class="act">卖出一半锁定</td></tr><tr><td class="trig">站上MA20后放量突破 56.8</td><td class="act">看 9月反弹平台位 位置 63.0</td></tr><tr><td class="trig">尾盘14:30仍阴跌且板块缩量</td><td class="act">今日不接，明日看能否收阳企稳</td></tr><tr><td class="trig">澜起跌破163(权重带动逻辑终结)</td><td class="act">板块内仓位全线减半——龙头塌了小票不留强</td></tr></table>
 </div>
 
-<h2 class="sec">⚪ 观察区（63 只）—— 禁买，只看解除条件</h2>
+<h2 class="sec">⚪ 观察区（24 只）—— 禁买，只看解除条件</h2>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
-<div class="nm">均胜电子<span>600699</span></div>
-<div class="gt">机器人 · 机器人总成 · 回踩20日线 · 波段</div></div>
+<div class="nm">松霖科技<span>603992</span></div>
+<div class="gt">机器人 · 服务机器人+智能厨卫+业绩预增 · 回踩20日线 · 波段</div></div>
 <div class="sc">54.1<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨1.63%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-3.4%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
-<div class="nm">江顺科技<span>001400</span></div>
-<div class="gt"> · 三季报增长+3D打印+铝挤压模具+液冷 · macd_golden_cross · 波段</div></div>
+<div class="nm">得邦照明<span>603303</span></div>
+<div class="gt"> · 车载照明+收购嘉利+通用照明 · macd_golden_cross · 短线</div></div>
 <div class="sc">54.0<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨0.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
-<div class="nm">飞科电器<span>603868</span></div>
-<div class="gt"> · 三季报增长+个护电器 · macd_golden_cross · 短线</div></div>
-<div class="sc">54.0<small>SCORE</small></div></div>
+<div class="nm">掌阅科技<span>603533</span></div>
+<div class="gt">AI应用 · AI短剧/AI漫剧 · 回踩20日线 · 波段</div></div>
+<div class="sc">53.5<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-3.71%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
 <div class="nm">电魂网络<span>603258</span></div>
-<div class="gt">AI应用 · 游戏联动 · right_side_reversal · 波段</div></div>
+<div class="gt">AI应用 · 游戏联动 · 回踩20日线 · 波段</div></div>
 <div class="sc">53.5<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨3.47%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-2.84%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
-<div class="nm">百纳千成<span>300291</span></div>
-<div class="gt">AI应用 · AI漫剧+多格式影视+营收增长 · macd_golden_cross · 波段</div></div>
+<div class="nm">实丰文化<span>002862</span></div>
+<div class="gt">AI应用 · AI玩具/谷子IP · macd_golden_cross · 波段</div></div>
 <div class="sc">53.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨20.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">科森科技<span>603626</span></div>
-<div class="gt">算力半导体 · 机器人结构件+消费电子结构件+三季报扭亏 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">52.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">鸣志电器<span>603728</span></div>
-<div class="gt">机器人 · 电机/灵巧手 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">50.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨6.72%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">汉威科技<span>300007</span></div>
-<div class="gt">机器人 · 传感器/电子皮肤 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">50.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨7.2%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">柯力传感<span>603662</span></div>
-<div class="gt">机器人 · 传感器/电子皮肤 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">50.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨4.13%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">儒竞科技<span>301525</span></div>
-<div class="gt">机器人 · 机器人+数据中心温控+新能源汽车热管理 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">50.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨19.99%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">友升股份<span>603418</span></div>
-<div class="gt">机器人 · 机器人业务+汽车轻量化+特斯拉客户 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">50.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">建设工业<span>002265</span></div>
-<div class="gt">机器人 · 机器人装备+三季报增长+兵装重组 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">50.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.99%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">莱美药业<span>300006</span></div>
-<div class="gt"> · 纳米炭铁+三季报减亏+卡纳琳 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">50.0<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨19.95%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">近岸蛋白<span>688137</span></div>
-<div class="gt"> · mRNA原料酶+智能蛋白设计+重组抗体 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">50.0<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨20.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">百普赛斯<span>301080</span></div>
-<div class="gt"> · 重组蛋白+三季报增长+回购提价 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">50.0<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨20.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">汤姆猫<span>300459</span></div>
-<div class="gt">AI应用 · AI玩具/谷子IP · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">49.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨3.05%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">必易微<span>688045</span></div>
-<div class="gt">算力半导体 · 模拟芯片+数字电源+机器人传感 · macd_golden_cross · 波段</div></div>
-<div class="sc">48.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨20.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">盈方微<span>000670</span></div>
-<div class="gt">算力半导体 · 三季度增长+存储芯片+元器件分销 · macd_golden_cross · 波段</div></div>
-<div class="sc">48.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.94%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">澄星股份<span>600078</span></div>
-<div class="gt">算力半导体 · 三季报增长+磷化工+电子级磷酸 · macd_golden_cross · 波段</div></div>
-<div class="sc">48.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.05%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">臻镭科技<span>688270</span></div>
-<div class="gt">军工空天 · 商业航天/卫星 · macd_golden_cross · 波段</div></div>
-<div class="sc">47.2<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.89%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">铁流股份<span>603926</span></div>
-<div class="gt">机器人 · 三季报净利增长+机器人部件+电机轴 · macd_golden_cross · 波段</div></div>
-<div class="sc">46.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.99%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">神驰机电<span>603109</span></div>
-<div class="gt">机器人 · 机器人+小型发电机+户用储能 · macd_golden_cross · 波段</div></div>
-<div class="sc">46.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">徕木股份<span>603633</span></div>
-<div class="gt">机器人 · 人形机器人+汽车连接器 · macd_golden_cross · 波段</div></div>
-<div class="sc">46.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.03%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">泰山石油<span>000554</span></div>
-<div class="gt"> · 三季报增长+成品油+充换电 · macd_golden_cross · 波段</div></div>
-<div class="sc">46.0<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.95%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">斯迪克<span>300806</span></div>
-<div class="gt"> · MLCC离型膜+折叠屏OCA+功能性材料 · macd_golden_cross · 波段</div></div>
-<div class="sc">46.0<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨20.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">长江材料<span>001296</span></div>
-<div class="gt"> · 3D打印砂+覆膜砂+油气勘探 · macd_golden_cross · 波段</div></div>
-<div class="sc">46.0<small>SCORE</small></div></div>
 
 <table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.01%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
-<div class="nm">中欣氟材<span>002915</span></div>
-<div class="gt"> · PEEK材料+新能源材料+氟化工+萤石 · macd_golden_cross · 波段</div></div>
-<div class="sc">46.0<small>SCORE</small></div></div>
+<div class="nm">铖昌科技<span>001270</span></div>
+<div class="gt">军工空天 · 商业航天/卫星 · macd_golden_cross · 波段</div></div>
+<div class="sc">47.2<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.03%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨6.18%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
-<div class="nm">索通发展<span>603612</span></div>
-<div class="gt"> · 三季报增长+预焙阳极+炭材料项目 · macd_golden_cross · 波段</div></div>
+<div class="nm">东南电子<span>301359</span></div>
+<div class="gt"> · 三季报增长+微动开关+募投变更 · macd_golden_cross · 波段</div></div>
 <div class="sc">46.0<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.97%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-4.45%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
-<div class="nm">伯特利<span>603596</span></div>
-<div class="gt">智驾汽车 · 智能驾驶 · macd_golden_cross · 波段</div></div>
-<div class="sc">43.6<small>SCORE</small></div></div>
+<div class="nm">风语筑<span>603466</span></div>
+<div class="gt">AI应用 · AIGC/数字人 · 回踩20日线 · 波段</div></div>
+<div class="sc">43.5<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨2.2%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-7.23%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+</div>
+<div class="wcard wz ban">
+<div class="wh"><div class="wname">
+<div class="nm">光洋股份<span>002708</span></div>
+<div class="gt">算力半导体 · 人形机器人+PCB+汽车零部件+“羊”字辈 · 放量突破 · 短线</div></div>
+<div class="sc">41.5<small>SCORE</small></div></div>
+
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.98%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
@@ -393,284 +247,132 @@ h2.sec{font-size:15px;margin:20px 0 10px}
 <div class="gt">新兴产业 · 低空经济 · 放量突破后缩量回调⭐ · 波段</div></div>
 <div class="sc">40.2<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨3.91%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">今创集团<span>603680</span></div>
-<div class="gt">军工空天 · 轨道交通+港口起重+商业航天 · 放量突破 · 短线</div></div>
-<div class="sc">40.2<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">凯众股份<span>603037</span></div>
-<div class="gt">机器人 · 机器人零部件+汽车减震+拟收购拓盛 · 放量突破 · 短线</div></div>
-<div class="sc">39.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.03%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">恒工精密<span>301261</span></div>
-<div class="gt">机器人 · 三季报增长+人形机器人+减速器零部件 · 放量突破 · 短线</div></div>
-<div class="sc">39.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨20.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">振邦智能<span>003028</span></div>
-<div class="gt">机器人 · 三季报+人形机器人+智能控制器 · 放量突破 · 短线</div></div>
-<div class="sc">39.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.02%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">东贝集团<span>601956</span></div>
-<div class="gt">机器人 · 机器人电机+制冷压缩机+商用制冷 · 放量突破 · 短线</div></div>
-<div class="sc">39.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.93%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">得邦照明<span>603303</span></div>
-<div class="gt"> · 车载照明+收购嘉利+通用照明 · 放量突破 · 短线</div></div>
-<div class="sc">39.0<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.02%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">沃尔核材<span>002130</span></div>
-<div class="gt">算力半导体 · 铜缆高速连接 · macd_golden_cross · 波段</div></div>
-<div class="sc">31.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨3.43%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">杭叉集团<span>603298</span></div>
-<div class="gt">周期出海 · 工程机械 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">29.4<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨6.69%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">长盛轴承<span>300718</span></div>
-<div class="gt">机器人 · 宇树链/本体 · 放量突破 · 短线</div></div>
-<div class="sc">29.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨11.23%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">宇晶股份<span>002943</span></div>
-<div class="gt">机器人 · 机器人+切磨抛设备+碳化硅设备 · macd_golden_cross · 波段</div></div>
-<div class="sc">29.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.99%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">凯迪股份<span>605288</span></div>
-<div class="gt">机器人 · 具身机器人送样+线性驱动+汽车零部件 · macd_golden_cross · 波段</div></div>
-<div class="sc">29.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.01%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">联明股份<span>603006</span></div>
-<div class="gt"> · 三季报增长+新能源水冷板+供应链服务 · macd_golden_cross · 波段</div></div>
-<div class="sc">29.0<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.04%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">中文在线<span>300364</span></div>
-<div class="gt">AI应用 · AI短剧/AI漫剧 · right_side_reversal · 波段</div></div>
-<div class="sc">28.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨7.8%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">三祥新材<span>603663</span></div>
-<div class="gt">新兴产业 · 固态电池 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">28.2<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨5.47%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">常山药业<span>300255</span></div>
-<div class="gt">新兴产业 · 创新药/减肥药 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">28.2<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨3.2%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">卧龙新能<span>600173</span></div>
-<div class="gt">新兴产业 · 储能并网+海外储能+氢能 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">28.2<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.1%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">精达股份<span>600577</span></div>
-<div class="gt">算力半导体 · 铜缆高速连接 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">27.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨3.13%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">西子洁能<span>002534</span></div>
-<div class="gt">算力半导体 · 订单增长+燃机余热锅炉+算力储能 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">27.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">世运电路<span>603920</span></div>
-<div class="gt">算力半导体 · 机器人PCB+算力PCB+调价落地 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">27.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">金海通<span>603061</span></div>
-<div class="gt">算力半导体 · 半导体测试分选机+三季报增长 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">27.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">宏柏新材<span>605366</span></div>
-<div class="gt">算力半导体 · 光纤级四氯化硅+功能性硅烷+电子级材料 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">27.5<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.94%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">拉卡拉<span>300773</span></div>
-<div class="gt">金融 · 稳定币/跨境支付 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">26.9<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨4.02%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">大众交通<span>600611</span></div>
-<div class="gt">智驾汽车 · Robotaxi · macd_golden_cross · 波段</div></div>
-<div class="sc">26.6<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨1.22%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">铖昌科技<span>001270</span></div>
-<div class="gt">军工空天 · 商业航天/卫星 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">26.2<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">贝斯特<span>300580</span></div>
-<div class="gt">机器人 · 丝杠/减速器 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">25.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨5.32%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
-</div>
-<div class="wcard wz ban">
-<div class="wh"><div class="wname">
-<div class="nm">博杰股份<span>002975</span></div>
-<div class="gt">机器人 · 机器人测试+磷化铟+MLCC设备+液冷测试 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">25.1<small>SCORE</small></div></div>
-
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-2.41%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
 <div class="nm">上海沪工<span>603131</span></div>
-<div class="gt">机器人 · 三季报扭亏+焊接机器人+商业航天+焊接切割设备 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">25.1<small>SCORE</small></div></div>
+<div class="gt">机器人 · 三季报扭亏+焊接机器人+商业航天+焊接切割设备 · 放量突破 · 短线</div></div>
+<div class="sc">39.1<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.02%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
-<div class="nm">长缆科技<span>002879</span></div>
-<div class="gt">机器人 · 管道机器人+浸没液冷+电缆附件+三季报 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">25.1<small>SCORE</small></div></div>
+<div class="nm">文投控股<span>600715</span></div>
+<div class="gt">AI应用 · AI短剧/AI漫剧 · 放量突破 · 短线</div></div>
+<div class="sc">38.5<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.01%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.19%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+</div>
+<div class="wcard wz ban">
+<div class="wh"><div class="wname">
+<div class="nm">菲林格尔<span>603226</span></div>
+<div class="gt">算力半导体 · PCB设备+英伟达+木地板 · macd_golden_cross · 波段</div></div>
+<div class="sc">31.5<small>SCORE</small></div></div>
+
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-1.61%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+</div>
+<div class="wcard wz ban">
+<div class="wh"><div class="wname">
+<div class="nm">澄星股份<span>600078</span></div>
+<div class="gt">算力半导体 · 三季报增长+磷化工+电子级磷酸 · 回踩20日线 · 波段</div></div>
+<div class="sc">31.5<small>SCORE</small></div></div>
+
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-0.74%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+</div>
+<div class="wcard wz ban">
+<div class="wh"><div class="wname">
+<div class="nm">中大力德<span>002896</span></div>
+<div class="gt">机器人 · 电机/灵巧手 · 回踩20日线 · 波段</div></div>
+<div class="sc">29.1<small>SCORE</small></div></div>
+
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-3.99%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+</div>
+<div class="wcard wz ban">
+<div class="wh"><div class="wname">
+<div class="nm">铁流股份<span>603926</span></div>
+<div class="gt">机器人 · 三季报净利增长+机器人部件+电机轴 · 回踩20日线 · 波段</div></div>
+<div class="sc">29.1<small>SCORE</small></div></div>
+
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-2.58%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
 <div class="nm">中重科技<span>603135</span></div>
-<div class="gt">机器人 · 工业机器人+冶金装备+海外项目 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">25.1<small>SCORE</small></div></div>
+<div class="gt">机器人 · 工业机器人+冶金装备+海外项目 · 回踩20日线 · 波段</div></div>
+<div class="sc">29.1<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.06%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-3.24%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
-<div class="nm">五方光电<span>002962</span></div>
-<div class="gt"> · 三季报增长+TGV光学+红外截止滤光片 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">25.0<small>SCORE</small></div></div>
+<div class="nm">长城科技<span>603897</span></div>
+<div class="gt">机器人 · 三季报增长+机器人应用+电磁线 · macd_golden_cross · 波段</div></div>
+<div class="sc">29.1<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.03%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-4.39%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
-<div class="nm">东南电子<span>301359</span></div>
-<div class="gt"> · 三季报增长+微动开关+募投变更 · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">25.0<small>SCORE</small></div></div>
+<div class="nm">中文在线<span>300364</span></div>
+<div class="gt">AI应用 · AI短剧/AI漫剧 · 回踩20日线 · 波段</div></div>
+<div class="sc">28.5<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨20.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-3.01%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
-<div class="nm">实丰文化<span>002862</span></div>
-<div class="gt">AI应用 · AI玩具/谷子IP · yangbaoyin_bounce · 短线</div></div>
-<div class="sc">24.5<small>SCORE</small></div></div>
+<div class="nm">恺英网络<span>002517</span></div>
+<div class="gt">AI应用 · 游戏联动 · macd_golden_cross · 波段</div></div>
+<div class="sc">28.5<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.01%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨1.85%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 <div class="wcard wz ban">
 <div class="wh"><div class="wname">
-<div class="nm">光华科技<span>002741</span></div>
-<div class="gt">算力半导体 · PCB化学品+硫化锂+业绩增长 · 放量突破 · 短线</div></div>
-<div class="sc">16.5<small>SCORE</small></div></div>
+<div class="nm">必易微<span>688045</span></div>
+<div class="gt">算力半导体 · 模拟芯片+数字电源+机器人传感 · 回踩20日线 · 波段</div></div>
+<div class="sc">21.5<small>SCORE</small></div></div>
 
-<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.99%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-7.71%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+</div>
+<div class="wcard wz ban">
+<div class="wh"><div class="wname">
+<div class="nm">豪恩汽电<span>301488</span></div>
+<div class="gt">机器人 · 前一交易日竞价波动+机器人域控+机器人感知+智能驾驶 · 回踩20日线 · 波段</div></div>
+<div class="sc">19.1<small>SCORE</small></div></div>
+
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨-7.01%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+</div>
+<div class="wcard wz ban">
+<div class="wh"><div class="wname">
+<div class="nm">宇晶股份<span>002943</span></div>
+<div class="gt">机器人 · 机器人+切磨抛设备+碳化硅设备 · 放量突破 · 短线</div></div>
+<div class="sc">14.1<small>SCORE</small></div></div>
+
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨10.0%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
+</div>
+<div class="wcard wz ban">
+<div class="wh"><div class="wname">
+<div class="nm">联明股份<span>603006</span></div>
+<div class="gt"> · 三季报增长+新能源水冷板+供应链服务 · 放量突破 · 短线</div></div>
+<div class="sc">14.0<small>SCORE</small></div></div>
+
+<table><tr><th style="width:280px">盘中触发条件</th><th>动作</th></tr><tr><td class="trig">⛔ MACD零轴下方</td><td class="act">禁买纪律不破，仅观察（防狼原则）</td></tr><tr><td class="trig">DIF上穿DEA(金叉)+放量站上MA20</td><td class="act">解除禁买候选，次日按新信号评估</td></tr><tr><td class="trig">今日已涨9.96%板块活跃</td><td class="act">记录入日志，等回调形态出现</td></tr></table>
 </div>
 
 <h2 class="sec">📊 ETF观察仓（指数仓位·独立规则）</h2>
-<div class="card"><h3>科创50ETF 588000 · 1.354 (+2.58%)</h3>
+<div class="card"><h3>科创50ETF 588000 · 1.293 (+-4.51%)</h3>
 <div class="rules">
-<b>今日状态：</b>MACD零轴下多头｜日线TD卖方计数3｜周线低9已到(10-27确认)｜量比1.05｜60日区间1.319-1.899｜MA10=1.396 MA20=1.495<br>
+<b>今日状态：</b>MACD零轴下多头｜日线TD卖方计数4｜周线低9已到(10-27确认)｜量比1.28｜60日区间1.290-1.899｜MA10=1.382 MA20=1.472<br>
 <b>三轨买卖规则（明文化）：</b><br>
-①左侧低吸：周线TD≥8低9 + 日线不创新低 → 观察区 1.319-1.354<br>
-②修复单买入：零轴下金叉 + 放量站上MA10 → 触发位 1.396（今日✗ 未到）<br>
-③趋势单买入：放量站上MA20且MA20走平上拐 → 触发位 1.495（今日✗ 未到）<br>
-<b>卖出：</b>修复单收盘跌回MA10下方离场；跌破前低1.319全清重新观察；趋势单破MA20离场。止盈看斐波回撤位分批。<br>
+①左侧低吸：周线TD≥8低9 + 日线不创新低 → 观察区 1.290-1.293<br>
+②修复单买入：零轴下金叉 + 放量站上MA10 → 触发位 1.382（今日✗ 未到）<br>
+③趋势单买入：放量站上MA20且MA20走平上拐 → 触发位 1.472（今日✗ 未到）<br>
+<b>卖出：</b>修复单收盘跌回MA10下方离场；跌破前低1.290全清重新观察；趋势单破MA20离场。止盈看斐波回撤位分批。<br>
 <b>仓位：</b>单笔≤2成（3322指数仓）；<b>禁买：</b>议息等重大事件落地前不加仓。<br>
-<b>当前判定：<b style="color:#b8860b">①等待触发：未入场</b>（金叉已✓，等放量站上1.396即②成立）</b>
+<b>当前判定：<b style="color:#b8860b">①等待触发：未入场</b>（金叉已✓，等放量站上1.382即②成立）</b>
 </div></div>
 
 <h2 class="sec">🔥 涨停基因动态池（每日随涨停进出·今日62家新面孔）</h2>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>作物病虫害智能识别与防治问答——植保互动课件 | TeleAgent教育版学科演示物</title>
+<style>
+:root{--bg:#FAF8F0;--ink:#3E2723;--green:#33691E;--green2:#558B2F;--greenL:#EAF2DF;--brown:#795548;--brownL:#EFEBE0;--line:#DCD5C4;--amber:#BF8F00}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC","Source Han Sans SC",SimHei,sans-serif;line-height:1.8;padding:0 0 76px}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+.hidden{display:none!important}
+button{font-family:inherit;cursor:pointer}
+header{background:linear-gradient(135deg,#26500F,#33691E 48%,#558B2F);color:#FDFBF3;padding:30px 0 22px;border-bottom:6px solid var(--brown)}
+.hrow{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.hrow svg{flex:0 0 auto}
+header h1{font-size:27px;letter-spacing:1px;font-weight:800}
+header h1 span{font-size:19px;font-weight:600;opacity:.92}
+header .sub{font-size:14px;opacity:.92;margin-top:5px;letter-spacing:.5px}
+.tags{margin-top:9px;display:flex;gap:8px;flex-wrap:wrap}
+.tag{font-size:12px;border:1px solid rgba(255,255,255,.55);border-radius:20px;padding:2px 12px;opacity:.95}
+.tag.amber{background:#FFF3D6;color:#8a5b00;border-color:#E8C979;font-weight:700}
+.topnav{position:sticky;top:0;z-index:50;background:rgba(250,248,240,.95);border-bottom:1.5px solid var(--line);backdrop-filter:blur(4px)}
+.topnav .wrap{display:flex;gap:8px;flex-wrap:wrap;padding:8px 20px}
+.topnav a{font-size:12.5px;color:var(--green);text-decoration:none;border:1px solid #B9CBA1;border-radius:16px;padding:2px 13px;background:#fff;transition:.2s}
+.topnav a:hover{background:var(--green);color:#fff;border-color:var(--green)}
+.notice{margin-top:16px;background:#FFF8E1;border:1.5px solid #D7A63C;border-left:6px solid var(--amber);border-radius:12px;padding:12px 16px;font-size:13.5px;color:#5D4037;display:flex;gap:10px;align-items:flex-start}
+.notice b{color:#8a5b00}
+.notice .ic{flex:0 0 auto;font-size:18px;line-height:1.4}
+.sec{margin:26px 0 0}
+.sec-head{display:flex;align-items:center;gap:12px}
+.sec-no{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+.sec-head h2{font-size:20px;color:var(--green)}
+.sec-head em{color:var(--brown);font-style:normal;font-size:12.5px;margin-left:auto}
+.sec-tip{font-size:12.5px;color:#7a6a52;margin:4px 0 10px 46px}
+.sec-body{background:#FFFEFA;border:1.5px solid var(--line);border-radius:14px;padding:18px;margin-top:8px}
+/* 知识库 */
+.kb-flex{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.crop-side{flex:0 0 205px;position:sticky;top:56px}
+.crop-btn{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#FFFDF6;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin-bottom:10px;transition:.2s;font-size:15px;font-weight:700;color:var(--ink)}
+.crop-btn small{display:block;font-weight:400;font-size:11.5px;opacity:.72}
+.crop-btn.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 3px 10px rgba(51,105,30,.25)}
+.crop-btn.active small{opacity:.85}
+.crop-note{font-size:11.5px;color:var(--brown);background:var(--brownL);border-radius:8px;padding:8px 10px;line-height:1.65}
+.kb-main{flex:1;min-width:300px}
+.pest-card{display:flex;gap:14px;background:#FFFDF6;border:1.5px solid var(--line);border-radius:12px;padding:13px;margin-bottom:12px;transition:.25s}
+.pest-card:hover{border-color:#A5D6A7;box-shadow:0 4px 14px rgba(51,105,30,.10)}
+.pc-fig{flex:0 0 170px;position:relative;align-self:flex-start}
+.pc-fig svg{width:100%;height:auto;border-radius:8px;display:block;border:1px solid #E6DFC9}
+.pc-type{position:absolute;top:6px;left:6px;font-size:11px;color:#fff;padding:1px 9px;border-radius:10px;background:rgba(121,85,72,.92)}
+.pc-badge{font-style:normal;font-size:11px;color:#fff;background:#C62828;padding:1px 8px;border-radius:9px;margin-left:8px;vertical-align:2px}
+.pc-body{flex:1;min-width:0}
+.pc-body h4{color:var(--green);font-size:17px;margin-bottom:5px}
+.pc-line{font-size:13.5px;margin:5px 0;line-height:1.72}
+.pc-line b{display:inline-block;background:var(--greenL);color:var(--green);font-size:12px;padding:0 8px;border-radius:8px;margin-right:8px;white-space:nowrap}
+.flash{outline:3px solid #FF8F00;box-shadow:0 0 0 6px rgba(255,143,0,.18);border-color:#FF8F00!important;transition:.35s}
+/* 决策树 */
+.steps{display:flex;flex-wrap:wrap;gap:14px}
+.stepbox{flex:1 1 250px;border:1.5px dashed #B9CBA1;border-radius:10px;padding:12px 13px;background:#FDFCF7}
+.stepbox h5{font-size:13.5px;color:var(--brown);margin-bottom:9px}
+.stepbox h5 i{font-style:normal;background:var(--green);color:#fff;border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;margin-right:6px}
+.optbtns{display:flex;flex-wrap:wrap;gap:7px}
+.obtn{border:1.5px solid var(--line);background:#fff;border-radius:18px;padding:4px 15px;font-size:13.5px;color:var(--ink);transition:.18s}
+.obtn:hover{border-color:#A5D6A7}
+.obtn.active{background:var(--green);border-color:var(--green);color:#fff}
+.trait{display:flex;align-items:flex-start;gap:7px;font-size:13px;padding:4px 4px;cursor:pointer;border-radius:6px}
+.trait:hover{background:var(--greenL)}
+.trait input{accent-color:var(--green);margin-top:6px}
+.gobtn{margin-top:16px;background:linear-gradient(135deg,#33691E,#558B2F);color:#fff;border:none;border-radius:9px;padding:9px 26px;font-size:15px;font-weight:700;letter-spacing:1px;box-shadow:0 3px 10px rgba(51,105,30,.3)}
+.gobtn:active{transform:translateY(1px)}
+.gobtn.disabled{opacity:.6;cursor:not-allowed}
+.minibtn{background:#fff;border:1.5px solid var(--line);border-radius:8px;padding:5px 14px;font-size:12.5px;color:var(--brown)}
+.diag-hint{color:#8a5b00;font-size:13px;margin-top:10px}
+#diagOut{margin-top:18px}
+.diag-card{border:1.5px solid #A5D6A7;background:#FFFDF6;border-radius:12px;padding:14px;margin-bottom:12px}
+.d-rank1{border-color:#33691E}
+.d-rank2{border-color:#7CB342}
+.d-rank3{border-color:#B9CBA1}
+.d-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.d-rank{background:var(--green);color:#fff;font-size:11.5px;border-radius:9px;padding:1px 9px}
+.d-head b{font-size:16.5px;color:var(--green)}
+.d-type{font-size:11.5px;color:#fff;background:var(--brown);border-radius:9px;padding:1px 9px}
+.d-conf{margin:8px 0 4px;display:flex;align-items:center;gap:10px}
+.d-bar{flex:1;height:11px;background:#EDE7D6;border-radius:6px;overflow:hidden}
+.d-bar i{display:block;height:100%;background:linear-gradient(90deg,#558B2F,#8BC34A)}
+.d-conf b{font-size:19px;color:var(--green)}
+.d-conf em{font-style:normal;font-size:11.5px;color:#C62828}
+.d-line{font-size:13px;margin:5px 0}
+.d-line b{color:var(--brown)}
+.d-ok{color:var(--green)}
+.d-act{margin-top:8px}
+.empty-card{border:1.5px dashed var(--line);background:#FFFDF6;border-radius:12px;padding:16px;font-size:13.5px;color:#7a6a52;text-align:center}
+/* 图像识别 */
+.ai-flex{display:flex;gap:20px;flex-wrap:wrap}
+.ai-left{flex:1 1 340px}
+.ai-right{flex:1 1 350px}
+.photo{position:relative;border:2px dashed #A5D6A7;border-radius:12px;background:#F2EDDD;overflow:hidden}
+.photo svg{display:block;width:100%;height:auto}
+.photo .cap{position:absolute;left:10px;top:8px;background:rgba(51,105,30,.88);color:#fff;font-size:11px;padding:2px 10px;border-radius:10px}
+.scanline{position:absolute;left:8px;right:8px;height:3px;border-radius:2px;background:rgba(83,139,47,.8);box-shadow:0 0 12px 3px rgba(83,139,47,.45);display:none}
+.photo.scanning .scanline{display:block;animation:scan 1.5s ease-in-out infinite}
+@keyframes scan{0%{top:6px}50%{top:calc(100% - 8px)}100%{top:6px}}
+.photo.scanning svg g ellipse{animation:featPulse 1s infinite}
+@keyframes featPulse{0%,100%{opacity:1}50%{opacity:.45}}
+.ai-steps{margin-top:14px}
+.ai-step{opacity:.38;transition:.3s;margin-bottom:10px;font-size:13px;color:var(--ink)}
+.ai-step.active{opacity:1}
+.ai-step .bar{height:9px;background:#EDE7D6;border-radius:5px;overflow:hidden;margin-top:5px}
+.ai-step .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#558B2F,#8BC34A);transition:width 1.1s ease}
+.ai-result{border:1.5px solid #A5D6A7;background:#FFFDF6;border-radius:12px;padding:15px;margin-top:14px}
+.ai-ve{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ai-ve .big{font-size:21px;font-weight:800;color:var(--green)}
+.ai-ve .ve{flex:1;min-width:160px}
+.ai-ve .ve .bar{height:12px;background:#EDE7D6;border-radius:6px;overflow:hidden}
+.ai-ve .ve .bar i{display:block;height:100%;width:83%;background:linear-gradient(90deg,#558B2F,#8BC34A)}
+.ai-ve small{font-size:11.5px;color:#7a6a52}
+.samples{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:11px 0}
+.sample{border:1px solid var(--line);border-radius:8px;padding:6px 6px 4px;text-align:center;font-size:11px;background:#fff;line-height:1.5}
+.sample svg{width:100%;border-radius:5px;background:#F2EDDD;display:block}
+.sample b{color:var(--green)}
+.sample.dim b{color:#9e9e9e}
+.ai-concl{font-size:13.5px;border-left:4px solid var(--green);background:var(--greenL);border-radius:6px;padding:9px 12px;margin-top:6px}
+.ai-note{font-size:12px;color:#8a5b00;background:#FFF8E1;border:1px dashed #D7A63C;border-radius:8px;padding:7px 10px;margin-top:10px}
+/* 日历 */
+.cal-crop{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.cal-crop button{border:1.5px solid var(--line);background:#fff;border-radius:18px;padding:4px 16px;font-size:13.5px;color:var(--ink);transition:.18s}
+.cal-crop button.active{background:var(--green);color:#fff;border-color:var(--green)}
+.cal-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:6px;margin:12px 0}
+.mon{border:1.5px solid var(--line);border-radius:8px;text-align:center;padding:6px 2px 5px;cursor:pointer;background:#F4F0E4;transition:.18s}
+.mon b{font-size:13.5px;display:block;line-height:1.3}
+.mon .cnt{font-size:10.5px;color:#9e9384}
+.mon.hot{background:var(--greenL);border-color:#A5D6A7}
+.mon.hot b{color:var(--green)}
+.mon.hot .cnt{color:#558B2F}
+.mon.sel{outline:2.5px solid var(--green);outline-offset:1px;background:#fff}
+.cal-detail{border:1.5px solid var(--line);border-radius:10px;background:#FFFDF6;padding:14px 16px}
+.cal-detail h5{color:var(--green);font-size:15px;margin-bottom:8px}
+.cal-detail ul{list-style:none}
+.cal-detail li{font-size:13.5px;padding:6px 0 6px 2px;border-bottom:1px dashed #e7e0cf;line-height:1.7}
+.cal-detail li b{color:var(--green)}
+.cal-detail li:last-child{border-bottom:none}
+.cal-empty{font-size:13px;color:#7a6a52}
+/* 小测 */
+.q-bar{font-size:13.5px;color:var(--brown);background:var(--brownL);border-radius:8px;padding:6px 13px;display:inline-block;margin-bottom:6px}
+.q-card{border:1.5px solid var(--line);border-radius:11px;padding:14px 16px;margin:11px 0;background:#FFFDF6}
+.q-card h4{font-size:14.5px;color:var(--ink);margin-bottom:8px}
+.q-opt{display:block;border:1.5px solid var(--line);border-radius:9px;padding:7px 12px;margin:7px 0;cursor:pointer;background:#fff;transition:.15s;font-size:13.5px}
+.q-opt:hover{border-color:#A5D6A7}
+.q-opt input{margin-right:9px;accent-color:var(--green)}
+.q-opt.lock{cursor:default}
+.q-opt.right{border-color:#558B2F;background:var(--greenL)}
+.q-opt.wrong{border-color:#C62828;background:#FDECEA}
+.q-exp{border-left:4px solid var(--green);background:var(--greenL);padding:9px 13px;border-radius:6px;margin-top:10px;font-size:13px;line-height:1.75}
+.q-yes{color:var(--green)}
+.q-no{color:#C62828}
+.q-sum{border:1.5px solid #A5D6A7;background:var(--greenL);border-radius:11px;padding:13px 16px;font-size:14px;text-align:center;margin-top:12px}
+.q-sum b{color:var(--green);font-size:17px}
+/* 话术 */
+.talk{border:1.5px solid var(--line);border-radius:12px;margin:10px 0;background:#FFFDF6;overflow:hidden}
+.talk summary{cursor:pointer;padding:12px 16px;font-weight:700;color:var(--brown);font-size:14px;display:flex;align-items:center;gap:9px;list-style:none}
+.talk summary::-webkit-details-marker{display:none}
+.talk summary::before{content:'🍃';filter:saturate(.9)}
+.talk[open] summary{border-bottom:1px dashed var(--line)}
+.talk .tb{padding:12px 20px 14px;font-size:13.5px;line-height:1.85}
+.talk .tb .say{background:var(--greenL);border-left:4px solid var(--green);border-radius:6px;padding:9px 13px;margin-bottom:9px;color:#2b4d1a}
+.talk .tb .mov{color:#7a6a52;font-size:12.5px}
+.talk .tb .mov b{color:var(--brown)}
+/* 页脚 */
+.footbar{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(90deg,#26500F,#33691E);color:#F3EFDE;font-size:12.5px;text-align:center;padding:11px 12px;z-index:99;border-top:3px solid var(--brown);letter-spacing:.4px}
+.footbar b{color:#FFF}
+@media(max-width:820px){header h1{font-size:21px}header h1 span{font-size:15px}.cal-grid{grid-template-columns:repeat(6,1fr)}.crop-side{position:static;display:flex;gap:9px;flex:1 1 100%}.crop-btn{flex:1;margin-bottom:0}.sec-head{flex-wrap:wrap}.sec-head em{display:none}.sec-tip{margin-left:0}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hrow">
+    <svg viewBox="0 0 48 48" width="52" height="52" aria-hidden="true"><path d="M8 40 C10 14 30 6 44 8 C42 30 30 42 10 41z" fill="#A5D6A7"/><path d="M10 40 C20 30 30 20 42 9" stroke="#F3EFDE" stroke-width="2.4" fill="none"/><path d="M18 32 l7 4 M26 24 l7 3 M33 16 l7 2" stroke="#F3EFDE" stroke-width="1.7" fill="none"/></svg>
+    <div>
+      <h1>作物病虫害智能识别与防治问答<span>——植保互动课件</span></h1>
+      <p class="sub">植物保护 · 农作物病虫害防治 · 适用农学 / 植保 / 园艺专业</p>
+      <p class="tags"><span class="tag">建议演示：5 分钟</span><span class="tag amber">演示版样本库</span><span class="tag">本地运行 · 数据不出校</span><span class="tag">TeleAgent（TA）教育版 · 学科演示物 · 农林类</span></p>
+    </div>
+  </div>
+</header>
+
+<nav class="topnav"><div class="wrap">
+  <a href="#s-kb">① 校本知识库浏览</a><a href="#s-diag">② 症状问诊决策树</a><a href="#s-img">③ 图像识别模拟</a><a href="#s-cal">④ 防治日历</a><a href="#s-quiz">⑤ 随堂小测</a><a href="#s-talk">演示话术</a>
+</div></nav>
+
+<div class="wrap">
+  <div class="notice"><span class="ic">⚠️</span><div><b>演示版样本库说明：</b>本课件为能力演示样本（内置福建常见作物 11 种病虫害数据）。<b>正式落地依赖本校专业教师共建标本图库与校本知识库入库，TeleAgent（TA）提供问答引擎与识别能力框架</b>，辅助教学与推广，不替代植保专业判断。</div></div>
+</div>
+
+<!-- S1 知识库浏览 -->
+<section class="sec" id="s-kb"><div class="wrap">
+  <div class="sec-head"><span class="sec-no">①</span><h2>校本知识库浏览</h2><em>教师共建 · 随取随用</em></div>
+  <p class="sec-tip">内置福建特色作物（水稻 / 柑橘 / 茶叶）常发病虫害作为演示样本——正式版的知识条目由植保教师按教材、讲义与田间记录共建入库。</p>
+  <div class="sec-body kb-flex">
+    <div class="crop-side">
+      <button class="crop-btn active" data-crop="水稻" onclick="selectCrop('水稻')">
+        <svg viewBox="0 0 24 24" width="26" height="26"><path d="M5 22 q1 -7 -1 -12 M12 22 q0 -8 2 -13 M19 22 q-1 -7 1 -12" stroke="#558B2F" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M4 10 q-3 -4 -1 -8 q4 2 3 7 M13 9 q0 -6 3 -8 q3 3 1 9 M20 10 q3 -4 1 -8 q-4 2 -3 7" fill="#7CB342"/></svg>
+        <span>水稻<small>4 种常发病虫害</small></span>
+      </button>
+      <button class="crop-btn" data-crop="柑橘" onclick="selectCrop('柑橘')">
+        <svg viewBox="0 0 24 24" width="26" height="26"><circle cx="12" cy="14" r="8" fill="#F9A825"/><circle cx="12" cy="14" r="8" fill="none" stroke="#F57F17" stroke-width="1.3"/><path d="M12 6 q0 -4 4 -4" stroke="#558B2F" stroke-width="2" fill="none"/><path d="M15 3 q5 -2 6 2 q-4 3 -6 0z" fill="#7CB342"/></svg>
+        <span>柑橘<small>4 种常发病虫害</small></span>
+      </button>
+      <button class="crop-btn" data-crop="茶叶" onclick="selectCrop('茶叶')">
+        <svg viewBox="0 0 24 24" width="26" height="26"><path d="M4 15 C8 5 20 7 20 17 C18 21 8 22 4 15z" fill="#7CB342"/><path d="M5 15 H20" stroke="#33691E" stroke-width="1.4"/></svg>
+        <span>茶叶<small>3 种常发病虫害</small></span>
+      </button>
+      <div class="crop-note">小卡片即"知识库条目"：症状要点 / 发生规律 / 防治措施 / 药剂参考，均由教师共建与审核。</div>
+    </div>
+    <div class="kb-main" id="kbGrid"></div>
+  </div>
+</div></section>
+
+<!-- S2 问诊决策树 -->
+<section class="sec" id="s-diag"><div class="wrap">
+  <div class="sec-head"><span class="sec-no">②</span><h2>症状问诊决策树——智能问诊</h2><em>交互演示 1</em></div>
+  <p class="sec-tip">模拟学生或农户向 TA 提问式问诊：三步描述症状（作物 → 部位 → 特征），TA 从校本知识库检索推理，输出带置信度的排序结果。</p>
+  <div class="sec-body">
+    <div class="steps">
+      <div class="stepbox"><h5><i>1</i>选择作物</h5><div class="optbtns" id="dCropBox">
+        <button class="obtn" onclick="pickCrop('水稻',this)">水稻</button>
+        <button class="obtn" onclick="pickCrop('柑橘',this)">柑橘</button>
+        <button class="obtn" onclick="pickCrop('茶叶',this)">茶叶</button>
+      </div></div>
+      <div class="stepbox"><h5><i>2</i>发病部位</h5><div class="optbtns" id="dPartBox">
+        <button class="obtn" onclick="pickPart('叶',this)">叶</button>
+        <button class="obtn" onclick="pickPart('茎穗',this)">茎 / 穗</button>
+        <button class="obtn" onclick="pickPart('果',this)">果</button>
+        <button class="obtn" onclick="pickPart('全株',this)">全株</button>
+      </div></div>
+      <div class="stepbox"><h5><i>3</i>症状特征（可多选）</h5><div id="traitBox">
+        <label class="trait"><input type="checkbox" value="霉污"><span>有霉层 / 煤污（黑色或灰白粉霉）</span></label>
+        <label class="trait"><input type="checkbox" value="虫体"><span>有虫孔 / 可见虫体或蛀道</span></label>
+        <label class="trait"><input type="checkbox" value="失绿"><span>失绿、黄化或焦枯</span></label>
+        <label class="trait"><input type="checkbox" value="病斑"><span>有明显病斑（褐斑 / 坏死斑）</span></label>
+        <label class="trait"><input type="checkbox" value="隆起"><span>病部隆起、疱斑或肿大</span></label>
+        <label class="trait"><input type="checkbox" value="斑驳"><span>黄绿相间、斑驳花叶</span></label>
+      </div></div>
+    </div>
+    <button class="gobtn" id="diagBtn" onclick="doDiagnose()">🌱 开始诊断</button>
+    <div id="diagOut"></div>
+  </div>
+</div></section>
+
+<!-- S3 图像识别模拟 -->
+<section class="sec" id="s-img"><div class="wrap">
+  <div class="sec-head"><span class="sec-no">③</span><h2>拍照上传 · AI 识别模拟</h2><em>交互演示 2</em></div>
+  <p class="sec-tip">模拟学生拍照上传的智能识别流程：加载多模态模型 → 提取病斑特征 → 比对校本样本图库（本页为演示数据）。</p>
+  <div class="sec-body ai-flex">
+    <div class="ai-left">
+      <div class="photo" id="photoBox">
+        <span class="cap">📷 上传照片（田间采集样本）</span>
+        <svg viewBox="0 0 300 176">
+          <rect width="300" height="176" fill="#EDE9DB"/>
+          <path d="M10 62 C70 78 180 84 290 42" stroke="#558B2F" stroke-width="13" fill="none" stroke-linecap="round"/>
+          <path d="M14 112 C80 126 190 130 286 88" stroke="#7CB342" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <g transform="rotate(4 100 80)">
+            <ellipse cx="100" cy="80" rx="24" ry="9" fill="#6D4C41"/>
+            <ellipse cx="100" cy="80" rx="15" ry="5.2" fill="#E4DFD5"/>
+            <path d="M72 80 h56" stroke="#4E342E" stroke-width="2.4"/>
+          </g>
+          <g transform="rotate(3 192 72)">
+            <ellipse cx="192" cy="72" rx="21" ry="8" fill="#6D4C41"/>
+            <ellipse cx="192" cy="72" rx="13" ry="4.6" fill="#E4DFD5"/>
+            <path d="M167 72 h50" stroke="#4E342E" stroke-width="2.2"/>
+          </g>
+          <g transform="rotate(2 150 120)">
+            <ellipse cx="150" cy="120" rx="18" ry="7" fill="#6D4C41"/>
+            <ellipse cx="150" cy="120" rx="11" ry="4" fill="#E4DFD5"/>
+          </g>
+          <path d="M290 42 C295 48 297 54 296 60 C289 54 287 48 286 42z" fill="#FBC02D" opacity=".85"/>
+          <text x="150" y="163" font-size="11" text-anchor="middle" fill="#795548">水稻功能叶 · 样本编号 FJ-NC-2026-001</text>
+        </svg>
+        <div class="scanline"></div>
+      </div>
+      <button class="gobtn" id="aiBtn" onclick="runAI()" style="width:100%;margin-top:12px">🔍 AI 识别</button>
+      <div class="ai-note">📌 演示话术：正式版对接校内多模态模型与教师共建图库，识别口径、药剂推荐均以学院审定为准。</div>
+    </div>
+    <div class="ai-right">
+      <div class="ai-steps hidden" id="aiSteps">
+        <div class="ai-step" id="as1">① 加载多模态识别模型（视觉编码器 · 校本权重）<div class="bar"><i></i></div></div>
+        <div class="ai-step" id="as2">② 提取病斑形态 / 纹理 / 分布特征向量<div class="bar"><i></i></div></div>
+        <div class="ai-step" id="as3">③ 比对校本样本图库（含教师标注 1,284 张 · 演示数据）<div class="bar"><i></i></div></div>
+      </div>
+      <div class="ai-result hidden" id="aiResult">
+        <div class="ai-ve"><span class="big">疑似：稻瘟病（叶瘟期）</span><div class="ve"><div class="bar"><i></i></div><small>综合置信度 <b style="color:var(--green)">83%</b>（特征比对 + 知识库规则联合评分）</small></div></div>
+        <div class="samples">
+          <div class="sample"><svg viewBox="0 0 60 40"><rect width="60" height="40" fill="#F2EDDD"/><path d="M4 22 C20 28 40 30 56 14" stroke="#558B2F" stroke-width="5" fill="none" stroke-linecap="round"/><g transform="rotate(5 28 25)"><ellipse cx="28" cy="25" rx="9" ry="3.4" fill="#6D4C41"/><ellipse cx="28" cy="25" rx="5.6" ry="2" fill="#E4DFD5"/></g></svg><b>样本 A · 叶瘟典型</b><br>相似度 89%</div>
+          <div class="sample"><svg viewBox="0 0 60 40"><rect width="60" height="40" fill="#F2EDDD"/><path d="M4 26 C20 30 40 32 56 18" stroke="#558B2F" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="20" cy="26" rx="6" ry="2.4" fill="#6D4C41"/><ellipse cx="20" cy="26" rx="3.4" ry="1.4" fill="#E4DFD5"/><ellipse cx="40" cy="24" rx="6" ry="2.4" fill="#6D4C41"/><ellipse cx="40" cy="24" rx="3.4" ry="1.4" fill="#E4DFD5"/></svg><b>样本 B · 急性型病斑</b><br>相似度 85%</div>
+          <div class="sample dim"><svg viewBox="0 0 60 40"><rect width="60" height="40" fill="#F2EDDD"/><path d="M4 22 C20 26 40 28 56 14" stroke="#558B2F" stroke-width="5" fill="none" stroke-linecap="round"/><g fill="#5D4037"><circle cx="20" cy="22" r="2.4"/><circle cx="32" cy="17" r="2"/><circle cx="38" cy="27" r="2.6"/><circle cx="14" cy="28" r="1.8"/><circle cx="46" cy="19" r="1.7"/></g></svg><b>对照 · 胡麻斑病</b><br>相似度 61% · 排除</div>
+        </div>
+        <div class="ai-concl"><b>识别结论与处置建议：</b>疑似<b>稻瘟病-叶瘟期</b>（梭形病斑、中央灰白、外缘褐线特征吻合）。建议：① 加强田间湿度管理，浅水勤灌、适时晒田，控氮增钾；② 发病田块用 <b>40% 富士一号（稻瘟灵）</b>乳油喷雾防治，破口抽穗期结合 75% 三环唑保穗。</div>
+        <div class="ai-note">⚠ 演示数据：置信度与相似样本为演示样本库生成。正式版对接校内多模态模型与教师共建图库后，由植保教师审核入库标准。</div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- S4 防治日历 -->
+<section class="sec" id="s-cal"><div class="wrap">
+  <div class="sec-head"><span class="sec-no">④</span><h2>全年防治日历</h2><em>交互演示 3</em></div>
+  <p class="sec-tip">绿色高亮月份为该作物病虫害发生高峰期（按福建气候设定），点击月份查看当月防治要点，可用于课程实训与田间管理安排。</p>
+  <div class="sec-body">
+    <div class="cal-crop">
+      <button data-crop="水稻" onclick="pickCal('水稻')">水稻</button>
+      <button data-crop="柑橘" onclick="pickCal('柑橘')">柑橘</button>
+      <button data-crop="茶叶" onclick="pickCal('茶叶')">茶叶</button>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-detail"><h5 id="calTitle"></h5><div id="calDetail"></div></div>
+  </div>
+</div></section>
+
+<!-- S5 随堂小测 -->
+<section class="sec" id="s-quiz"><div class="wrap">
+  <div class="sec-head"><span class="sec-no">⑤</span><h2>随堂小测（3 题）</h2><em>交互演示 4</em></div>
+  <p class="sec-tip">由知识库条目自动生成，选择即判分并给出解析——正式版支持自动组卷、错题本与相似题推送。</p>
+  <div class="sec-body">
+    <div class="q-bar" id="qbar">已答 0/3 · 当前得分 0</div>
+    <div id="quizBox"></div>
+    <div class="q-sum hidden" id="qsum"></div>
+    <button class="minibtn" style="margin-top:12px" onclick="renderQuiz()">↺ 重做本环节</button>
+  </div>
+</div></section>
+
+<!-- S6 演示话术 -->
+<section class="sec" id="s-talk"><div class="wrap">
+  <div class="sec-head"><span class="sec-no">⑥</span><h2>给演示者的 3 个话术点</h2><em>销售 / 产品经理专用</em></div>
+  <div class="sec-body">
+    <details class="talk" open>
+      <summary>话术点 ① · 学科空白：农林大数据 + AI 是天然实验场</summary>
+      <div class="tb">
+        <div class="say">"农林大数据 + AI 是这个学科的天然空白——植保专家的田间经验过去只在老师脑子里，电信 TA 能把这些专家经验做成知识库沉淀下来，越用越准。"</div>
+        <div class="mov"><b>演示动线：</b>停在页头与【① 知识库浏览】时讲，把"教师经验"与"TA 知识库条目"逐一对应，突出"沉淀"二字。</div>
+      </div>
+    </details>
+    <details class="talk">
+      <summary>话术点 ② · 门槛极低：几份教材讲义就能启动</summary>
+      <div class="tb">
+        <div class="say">"【② 问诊决策树】就是知识库入库后的效果——农学院几份教材讲义、几张田间记录表就能启动，不用先建大系统，先跑通一个作物（比如柑橘黄龙病）即可。"</div>
+        <div class="mov"><b>演示动线：</b>现场跑一遍三步问诊（建议选"柑橘 → 叶 → 斑驳花叶 + 失绿黄化"，命中黄龙病），强调结果是可溯源到教师条目的。</div>
+      </div>
+    </details>
+    <details class="talk">
+      <summary>话术点 ③ · 共建切入点：图库共建即校企合作</summary>
+      <div class="tb">
+        <div class="say">"样本图库需要学院共建——共建本身就是校企合作切入点：学校出专业知识与标本，电信出引擎、算力与平台，还可联合申报课题、共建实习实训基地。"</div>
+        <div class="mov"><b>演示动线：</b>点击【③ AI 识别】播放识别动画时提出，顺势引出"教师共建图库 → 审核入库 → 持续分成/署名"的合作机制。</div>
+      </div>
+    </details>
+  </div>
+</div></section>
+
+<div style="height:26px"></div>
+</div>
+
+<footer class="footbar">本课件由 TeleAgent（TA）教育版生成 · 本地单文件运行、数据不出校 · 图库与知识库由学校教师共建</footer>
+
+<script>
+var TRAITS={"霉污":"有霉层/煤污","虫体":"有虫孔/虫体","失绿":"失绿黄化焦枯","病斑":"明显病斑","隆起":"隆起疱斑肿大","斑驳":"斑驳花叶"};
+var PARTS=["叶","茎穗","果","全株"];
+var PESTS=[
+{id:"p1",crop:"水稻",name:"稻瘟病",en:"Rice Blast",type:"真菌病害",
+ aff:{"叶":1.0,"茎穗":0.85},traits:["病斑"],months:[5,6,9],
+ svg:`<svg viewBox="0 0 150 96"><rect width="150" height="96" fill="#F2EDDD"/><path d="M10 34 C45 44 95 48 142 24" stroke="#558B2F" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M16 58 C50 68 100 70 138 50" stroke="#7CB342" stroke-width="6.5" fill="none" stroke-linecap="round"/><g transform="rotate(5 58 43)"><ellipse cx="58" cy="43" rx="12" ry="4.6" fill="#6D4C41"/><ellipse cx="58" cy="43" rx="7.5" ry="2.6" fill="#E4DFD5"/><path d="M44 43 h28" stroke="#4E342E" stroke-width="1.6"/></g><g transform="rotate(3 96 38)"><ellipse cx="96" cy="38" rx="10.5" ry="4.2" fill="#6D4C41"/><ellipse cx="96" cy="38" rx="6.5" ry="2.3" fill="#E4DFD5"/><path d="M84 38 h24" stroke="#4E342E" stroke-width="1.5"/></g><g transform="rotate(2 72 64)"><ellipse cx="72" cy="64" rx="9" ry="3.8" fill="#6D4C41"/><ellipse cx="72" cy="64" rx="5.5" ry="2.1" fill="#E4DFD5"/></g><text x="75" y="90" font-size="8" text-anchor="middle" fill="#795548">梭形病斑 · 中央灰白 · 外缘褐线</text></svg>`,
+ sym:"叶上梭形褐色病斑、中央灰白两端有褐色坏死线；穗颈部变褐导致白穗。",
+ symptoms:"叶瘟：叶片初见褐点，后发展为梭形病斑（中央灰白、边缘褐色、外围黄晕）；穗颈瘟：穗颈部褐变腐烂，造成白穗，损失最重。",
+ law:"适温高湿（24-28℃、相对湿度90%以上、多雾露）易流行；分蘖盛期与破口抽穗期最感病；偏施氮肥、过度密植、长期深灌田块发病重。",
+ control:"① 选用抗病品种并合理布局；② 控氮增硅钾、浅水勤灌、适时晒田；③ 抓住破口期与齐穗期两个关键节点喷药保护。",
+ drug:"75%三环唑 WP（预防保护）、40%富士一号（稻瘟灵）EC（治疗）、2%春雷霉素 AS",
+ advice:"破口-齐穗期用三环唑预防；田间发病后用富士一号治疗。",
+ tip:"抓住破口-齐穗期用三环唑/富士一号保穗；叶瘟病叶率达5%即开始防治。"},
+{id:"p2",crop:"水稻",name:"稻飞虱（褐飞虱）",en:"Brown Planthopper",type:"害虫·刺吸式",
+ aff:{"茎穗":1.0,"全株":0.7},traits:["虫体","霉污"],months:[6,7,8,9],
+ svg:`<svg viewBox="0 0 150 96"><rect width="150" height="96" fill="#F2EDDD"/><path d="M38 94 C40 66 43 36 46 10" stroke="#7CB342" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M58 94 C58 68 58 38 58 12" stroke="#558B2F" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M78 94 C76 66 73 38 70 12" stroke="#7CB342" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M92 94 C94 70 97 46 100 22" stroke="#689F38" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="50" cy="78" r="2.2" fill="#263238" opacity=".85"/><circle cx="62" cy="83" r="1.8" fill="#263238" opacity=".85"/><circle cx="68" cy="72" r="2.4" fill="#263238" opacity=".85"/><circle cx="85" cy="80" r="1.9" fill="#263238" opacity=".85"/><circle cx="75" cy="87" r="1.5" fill="#263238" opacity=".8"/><ellipse cx="54" cy="74" rx="3.4" ry="2.1" fill="#5D4037" transform="rotate(20 54 74)"/><ellipse cx="60" cy="79" rx="3.4" ry="2.1" fill="#6D4C41" transform="rotate(-12 60 79)"/><ellipse cx="66" cy="74" rx="3.2" ry="2" fill="#5D4037" transform="rotate(8 66 74)"/><ellipse cx="71" cy="82" rx="3.2" ry="2" fill="#6D4C41" transform="rotate(-25 71 82)"/><circle cx="112" cy="38" r="26" fill="#FFFDF5" stroke="#795548" stroke-width="1.4" stroke-dasharray="3 3"/><ellipse cx="112" cy="38" rx="12" ry="5.5" fill="#6D4C41"/><circle cx="126" cy="38" r="3.4" fill="#5D4037"/><path d="M100 38 q6 -6 12 0 q6 -6 12 0" stroke="#4E342E" stroke-width="2.4" fill="none" stroke-linecap="round"/><text x="112" y="74" font-size="7.5" text-anchor="middle" fill="#795548">放大：褐飞虱成虫·群集基部</text></svg>`,
+ sym:"稻株中下部茎基群集小虫刺吸、蜜露诱发煤污发黑；暴发时整丛枯倒。",
+ symptoms:"成虫、若虫群集稻株中下部茎基部刺吸汁液，被害处现黄褐斑，叶尖先黄；蜜露诱发煤污病致茎叶发黑；虫量暴发时整丛枯死倒伏（俗称\"冒穿\"\"虱烧\"），还可传播草丛矮缩病毒病。",
+ law:"随西南气流远距离迁入，福建 7-9 月为发生高峰；出现短翅型成虫预示即将大发生；偏施氮肥、深水灌溉、种植密度大田块发生重；蜘蛛、缨小蜂等天敌控制作用明显。",
+ control:"① 选用抗虫品种；② 控氮浅灌、适时晒田；③ 保护利用天敌；④ 达标用药（分蘖期百丛500头、穗期800头），药液重点喷稻株中下部。",
+ drug:"25%噻嗪酮（扑虱灵）WP、25%吡蚜酮 SC、50%吡蚜酮·异丙威 WP",
+ advice:"百丛虫量达 500 头即用噻嗪酮/吡蚜酮，重点喷植株中下部。",
+ tip:"分蘖-拔节期查百丛虫量，达500头用噻嗪酮/吡蚜酮压基数，防\"冒穿\"要赶在迁入高峰前。"},
+{id:"p3",crop:"水稻",name:"纹枯病",en:"Sheath Blight",type:"真菌病害",
+ aff:{"茎穗":1.0,"叶":0.7},traits:["病斑"],months:[6,7,8],
+ svg:`<svg viewBox="0 0 150 96"><rect width="150" height="96" fill="#F2EDDD"/><path d="M40 94 C42 62 44 30 47 6" stroke="#558B2F" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M66 94 C66 64 66 34 66 8" stroke="#7CB342" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M90 94 C88 62 86 32 84 8" stroke="#558B2F" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M22 60 q12 -10 24 -1 q12 -9 24 0 q12 -8 22 2 l2 12 q-12 8 -24 0 q-12 8 -24 -1 q-12 8 -22 -2 z" fill="#8D6E63"/><path d="M28 64 q10 -6 20 0 q10 -6 18 2 l1 6 q-10 5 -20 0 q-10 5 -18 -2 z" fill="#D7CCC8"/><circle cx="52" cy="70" r="1.9" fill="#4E342E"/><circle cx="62" cy="66" r="1.7" fill="#4E342E"/><circle cx="58" cy="75" r="1.6" fill="#4E342E"/><text x="75" y="26" font-size="8" text-anchor="middle" fill="#795548">云纹状病斑 · 近水面处</text><text x="75" y="90" font-size="7.5" text-anchor="middle" fill="#795548">褐色小粒即菌核（可随水漂传播）</text></svg>`,
+ sym:"近水面叶鞘出现云纹状病斑（中央灰白、边缘褐），后期生褐色菌核。",
+ symptoms:"先在下部叶鞘近水面处出现水渍状暗绿小斑，扩大成中央灰白、边缘褐色的云纹状病斑，多斑相连呈\"花脚秆\"；湿度大时病部长白色蛛网状菌丝，后期形成褐色菜籽状菌核。",
+ law:"高温高湿（28-32℃、相对湿度96%以上）流行；福建 6-8 月分蘖末期至抽穗期发病重；菌核在土壤越冬，灌水时漂浮水面侵染；偏施氮肥、密度过高、长期深灌田块病重。",
+ control:"① 春耕灌水时打捞菌核，减少初侵染源；② 合理密植、控氮增钾；③ 浅水灌溉、适时晒田；④ 病丛率约15%时开始施药。",
+ drug:"240g/L噻呋酰胺 SC、5%井冈霉素 AS、30%苯甲·丙环唑 EC",
+ advice:"控氮晒田；病丛率15%左右时用井冈霉素/噻呋酰胺，药液喷稻株中下部。",
+ tip:"分蘖末期-拔节期查病丛率，达15%即用井冈霉素/噻呋酰胺；打捞菌核是低成本关键措施。"},
+{id:"p4",crop:"水稻",name:"二化螟",en:"Rice Stem Borer",type:"害虫·钻蛀性",
+ aff:{"茎穗":1.0,"全株":0.6},traits:["虫体"],months:[4,5,7,8],
+ svg:`<svg viewBox="0 0 150 96"><rect width="150" height="96" fill="#F2EDDD"/><path d="M36 94 C38 66 40 38 42 12" stroke="#558B2F" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M62 94 C62 66 62 38 62 10" stroke="#CFD8DC" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M88 94 C86 66 84 38 82 12" stroke="#558B2F" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M62 10 C68 16 72 24 76 28" stroke="#B0BEC5" stroke-width="4.5" fill="none" stroke-linecap="round"/><ellipse cx="62" cy="52" rx="3.2" ry="4.4" fill="#3E2723"/><ellipse cx="62" cy="73" rx="3" ry="4" fill="#3E2723"/><circle cx="116" cy="40" r="26" fill="#FFFDF5" stroke="#795548" stroke-width="1.4" stroke-dasharray="3 3"/><path d="M101 40 q3.5 -5 7 0 q3.5 -5 7 0 q3.5 -5 7 0 q3 -4.5 6 0" stroke="#BF360C" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="99" cy="40" r="4" fill="#8D2018"/><text x="116" y="76" font-size="7.5" text-anchor="middle" fill="#795548">放大：蛀茎幼虫（淡红色）</text><text x="62" y="90" font-size="7.5" text-anchor="middle" fill="#795548">中间枯心苗（心叶枯死）</text></svg>`,
+ sym:"枯心苗 / 白穗，剥茎可见蛀道、虫粪与淡红色幼虫。",
+ symptoms:"一代幼虫在分蘖期蛀入稻茎造成枯心苗（心叶枯死、拨之即倒）；二代在孕穗期危害造成白穗或虫伤株；剥开茎秆可见蛀道、虫粪及体背有褐色纵线的淡红色幼虫。",
+ law:"福建一年2-4代，以幼虫在稻桩、稻草中越冬；4-6月一代危害分蘖期早稻，之后世代转株危害；盛孵期可由性诱、灯诱测报确定。",
+ control:"① 冬春齐泥割除稻桩、处理稻草，压低越冬虫源；② 性诱剂/频振灯测报盛孵期；③ 枯鞘株率3%-5%时于盛孵期用药；④ 浅水灌溉打断转株通道。",
+ drug:"20%氯虫苯甲酰胺 SC、5%甲维盐 WDG、Bt（苏云金杆菌）制剂",
+ advice:"结合性诱测报，盛孵期用氯虫苯甲酰胺；一代压基数、二三代保穗。",
+ tip:"盛孵期用氯虫苯甲酰胺（枯鞘株率3%-5%时施药）；一代压基数、二三代保穗。"},
+{id:"p5",crop:"柑橘",name:"柑橘黄龙病",en:"Huanglongbing",type:"细菌病害",badge:"检疫性 · 俗称\"柑橘癌症\"",
+ aff:{"叶":1.0,"全株":0.9,"果":0.2},traits:["失绿","斑驳"],months:[4,5,6,7,8,9,10],
+ svg:`<svg viewBox="0 0 150 96"><rect width="150" height="96" fill="#F2EDDD"/><path d="M14 48 C36 12 104 12 136 46 C104 80 36 80 14 48 z" fill="#7CB342"/><path d="M15 48 C6 41 2 43 4 46 C2 50 8 55 15 48 z" fill="#558B2F"/><path d="M14 48 H136" stroke="#558B2F" stroke-width="2" opacity=".8"/><path d="M40 34 q14 12 16 28 M64 26 q10 16 8 40 M90 28 q8 14 4 44 M116 34 q8 12 -2 26" stroke="#558B2F" stroke-width="1.4" fill="none" opacity=".6"/><path d="M38 42 q16 -10 30 2 q-6 16 -26 12 q-12 -6 -4 -14z" fill="#FBC02D" opacity=".95"/><path d="M78 30 q18 4 24 18 q-14 14 -30 6 q-8 -12 6 -24z" fill="#F9A825" opacity=".9"/><path d="M104 58 q12 2 16 10 q-10 8 -22 2 q-4 -8 6 -12z" fill="#FBC02D" opacity=".85"/><text x="75" y="92" font-size="8" text-anchor="middle" fill="#795548">斑驳型黄化（黄绿相间 · 不对称）</text></svg>`,
+ sym:"叶片斑驳黄化（黄绿相间、不对称）、\"红鼻子果\"、树势衰退。",
+ symptoms:"典型症状为叶片斑驳黄化（黄绿相间、不对称斑块状），后期整叶黄化；果实着色不均、果蒂附近先红（\"红鼻子果\"），果小畸形味酸；新梢黄化，树势逐年衰退。确诊可结合 PCR 检测。",
+ law:"病原为韧皮部限制细菌（Candidatus Liberibacter asiaticus），田间唯一自然传播媒介是<b>柑橘木虱</b>，带病苗木与接穗可远距离传播；闽南柑橘产区高发，秋梢期症状最明显，全年均可显症。",
+ control:"以\"种植无病苗木、防除柑橘木虱、及时挖除病树\"三大环节为核心；木虱防治要统一连片、每次新梢期喷药保梢；建立无病毒苗圃与检疫制度。",
+ drug:"治木虱：10%吡虫啉 WP、25%噻虫嗪 WDG、2.5%高效氯氟氰菊酯 EC（新梢期统一喷施）",
+ advice:"防木虱、挖病树、用无病苗\"三管齐下\"；发现典型病树及时确认并挖除。",
+ tip:"新梢期统一连片防治柑橘木虱（传媒介！）；发现斑驳黄化病树及时确认挖除。"},
+{id:"p6",crop:"柑橘",name:"柑橘红蜘蛛",en:"Citrus Red Mite",type:"害螨·刺吸",
+ aff:{"叶":1.0},traits:["失绿","虫体"],months:[3,4,5,9,10],
+ svg:`<svg viewBox="0 0 150 96"><rect width="150" height="96" fill="#F2EDDD"/><path d="M14 48 C36 12 104 12 136 46 C104 80 36 80 14 48 z" fill="#8BC34A"/><path d="M14 48 H136" stroke="#689F38" stroke-width="1.8" opacity=".8"/><g fill="#F1F0E4" opacity=".95"><circle cx="34" cy="38" r="2.2"/><circle cx="46" cy="52" r="1.8"/><circle cx="55" cy="30" r="2.4"/><circle cx="62" cy="60" r="2"/><circle cx="70" cy="40" r="2.6"/><circle cx="80" cy="55" r="2"/><circle cx="88" cy="34" r="2.4"/><circle cx="95" cy="62" r="1.8"/><circle cx="102" cy="44" r="2.2"/><circle cx="40" cy="62" r="1.6"/><circle cx="52" cy="66" r="1.6"/><circle cx="66" cy="24" r="1.6"/><circle cx="94" cy="24" r="1.6"/><circle cx="110" cy="52" r="1.8"/><circle cx="120" cy="38" r="2"/><circle cx="30" cy="52" r="1.8"/><circle cx="72" cy="68" r="1.7"/><circle cx="58" cy="45" r="2"/><circle cx="108" cy="62" r="1.6"/></g><circle cx="116" cy="30" r="26" fill="#FFFDF5" stroke="#795548" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="116" cy="30" r="6" fill="#D32F2F"/><path d="M110 26 l-8 -7 M110 34 l-8 7 M122 26 l8 -7 M122 34 l8 7 M111 28 l-7 5 M111 32 l-7 5 M121 28 l7 5 M121 32 l7 5" stroke="#BF360C" stroke-width="1.6" stroke-linecap="round"/><text x="116" y="68" font-size="7.5" text-anchor="middle" fill="#795548">放大：柑橘全爪螨</text><text x="60" y="90" font-size="7.5" text-anchor="middle" fill="#795548">叶面密集灰白失绿点</text></svg>`,
+ sym:"叶面密集针尖大小灰白失绿点，叶呈灰白浮尘状，失光泽早落。",
+ symptoms:"成螨、若螨群集叶面（以正面为主）刺吸汁液，叶片出现大量针尖大小灰白失绿斑点，严重时叶面呈灰白色浮尘状、失去光泽，引起落叶落果，树势与产量下降。",
+ law:"一年发生15-20代，以卵越冬；3月气温回升后开始活动，4-6月与9-10月形成春秋两个高峰；高温干旱及滥用农药杀伤天敌后易暴发；捕食螨（如胡瓜钝绥螨）是重要天敌。",
+ control:"① 冬春清园压低越冬基数；② 按虫口指标（有虫叶率20%以上或叶均3-5头）用药；③ 保护天敌、园内种藿香蓟等生草；④ 轮换用药防抗性。",
+ drug:"24%螺螨酯 SC、15%哒螨灵 EC、1.8%阿维菌素 EC",
+ advice:"叶均虫口3-5头时用螺螨酯/阿维菌素，轮换用药并保护捕食螨。",
+ tip:"查叶均虫口达3-5头即用螺螨酯/阿维菌素；新梢期与清园期各重点防治一次。"},
+{id:"p7",crop:"柑橘",name:"柑橘溃疡病",en:"Citrus Canker",type:"细菌病害",
+ aff:{"叶":1.0,"果":0.9},traits:["病斑","隆起"],months:[5,6,8,9,10],
+ svg:`<svg viewBox="0 0 150 96"><rect width="150" height="96" fill="#F2EDDD"/><path d="M12 48 C34 10 106 10 138 46 C106 82 34 82 12 48 z" fill="#7CB342"/><path d="M12 48 H138" stroke="#558B2F" stroke-width="1.8" opacity=".7"/><circle cx="52" cy="44" r="15" fill="#FBC02D" opacity=".55"/><circle cx="52" cy="44" r="10" fill="#6D4C41"/><circle cx="52" cy="44" r="5.5" fill="#E0E0E0"/><path d="M52 38 v12 M47 44 h10" stroke="#8D6E63" stroke-width="1.4"/><circle cx="92" cy="58" r="10" fill="#FBC02D" opacity=".5"/><circle cx="92" cy="58" r="7" fill="#6D4C41"/><circle cx="92" cy="58" r="4" fill="#E0E0E0"/><circle cx="104" cy="28" r="6.5" fill="#FBC02D" opacity=".5"/><circle cx="104" cy="28" r="4.5" fill="#6D4C41"/><circle cx="104" cy="28" r="2.5" fill="#E0E0E0"/><text x="75" y="92" font-size="8" text-anchor="middle" fill="#795548">火山口状木栓化病斑 · 外有黄晕</text></svg>`,
+ sym:"火山口状木栓化病斑、外有黄色晕环；台风暴雨后爆发。",
+ symptoms:"叶上初生针头大小黄色油渍状小点，扩大后正反两面隆起、中央开裂呈火山口状木栓化病斑，叶部病斑周围有黄色晕环（果实上无晕环）；枝梢、果实病斑突起明显。",
+ law:"高温多雨利于流行，台风暴雨后常爆发；4-10月为发生期，夏秋梢与幼果期最感病；病菌由气孔、伤口侵入，借风雨与昆虫传播；苗木与带菌接穗为远距离传播途径；橙、柚最感病。",
+ control:"① 引苗严格检疫，无病区禁从病区引进苗木接穗；② 剪除病枝叶集中烧毁、清园控源；③ 台风暴雨后及时补喷保护剂；④ 以保护嫩梢嫩果为核心科学喷药。",
+ drug:"77%氢氧化铜 WP、20%噻菌铜 SC、0.5%波尔多液",
+ advice:"台风暴雨后及时补喷铜制剂；重点保护新梢与幼果。",
+ tip:"台风暴雨后及时补喷氢氧化铜/波尔多液；夏秋梢与幼果期是保护关键期。"},
+{id:"p8",crop:"柑橘",name:"柑橘疮痂病",en:"Citrus Scab",type:"真菌病害",
+ aff:{"叶":1.0,"果":0.9},traits:["隆起","病斑"],months:[3,4,5],
+ svg:`<svg viewBox="0 0 150 96"><rect width="150" height="96" fill="#F2EDDD"/><path d="M12 50 C30 8 100 14 138 40 C110 70 42 86 22 66 C10 58 10 56 12 50z" fill="#7CB342"/><circle cx="48" cy="40" r="7" fill="#8D6E63"/><circle cx="46" cy="38" r="3.5" fill="#BCAAA4"/><circle cx="76" cy="52" r="6" fill="#8D6E63"/><circle cx="74.5" cy="50" r="3" fill="#BCAAA4"/><circle cx="100" cy="38" r="5" fill="#8D6E63"/><circle cx="99" cy="36.5" r="2.5" fill="#BCAAA4"/><circle cx="62" cy="26" r="4" fill="#8D6E63"/><circle cx="61" cy="25" r="2" fill="#BCAAA4"/><circle cx="112" cy="54" r="4" fill="#8D6E63"/><circle cx="111" cy="53" r="2" fill="#BCAAA4"/><text x="75" y="90" font-size="8" text-anchor="middle" fill="#795548">疣状木栓化突起 · 叶面粗糙畸形</text></svg>`,
+ sym:"疣状突起病斑（一侧突起一侧凹陷），叶片畸形呈漏斗状，幼果粗糙。",
+ symptoms:"新叶生蜡黄色油渍状小点，扩大成灰白至灰褐色疣状突起、粗糙木栓化；病斑一侧突起另一侧凹陷，叶片扭曲畸形呈\"漏斗状\"；幼果受害后果面生瘤状突起，果皮粗糙（\"癞头果\"）。",
+ law:"3-5月春梢抽生期与幼果期为全年高峰（15-24℃、多雨潮湿最适）；病菌以菌丝体在病组织越冬，风雨传播侵染幼嫩组织，老熟组织不再感病；橘类、柠檬最感病。",
+ control:"① 剪除病枝叶减少越冬菌源；② 抓住春芽萌动（芽长1-2mm）与谢花2/3两个关键期各喷药一次；③ 加强管理促梢抽发整齐。",
+ drug:"0.5%-1%等量式波尔多液、10%苯醚甲环唑 WDG、80%代森锰锌 WP",
+ advice:"春芽萌动与谢花2/3两个节点各喷一次波尔多液/苯醚甲环唑。",
+ tip:"春芽1-2mm及谢花2/3是两个关键喷药期，用波尔多液/苯醚甲环唑保护春梢幼果。"},
+{id:"p9",crop:"茶叶",name:"茶饼病",en:"Tea Blister Blight",type:"真菌病害",
+ aff:{"叶":1.0},traits:["隆起"],months:[4,5,9,10],
+ svg:`<svg viewBox="0 0 150 96"><rect width="150" height="96" fill="#F2EDDD"/><path d="M12 48 C34 14 116 14 138 48 C116 82 34 82 12 48z" fill="#7CB342"/><path d="M12 48 H138" stroke="#558B2F" stroke-width="1.8" opacity=".7"/><ellipse cx="62" cy="46" rx="20" ry="14" fill="#A5D6A7"/><ellipse cx="62" cy="49" rx="18" ry="12" fill="#F1F1E6"/><ellipse cx="62" cy="50" rx="18" ry="12" fill="none" stroke="#558B2F" stroke-width="1.2" stroke-dasharray="3 2.4"/><circle cx="54" cy="46" r="1.2" fill="#fff"/><circle cx="66" cy="49" r="1.1" fill="#fff"/><circle cx="60" cy="42" r="1" fill="#fff"/><circle cx="70" cy="44" r="1" fill="#fff"/><circle cx="56" cy="53" r="1" fill="#fff"/><ellipse cx="105" cy="62" rx="11" ry="8" fill="#A5D6A7"/><ellipse cx="105" cy="64" rx="10" ry="6.6" fill="#F1F1E6"/><text x="75" y="92" font-size="8" text-anchor="middle" fill="#795548">饼状隆起 · 背面白色粉层</text></svg>`,
+ sym:"嫩叶正面凹陷、背面凸起成饼状，覆白色粉层，叶卷曲畸形。",
+ symptoms:"主要危害嫩叶嫩茎：叶面初生淡黄色水渍状小斑，后正面向下凹陷、背面凸起成饼状圆形隆起（直径可达1-2cm），表面覆白色粉状担子层；严重时嫩叶卷曲畸形、嫩梢肿胀，影响产量与品质。",
+ law:"低温高湿病害，福建高山云雾茶园发生重；4-5月与9-10月多雨期发病最盛；担孢子借风雨传播侵染嫩叶，潜育期约10天；采摘不及时、荫蔽潮湿茶园发病重。",
+ control:"① 勤采嫩叶、及时分批采摘，减少侵染机会（关键农业措施）；② 适当修剪、改善茶园通风透光；③ 发病期喷药保护；④ 冬季清园。",
+ drug:"3%多抗霉素 WP、0.6%-0.7%石灰半量式波尔多液、10%苯醚甲环唑 WDG",
+ advice:"勤采嫩叶；发病初期喷多抗霉素/波尔多液保护。",
+ tip:"春秋雨季勤采嫩叶防感染；发病初期用多抗霉素/波尔多液，高山云雾茶园重点监测。"},
+{id:"p10",crop:"茶叶",name:"假眼小绿叶蝉",en:"Tea Green Leafhopper",type:"害虫·刺吸式",
+ aff:{"叶":1.0},traits:["失绿","虫体"],months:[5,6,7,9,10],
+ svg:`<svg viewBox="0 0 150 96"><rect width="150" height="96" fill="#F2EDDD"/><path d="M12 52 C34 18 116 18 138 52 C116 86 34 86 12 52z" fill="#7CB342"/><path d="M18 49 C40 22 110 22 133 50 C113 79 44 80 22 58 L18 49z" fill="#B71C1C" opacity=".65"/><path d="M25 52 C45 28 105 28 126 52 C107 76 45 78 25 56z" fill="#7CB342"/><g transform="translate(100 16)"><ellipse cx="0" cy="0" rx="11" ry="5" fill="#558B2F" transform="rotate(-18)"/><circle cx="-12" cy="-3" r="4.6" fill="#689F38"/><circle cx="-13.5" cy="-4.5" r="1.4" fill="#F5F3EA"/><path d="M2 -4 q8 -8 16 -6 M4 2 q9 4 16 2" stroke="#C5E1A5" stroke-width="2" fill="none"/></g><text x="70" y="92" font-size="8" text-anchor="middle" fill="#795548">叶缘红褐焦枯（\"焦边\"）</text></svg>`,
+ sym:"叶缘黄化转红褐焦枯（焦边），芽叶卷缩硬化呈鸡爪状。",
+ symptoms:"成虫若虫刺吸嫩梢芽叶汁液，被害芽叶叶缘黄化、红褐焦枯（俗称\"焦边\"），芽叶卷缩硬化、节间缩短、生长停滞；严重时芽叶呈\"鸡爪状\"卷曲、成片焦红，夏茶产量品质锐减。茶园头号害虫。",
+ law:"福建一年发生10代以上，世代重叠；全年两个虫口高峰：5月下旬-7月上旬第一峰（为害最大）、9-10月第二峰；高温雨少或雨后骤晴利于暴发；茶蓬郁蔽、偏施氮肥茶园发生重。",
+ control:"① 及时分批勤采压低虫口；② 适度修剪、清园破坏繁殖场所；③ 黄板诱杀并监测；④ 百叶虫口≥12头时用药。",
+ drug:"2.5%联苯菊酯 EC、15%茚虫威 SC、24%虫螨腈 SC（有机茶园用植物源药剂）",
+ advice:"分批勤采；百叶虫口12头以上用联苯菊酯/茚虫威。",
+ tip:"5-6月第一高峰前分批勤采最经济；百叶虫口达12头即用联苯菊酯/茚虫威。"},
+{id:"p11",crop:"茶叶",name:"茶煤病",en:"Tea Sooty Mold",type:"真菌·附生",
+ aff:{"叶":1.0},traits:["霉污"],months:[5,6,7,8,9],
+ svg:`<svg viewBox="0 0 150 96"><rect width="150" height="96" fill="#F2EDDD"/><path d="M12 48 C34 14 116 14 138 48 C116 82 34 82 12 48z" fill="#7CB342"/><path d="M30 34 C50 22 100 26 118 40 C126 48 124 62 112 66 C90 74 50 72 34 62 C22 52 22 40 30 34z" fill="#263238" opacity=".88"/><path d="M60 52 C75 50 95 52 106 58" stroke="#37474F" stroke-width="2.5" fill="none" opacity=".7"/><circle cx="36" cy="70" r="2" fill="#263238"/><circle cx="44" cy="74" r="1.6" fill="#263238"/><circle cx="122" cy="58" r="2" fill="#263238"/><circle cx="117" cy="66" r="1.6" fill="#263238"/><text x="75" y="92" font-size="8" text-anchor="middle" fill="#795548">黑色煤污状霉层（附生于蜜露）</text></svg>`,
+ sym:"叶面覆黑色煤污状霉层（可擦除），遮光阻碍光合，芽叶生长弱。",
+ symptoms:"真菌在黑刺粉虱、蚧类、蚜虫等害虫分泌的蜜露上腐生生长，叶面覆盖黑色煤污状霉层；霉层擦除后叶面完好（与寄生性病害的区别）；遮光影响光合作用，芽叶生长受阻、品质下降。",
+ law:"发生程度取决于粉虱、蚧类、蚜虫等排蜜虫的密度；福建5-9月较普遍；荫蔽潮湿、管理粗放茶园发生重；霉层可蔓延至嫩梢。",
+ control:"① 治虫为本：先防除黑刺粉虱、蚧类、蚜虫，切断蜜露来源后霉层自然消退；② 合理修剪疏枝、改善通风；③ 冬季石硫合剂清园。",
+ drug:"先喷10%吡虫啉 WP 防粉虱蚜虫；冬季用0.5波美度石硫合剂清园",
+ advice:"先治虫（粉虱/蚜虫）断蜜露，煤污随之消退；冬季石硫合剂清园。",
+ tip:"先治虫后治霉——防住黑刺粉虱与蚜虫是根本；冬季石硫合剂清园压基数。"}
+];
+
+/* ---------- ① 知识库 ---------- */
+var curCrop="水稻";
+function typeCls(t){if(t.indexOf("真菌")>-1)return "#795548";if(t.indexOf("细菌")>-1)return "#BF360C";if(t.indexOf("害螨")>-1)return "#D84315";return "#5D4037";}
+function fmtMonths(ms){var s=[].concat(ms).sort(function(a,b){return a-b;}),seg=[],st=s[0],pv=s[0];for(var k=1;k<=s.length;k++){if(k===s.length||s[k]!==pv+1){seg.push(st===pv?st+"月":st+"-"+pv+"月");st=s[k];}if(k<s.length)pv=s[k];}return seg.join("、");}
+function selectCrop(crop){
+  curCrop=crop;
+  document.querySelectorAll(".crop-btn").forEach(function(b){b.classList.toggle("active",b.dataset.crop===crop);});
+  var list=PESTS.filter(function(p){return p.crop===crop;});
+  document.getElementById("kbGrid").innerHTML=list.map(function(p){
+    return '<div class="pest-card" id="card-'+p.id+'">'+
+      '<div class="pc-fig"><span class="pc-type" style="background:'+typeCls(p.type)+'">'+p.type+'</span>'+p.svg+'</div>'+
+      '<div class="pc-body"><h4>'+p.name+'<em class="pc-badge">'+(p.badge||p.en)+'</em></h4>'+
+      '<p class="pc-line"><b>症状要点</b>'+p.symptoms+'</p>'+
+      '<p class="pc-line"><b>发生规律</b>'+p.law+'</p>'+
+      '<p class="pc-line"><b>防治措施</b>'+p.control+'</p>'+
+      '<p class="pc-line"><b>药剂参考</b>'+p.drug+'</p>'+
+      '<p class="pc-line"><b>高峰期</b>'+fmtMonths(p.months)+'</p></div></div>';
+  }).join('');
+}
+function goCard(crop,id){
+  selectCrop(crop);
+  setTimeout(function(){
+    var el=document.getElementById("card-"+id);
+    if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.classList.add("flash");setTimeout(function(){el.classList.remove("flash");},2800);}
+  },90);
+}
+
+/* ---------- ② 问诊决策树 ---------- */
+var dCrop="",dPart="";
+function pickCrop(c,el){dCrop=c;el.parentNode.querySelectorAll(".obtn").forEach(function(b){b.classList.remove("active");});el.classList.add("active");document.getElementById("diagOut").innerHTML="";}
+function pickPart(p,el){dPart=p;el.parentNode.querySelectorAll(".obtn").forEach(function(b){b.classList.remove("active");});el.classList.add("active");document.getElementById("diagOut").innerHTML="";}
+function diagHint(msg){document.getElementById("diagOut").innerHTML='<div class="diag-hint">⚠ '+msg+'</div>';}
+function doDiagnose(){
+  if(!dCrop){diagHint("请先在第一步选择作物");return;}
+  if(!dPart){diagHint("请选择发病部位（第二步）");return;}
+  var sel=[].map.call(document.querySelectorAll("#traitBox input:checked"),function(i){return i.value;});
+  if(!sel.length){diagHint("请至少勾选一项症状特征（第三步）");return;}
+  var list=PESTS.filter(function(p){return p.crop===dCrop;}).map(function(p){
+    var score=Math.round((p.aff[dPart]||0)*40);
+    var matched=sel.filter(function(t){return p.traits.indexOf(t)>-1;});
+    score+=matched.length*15;
+    score=Math.min(score,95);
+    return {p:p,conf:score,matched:matched};
+  }).filter(function(x){return x.conf>0;}).sort(function(a,b){return b.conf-a.conf;}).slice(0,3);
+  var out=document.getElementById("diagOut");
+  if(!list.length){
+    out.innerHTML='<div class="empty-card"><b>未匹配到疑似病害。</b><br>当前样本库中该组合暂无对应条目——这正是校本知识库共建的价值：<br>补录学院标本与教材条目后，问诊决策树的覆盖率将持续提升（正式版支持教师在线补录、审核入库）。</div>';
+    return;
+  }
+  var total=PESTS.filter(function(p){return p.crop===dCrop;}).length;
+  out.innerHTML='<div style="font-size:13.5px;color:var(--brown);margin-bottom:10px">诊断完成：共命中 '+list.length+' 种（样本库共 '+total+' 条），按匹配度排序展示 TOP3 ↓</div>'+
+    list.map(function(x,i){
+      var p=x.p;
+      var mh=x.matched.length?x.matched.map(function(m){return '<span class="d-ok">✓ '+TRAITS[m]+'</span>';}).join("　"):'部位吻合，特征部分吻合';
+      return '<div class="diag-card d-rank'+(i+1)+'">'+
+        '<div class="d-head"><span class="d-rank">TOP'+(i+1)+'</span><b>'+p.name+'</b><span class="d-type" style="background:'+typeCls(p.type)+'">'+p.type+'</span></div>'+
+        '<div class="d-conf"><span style="font-size:12.5px;color:#7a6a52">匹配置信度</span><div class="d-bar"><i style="width:'+x.conf+'%"></i></div><b>'+x.conf+'%</b>'+(x.conf<30?'<em>低置信度 · 建议人工复核</em>':'')+'</div>'+
+        '<div class="d-line">匹配特征：'+mh+'</div>'+
+        '<div class="d-line"><b>典型症状对照：</b>'+p.sym+'</div>'+
+        '<div class="d-line"><b>防治建议：</b>'+p.advice+'</div>'+
+        '<div class="d-act"><button class="minibtn" onclick="goCard(\''+p.crop+'\',\''+p.id+'\')">查看知识库详情 →</button>　<span style="font-size:11.5px;color:#9e9384">（结果可溯源至教师共建条目）</span></div></div>';
+    }).join('')+
+    '<button class="minibtn" onclick="resetDiag()">↺ 重新诊断</button>';
+}
+function resetDiag(){
+  dCrop="";dPart="";
+  document.querySelectorAll("#dCropBox .obtn,#dPartBox .obtn").forEach(function(b){b.classList.remove("active");});
+  document.querySelectorAll("#traitBox input").forEach(function(i){i.checked=false;});
+  document.getElementById("diagOut").innerHTML="";
+}
+
+/* ---------- ③ 图像识别模拟 ---------- */
+var aiRunning=false;
+function step(id,dur,cb){
+  var el=document.getElementById(id);
+  el.classList.add("active");
+  var bar=el.querySelector(".bar i");
+  bar.style.transitionDuration=dur+"ms";
+  requestAnimationFrame(function(){requestAnimationFrame(function(){bar.style.width="100%";});});
+  setTimeout(function(){el.classList.add("done");if(cb)cb();},dur+140);
+}
+function runAI(){
+  if(aiRunning)return;aiRunning=true;
+  var btn=document.getElementById("aiBtn");
+  btn.disabled=true;btn.classList.add("disabled");btn.textContent="识别中…";
+  document.getElementById("aiResult").classList.add("hidden");
+  document.getElementById("aiSteps").classList.remove("hidden");
+  ["as1","as2","as3"].forEach(function(id){var e=document.getElementById(id);e.classList.remove("active","done");e.querySelector(".bar i").style.width="0";});
+  document.getElementById("photoBox").classList.add("scanning");
+  step("as1",1200,function(){step("as2",1200,function(){step("as3",1300,function(){
+    document.getElementById("photoBox").classList.remove("scanning");
+    document.getElementById("aiResult").classList.remove("hidden");
+    aiRunning=false;btn.disabled=false;btn.classList.remove("disabled");btn.textContent="↺ 重新识别";
+  });});});
+}
+
+/* ---------- ④ 防治日历 ---------- */
+var calCrop="水稻",calMonth=6;
+function renderCal(){
+  var list=PESTS.filter(function(p){return p.crop===calCrop;});
+  var html="";
+  for(var m=1;m<=12;m++){
+    (function(mm){
+      var hits=list.filter(function(p){return p.months.indexOf(mm)>-1;});
+      html+='<div class="mon '+(hits.length?"hot ":"")+(mm===calMonth?"sel":"")+'" onclick="showMonth('+mm+')" title="'+(hits.length?("本月高峰："+hits.map(function(p){return p.name;}).join("、")):"本月无记录高峰")+'"><b>'+mm+'月</b><span class="cnt">'+(hits.length?hits.length+"种高峰":"—")+'</span></div>';
+    })(m);
+  }
+  document.getElementById("calGrid").innerHTML=html;
+  document.getElementById("calTitle").textContent=calCrop+" · "+calMonth+"月 防治要点";
+  var hits=list.filter(function(p){return p.months.indexOf(calMonth)>-1;});
+  document.getElementById("calDetail").innerHTML=hits.length
+    ? "<ul>"+hits.map(function(p){return '<li><b>'+p.name+'</b>（'+p.type+"）—— "+p.tip+"</li>";}).join("")+"</ul>"
+    : '<p class="cal-empty">本月未记录到 '+calCrop+" 常见病虫害高峰，以田间监测与预防性管理为主（清园、水肥管理、天敌保护）。</p>";
+  document.querySelectorAll(".cal-crop button").forEach(function(b){b.classList.toggle("active",b.dataset.crop===calCrop);});
+}
+function pickCal(c){calCrop=c;renderCal();}
+function showMonth(m){calMonth=m;renderCal();}
+
+/* ---------- ⑤ 随堂小测 ---------- */
+var QUIZ=[
+ {q:"柑橘黄龙病的传播媒介（昆虫）是？",opts:["柑橘木虱","柑橘红蜘蛛","桃蚜","黑刺粉虱"],ans:0,
+  exp:"黄龙病由韧皮部限制细菌引起，田间唯一自然传播媒介是<b>柑橘木虱</b>（Diaphorina citri），带病苗木与接穗亦可远距离传病。防治核心是\"防木虱、挖病树、用无病苗\"，这也是它被称为\"柑橘癌症\"却仍可控的原因。"},
+ {q:"褐飞虱对水稻的主要危害方式与部位是？",opts:["在叶片正面啃食叶肉","群集稻株中下部茎基部刺吸汁液","蛀食稻穗","咬食根系"],ans:1,
+  exp:"褐飞虱成虫、若虫<b>群集在稻株中下部茎基部刺吸汁液</b>，蜜露还诱发煤污病使茎叶发黑；虫量暴发时稻丛整株枯死倒伏（\"冒穿\"/\"虱烧\"）。所以防治时药液要重点喷到稻株中下部。"},
+ {q:"田间出现\"枯心苗\"或\"白穗\"，最可能由哪种害虫引起？",opts:["稻飞虱","稻纵卷叶螟","二化螟","稻蓟马"],ans:2,
+  exp:"<b>二化螟</b>幼虫蛀入稻茎取食，分蘖期造成枯心苗、孕穗期造成白穗；剥开茎秆可见蛀道与淡红色幼虫。防治靠性诱/灯诱测报盛孵期，枯鞘株率达标时用氯虫苯甲酰胺等。"}
+];
+var qScore=0,qDone=0;
+function renderQuiz(){
+  qScore=0;qDone=0;
+  document.getElementById("quizBox").innerHTML=QUIZ.map(function(q,i){
+    return '<div class="q-card"><h4>Q'+(i+1)+"："+q.q+"</h4>"+
+      q.opts.map(function(o,j){return '<label class="q-opt" id="qo-'+i+"-"+j+'"><input type="radio" name="qn'+i+'" value="'+j+'" onchange="judge('+i+","+j+')"><span>'+"ABCD".charAt(j)+". "+o+"</span></label>";}).join("")+
+      '<div class="q-exp hidden" id="qexp'+i+'"></div></div>';
+  }).join("");
+  document.getElementById("qbar").innerHTML="已答 0/3 · 当前得分 0";
+  document.getElementById("qsum").classList.add("hidden");
+}
+function judge(qi,val){
+  var q=QUIZ[qi];
+  q.opts.forEach(function(o,j){
+    var lb=document.getElementById("qo-"+qi+"-"+j);
+    lb.classList.add("lock");lb.querySelector("input").disabled=true;
+    if(j===q.ans)lb.classList.add("right");
+    if(j===val&&j!==q.ans)lb.classList.add("wrong");
+  });
+  var ok=(val===q.ans);
+  if(ok)qScore++;
+  qDone++;
+  var ex=document.getElementById("qexp"+qi);
+  ex.classList.remove("hidden");
+  ex.innerHTML='<b class="'+(ok?"q-yes":"q-no")+'">'+(ok?"✓ 回答正确":("✗ 回答错误，正确答案："+"ABCD".charAt(q.ans)))+"</b>　"+q.exp;
+  document.getElementById("qbar").innerHTML="已答 "+qDone+"/3 · 当前得分 "+qScore;
+  if(qDone===3){
+    var s=document.getElementById("qsum");
+    s.classList.remove("hidden");
+    var msg=qScore===3?"全对！正式版可按知识库自动组卷、按错题推送相似题——这就是校本题库的雏形。":(qScore>=1?"解析已展示。正式版会把错题写入错题本并按知识点辅导，问答场景的价值就在这。":"没关系，AI 助教会基于错题继续辅导，正式版支持个性化练习推送。");
+    s.innerHTML="本环节得分：<b>"+qScore+"/3</b> —— "+msg;
+  }
+}
+
+/* ---------- 初始化 ---------- */
+selectCrop("水稻");
+renderCal();
+renderQuiz();
+</script>
+</body>
+</html>

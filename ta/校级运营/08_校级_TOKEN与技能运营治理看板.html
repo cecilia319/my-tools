@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="icon" href="data:,">
+<title>校级Token与技能运营治理看板 · XX大学</title>
+<!-- TeleAgent(TA)教育版 · 校级运营治理看板 · 单文件离线大屏 · 数据为模拟 -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;min-height:100%}
+body{background:#0A1929;color:#E6F4FF;font-family:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif;overflow-x:hidden;position:relative}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(41,182,246,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(41,182,246,.045) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(900px 480px at 10% -6%,rgba(41,182,246,.16),transparent 60%),radial-gradient(1100px 620px at 92% 108%,rgba(0,229,255,.10),transparent 60%);pointer-events:none;z-index:0}
+#pbar{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;background:linear-gradient(90deg,#29B6F6,#00E5FF 45%,#FFD54F 75%,#29B6F6);background-size:220% 100%;animation:pb 7s linear infinite}
+@keyframes pb{0%{background-position:0 0}100%{background-position:-220% 0}}
+.screen{position:relative;z-index:1;max-width:1920px;margin:0 auto;padding:12px 18px 14px;display:flex;flex-direction:column;gap:10px;min-height:100vh}
+header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:2px 2px 4px}
+.brand{font-size:15px;letter-spacing:2px;color:#9BEFFF}
+.brand::before{content:'◆ ';color:#00E5FF}
+.h-title{font-size:30px;font-weight:700;letter-spacing:6px;color:#F2FAFF;text-shadow:0 0 22px rgba(0,229,255,.5),0 0 4px rgba(0,229,255,.35);display:flex;align-items:center;gap:16px;white-space:nowrap}
+.h-title::before,.h-title::after{content:'';width:120px;height:2px;background:linear-gradient(90deg,transparent,#29B6F6)}
+.h-title::after{background:linear-gradient(90deg,#29B6F6,transparent)}
+.h-right{display:flex;justify-content:flex-end;align-items:center;gap:10px}
+.clock{text-align:right;line-height:1.3}
+.clock b{display:block;font-family:Consolas,"Courier New",monospace;font-size:20px;color:#00E5FF;font-weight:600;letter-spacing:1px}
+.clock span{font-size:11px;color:rgba(230,244,255,.62);font-family:Consolas,monospace;display:block}
+.clock .cut{color:#FFD54F;letter-spacing:0}
+.btn{cursor:pointer;border:1px solid rgba(0,229,255,.45);background:rgba(0,229,255,.07);color:#9BEFFF;font-size:13px;padding:6px 14px;border-radius:6px;letter-spacing:1px;transition:.2s;font-family:inherit}
+.btn:hover{background:rgba(0,229,255,.18);box-shadow:0 0 14px rgba(0,229,255,.35);color:#fff}
+.toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.rsw{display:flex;border:1px solid rgba(41,182,246,.35);border-radius:7px;overflow:hidden}
+.rsw button{cursor:pointer;border:none;background:rgba(13,36,59,.5);color:rgba(230,244,255,.65);font-size:13px;padding:6px 16px;border-right:1px solid rgba(41,182,246,.25);transition:.2s;font-family:inherit;letter-spacing:1px}
+.rsw button:last-child{border-right:none}
+.rsw button.on{background:rgba(0,229,255,.18);color:#fff;text-shadow:0 0 8px rgba(0,229,255,.6)}
+.rsw button:hover{color:#fff}
+.chip{display:none;align-items:center;gap:10px;border:1px solid rgba(255,213,79,.55);background:rgba(255,213,79,.10);color:#FFD54F;border-radius:7px;padding:5px 8px 5px 14px;font-size:13px}
+.chip.show{display:flex}
+.chip b{font-weight:600;letter-spacing:1px}
+.chip button{cursor:pointer;border:1px solid rgba(255,213,79,.5);background:rgba(255,213,79,.12);color:#FFD54F;border-radius:5px;font-size:12px;padding:2px 10px;font-family:inherit}
+.chip button:hover{background:rgba(255,213,79,.25)}
+.tb-r{margin-left:auto;font-size:12px;color:rgba(230,244,255,.55)}
+.card{position:relative;border:1px solid rgba(41,182,246,.26);border-radius:10px;background:linear-gradient(165deg,rgba(41,182,246,.10),rgba(13,36,59,.60));display:flex;flex-direction:column;padding:10px 14px 12px}
+.card::before{content:'';position:absolute;top:-1px;left:-1px;width:14px;height:14px;border-top:2px solid rgba(0,229,255,.75);border-left:2px solid rgba(0,229,255,.75)}
+.card::after{content:'';position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;border-bottom:2px solid rgba(0,229,255,.75);border-right:2px solid rgba(0,229,255,.75)}
+.ch{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid rgba(41,182,246,.22)}
+.ch b{font-size:15px;color:#CFEFFF;letter-spacing:2px;font-weight:600;display:flex;align-items:center;gap:8px}
+.ch b::before{content:'';width:4px;height:14px;background:linear-gradient(#00E5FF,#29B6F6);box-shadow:0 0 8px rgba(0,229,255,.7)}
+.ch span{font-size:11.5px;color:rgba(230,244,255,.5)}
+.dot{width:7px;height:7px;border-radius:50%;background:#00E5FF;box-shadow:0 0 8px #00E5FF;display:inline-block;margin-right:5px;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.cb{flex:1;position:relative;min-height:0}
+canvas.fill{position:absolute;inset:0;width:100%;height:100%;display:block}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi{min-height:138px}
+.kl{font-size:13px;color:rgba(230,244,255,.65);letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kv{display:flex;align-items:baseline;gap:6px;margin:6px 0 2px}
+.kv .num{font-family:Consolas,"Courier New",monospace;font-size:40px;font-weight:700;color:#FFF;text-shadow:0 0 18px rgba(0,229,255,.45);line-height:1}
+.kv .unit{font-size:15px;color:#00E5FF}
+.kv .txt{font-size:26px;font-weight:700;color:#FFF;text-shadow:0 0 16px rgba(0,229,255,.4);letter-spacing:3px}
+.kd{font-size:12px;color:#00E5FF}
+.kd .arr{font-size:10px}
+.kbar{height:5px;border-radius:3px;background:rgba(41,182,246,.15);margin:6px 0 2px;overflow:hidden}
+.kbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#29B6F6,#00E5FF);border-radius:3px;transition:width .7s;box-shadow:0 0 8px rgba(0,229,255,.6)}
+.spark{width:100%;height:32px;display:block;margin-top:auto}
+.mixm{display:flex;flex-direction:column;gap:3px;margin-top:8px}
+.mixm div{display:flex;align-items:center;gap:6px;font-size:10.5px;color:rgba(230,244,255,.6)}
+.mixm div span{width:46px;white-space:nowrap}
+.mixm i{flex:1;height:5px;border-radius:3px;background:rgba(41,182,246,.12);position:relative;overflow:hidden}
+.mixm i b{position:absolute;left:0;top:0;bottom:0;border-radius:3px;transition:width .7s;display:block}
+.mixm em{width:32px;text-align:right;font-style:normal;font-family:Consolas,monospace}
+.rows2{display:grid;grid-template-columns:54fr 46fr;gap:10px;flex:1.18;min-height:262px}
+.rows3{display:grid;grid-template-columns:40fr 27fr 33fr;gap:10px;flex:1;min-height:252px}
+.skl{position:absolute;inset:0;overflow-y:auto;display:flex;flex-direction:column;justify-content:space-around}
+.sk{display:flex;align-items:center;gap:8px;padding:2px 2px}
+.sk-r{width:24px;height:20px;line-height:20px;text-align:center;font-family:Consolas,monospace;font-size:11px;color:rgba(230,244,255,.55);background:rgba(41,182,246,.12);border-radius:4px;flex:none}
+.sk.top .sk-r{color:#0A1929;background:linear-gradient(#FFD54F,#FFB300);font-weight:700}
+.sk-n{width:96px;font-size:13px;color:#DFEFFF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sk-bar{flex:1;height:9px;background:rgba(41,182,246,.10);border-radius:5px;overflow:hidden}
+.sk-bar i{display:block;height:100%;width:0;border-radius:5px;background:linear-gradient(90deg,rgba(41,182,246,.5),#00E5FF);transition:width .8s cubic-bezier(.2,.7,.3,1);box-shadow:0 0 6px rgba(0,229,255,.4)}
+.sk.top .sk-bar i{background:linear-gradient(90deg,rgba(255,179,0,.5),#FFD54F);box-shadow:0 0 6px rgba(255,213,79,.45)}
+.sk-c{width:64px;text-align:right;font-family:Consolas,monospace;font-size:11px;color:rgba(230,244,255,.55)}
+.sk-p{width:52px;text-align:right;font-family:Consolas,monospace;font-size:12px;color:#9BEFFF}
+.mixwrap{position:absolute;inset:0;display:flex;align-items:center}
+.mixwrap .cnv{position:relative;height:100%;flex:1}
+.lgd{width:150px;display:flex;flex-direction:column;gap:12px;padding-right:4px}
+.lgd>div{display:flex;align-items:center;gap:7px;font-size:12.5px;color:#DFEFFF}
+.lgd i{width:10px;height:10px;border-radius:3px;flex:none}
+.lgd span{white-space:nowrap}
+.lgd b{font-weight:400;color:rgba(230,244,255,.5);font-size:11px;font-family:Consolas,monospace}
+.lgd em{margin-left:auto;font-style:normal;font-family:Consolas,monospace;color:#00E5FF}
+.loglist{position:absolute;inset:0;overflow:hidden;display:flex;flex-direction:column;gap:6px;padding:2px 0}
+.lg{display:flex;align-items:center;gap:10px;background:rgba(13,36,59,.45);border:1px solid rgba(41,182,246,.14);border-radius:6px;padding:5px 10px;font-size:12px}
+.lg.new{animation:lgin .5s ease-out}
+@keyframes lgin{from{opacity:0;transform:translateY(-10px);background:rgba(0,229,255,.15)}to{opacity:1;transform:none}}
+.lg-t{font-family:Consolas,monospace;color:#00E5FF;font-size:11.5px;flex:none}
+.lg-d{flex:1;color:rgba(230,244,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lg-tag{flex:none;font-style:normal;font-size:11px;padding:1px 8px;border-radius:4px;letter-spacing:1px}
+.lg-tag.ok{color:#00E5FF;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.35)}
+.lg-tag.bad{color:#FFD54F;background:rgba(255,213,79,.10);border:1px solid rgba(255,213,79,.45)}
+.lg-tag.warn{color:#29B6F6;background:rgba(41,182,246,.10);border:1px solid rgba(41,182,246,.45)}
+.tip{position:fixed;z-index:100;pointer-events:none;background:rgba(8,20,34,.96);border:1px solid rgba(0,229,255,.5);border-radius:8px;padding:10px 12px;font-size:12px;color:#DFEFFF;box-shadow:0 8px 24px rgba(0,0,0,.5);display:none;line-height:1.75;max-width:290px}
+.tip b{color:#FFD54F;font-size:13px}
+.tip i{font-style:normal;color:#00E5FF;font-family:Consolas,monospace}
+.tip .tt{color:rgba(230,244,255,.55);font-size:11px;margin-top:3px;border-top:1px dashed rgba(41,182,246,.3);padding-top:3px}
+.mask{position:fixed;inset:0;background:rgba(4,12,20,.62);z-index:80;opacity:0;pointer-events:none;transition:.3s}
+.mask.show{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(430px,94vw);z-index:85;background:linear-gradient(200deg,#0E2740,#0A1929);border-left:1px solid rgba(0,229,255,.35);box-shadow:-18px 0 40px rgba(0,0,0,.5);transform:translateX(103%);transition:transform .38s cubic-bezier(.2,.8,.25,1);display:flex;flex-direction:column}
+.drawer.open{transform:none}
+.dr-h{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(41,182,246,.25);font-size:17px;letter-spacing:3px;color:#CFEFFF}
+.dr-x{cursor:pointer;background:none;border:1px solid rgba(41,182,246,.4);color:#9BEFFF;border-radius:6px;width:30px;height:30px;font-size:14px}
+.dr-x:hover{background:rgba(0,229,255,.15)}
+.dr-b{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:18px}
+.dr-t{font-size:14px;color:#9BEFFF;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dr-t::before{content:'';width:4px;height:13px;background:#00E5FF;border-radius:2px}
+.dr-t em{font-style:normal;font-size:11px;color:rgba(230,244,255,.45);letter-spacing:0}
+.ach{display:flex;gap:10px}
+.a-chip{flex:1;text-align:center;border:1px solid rgba(41,182,246,.3);border-radius:8px;padding:10px 4px;background:rgba(13,36,59,.5)}
+.a-chip b{display:block;font-family:Consolas,monospace;font-size:26px;color:#00E5FF}
+.a-chip.wait b{color:#FFD54F}
+.a-chip.off b{color:rgba(230,244,255,.45)}
+.a-chip span{font-size:11.5px;color:rgba(230,244,255,.6)}
+.stack{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:10px 0 8px;background:rgba(41,182,246,.1)}
+.stack i{height:100%;display:block}
+.dn{font-size:11.5px;color:rgba(230,244,255,.55);line-height:1.8}
+table.mx{width:100%;border-collapse:collapse;font-size:12.5px}
+.mx th{color:rgba(230,244,255,.55);font-weight:400;padding:6px 4px;border-bottom:1px solid rgba(41,182,246,.25)}
+.mx td{padding:7px 4px;text-align:center;border-bottom:1px solid rgba(41,182,246,.12);cursor:pointer;user-select:none}
+.mx td:first-child{text-align:left;color:#DFEFFF;cursor:default}
+.mx td.c{color:rgba(230,244,255,.16);transition:.15s}
+.mx td.c.on{color:#00E5FF;background:rgba(0,229,255,.10);text-shadow:0 0 8px rgba(0,229,255,.5)}
+.qrow{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:13px}
+.qrow select{flex:1;background:#0E2740;color:#DFEFFF;border:1px solid rgba(41,182,246,.4);border-radius:6px;padding:6px 8px;font-size:13px;outline:none;font-family:inherit}
+.qn{display:flex;gap:10px;margin-bottom:12px}
+.qn>div{flex:1;text-align:center;border:1px solid rgba(41,182,246,.25);border-radius:8px;padding:8px 4px;background:rgba(13,36,59,.45)}
+.qn b{display:block;font-family:Consolas,monospace;font-size:22px;color:#00E5FF}
+.qn>div.warn b{color:#FFD54F}
+.qn span{font-size:11px;color:rgba(230,244,255,.55)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:linear-gradient(90deg,#29B6F6,#00E5FF);outline:none;margin:6px 0 10px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#FFD54F;border:2px solid #0A1929;box-shadow:0 0 12px rgba(255,213,79,.8);cursor:pointer}
+.qbar{height:9px;border-radius:5px;background:rgba(41,182,246,.12);overflow:hidden}
+.qbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#29B6F6,#00E5FF);transition:width .3s}
+.qbar i.warn{background:linear-gradient(90deg,#FFB300,#FFD54F)}
+.pmodal{width:min(430px,92vw);background:linear-gradient(190deg,#102A45,#0A1929);border:1px solid rgba(0,229,255,.4);border-radius:12px;padding:18px 20px;box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 30px rgba(0,229,255,.12);margin:auto}
+#pMask{display:none;position:fixed;inset:0;z-index:88;background:rgba(4,12,20,.62);align-items:center;justify-content:center}
+#pMask.show{display:flex}
+.pm-h{display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid rgba(41,182,246,.25)}
+.av{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#29B6F6,#0A1929);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;border:1px solid rgba(0,229,255,.5);flex:none}
+.pm-h b{font-size:17px;color:#fff;letter-spacing:1px}
+.pm-h span{display:block;font-size:12px;color:rgba(230,244,255,.6);margin-top:2px}
+.pm-h .dr-x{margin-left:auto}
+.pm-g{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.pm-g>div{text-align:center;background:rgba(13,36,59,.5);border:1px solid rgba(41,182,246,.22);border-radius:8px;padding:9px 2px}
+.pm-g b{font-family:Consolas,monospace;font-size:20px;color:#00E5FF}
+.pm-g i{font-style:normal;font-size:12px;color:#00E5FF;margin-left:2px}
+.pm-g span{display:block;font-size:10.5px;color:rgba(230,244,255,.55);margin-top:2px}
+.pm-t{font-size:13px;color:#9BEFFF;letter-spacing:2px;margin:6px 0 8px}
+.psk{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:12.5px}
+.psk span{width:74px;color:#DFEFFF;flex:none}
+.psk .pbar{flex:1;height:9px;background:rgba(41,182,246,.12);border-radius:5px;overflow:hidden}
+.psk .pbar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,rgba(41,182,246,.5),#00E5FF)}
+.psk em{font-style:normal;width:46px;text-align:right;font-family:Consolas,monospace;font-size:11.5px;color:#9BEFFF;flex:none}
+.pm-f{margin-top:12px;font-size:11.5px;color:rgba(230,244,255,.55)}
+.vd{position:fixed;right:16px;bottom:16px;z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.vd-tab{cursor:pointer;border:1px solid rgba(255,213,79,.5);background:rgba(255,213,79,.10);color:#FFD54F;font-size:12px;padding:6px 12px;border-radius:6px;letter-spacing:1px;font-family:inherit}
+.vd-tab:hover{background:rgba(255,213,79,.2)}
+.vd-p{width:302px;background:linear-gradient(190deg,rgba(16,42,69,.95),rgba(10,25,41,.97));border:1px solid rgba(255,213,79,.35);border-radius:10px;padding:12px 14px;display:none}
+.vd.open .vd-p{display:block}
+.vd-t{font-size:13px;color:#FFD54F;letter-spacing:2px;margin-bottom:10px}
+.vd-i{display:flex;gap:9px;margin-bottom:10px}
+.vd-i:last-child{margin-bottom:2px}
+.vd-i>b{flex:none;width:18px;height:18px;line-height:18px;text-align:center;font-size:11px;color:#0A1929;background:#FFD54F;border-radius:50%;font-weight:700}
+.vd-i>div b{display:block;font-size:12.5px;color:#F2FAFF;margin-bottom:2px}
+.vd-i>div span{font-size:11px;color:rgba(230,244,255,.62);line-height:1.55;display:block}
+footer{text-align:center;font-size:11.5px;color:rgba(230,244,255,.42);letter-spacing:1px;padding:6px 0 2px}
+@media(max-width:1500px){.h-title{font-size:24px;letter-spacing:4px}.h-title::before,.h-title::after{width:70px}.kv .num{font-size:32px}.kv .txt{font-size:21px}.screen{padding:10px 12px}}
+@media(max-width:1150px){.kpis{grid-template-columns:repeat(2,1fr)}.rows2,.rows3{grid-template-columns:1fr;flex:none}.rows2>div,.rows3>div{min-height:250px}.screen{min-height:0}}
+</style>
+</head>
+<body>
+<div id="pbar"></div>
+<div class="screen">
+  <header>
+    <div class="brand" id="schoolName">XX大学 · AI能力运营中心</div>
+    <div class="h-title">TeleAgent校级运营治理看板</div>
+    <div class="h-right">
+      <button class="btn" id="btnGovern">技能治理</button>
+      <button class="btn" id="btnProfile">个人画像</button>
+      <div class="clock"><b id="clockTime">--:--:--</b><span id="clockDate">----</span><span class="cut" id="cut">数据截至 2026-10-29</span></div>
+    </div>
+  </header>
+  <div class="toolbar">
+    <div class="rsw" id="rsw">
+      <button data-r="today">今日</button><button data-r="week">近7天</button><button data-r="d30">近30天</button><button data-r="month" class="on">本月</button>
+    </div>
+    <div class="chip" id="chip"><span>当前查看：</span><b id="chipName">机电学院</b><button id="chipReset">全校</button></div>
+    <div class="tb-r">单位：万Token · 模拟数据</div>
+  </div>
+
+  <section class="kpis">
+    <div class="card kpi">
+      <div class="kl" id="kL1">本月Token总消耗</div>
+      <div class="kv"><span class="num" id="kToken">1,286</span><span class="unit">万</span></div>
+      <div class="kd" id="kD1"><span class="arr">▲</span> 环比 +18.4%</div>
+      <canvas class="spark" id="sp1"></canvas>
+    </div>
+    <div class="card kpi">
+      <div class="kl" id="kL2">日活用户</div>
+      <div class="kv"><span class="num" id="kDau">1,842</span><span class="unit">人</span></div>
+      <div class="kd" id="kD2">占开通用户 31.6%</div>
+      <div class="kbar"><i id="kDauBar" style="width:31.6%"></i></div>
+      <canvas class="spark" id="sp2"></canvas>
+    </div>
+    <div class="card kpi">
+      <div class="kl" id="kL3">累计任务数</div>
+      <div class="kv"><span class="num" id="kTasks">47,630</span><span class="unit">个</span></div>
+      <div class="kd" id="kD3">今日 +1,205</div>
+      <canvas class="spark" id="sp3"></canvas>
+    </div>
+    <div class="card kpi">
+      <div class="kl">技能调用TOP场景</div>
+      <div class="kv"><span class="txt" id="kScene">行政办公</span></div>
+      <div class="kd" id="kD4">占 42%</div>
+      <div class="mixm" id="kMix"></div>
+    </div>
+  </section>
+
+  <section class="rows2">
+    <div class="card">
+      <div class="ch"><b>部门Token消耗排行</b><span id="deptNote">悬停查看详情 · 点击筛选部门视图</span></div>
+      <div class="cb"><canvas class="fill" id="deptCv"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ch"><b>Token消耗趋势</b><span id="trendNote">本月 · 单位:万Token</span></div>
+      <div class="cb"><canvas class="fill" id="trendCv"></canvas></div>
+    </div>
+  </section>
+
+  <section class="rows3">
+    <div class="card">
+      <div class="ch"><b>热门技能 TOP10</b><span id="skillSum">本期调用 --</span></div>
+      <div class="cb skl" id="skillList"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><b>技能使用构成</b><span>按场景分类</span></div>
+      <div class="cb">
+        <div class="mixwrap">
+          <div class="cnv"><canvas class="fill" id="mixCv" style="position:relative"></canvas></div>
+          <div class="lgd" id="lgd"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><b>安全审计日志</b><span><i class="dot"></i>实时刷新 · 内容安全 / 工具调用 / 异常登录</span></div>
+      <div class="cb"><div class="loglist" id="logList"></div></div>
+    </div>
+  </section>
+
+  <footer>本看板为 TeleAgent（TA）教育版管理后台能力演示样张 · 数据为模拟数据 · 实际部署后对接校内真实用量</footer>
+</div>
+
+<div class="tip" id="tip"></div>
+<div class="mask" id="drMask"></div>
+<aside class="drawer" id="drawer">
+  <div class="dr-h"><span>技能治理中心</span><button class="dr-x" id="drClose">✕</button></div>
+  <div class="dr-b">
+    <div>
+      <div class="dr-t">技能上架审核状态</div>
+      <div class="ach">
+        <div class="a-chip"><b>28</b><span>已上架</span></div>
+        <div class="a-chip wait"><b>3</b><span>待审核</span></div>
+        <div class="a-chip off"><b>2</b><span>已下架</span></div>
+      </div>
+      <div class="stack"><i style="width:84.8%;background:#00E5FF"></i><i style="width:9.1%;background:#FFD54F"></i><i style="width:6.1%;background:rgba(230,244,255,.25)"></i></div>
+      <div class="dn">待审核（3）：AI出卷助手（教学教研）· 智能巡课报告（学生服务）· 实验安全问答（科研学术）；上架需经信息中心审核 + 校办备案。</div>
+    </div>
+    <div>
+      <div class="dr-t">按角色授权矩阵 <em>（点击勾选可调整 · 演示）</em></div>
+      <table class="mx" id="mxTable"></table>
+      <div class="dn" style="margin-top:8px">矩阵含义：不同角色可见、可调用哪些类别技能；调整后即时生效并写入审计日志。</div>
+    </div>
+    <div>
+      <div class="dr-t">院系Token额度设置 <em>（拖动滑块演示调整）</em></div>
+      <div class="qrow"><label>院系</label><select id="qDept"><option>机电学院</option><option>经管学院</option><option>外语学院</option><option>科研处</option></select></div>
+      <div class="qn">
+        <div id="qw1"><b id="qQuota">100</b><span>本月额度(万)</span></div>
+        <div><b id="qUsed">82</b><span>已用(万)</span></div>
+        <div id="qw3"><b id="qLeft">18</b><span>剩余(万)</span></div>
+      </div>
+      <input type="range" id="qSlider" min="20" max="160" step="5" value="100">
+      <div class="qbar"><i id="qFill" style="width:82%"></i></div>
+      <div class="dn" style="margin-top:8px" id="qNote">剩余 18万（占额度 18%）· 用量超过90%自动金色预警</div>
+      <div class="dn">额度与授权变更经校办审批后生效，全流程留痕可审计。</div>
+    </div>
+  </div>
+</aside>
+
+<div id="pMask">
+  <div class="pmodal">
+    <div class="pm-h">
+      <div class="av">王</div>
+      <div><b>王志远</b><span>机电学院 · 副教授 · 教师ID T2015-0388</span></div>
+      <button class="dr-x" id="pClose">✕</button>
+    </div>
+    <div class="pm-g">
+      <div><b>12.4<i>万</i></b><span>本月Token消耗</span></div>
+      <div><b>18<i>天</i></b><span>本月使用天数</span></div>
+      <div><b>462<i>次</i></b><span>累计任务数</span></div>
+      <div><b>2<i>名</i></b><span>部门用量排名/386人</span></div>
+    </div>
+    <div class="pm-t">高频技能 TOP3</div>
+    <div class="psk"><span>PPT生成</span><div class="pbar"><i style="width:100%"></i></div><em>2.9万</em></div>
+    <div class="psk"><span>公文写作</span><div class="pbar"><i style="width:79%"></i></div><em>2.3万</em></div>
+    <div class="psk"><span>文献综述</span><div class="pbar"><i style="width:62%"></i></div><em>1.8万</em></div>
+    <div class="pm-t" style="margin-top:12px">月度个人配额</div>
+    <div class="psk"><span>已用 12.4万</span><div class="pbar"><i style="width:41%"></i></div><em>30万</em></div>
+    <div class="pm-f">用量健康度：良好 · 谁在用、用得好不好，一查即知（数据为模拟）</div>
+  </div>
+</div>
+
+<div class="vd" id="vd">
+  <div class="vd-p">
+    <div class="vd-t">给领导的三个判断</div>
+    <div class="vd-i"><b>①</b><div><b>钱花在哪，一目了然</b><span>Token按部门、按个人、按技能可查可追溯，预算有依据、投入可考核。</span></div></div>
+    <div class="vd-i"><b>②</b><div><b>能力边界，全程可控</b><span>技能按角色授权、内容安全实时审计、院系额度上限，风险管得住。</span></div></div>
+    <div class="vd-i"><b>③</b><div><b>知识资产，校内沉淀</b><span>三级资料库 + Wiki 持续沉淀，AI越用越懂本校，形成学校自有资产。</span></div></div>
+  </div>
+  <button class="vd-tab" id="vdTab">给领导的三个判断 ▴</button>
+</div>
+
+<script>
+(function(){
+'use strict';
+function $(s){return document.getElementById(s)}
+function $$(s){return Array.prototype.slice.call(document.querySelectorAll(s))}
+function p2(n){return (n<10?'0':'')+n}
+function fmtInt(n){return Math.round(n).toLocaleString('en-US')}
+function fmtTok(v){return v>=100?fmtInt(v)+'万':v.toFixed(1)+'万'}
+function fmtTokNum(v){return v>=100?fmtInt(v):v.toFixed(1)}
+function fmtCnt(v){return v>=10000?(v/10000).toFixed(1)+'万次':fmtInt(v)+'次'}
+function easeOut(p){return 1-Math.pow(1-p,3)}
+
+/* ---------- 模拟数据 ---------- */
+var MIX_L=['行政办公','教学教研','科研学术','学生服务'];
+var MIX_C=['#29B6F6','#00E5FF','#FFD54F','#FF8A65'];
+var DEPTS=[
+ {n:'校办',v:218,u:86,dau:58,tk:2860,sk:['公文写作','会议纪要','制度问答'],mix:[90,4,3,3]},
+ {n:'教务处',v:189,u:124,dau:89,tk:3145,sk:['Excel汇总','公文写作','PPT生成'],mix:[62,28,6,4]},
+ {n:'机电学院',v:167,u:386,dau:198,tk:6847,sk:['PPT生成','文献综述','作业批改'],mix:[12,46,33,9]},
+ {n:'科研处',v:152,u:58,dau:41,tk:2903,sk:['课题申报','文献综述','公文写作'],mix:[18,6,68,8]},
+ {n:'信息中心',v:128,u:46,dau:32,tk:1966,sk:['制度问答','PPT生成','Excel汇总'],mix:[55,10,30,5]},
+ {n:'经管学院',v:102,u:302,dau:121,tk:4233,sk:['Excel汇总','学情分析','公文写作'],mix:[16,49,23,12]},
+ {n:'外语学院',v:88,u:214,dau:87,tk:3018,sk:['文献综述','论文格式校准','PPT生成'],mix:[10,52,28,10]},
+ {n:'马克思主义学院',v:69,u:118,dau:49,tk:1542,sk:['公文写作','制度问答','PPT生成'],mix:[48,38,8,6]},
+ {n:'图书馆',v:55,u:64,dau:21,tk:890,sk:['文献综述','制度问答','课题申报'],mix:[22,8,62,8]}];
+var SKILLS=[
+ {n:'公文写作',cat:0,c:15340},{n:'会议纪要',cat:0,c:12310},{n:'PPT生成',cat:1,c:10200},
+ {n:'Excel汇总',cat:1,c:8770},{n:'论文格式校准',cat:2,c:7330},{n:'作业批改',cat:1,c:6660},
+ {n:'学情分析',cat:1,c:5560},{n:'课题申报',cat:2,c:4890},{n:'文献综述',cat:2,c:3790},{n:'制度问答',cat:0,c:2700}];
+var M_SER=[43.2,47.6,31.4,30.1,45.8,43.2,46.5,42.8,47.3,33.6,30.2,47.4,43.1,46.7,44.2,51.8,34.5,31.1,47.6,45.3,52.4,48.2,55.7,36.8,34.2,69.2,52.3,49.6,54.2];
+var D30=[44.6].concat(M_SER);
+var WK=M_SER.slice(-7);
+var HR=[0.3,0.2,0.1,0.1,0.2,0.3,0.8,1.9,4.1,5.2,5.6,4.3,2.3,3.0,4.6,5.0,4.4,3.4,2.6,2.1,1.6,1.1,0.6,0.4];
+var HRL=[];for(var hi=0;hi<24;hi++)HRL.push(hi+'时');
+function lbls(m0,d0,n){var a=[],m=m0,d=d0,dim=[31,28,31,30,31,30,31,31,30,31,30,31];for(var i=0;i<n;i++){a.push((m<10?'0'+m:m)+'/'+(d<10?'0'+d:d));d++;if(d>dim[m-1]){d=1;m++;}}return a}
+var TRENDS={
+ today:{v:HR,l:HRL,ma:5,peak:'10时 · 峰值 5.6万'},
+ week:{v:WK,l:lbls(10,23,7),ma:3,peak:'10-26 · 峰值 69.2万'},
+ d30:{v:D30,l:lbls(9,30,30),ma:7,peak:'10-26 · 峰值 69.2万'},
+ month:{v:M_SER,l:lbls(10,1,29),ma:7,peak:'10-26 · 峰值 69.2万'}};
+var SMIX=[42,31,19,8];
+var RM={
+ today:{kl:'今日Token消耗',delta:'较昨日 +9.3%',tok:54.2,dau:1842,pct:31.6,tk:1205,mix:[44,29,19,8],rt:54.2/1286,rd:1,rtk:1205/47630,days:1,tl:'今日',kl3:'今日任务数'},
+ week:{kl:'近7天Token消耗',delta:'较上周 +21.3%',tok:352.0,dau:1653,pct:28.4,tk:9847,mix:[41,32,19,8],rt:352/1286,rd:.94,rtk:9847/47630,days:7,tl:'近7天',kl3:'近7天任务数'},
+ d30:{kl:'近30天Token消耗',delta:'较上月 +17.9%',tok:1330.6,dau:1796,pct:30.8,tk:44215,mix:[42,31,19,8],rt:1330.6/1286,rd:.98,rtk:44215/47630,days:30,tl:'近30天',kl3:'近30天任务数'},
+ month:{kl:'本月Token总消耗',delta:'环比 +18.4%',tok:1286.0,dau:1842,pct:31.6,tk:47630,mix:[42,31,19,8],rt:1,rd:1,rtk:1,days:29,tl:'本月',kl3:'累计任务数'}};
+var DAU12=[1686,1712,1740,1728,1761,1784,1770,1802,1815,1789,1826,1842];
+var LOGS=[
+ {d:'内容安全检测 · 拦截涉政敏感词输入',src:'经管学院',s:'bad'},
+ {d:'工具调用 · 校内制度知识库检索',src:'校办',s:'ok'},
+ {d:'技能调用 · 公文写作（红头文件模板）',src:'校办',s:'ok'},
+ {d:'内容安全检测 · 拦截外发学生个人信息',src:'教务处',s:'bad'},
+ {d:'异常登录提示 · 同账号异地并发已处置',src:'信息中心',s:'warn'},
+ {d:'额度预警 · 外语学院本月额度已用94%',src:'外语学院',s:'warn'},
+ {d:'技能调用 · 作业批改（92份）',src:'机电学院',s:'ok'},
+ {d:'工具调用 · 教务系统数据查询（只读）',src:'教务处',s:'ok'},
+ {d:'技能调用 · 文献综述生成',src:'科研处',s:'ok'},
+ {d:'内容安全检测 · 论文查重辅助请求放行',src:'外语学院',s:'ok'},
+ {d:'治理动作 · 学生角色关闭“课题申报”技能',src:'技能治理',s:'ok'},
+ {d:'登录审计 · 领导角色查看运营看板',src:'校办',s:'ok'},
+ {d:'技能调用 · PPT生成（评建汇报38页）',src:'马克思主义学院',s:'ok'},
+ {d:'内容安全检测 · 拦截生成内容版权风险',src:'图书馆',s:'bad'},
+ {d:'额度调整 · 机电学院本月额度100万→110万',src:'技能治理',s:'ok'},
+ {d:'工具调用 · 图书馆文献库检索',src:'外语学院',s:'ok'}];
+var TAGS={ok:['正常','ok'],bad:['已拦截','bad'],warn:['提示','warn']};
+
+/* ---------- 状态与视图 ---------- */
+var state={range:'month',dept:null};
+var view=null;
+function noise(i,di){return 1+Math.sin(i*1.31+di*2.7)*.10+Math.sin(i*.53+di*1.3)*.08}
+function getView(){
+ var r=RM[state.range],d=state.dept,v={tl:r.tl};
+ if(d){
+  var di=DEPTS.indexOf(d),f=d.v/1286;
+  v.token=d.v*r.rt; v.dau=Math.round(d.dau*r.rd); v.pct=v.dau/d.u*100;
+  v.tasks=d.tk*r.rtk; v.mix=d.mix;
+  var mx=Math.max.apply(null,d.mix);
+  v.scene=MIX_L[d.mix.indexOf(mx)]; v.scenePct=mx;
+  v.trend={v:TRENDS[state.range].v.map(function(x,i){return +(x*f*noise(i,di)).toFixed(2)}),l:TRENDS[state.range].l,ma:TRENDS[state.range].ma,peak:TRENDS[state.range].peak};
+  v.skills=SKILLS.map(function(s){return{n:s.n,c:s.c*r.rtk*(d.mix[s.cat]/SMIX[s.cat])}}).sort(function(a,b){return b.c-a.c});
+  v.dauSc=d.dau*r.rd/1842;
+ }else{
+  v.token=r.tok; v.dau=r.dau; v.pct=r.pct; v.tasks=r.tk; v.mix=r.mix;
+  var mx2=Math.max.apply(null,r.mix);
+  v.scene=MIX_L[r.mix.indexOf(mx2)]; v.scenePct=mx2;
+  v.trend=TRENDS[state.range];
+  v.skills=SKILLS.map(function(s){return{n:s.n,c:s.c*r.rtk}}).sort(function(a,b){return b.c-a.c});
+  v.dauSc=r.rd;
+ }
+ v.deptVals=DEPTS.map(function(x){return x.v*r.rt});
+ return v;
+}
+
+/* ---------- 画布工具 ---------- */
+function fit(cv){
+ var r=cv.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+ var w=Math.max(10,Math.round(r.width)),h=Math.max(10,Math.round(r.height));
+ if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);}
+ var ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return ctx;
+}
+
+/* ---------- KPI ---------- */
+function setNum(el,to,isTok){
+ var from=parseFloat(el.dataset.v||'0')||0;el.dataset.v=to;
+ var t0=performance.now(),dur=600;
+ function f(t){
+  var p=Math.min(1,(t-t0)/dur),cur=from+(to-from)*easeOut(p);
+  el.textContent=isTok?fmtTokNum(cur):fmtInt(cur);
+  if(p<1)requestAnimationFrame(f);
+ }
+ requestAnimationFrame(f);
+}
+function updateKPI(v){
+ var r=RM[state.range];
+ $('kL1').textContent=(state.dept?state.dept.n+' · ':'')+r.kl;
+ setNum($('kToken'),v.token,true);
+ $('kD1').innerHTML='<span class="arr">▲</span> '+r.delta;
+ $('kL2').textContent=state.dept?'部门活跃用户':'日活用户';
+ setNum($('kDau'),v.dau);
+ $('kD2').textContent='占'+(state.dept?'部门开通':'开通')+'用户 '+v.pct.toFixed(1)+'%';
+ $('kDauBar').style.width=Math.min(100,v.pct)+'%';
+ $('kL3').textContent=state.dept?state.dept.n+' · 累计任务数':r.kl3;
+ setNum($('kTasks'),v.tasks);
+ if(state.range==='today')$('kD3').textContent='今日新增 '+fmtInt(v.tasks);
+ else if(state.range==='month')$('kD3').textContent='今日 +'+fmtInt(v.tasks*0.0253);
+ else $('kD3').textContent='日均 '+fmtInt(v.tasks/r.days);
+ $('kScene').textContent=v.scene;
+ $('kD4').textContent='占 '+v.scenePct+'%';
+ var h='';
+ for(var i=0;i<4;i++)h+='<div><span>'+MIX_L[i]+'</span><i><b style="width:0;background:'+MIX_C[i]+'"></b></i><em>'+v.mix[i]+'%</em></div>';
+ $('kMix').innerHTML=h;
+ requestAnimationFrame(function(){
+  var bs=$('kMix').querySelectorAll('i b');
+  for(var i=0;i<4;i++)bs[i].style.width=(v.mix[i]/45*100)+'%';
+ });
+}
+function sample(a,n){
+ if(a.length<=n)return a.slice();
+ var st=(a.length-1)/(n-1),o=[];
+ for(var i=0;i<n;i++)o.push(a[Math.round(i*st)]);
+ return o;
+}
+function drawSpark(id,vals,col){
+ var cv=$(id);if(!cv)return;
+ var ctx=fit(cv),W=cv.clientWidth,H=cv.clientHeight;
+ ctx.clearRect(0,0,W,H);
+ if(!vals||vals.length<2)return;
+ var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals);
+ if(mx===mn)mx=mn+1;
+ function X(i){return 3+(W-8)*i/(vals.length-1)}
+ function Y(x){return H-4-(H-10)*(x-mn)/(mx-mn)}
+ ctx.beginPath();ctx.moveTo(X(0),Y(vals[0]));
+ for(var i=1;i<vals.length;i++)ctx.lineTo(X(i),Y(vals[i]));
+ ctx.strokeStyle=col;ctx.lineWidth=1.6;ctx.shadowColor=col;ctx.shadowBlur=4;ctx.stroke();ctx.shadowBlur=0;
+ ctx.lineTo(X(vals.length-1),H);ctx.lineTo(X(0),H);ctx.closePath();
+ var g=ctx.createLinearGradient(0,0,0,H);
+ g.addColorStop(0,'rgba(0,229,255,.18)');g.addColorStop(1,'rgba(0,229,255,0)');
+ ctx.fillStyle=g;ctx.fill();
+ ctx.beginPath();ctx.arc(X(vals.length-1),Y(vals[vals.length-1]),2.6,0,7);
+ ctx.fillStyle=col;ctx.fill();
+}
+function drawSparks(v){
+ drawSpark('sp1',sample(v.trend.v,14),'#00E5FF');
+ drawSpark('sp2',DAU12.map(function(x){return x*v.dauSc}),'#29B6F6');
+ var cum=[];for(var k=0;k<13;k++)cum.push(v.tasks*(0.35+0.65*k/12));
+ drawSpark('sp3',cum,'#FFD54F');
+}
+
+/* ---------- 部门条形图 ---------- */
+var barRows=[],hoverI=-1;
+function drawDept(p){
+ var cv=$('deptCv');var ctx=fit(cv);
+ var W=cv.clientWidth,H=cv.clientHeight;
+ ctx.clearRect(0,0,W,H);
+ if(W<50||H<50)return;
+ var n=DEPTS.length,vals=view.deptVals;
+ var max=Math.max.apply(null,vals)*1.05;
+ var lw=98,vw=64,x0=lw,x1=W-vw-4;
+ var rowH=H/n,bh=Math.min(24,rowH*0.62);
+ barRows=[];
+ for(var i=0;i<n;i++){
+  var y=rowH*i+rowH/2,d=DEPTS[i],sel=(state.dept===d);
+  ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.font='12.5px "Microsoft YaHei",sans-serif';
+  ctx.fillStyle=sel?'#FFD54F':(hoverI===i?'#FFFFFF':'rgba(230,244,255,.85)');
+  ctx.fillText(d.n,6,y);
+  ctx.fillStyle='rgba(41,182,246,.08)';
+  ctx.fillRect(x0,y-bh/2,x1-x0,bh);
+  var w=(x1-x0)*(vals[i]/max)*p;
+  var g=ctx.createLinearGradient(x0,0,x0+w,0);
+  if(sel){g.addColorStop(0,'rgba(255,213,79,.95)');g.addColorStop(1,'rgba(255,213,79,.40)');}
+  else{g.addColorStop(0,'rgba(0,229,255,.95)');g.addColorStop(1,'rgba(41,182,246,.30)');}
+  ctx.fillStyle=g;
+  if(hoverI===i||sel){ctx.shadowColor=sel?'rgba(255,213,79,.75)':'rgba(0,229,255,.75)';ctx.shadowBlur=10;}
+  ctx.fillRect(x0,y-bh/2,w,bh);
+  ctx.shadowBlur=0;
+  ctx.font='12px Consolas,monospace';
+  ctx.fillStyle=sel?'#FFD54F':'#9BEFFF';
+  ctx.fillText(fmtTok(vals[i]),x1+6,y);
+  barRows.push({i:i,y0:rowH*i,y1:rowH*(i+1)});
+ }
+}
+function rowAt(y){
+ for(var i=0;i<barRows.length;i++)if(y>=barRows[i].y0&&y<barRows[i].y1)return barRows[i].i;
+ return -1;
+}
+function showTip(cx,cy,i){
+ var d=DEPTS[i],r=RM[state.range],tip=$('tip');
+ tip.innerHTML='<b>'+d.n+'</b><br>本期消耗 <i>'+fmtTok(d.v*r.rt)+'</i> · 活跃 <i>'+Math.round(d.dau*r.rd)+'</i>人<br>开通 '+d.u+'人 · 人均 <i>'+fmtInt(d.v*10000/d.u)+'</i> Token<br>热门技能：'+d.sk.join(' / ')+'<div class="tt">点击查看该部门视图</div>';
+ tip.style.display='block';
+ var L=Math.min(cx+18,window.innerWidth-305),T=Math.min(cy+16,window.innerHeight-150);
+ tip.style.left=L+'px';tip.style.top=T+'px';
+}
+function hideTip(){$('tip').style.display='none'}
+function bindDept(){
+ var cv=$('deptCv');
+ cv.addEventListener('mousemove',function(e){
+  var r=cv.getBoundingClientRect(),y=e.clientY-r.top,i=rowAt(y);
+  if(i!==hoverI){hoverI=i;cv.style.cursor=i>=0?'pointer':'default';drawDept(curP);}
+  if(i>=0)showTip(e.clientX,e.clientY,i);else hideTip();
+ });
+ cv.addEventListener('mouseleave',function(){hoverI=-1;hideTip();drawDept(curP)});
+ cv.addEventListener('click',function(e){
+  var r=cv.getBoundingClientRect(),i=rowAt(e.clientY-r.top);
+  if(i>=0)toggleDept(DEPTS[i]);
+ });
+}
+
+/* ---------- 趋势折线图 ---------- */
+function drawTrend(p){
+ var cv=$('trendCv');var ctx=fit(cv);
+ var W=cv.clientWidth,H=cv.clientHeight;
+ ctx.clearRect(0,0,W,H);
+ if(W<50||H<50)return;
+ var t=view.trend,vals=t.v,n=vals.length;
+ var pad={l:44,r:14,t:18,b:24};
+ var iw=W-pad.l-pad.r,ih=H-pad.t-pad.b;
+ var mx=Math.max.apply(null,vals)*1.15;
+ ctx.strokeStyle='rgba(41,182,246,.14)';ctx.lineWidth=1;
+ ctx.fillStyle='rgba(230,244,255,.45)';ctx.font='11px Consolas,monospace';ctx.textAlign='right';
+ for(var g=0;g<=4;g++){
+  var gy=pad.t+ih-ih*g/4;
+  ctx.beginPath();ctx.moveTo(pad.l,gy);ctx.lineTo(W-pad.r,gy);ctx.stroke();
+  ctx.fillText((mx*g/4).toFixed(0),pad.l-6,gy+3);
+ }
+ ctx.textAlign='center';ctx.fillStyle='rgba(230,244,255,.5)';
+ var step=Math.max(1,Math.ceil(n/6));
+ for(var i=0;i<n;i+=step)ctx.fillText(t.l[i],pad.l+iw*i/(n-1),H-7);
+ function X(i){return pad.l+iw*i/(n-1)}
+ function Y(x){return pad.t+ih-ih*x/mx}
+ /* 图例 */
+ ctx.textAlign='left';
+ ctx.strokeStyle='#00E5FF';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(W-190,10);ctx.lineTo(W-170,10);ctx.stroke();
+ ctx.fillStyle='rgba(230,244,255,.6)';ctx.font='11px "Microsoft YaHei",sans-serif';ctx.fillText('日消耗',W-164,14);
+ ctx.strokeStyle='#FFD54F';ctx.setLineDash([4,3]);ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(W-108,10);ctx.lineTo(W-88,10);ctx.stroke();ctx.setLineDash([]);
+ ctx.fillText((t.ma+'日均线').replace('5日均线','5段均线').replace('3日均线','3日均线'),W-82,14);
+ /* 主体（裁剪实现生长动画） */
+ ctx.save();ctx.beginPath();ctx.rect(pad.l-2,0,iw*p+4,H);ctx.clip();
+ ctx.beginPath();ctx.moveTo(X(0),Y(vals[0]));
+ for(var i2=1;i2<n;i2++)ctx.lineTo(X(i2),Y(vals[i2]));
+ ctx.lineTo(X(n-1),pad.t+ih);ctx.lineTo(X(0),pad.t+ih);ctx.closePath();
+ var gr=ctx.createLinearGradient(0,pad.t,0,pad.t+ih);
+ gr.addColorStop(0,'rgba(0,229,255,.22)');gr.addColorStop(1,'rgba(0,229,255,0)');
+ ctx.fillStyle=gr;ctx.fill();
+ ctx.beginPath();ctx.moveTo(X(0),Y(vals[0]));
+ for(var i3=1;i3<n;i3++)ctx.lineTo(X(i3),Y(vals[i3]));
+ ctx.strokeStyle='#00E5FF';ctx.lineWidth=2;ctx.shadowColor='rgba(0,229,255,.55)';ctx.shadowBlur=6;ctx.stroke();ctx.shadowBlur=0;
+ /* 均线 */
+ var w=Math.min(t.ma,n),ma=[];
+ for(var i4=0;i4<n;i4++){
+  var s=0,c=0;
+  for(var j=Math.max(0,i4-w+1);j<=i4;j++){s+=vals[j];c++;}
+  ma.push(s/c);
+ }
+ ctx.beginPath();
+ for(var i5=0;i5<n;i5++){var px=X(i5),py=Y(ma[i5]);if(i5===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}
+ ctx.strokeStyle='#FFD54F';ctx.lineWidth=1.4;ctx.setLineDash([5,4]);ctx.stroke();ctx.setLineDash([]);
+ /* 峰值 */
+ var pi=0;for(var i6=1;i6<n;i6++)if(vals[i6]>vals[pi])pi=i6;
+ ctx.beginPath();ctx.arc(X(pi),Y(vals[pi]),3.6,0,7);
+ ctx.fillStyle='#FFD54F';ctx.shadowColor='rgba(255,213,79,.9)';ctx.shadowBlur=9;ctx.fill();ctx.shadowBlur=0;
+ ctx.font='11.5px "Microsoft YaHei",sans-serif';
+ var tw=ctx.measureText(t.peak).width,tx=X(pi)-tw/2;
+ if(tx<pad.l)tx=pad.l; if(tx+tw>W-pad.r)tx=W-pad.r-tw;
+ ctx.fillStyle='#FFD54F';ctx.textAlign='left';ctx.fillText(t.peak,tx,Y(vals[pi])-11);
+ ctx.restore();
+}
+
+/* ---------- 环形图 ---------- */
+function drawDonut(p){
+ var cv=$('mixCv');var ctx=fit(cv);
+ var W=cv.clientWidth,H=cv.clientHeight;
+ ctx.clearRect(0,0,W,H);
+ if(W<50||H<50)return;
+ var cx=W/2,cy=H/2,R=Math.min(W,H)/2-10,r=R*0.62;
+ var mix=view.mix,tot=mix[0]+mix[1]+mix[2]+mix[3];
+ var a=-Math.PI/2,gap=0.05;
+ for(var i=0;i<4;i++){
+  var full=(mix[i]/tot)*Math.PI*2,seg=Math.max(0,full*p-gap);
+  ctx.beginPath();
+  ctx.arc(cx,cy,R,a,a+seg);
+  ctx.arc(cx,cy,r,a+seg,a,true);
+  ctx.closePath();
+  ctx.fillStyle=MIX_C[i];
+  ctx.shadowColor=MIX_C[i];ctx.shadowBlur=i===0?0:6;ctx.shadowBlur=0;
+  ctx.fill();
+  a+=full;
+ }
+ ctx.textAlign='center';
+ ctx.fillStyle=state.dept?'#FFD54F':'rgba(230,244,255,.7)';
+ ctx.font='12px "Microsoft YaHei",sans-serif';
+ ctx.fillText(state.dept?state.dept.n:'全校',cx,cy-26);
+ ctx.fillStyle='#FFFFFF';ctx.font='700 21px Consolas,monospace';
+ ctx.shadowColor='rgba(0,229,255,.5)';ctx.shadowBlur=10;
+ ctx.fillText(fmtTok(view.token),cx,cy+3);ctx.shadowBlur=0;
+ ctx.fillStyle='rgba(230,244,255,.55)';ctx.font='11px "Microsoft YaHei",sans-serif';
+ ctx.fillText('Token构成',cx,cy+24);
+}
+function renderLegend(v){
+ var h='';
+ for(var i=0;i<4;i++)h+='<div><i style="background:'+MIX_C[i]+'"></i><span>'+MIX_L[i]+'</span><b>'+fmtTok(v.token*v.mix[i]/100)+'</b><em>'+v.mix[i]+'%</em></div>';
+ $('lgd').innerHTML=h;
+}
+
+/* ---------- 技能TOP10 ---------- */
+function renderSkills(v){
+ var max=v.skills[0].c,tot=0;
+ for(var i=0;i<v.skills.length;i++)tot+=v.skills[i].c;
+ var h='';
+ for(var i2=0;i2<v.skills.length;i2++){
+  var s=v.skills[i2],pct=s.c/tot*100;
+  h+='<div class="sk'+(i2<3?' top':'')+'"><span class="sk-r">'+(i2<9?'0':'')+(i2+1)+'</span><span class="sk-n">'+s.n+'</span><div class="sk-bar"><i></i></div><span class="sk-c">'+fmtCnt(s.c)+'</span><span class="sk-p">'+pct.toFixed(1)+'%</span></div>';
+ }
+ $('skillList').innerHTML=h;
+ requestAnimationFrame(function(){
+  var bs=$('skillList').querySelectorAll('.sk-bar i');
+  for(var i3=0;i3<bs.length;i3++)bs[i3].style.width=(v.skills[i3].c/max*100)+'%';
+ });
+ $('skillSum').textContent='本期调用 '+fmtCnt(tot)+' · '+v.tl;
+}
+
+/* ---------- 安全审计日志 ---------- */
+function nowT(offSec){
+ var d=new Date(Date.now()-(offSec||0)*1000);
+ return p2(d.getHours())+':'+p2(d.getMinutes())+':'+p2(d.getSeconds());
+}
+function logHTML(o,time,isNew){
+ return '<div class="lg'+(isNew?' new':'')+'"><span class="lg-t">'+time+'</span><span class="lg-d">'+o.d+' · '+o.src+'</span><em class="lg-tag '+TAGS[o.s][1]+'">'+TAGS[o.s][0]+'</em></div>';
+}
+function startLogs(){
+ var box=$('logList'),h='';
+ for(var i=7;i>=0;i--)h+=logHTML(LOGS[i%LOGS.length],nowT((8-i)*47),false);
+ box.innerHTML=h;
+ var last=-1;
+ setInterval(function(){
+  if(document.hidden)return;
+  var k=Math.floor(Math.random()*LOGS.length);
+  if(k===last)k=(k+3)%LOGS.length;
+  last=k;
+  box.insertAdjacentHTML('afterbegin',logHTML(LOGS[k],nowT(0),true));
+  var kids=box.children;
+  for(var j=1;j<kids.length;j++)kids[j].classList.remove('new');
+  while(kids.length>9)box.removeChild(kids[kids.length-1]);
+ },3600);
+}
+
+/* ---------- 时钟 ---------- */
+var WD=['日','一','二','三','四','五','六'];
+function tick(){
+ var d=new Date();
+ $('clockTime').textContent=p2(d.getHours())+':'+p2(d.getMinutes())+':'+p2(d.getSeconds());
+ $('clockDate').textContent=d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())+' 星期'+WD[d.getDay()];
+}
+function startClock(){tick();setInterval(tick,1000)}
+
+/* ---------- 渲染调度 ---------- */
+var animId=0,curP=1;
+function runAnim(ms,fn){
+ if(animId)cancelAnimationFrame(animId);
+ var t0=performance.now();
+ function step(t){
+  var p=Math.min(1,(t-t0)/ms);curP=p;fn(p);
+  if(p<1)animId=requestAnimationFrame(step);else animId=0;
+ }
+ animId=requestAnimationFrame(step);
+}
+function updateChip(){
+ $('chip').classList.toggle('show',!!state.dept);
+ if(state.dept)$('chipName').textContent=state.dept.n;
+ $('deptNote').textContent=state.dept?('已选中 '+state.dept.n+' · 点击其他部门切换'):'悬停查看详情 · 点击筛选部门视图';
+ $('trendNote').textContent=view.tl+(state.dept?' · '+state.dept.n:'')+' · 单位:万Token';
+}
+function renderAll(anim){
+ view=getView();
+ updateKPI(view);renderSkills(view);renderLegend(view);updateChip();drawSparks(view);
+ if(anim===false){curP=1;drawDept(1);drawTrend(1);drawDonut(1);return;}
+ runAnim(750,function(p){drawDept(p);drawTrend(p);drawDonut(p)});
+}
+function toggleDept(d){
+ state.dept=(state.dept===d)?null:d;
+ hoverI=-1;hideTip();
+ renderAll(true);
+}
+
+/* ---------- 抽屉 / 弹窗 / 折叠卡 ---------- */
+var MX=[['行政办公',1,0,1,1],['教学教研',1,1,0,0],['科研学术',1,0,0,1],['学生服务',1,1,1,0]];
+function buildMatrix(){
+ var h='<tr><th>技能分类</th><th>教师</th><th>学生</th><th>行政</th><th>领导</th></tr>';
+ for(var i=0;i<MX.length;i++){
+  h+='<tr><td>'+MX[i][0]+'</td>';
+  for(var c=1;c<=4;c++)h+='<td class="c'+(MX[i][c]?' on':'')+'">'+(MX[i][c]?'✓':'·')+'</td>';
+  h+='</tr>';
+ }
+ $('mxTable').innerHTML=h;
+ $('mxTable').addEventListener('click',function(e){
+  var td=e.target;
+  if(td.tagName==='TD'&&td.classList.contains('c')){
+   td.classList.toggle('on');
+   td.textContent=td.classList.contains('on')?'✓':'·';
+  }
+ });
+}
+var QUOTA={'机电学院':{q:100,u:82},'经管学院':{q:90,u:74},'外语学院':{q:70,u:66},'科研处':{q:120,u:96}};
+function updQuota(){
+ var k=$('qDept').value,o=QUOTA[k],q=+$('qSlider').value,left=q-o.u;
+ $('qQuota').textContent=q;$('qUsed').textContent=o.u;$('qLeft').textContent=left;
+ $('qw3').className=left<0?'warn':'';
+ var ratio=o.u/q*100;
+ $('qFill').style.width=Math.min(100,ratio)+'%';
+ $('qFill').className=ratio>90?'warn':'';
+ $('qNote').textContent=left>=0?('剩余 '+left+'万（占额度 '+Math.round(left/q*100)+'%）· 用量超过90%自动金色预警'):('已超支 '+(-left)+'万 · 需追加审批流程');
+}
+function openDrawer(){$('drawer').classList.add('open');$('drMask').classList.add('show')}
+function closeDrawer(){$('drawer').classList.remove('open');$('drMask').classList.remove('show')}
+
+/* ---------- 事件绑定 ---------- */
+function bind(){
+ var btns=$$('#rsw button');
+ for(var i=0;i<btns.length;i++){
+  btns[i].addEventListener('click',function(){
+   var b=this;
+   for(var j=0;j<btns.length;j++)btns[j].classList.remove('on');
+   b.classList.add('on');
+   state.range=b.getAttribute('data-r');
+   renderAll(true);
+  });
+ }
+ $('chipReset').addEventListener('click',function(){state.dept=null;renderAll(true)});
+ $('btnGovern').addEventListener('click',openDrawer);
+ $('drClose').addEventListener('click',closeDrawer);
+ $('drMask').addEventListener('click',closeDrawer);
+ $('btnProfile').addEventListener('click',function(){$('pMask').classList.add('show')});
+ $('pClose').addEventListener('click',function(){$('pMask').classList.remove('show')});
+ $('pMask').addEventListener('click',function(e){if(e.target===$('pMask'))$('pMask').classList.remove('show')});
+ $('vdTab').addEventListener('click',function(){
+  var open=$('vd').classList.toggle('open');
+  this.textContent='给领导的三个判断 '+(open?'▾':'▴');
+ });
+ $('qDept').addEventListener('change',function(){$('qSlider').value=QUOTA[this.value].q;updQuota()});
+ $('qSlider').addEventListener('input',updQuota);
+ bindDept();
+ var rt;
+ window.addEventListener('resize',function(){
+  clearTimeout(rt);
+  rt=setTimeout(function(){
+   if(!view)return;
+   curP=1;drawDept(1);drawTrend(1);drawDonut(1);drawSparks(view);
+  },180);
+ });
+}
+
+/* ---------- 启动 ---------- */
+buildMatrix();
+bind();
+updQuota();
+startClock();
+startLogs();
+requestAnimationFrame(function(){renderAll(true)});
+})();
+</script>
+</body>
+</html>

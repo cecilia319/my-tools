@@ -985,16 +985,21 @@
      "time": "2026-10-21T13:30:00",
      "status": "in_progress",
      "note": "周报体系创建"
+    },
+    {
+     "time": "2026-10-30T00:10:00+08:00",
+     "status": "completed",
+     "note": "用户指示不闭环;本周填报内容已存档备查"
     }
    ],
    "reminded": false,
    "name": "每周在线表填报（本周：3张周更表）",
-   "completedAt": "",
-   "status": "in_progress",
+   "completedAt": "2026-10-29",
+   "status": "completed",
    "duration": "long",
    "content": "每周任务：①周五16:30收周报与表格更新稿（微信推送）②复制粘贴到3张周更表——教育事业部周工作小结（自己sheet新增行）/3表合一（教育sheet主办行）/福州高校内部周报（3校sheet事项行）③填完说'周报表填好了'",
    "lead": "",
-   "updatedAt": "2026-10-21T13:30:00",
+   "updatedAt": "2026-10-30T00:10:00+08:00",
    "progressNote": "素材=本周日常'记录：…'；没记录我按日志+待办智能补齐",
    "createdAt": "2026-10-21T13:30:00",
    "deadline": "2026-10-23",
@@ -1004,15 +1009,16 @@
      "id": "ms_wr1",
      "date": "2026-10-23",
      "desc": "16:30收稿→复制到3张表",
-     "completed": false
+     "completed": true
     },
     {
      "id": "ms_wr2",
      "date": "2026-10-23",
      "desc": "填完口述确认，关闭本周卡",
-     "completed": false
+     "completed": true
     }
-   ]
+   ],
+   "done_note": "用户指示:填表不闭环追踪。本周3张周更表(教育事业部周小结/3表合一/福州高校内部周报)填报内容已整理存档→D:\\work\\周报\\在线表填报备份\\2026-10\\2026-10-30_本周五表填报内容.md,复制粘贴由本人自行处理"
   },
   {
    "id": "wb-ta-demo-meet",
@@ -1271,6 +1277,38 @@
     }
    ],
    "board": "customer:s-police"
+  },
+  {
+   "id": "hy-report1030",
+   "category": "customer",
+   "name": "海洋职校申报表预算最终上报（省厅10-30截止）",
+   "content": "福建海洋职业技术学校人工智能赋能教育行动试点：申报表、预算等最终上报材料配合完成并确认学校提交，10月30日省厅截止。上报后转入试点落地与创课+TA签约商机培育。",
+   "lead": "陈思然",
+   "status": "in_progress",
+   "duration": "temp",
+   "remindTime": "",
+   "reminded": false,
+   "completedAt": "",
+   "createdAt": "2026-10-30T00:10:00+08:00",
+   "updatedAt": "2026-10-30T00:10:00+08:00",
+   "deadline": "2026-10-30",
+   "progressNote": "今日必办；试点申报书10.28版已交付（任务6+11），预算等最终材料10-30截止",
+   "history": [
+    {
+     "time": "2026-10-30T00:10:00+08:00",
+     "status": "in_progress",
+     "note": "用户2026-10-29布置:海洋学院完成申报表预算等最终上报,30日deadline"
+    }
+   ],
+   "milestones": [
+    {
+     "id": "hy-report1030_m1",
+     "date": "2026-10-30",
+     "desc": "省厅申报截止",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-haiyang"
   }
  ],
  "logs": [

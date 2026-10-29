@@ -259,7 +259,9 @@ code.k { background: var(--panel3); border: 1px solid var(--border2); padding: 1
   <section class="page active" id="page-overview"></section>
   <section class="page" id="page-signals"></section>
   <section class="page" id="page-holdings"></section>
+  <section class="page" id="page-ledger"></section>
   <section class="page" id="page-market"></section>
+  <section class="page" id="page-intel"></section>
   <section class="page" id="page-unlock"></section>
   <section class="page" id="page-pool"></section>
   <section class="page" id="page-brain"></section>
@@ -284,7 +286,9 @@ const NAV = [
   { id:'overview', ico:'📊', txt:'总览',          grp:'决策台' },
   { id:'signals',  ico:'🎯', txt:'今日信号',      grp:'决策台', badge: () => D.summary.mid + D.summary.high },
   { id:'holdings', ico:'💼', txt:'持仓跟踪',      grp:'决策台', badge: () => D.summary.holdings_count },
+  { id:'ledger',   ico:'💰', txt:'台账收益',      grp:'决策台', badge: () => ((D.ledger_pnl||{}).open_pos||[]).length + ((D.ledger_pnl||{}).pending||[]).length },
   { id:'market',   ico:'💓', txt:'市场脉搏',      grp:'情报区' },
+  { id:'intel',    ico:'📱', txt:'抖音情报',      grp:'情报区', hot: () => !!(D.dy_intel||{}).conclusion },
   { id:'unlock',   ico:'🚨', txt:'解禁雷达',      grp:'情报区', badge: () => new Set((D.unlock.pool_hits||[]).map(u => u.code)).size, hot: () => (D.unlock.pool_hits||[]).length > 0 },
   { id:'pool',     ico:'🗂️', txt:'股票池',        grp:'情报区', badge: () => D.summary.pool_count },
   { id:'brain',    ico:'🧠', txt:'学习与进化',    grp:'助手大脑' },
@@ -437,6 +441,62 @@ function renderHoldings() {
     <div class="page-head"><h2>持仓跟踪</h2><span class="en">Holdings</span></div>
     <div class="page-sub">每个交易日收盘后自动核对: 止损纪律 / 止盈目标 / 20日线状态。破位必走, 到位分批, 不侥幸。</div>
     ${inner}`;
+}
+
+/* ================= 台账收益(平铺试错·去弱留强) ================= */
+function renderLedger() {
+  const L = D.ledger_pnl || {};
+  const hp = L.today || {};
+  const pos = L.open_pos || [], pend = L.pending || [], closed = L.closed_recent || [], expired = L.expired_recent || [];
+  const st = L.stats || {};
+  const pnl = v => `<span class="${(v||0)>=0?'p-up':'p-down'}">${(v||0)>=0?'+':''}${(v||0).toFixed(2)}%</span>`;
+  const statHtml = `<div class="grid g4">
+    <div class="stat"><div class="lb">持仓(已成交)</div><div class="val">${pos.length}</div><div class="sub">累计浮盈 ${pnl(hp.total_unreal_pct)}</div></div>
+    <div class="stat"><div class="lb">当日均收益</div><div class="val ${((hp.day_avg_pct||0)>=0)?'up':'down'}">${hp.day_avg_pct==null?'--':(hp.day_avg_pct>0?'+':'')+hp.day_avg_pct+'%'}</div><div class="sub">${esc(hp.date||'')}</div></div>
+    <div class="stat"><div class="lb">待触发</div><div class="val">${pend.length}</div><div class="sub">T+1条件触发制</div></div>
+    <div class="stat"><div class="lb">已平仓/胜率</div><div class="val">${st.total_closed||0} <span style="font-size:13px">/${ st.winrate==null?'--':st.winrate+'%'}</span></div><div class="sub">去弱留强+止损/达标/到期</div></div>
+  </div>`;
+  const posRows = pos.length ? `<div class="tbl-wrap"><table><tr><th>持仓</th><th class="num">成本</th><th class="num">现价</th><th class="num">当日</th><th class="num">累计</th><th>持有</th><th>提示</th></tr>
+    ${pos.map(o=>`<tr><td>${esc(o.name)}</td><td class="num">${o.entry_price}</td><td class="num">${o.latest_price}</td>
+    <td class="num ${pctCls(o.pct_day)}">${pctTxt(o.pct_day)}</td><td class="num ${pctCls(o.pnl_pct)}">${pctTxt(o.pnl_pct)}</td>
+    <td>${o.days_held||0}日</td><td>${o.alert?`<span class="chip risk">${esc(o.alert)}</span>`:'<span class="chip ok">持有</span>'}</td></tr>`).join('')}</table></div>`
+    : '<div class="card">当前无已成交持仓</div>';
+  const pendRows = pend.length ? `<div class="tbl-wrap"><table><tr><th>待触发</th><th>规则</th><th class="num">参考价</th><th class="num">止损</th><th>信号日</th></tr>
+    ${pend.map(o=>`<tr><td>${esc(o.name)}</td><td>${esc(o.rule)}</td><td class="num">${o.entry_price}</td><td class="num p-down">${o.stop_price}</td><td>${esc(o.signal_date)}</td></tr>`).join('')}</table></div>`
+    : '';
+  const closedRows = closed.length ? `<h3 style="margin:14px 0 8px">最近平仓（含去弱留强/回测补录）</h3><div class="tbl-wrap"><table><tr><th>名称</th><th class="num">收益</th><th>原因</th><th>平仓日</th></tr>
+    ${closed.slice().reverse().map(c=>`<tr><td>${esc(c.name)}</td><td class="num ${pctCls(c.pnl_pct)}">${pctTxt(c.pnl_pct)}</td><td>${esc(c.reason||'')}</td><td>${esc(c.close_date||'')}</td></tr>`).join('')}</table></div>`
+    : '';
+  const expRows = expired.length ? `<h3 style="margin:14px 0 8px">最近放弃/失效</h3><div class="tbl-wrap"><table><tr><th>名称</th><th>说明</th></tr>
+    ${expired.slice().reverse().map(o=>`<tr><td>${esc(o.name)}</td><td style="color:var(--faint)">${esc(o.note||'')}</td></tr>`).join('')}</table></div>`
+    : '';
+  $('#page-ledger').innerHTML = `
+    <div class="page-head"><h2>台账收益</h2><span class="en">Paper Trading</span></div>
+    <div class="page-sub">平铺试错(单日≤3只) → T+1条件触发成交 → 收盘去弱留强 · 中长线达标分批+留强补仓一次 · 历史补录以真实K线回测</div>
+    ${statHtml}
+    <h3 style="margin:14px 0 8px">当日持仓收益（收盘自动刷新）</h3>${posRows}
+    ${pendRows ? '<h3 style="margin:14px 0 8px">待触发跟踪池</h3>'+pendRows : ''}
+    ${closedRows}${expRows}`;
+}
+
+/* ================= 抖音情报(四扫同步) ================= */
+function renderIntel() {
+  const dy = D.dy_intel || {};
+  if (!dy.conclusion && !(dy.sectors||[]).length) {
+    $('#page-intel').innerHTML = `<div class="page-head"><h2>抖音情报</h2><span class="en">Douyin Intel</span></div>
+      <div class="card">暂无同步数据——四扫任务跑完 sync_intel_to_stock.py 后自动更新。</div>`;
+    return;
+  }
+  const secRows = (dy.sectors||[]).map(s=>`<div class="flow-row" style="display:block;margin-bottom:8px"><b>${esc(s.sector)}</b><span style="margin-left:8px;color:var(--muted)">${esc(s.point)}</span>${s.src?`<span class="chip" style="margin-left:8px">${esc(s.src)}</span>`:''}</div>`).join('');
+  const mRows = (dy.methods||[]).map(m=>`<div class="card" style="margin-bottom:8px"><b>🧠 方法论·${esc(m.title)}</b><div style="color:var(--muted);margin-top:4px;font-size:13px">${esc(m.detail)}</div></div>`).join('');
+  const lk = dy.link ? `<a href="${esc(dy.link)}" target="_blank" style="color:#2563eb;font-size:12.5px">▶ 原视频</a>` : '';
+  $('#page-intel').innerHTML = `
+    <div class="page-head"><h2>抖音情报</h2><span class="en">Douyin Intel ${esc(dy.date||'')}</span></div>
+    <div class="page-sub">每日四扫(晨/午/补/晚)转写→大模型纠错→信息点+方法论库→本页实时同步(${esc(dy.sync_time||'')}) ${lk}</div>
+    <div class="card"><h3><span class="dot"></span>一句话可执行结论</h3><div style="font-size:15px;font-weight:700;line-height:1.7">${esc(dy.conclusion||'')}</div></div>
+    <div class="card"><h3><span class="dot"></span>板块信息点</h3>${secRows||'<span class="muted">今日暂无</span>'}</div>
+    <div style="margin-top:10px">${mRows||''}</div>
+    <div class="card" style="margin-top:10px;color:var(--faint);font-size:12.5px">情报热点已计入信号引擎板块热度；方法论经量化验证后进入选股规则（36条中已进引擎：F2右侧反转/A2阳包阴/MACD金叉分级）。</div>`;
 }
 
 /* ================= 市场脉搏 ================= */
@@ -711,7 +771,9 @@ renderNav();
 renderOverview();
 renderSignals();
 renderHoldings();
+renderLedger();
 renderMarket();
+renderIntel();
 renderUnlock();
 renderPool();
 renderBrain();

@@ -189,6 +189,17 @@ if(pp.closed&&pp.closed.length){
  });
  pc.innerHTML=h2;
 }
+// ⑤' 当日持仓收益（holdings_pnl.json 收盘自动刷新）
+var hp=D.hold_pnl||{};
+if(hp.holdings&&hp.holdings.length){
+ var hhs='<div style="margin-top:10px;padding:8px 10px;background:var(--panel2);border-radius:8px;font-size:12.5px"><b>💰 当日持仓收益</b>（'+hp.date+'）持仓'+hp.hold_count+'只 · 当日均 '+(hp.day_avg_pct>0?'+':'')+(hp.day_avg_pct||0)+'% · 累计浮盈 '+(hp.total_unreal_pct>0?'+':'')+(hp.total_unreal_pct||0)+'%<br>';
+ hp.holdings.forEach(function(x){
+  hhs+='<span style="margin-right:14px;display:inline-block;margin-top:4px">'+x.name+' <b class="'+tc(x.pnl_pct)+'">'+tf(x.pnl_pct)+'</b><span style="color:var(--faint)">(当日'+tf(x.pct_day)+')</span>'+(x.alert?' <span class="tag warn">'+x.alert+'</span>':'')+'</span>';
+ });
+ (hp.closed_today||[]).forEach(function(c){ hhs+='<span style="margin-right:14px;display:inline-block;margin-top:4px;color:var(--faint)">今平: '+c.name+' '+tf(c.pnl_pct)+'('+c.reason+')</span>'; });
+ hhs+='</div>';
+ document.getElementById('paperStats').insertAdjacentHTML('afterend', hhs);
+}
 // ⑥ 科创50深度
 var e=D.etf||{};
 document.getElementById('etfPrice').textContent=e.price;
@@ -210,8 +221,17 @@ document.getElementById('clCard').innerHTML=D.chanlun?D.chanlun.note:'';
 document.getElementById('wlCard').innerHTML='回测结论(10-20)：科创系历史两次低点窗口反弹弹性+11%~+39%；当前第4浪调整窗口已到，模型A弹性预期即基于此历史规律';
 // ⑦ 抖音
 var dyBox=document.getElementById('dyBox');
-var dyTxt=(D.dy||'今日无抖音情报').replace(/#+/g,'').replace(/\*\*/g,'').replace(/[>\-]+\s*/g,'');
-dyBox.innerHTML=dyTxt.split('\n').map(function(l){return '<div>'+l+'</div>';}).join('');
+var dyl=D.dy_intel||{};
+if(dyl.conclusion){
+ var dh='<div style="font-weight:800;color:var(--accent);margin-bottom:6px">'+(dyl.date||'')+' 一句话结论</div><div style="color:var(--fg);font-weight:600;margin-bottom:10px">'+dyl.conclusion+'</div>';
+ (dyl.sectors||[]).forEach(function(s){ dh+='<div style="margin-bottom:4px"><b>'+s.sector+'</b>：'+s.point+(s.src?' <span class="tag" style="font-size:10px">'+s.src+'</span>':'')+'</div>'; });
+ (dyl.methods||[]).forEach(function(m){ dh+='<div style="margin:8px 0;padding:6px 8px;background:var(--panel2);border-radius:6px"><b>🧠 方法论·'+m.title+'</b><br><span style="font-size:12px">'+m.detail+'</span></div>'; });
+ if(dyl.link) dh+='<div style="margin-top:6px"><a href="'+dyl.link+'" target="_blank" style="color:var(--blue)">▶ 原视频</a> <span style="color:var(--faint);font-size:11px">（同步于'+(dyl.sync_time||'')+'）</span></div>';
+ dyBox.innerHTML=dh;
+}else{
+ var dyTxt=(D.dy||'今日无抖音情报').replace(/#+/g,'').replace(/\*\*/g,'').replace(/[>\-]+\s*/g,'');
+ dyBox.innerHTML=dyTxt.split('\n').map(function(l){return '<div>'+l+'</div>';}).join('');
+}
 // 警示/今日关键
 var w='';var jzD=D.jz_window||{};
 if(jzD.status&&jzD.status.indexOf('破位')>=0){w+='<div class="alert">⚠️ 九转窗口已破位：本次窗口不买，等待模型A触发条件。</div>';}

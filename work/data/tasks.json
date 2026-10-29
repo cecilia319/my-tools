@@ -1,0 +1,1298 @@
+{
+ "tasks": [
+  {
+   "id": "test002",
+   "category": "customer",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-07-22T10:08:03Z",
+     "status": "in_progress",
+     "note": "初稿完成"
+    }
+   ],
+   "reminded": false,
+   "name": "省考试院巡考项目验收材料",
+   "completedAt": "2026-09-24",
+   "status": "completed",
+   "duration": "temp",
+   "content": "准备巡考项目阶段性验收报告和材料",
+   "lead": "王丽",
+   "updatedAt": "2026-07-22T10:08:03Z",
+   "progressNote": "验收报告初稿完成，待审核",
+   "createdAt": "2026-07-22T10:08:03Z",
+   "deadline": "2026-07-23",
+   "milestones": [
+    {
+     "id": "ms_t2",
+     "date": "2026-07-23",
+     "desc": "截止日期",
+     "completed": false
+    }
+   ],
+   "done_note": "初验已盖章交客户（日志2026-09）",
+   "board": "customer:s-kaoshiyuan"
+  },
+  {
+   "id": "test004",
+   "category": "vctrl",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-07-22T10:08:03Z",
+     "status": "in_progress",
+     "note": "季度检查准备中"
+    }
+   ],
+   "reminded": false,
+   "name": "福师大信创项目季度管控检查",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "long",
+   "content": "福建师范大学信创替代改造项目季度管控汇报",
+   "lead": "项目管理部",
+   "updatedAt": "2026-07-22T10:08:03Z",
+   "progressNote": "项目进度70%，需协调国产数据库交付",
+   "createdAt": "2026-07-22T10:08:03Z",
+   "deadline": "",
+   "milestones": [
+    {
+     "id": "ms_t4",
+     "date": "",
+     "desc": "截止日期（已转为持续跟踪）",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-shida"
+  },
+  {
+   "id": "mju2026",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-07-22T08:00:00Z",
+     "status": "in_progress",
+     "note": "创建任务"
+    },
+    {
+     "time": "2026-07-22T09:25:00Z",
+     "status": "in_progress",
+     "note": "许佳已约23日下午拜访客户"
+    },
+    {
+     "time": "2026-07-23T01:04:14.346Z",
+     "status": "in_progress",
+     "note": "小青未更新，但23日已同意重新拜访客户"
+    },
+    {
+     "time": "2026-07-23T01:28:37.785Z",
+     "status": "pending",
+     "note": "未更新新版，23日去客户现场确认进一步合作需求"
+    },
+    {
+     "time": "2026-07-24T01:39:22.064728Z",
+     "status": "in_progress",
+     "note": "7月23日下午拜访闽江大学，就先进制造类学院实训平台建设交流。讨论仿真平台能力、三类实训系统项目及电信切入点，下一步输出结合方案及报价。"
+    }
+   ],
+   "reminded": false,
+   "name": "闽江大学合作项目跟踪",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "long",
+   "content": "与闽江大学合作",
+   "lead": "陈思然",
+   "updatedAt": "2026-07-24T01:39:22.064728Z",
+   "progressNote": "7月23日下午拜访闽江大学，就新成立先进制造类学院实训平台建设交流。讨论了仿真平台能力（通用仿真平台+工业仿真能力）、三类智能制造实训系统项目（机电一体化/机器人及智能制造/工业数字孪生）及电信切入点（数字化底座/网络运维/物联网接入/系统集成）。下一步：梳理三类实训系统与电信能力结合方案，输出匹配需求的方案及报价。",
+   "createdAt": "2026-07-22T08:00:00Z",
+   "deadline": "",
+   "milestones": [
+    {
+     "id": "ms1",
+     "date": "2026-07-22",
+     "desc": "跟踪泉州小青是否更新一稿",
+     "completed": true
+    },
+    {
+     "id": "ms2",
+     "date": "2026-07-23",
+     "desc": "许佳约23日下午拜访客户",
+     "completed": true
+    },
+    {
+     "id": "ms3",
+     "date": "2026-07-31",
+     "desc": "7月23日下午许佳拜访客户",
+     "completed": true
+    },
+    {
+     "id": "ms_mju_1",
+     "date": "2026-08-05",
+     "desc": "梳理三类实训系统与电信能力结合方案",
+     "completed": false
+    },
+    {
+     "id": "ms_mju_2",
+     "date": "2026-08-15",
+     "desc": "输出匹配需求的方案及报价",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-minjiang"
+  },
+  {
+   "id": "ly20260722",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-07-22T09:20:00Z",
+     "status": "in_progress",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "提醒龙岩曾文姬梳理大单商机",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "temp",
+   "content": "提醒龙岩曾文姬梳理大单商机",
+   "lead": "曾文姬",
+   "updatedAt": "2026-07-22T09:30:00Z",
+   "progressNote": "文旅学院智算项目（120万）",
+   "createdAt": "2026-07-22T09:20:00Z",
+   "deadline": "",
+   "milestones": [
+    {
+     "id": "ly_ms1",
+     "date": "2026-07-23",
+     "desc": "完成商机情况说明",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-minxi"
+  },
+  {
+   "id": "xj20260825",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-08-25T00:00:00Z",
+     "status": "pending",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "许佳项目论证报告",
+   "completedAt": "2026-09-01",
+   "status": "completed",
+   "duration": "temp",
+   "content": "提供许佳项目论证报告，周三前完成。完成后后续增加走访客户任务。",
+   "lead": "许佳",
+   "updatedAt": "2026-08-25T00:00:00Z",
+   "progressNote": "待启动",
+   "createdAt": "2026-08-25T00:00:00Z",
+   "deadline": "2026-08-27",
+   "milestones": [
+    {
+     "id": "xj_ms1",
+     "date": "2026-08-27",
+     "desc": "提供论证报告（周三截止）",
+     "completed": false
+    }
+   ],
+   "done_note": "论证完成，许佳约访客户推进（8/29日志）",
+   "board": "product:p-teleagent"
+  },
+  {
+   "id": "sy20260825a",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-08-25T00:00:00Z",
+     "status": "pending",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "数研院战略合同发起",
+   "completedAt": "2026-09-22",
+   "status": "completed",
+   "duration": "temp",
+   "content": "数研院项目战略合同发起，本周内完成。",
+   "lead": "",
+   "updatedAt": "2026-08-25T00:00:00Z",
+   "progressNote": "待启动",
+   "createdAt": "2026-08-25T00:00:00Z",
+   "deadline": "2026-08-29",
+   "milestones": [
+    {
+     "id": "sy_ms_a1",
+     "date": "2026-08-29",
+     "desc": "战略合同发起完成（本周内）",
+     "completed": false
+    }
+   ],
+   "done_note": "转知途好课合同线推进（V0920c定稿，9/22日志）",
+   "board": "product:p-teleagent"
+  },
+  {
+   "id": "sy20260825b",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-08-25T00:00:00Z",
+     "status": "in_progress",
+     "note": "创建任务，每周二四跟踪"
+    }
+   ],
+   "reminded": false,
+   "name": "数研院测试及销售组织跟踪",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "long",
+   "content": "数研院项目测试进度跟踪和销售组织跟踪，每周二、四跟踪。",
+   "lead": "",
+   "updatedAt": "2026-08-25T00:00:00Z",
+   "progressNote": "持续跟踪中",
+   "createdAt": "2026-08-25T00:00:00Z",
+   "deadline": "",
+   "milestones": [
+    {
+     "id": "sy_ms_b1",
+     "date": "2026-08-26",
+     "desc": "周二跟踪测试进度+销售组织",
+     "completed": false
+    },
+    {
+     "id": "sy_ms_b2",
+     "date": "2026-08-28",
+     "desc": "周四跟踪测试进度+销售组织",
+     "completed": false
+    }
+   ],
+   "board": "product:p-teleagent"
+  },
+  {
+   "id": "xk20260825",
+   "category": "customer",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-08-25T00:00:00Z",
+     "status": "pending",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "巡考项目收入调整变更",
+   "completedAt": "2026-10-20",
+   "status": "completed",
+   "duration": "temp",
+   "content": "巡考项目收入调整变更，8月31日前完成。",
+   "lead": "",
+   "updatedAt": "2026-08-25T00:00:00Z",
+   "progressNote": "待启动",
+   "createdAt": "2026-08-25T00:00:00Z",
+   "deadline": "2026-08-31",
+   "milestones": [
+    {
+     "id": "xk_ms1",
+     "date": "2026-08-31",
+     "desc": "收入调整变更完成",
+     "completed": false
+    }
+   ],
+   "done_note": "收入重新调整完成，支撑一期项目入收（10/21用户确认）",
+   "board": "customer:s-kaoshiyuan"
+  },
+  {
+   "id": "xk20260907",
+   "category": "customer",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-09-01T00:00:00Z",
+     "status": "pending",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "巡考项目客户验收",
+   "completedAt": "2026-09-24",
+   "status": "completed",
+   "duration": "temp",
+   "content": "巡考项目客户验收，9月7日到期，提前提醒。",
+   "lead": "",
+   "updatedAt": "2026-09-01T00:00:00Z",
+   "progressNote": "待启动",
+   "createdAt": "2026-09-01T00:00:00Z",
+   "deadline": "2026-09-07",
+   "milestones": [
+    {
+     "id": "xk_ms2",
+     "date": "2026-09-07",
+     "desc": "客户验收完成",
+     "completed": false
+    }
+   ],
+   "done_note": "初验盖章交付客户（日志2026-09-24）",
+   "board": "customer:s-kaoshiyuan"
+  },
+  {
+   "id": "lymx20260904",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-09-01T00:00:00Z",
+     "status": "pending",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "龙岩闽西学院支撑",
+   "completedAt": "",
+   "status": "pending",
+   "duration": "long",
+   "content": "龙岩闽西学院支撑工作，9月4日到期，9月2日提前提醒。",
+   "lead": "",
+   "updatedAt": "2026-09-01T00:00:00Z",
+   "progressNote": "待启动",
+   "createdAt": "2026-09-01T00:00:00Z",
+   "deadline": "",
+   "milestones": [
+    {
+     "id": "lymx_ms1",
+     "date": "",
+     "desc": "闽西学院支撑完成（9月4日到期）（已转为持续跟踪）",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-minxi"
+  },
+  {
+   "id": "fd20260907",
+   "category": "customer",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-09-07T00:00:00Z",
+     "status": "pending",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "福大机房改造项目",
+   "completedAt": "",
+   "status": "pending",
+   "duration": "temp",
+   "content": "福大机房改造项目跟进",
+   "lead": "",
+   "updatedAt": "2026-09-07T00:00:00Z",
+   "progressNote": "待启动",
+   "createdAt": "2026-09-07T00:00:00Z",
+   "deadline": "",
+   "milestones": [],
+   "board": "product:p-teleagent"
+  },
+  {
+   "id": "pb20260914",
+   "category": "customer",
+   "remindTime": "2026-09-14T14:00:00",
+   "history": [
+    {
+     "time": "2026-09-14T01:24:18Z",
+     "status": "in_progress",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "评标",
+   "completedAt": "2026-10-21",
+   "status": "completed",
+   "duration": "temp",
+   "content": "周一下午2点去评标",
+   "lead": "陈思然",
+   "updatedAt": "2026-09-14T01:24:18Z",
+   "progressNote": "待执行",
+   "createdAt": "2026-09-14T01:24:18Z",
+   "deadline": "2026-09-14",
+   "milestones": [
+    {
+     "id": "pb_ms1",
+     "date": "2026-09-14",
+     "desc": "14:00评标",
+     "completed": false
+    }
+   ],
+   "board": "product:p-teleagent",
+   "done_note": "9/14评标提醒，事项已过（10/21工作台重构时清理）"
+  },
+  {
+   "id": "mju20260915",
+   "category": "vsupport",
+   "remindTime": "2026-09-15T12:00:00",
+   "history": [
+    {
+     "time": "2026-09-14T01:24:18Z",
+     "status": "in_progress",
+     "note": "创建任务"
+    },
+    {
+     "time": "2026-09-15T10:49:09Z",
+     "status": "in_progress",
+     "note": "今日与高校先进制造学院就智能制造实训平台项目完成深度对接，双方在平台功能适配教学实训场景、多品牌设备统一联网接入、AI创新亮点打造等核心问题上达成共识，项目合作方向与落地路径初步明确。"
+    }
+   ],
+   "reminded": false,
+   "name": "闽江学院先进制造学院项目支撑",
+   "completedAt": "2026-10-21",
+   "status": "completed",
+   "duration": "temp",
+   "content": "周二下午去闽江学院先进制造学院项目支撑",
+   "lead": "陈思然",
+   "updatedAt": "2026-09-15T10:49:09Z",
+   "progressNote": "今日与高校先进制造学院就智能制造实训平台项目完成深度对接，双方在平台功能适配教学实训场景、多品牌设备统一联网接入、AI创新亮点打造等核心问题上达成共识，项目合作方向与落地路径初步明确。",
+   "createdAt": "2026-09-14T01:24:18Z",
+   "deadline": "2026-09-15",
+   "milestones": [
+    {
+     "id": "mju_ms1",
+     "date": "2026-09-15",
+     "desc": "下午项目支撑",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-minjiang",
+   "done_note": "9/15拜访支撑，已过（10/21工作台重构时清理）"
+  },
+  {
+   "id": "nl20260917",
+   "category": "vsupport",
+   "remindTime": "2026-09-17T10:00:00",
+   "history": [
+    {
+     "time": "2026-09-14T01:24:18Z",
+     "status": "in_progress",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "农林大学学生参观信息广场支撑",
+   "completedAt": "2026-10-21",
+   "status": "completed",
+   "duration": "temp",
+   "content": "支撑农林大学学生到信息广场参观，DL周四下午",
+   "lead": "陈思然",
+   "updatedAt": "2026-09-14T01:24:18Z",
+   "progressNote": "待执行",
+   "createdAt": "2026-09-14T01:24:18Z",
+   "deadline": "2026-09-17",
+   "milestones": [
+    {
+     "id": "nl_ms1",
+     "date": "2026-09-17",
+     "desc": "支撑参观（下午截止）",
+     "completed": false
+    }
+   ],
+   "board": "product:p-teleagent",
+   "done_note": "9/17参观支撑，已结束（10/21工作台重构时清理）"
+  },
+  {
+   "id": "xc20260914",
+   "category": "vsupport",
+   "remindTime": "2026-09-14T09:30:00",
+   "history": [
+    {
+     "time": "2026-09-14T02:41:36Z",
+     "status": "in_progress",
+     "note": "创建任务，纳入每周工作内容"
+    }
+   ],
+   "reminded": false,
+   "name": "Xc实验室工作（商机挖掘+文件政策）",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "long",
+   "content": "Xc实验室纳入每周工作内容：商机挖掘、文件政策跟进。本周每天提醒。",
+   "lead": "陈思然",
+   "updatedAt": "2026-09-14T02:41:36Z",
+   "progressNote": "本周每天跟进",
+   "createdAt": "2026-09-14T02:41:36Z",
+   "deadline": "",
+   "milestones": [
+    {
+     "id": "xc_ms_0914",
+     "date": "",
+     "desc": "商机挖掘+文件政策（周一）（已转为持续跟踪）",
+     "completed": false
+    },
+    {
+     "id": "xc_ms_0915",
+     "date": "",
+     "desc": "商机挖掘+文件政策（周二）（已转为持续跟踪）",
+     "completed": false
+    },
+    {
+     "id": "xc_ms_0916",
+     "date": "",
+     "desc": "商机挖掘+文件政策（周三）（已转为持续跟踪）",
+     "completed": false
+    },
+    {
+     "id": "xc_ms_0917",
+     "date": "",
+     "desc": "商机挖掘+文件政策（周四）（已转为持续跟踪）",
+     "completed": false
+    },
+    {
+     "id": "xc_ms_0918",
+     "date": "",
+     "desc": "商机挖掘+文件政策（周五）（已转为持续跟踪）",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-xc"
+  },
+  {
+   "id": "tsw12355",
+   "category": "customer",
+   "remindTime": "2026-09-16T09:00:00",
+   "history": [
+    {
+     "time": "2026-09-14T02:41:36Z",
+     "status": "in_progress",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "团省委12355方案",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "long",
+   "content": "本周完成团省委12355方案（周三提醒）",
+   "lead": "陈思然",
+   "updatedAt": "2026-10-29T09:15:00+08:00",
+   "progressNote": "询价单已出(7项云资源:虚机x4/PG/redis/SFS/弹性IP20M/专线LAN20M,按私有化部署口径,10-30 12:00前回收报价)；报价回填费用节(三)即成定稿；提示:专线条数原方案空白(按1条)、9月预算表录音宝3750/月与10-25方案免费30天口径不一致需统一",
+   "createdAt": "2026-09-14T02:41:36Z",
+   "deadline": "",
+   "milestones": [
+    {
+     "id": "tsw_ms1",
+     "date": "",
+     "desc": "12355方案完成（已转为持续跟踪）",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-tuanshengwei"
+  },
+  {
+   "id": "tsw-ai-club",
+   "category": "customer",
+   "remindTime": "2026-09-17T10:00:00",
+   "history": [
+    {
+     "time": "2026-09-14T02:41:36Z",
+     "status": "in_progress",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "团省委人工智能社团调研（宁德时代做法）",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "long",
+   "content": "调研团省委人工智能社团如何做——查宁德时代是怎么做的",
+   "lead": "陈思然",
+   "updatedAt": "2026-09-14T02:41:36Z",
+   "progressNote": "待调研",
+   "createdAt": "2026-09-14T02:41:36Z",
+   "deadline": "",
+   "milestones": [
+    {
+     "id": "tsw_ms2",
+     "date": "",
+     "desc": "完成宁德时代做法调研（已转为持续跟踪）",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-tuanshengwei"
+  },
+  {
+   "id": "jszn20260914",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-09-15T01:25:03Z",
+     "status": "in_progress",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "集团物联网公司（南京）具身智能供给调研",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "long",
+   "content": "与集团物联网公司（南京）了解具身智能供给，包括产品功能、使用场景等，用于AI设备+软件类项目。",
+   "lead": "陈思然",
+   "updatedAt": "2026-09-15T01:25:03Z",
+   "progressNote": "待推进：联系南京物联网公司，了解具身智能产品线",
+   "createdAt": "2026-09-15T01:25:03Z",
+   "deadline": "",
+   "milestones": [
+    {
+     "id": "jszn_ms1",
+     "date": "",
+     "desc": "完成具身智能产品功能及使用场景调研（已转为持续跟踪）",
+     "completed": false
+    }
+   ],
+   "board": "product:p-teleagent"
+  },
+  {
+   "id": "hd20260929",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-09-29T02:00:00Z",
+     "status": "in_progress",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "支撑泉州华大科研算力平台事宜",
+   "completedAt": "2026-10-21",
+   "status": "completed",
+   "duration": "temp",
+   "content": "支撑泉州华侨大学科研算力平台事宜，今日完成。",
+   "lead": "陈思然",
+   "updatedAt": "2026-09-29T02:00:00Z",
+   "progressNote": "待推进：结合华大数字孪生大数据实训专项跟进情况，对接科研算力平台需求",
+   "createdAt": "2026-09-29T02:00:00Z",
+   "deadline": "2026-09-29",
+   "milestones": [
+    {
+     "id": "hd_ms1",
+     "date": "2026-09-29",
+     "desc": "完成华大科研算力平台支撑",
+     "completed": false
+    }
+   ],
+   "board": "product:p-teleagent",
+   "done_note": "9月支撑事项，已过（10/21工作台重构时清理）"
+  },
+  {
+   "id": "smxess20260929",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-09-29T02:00:00Z",
+     "status": "in_progress",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "支撑厦门思明区学而思宽带合同事宜",
+   "completedAt": "2026-10-21",
+   "status": "completed",
+   "duration": "temp",
+   "content": "支撑厦门思明区学而思宽带合同事宜，今日完成。",
+   "lead": "陈思然",
+   "updatedAt": "2026-09-29T02:00:00Z",
+   "progressNote": "待推进：对接厦门思明区学而思宽带合同办理",
+   "createdAt": "2026-09-29T02:00:00Z",
+   "deadline": "2026-09-29",
+   "milestones": [
+    {
+     "id": "smxess_ms1",
+     "date": "2026-09-29",
+     "desc": "完成学而思宽带合同支撑",
+     "completed": false
+    }
+   ],
+   "board": "product:p-teleagent",
+   "done_note": "9月学而思宽带合同支撑，已过（10/21工作台重构时清理）"
+  },
+  {
+   "id": "xybd20260924",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-09-30T01:36:56Z",
+     "status": "in_progress",
+     "note": "创建任务"
+    }
+   ],
+   "reminded": false,
+   "name": "支撑秀屿区北大附中考场监控项目",
+   "completedAt": "2026-10-21",
+   "status": "completed",
+   "duration": "temp",
+   "content": "支撑秀屿区北大附中考场监控项目：方案输出和招标卡位，今日推进。",
+   "lead": "陈思然",
+   "updatedAt": "2026-09-30T01:36:56Z",
+   "progressNote": "待推进：围绕北大附中考场监控项目输出方案，提前卡位招标",
+   "createdAt": "2026-09-30T01:36:56Z",
+   "deadline": "2026-09-30",
+   "milestones": [
+    {
+     "id": "xybd_ms1",
+     "date": "2026-09-30",
+     "desc": "方案输出与招标卡位（今日）",
+     "completed": false
+    }
+   ],
+   "board": "product:p-teleagent",
+   "done_note": "9月考场监控支撑，已过（10/21工作台重构时清理）"
+  },
+  {
+   "id": "wb20261025001",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-10-21T11:20:00",
+     "status": "pending",
+     "note": "口述记录创建"
+    },
+    {
+     "time": "2026-10-21T12:43:08",
+     "status": "in_progress",
+     "note": "重构为持续型卡：支撑历程记录，10/25为活动日"
+    }
+   ],
+   "reminded": false,
+   "name": "三明学院（AI讲座支撑）",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "long",
+   "content": "支撑三明学院AI讲座，10月25日下午举行；同步FDE团队调度",
+   "lead": "",
+   "updatedAt": "2026-10-21T11:20:00",
+   "progressNote": "支撑工作持续进行：10/15沟通流程+素材 → 10/21赴榕协调FDE指导文档 → 10/25下午讲座",
+   "createdAt": "2026-10-21T11:20:00",
+   "deadline": "2026-10-25",
+   "milestones": [
+    {
+     "id": "ms_sm1",
+     "date": "2026-10-15",
+     "desc": "与三明学院沟通讲座流程，提供素材",
+     "completed": true
+    },
+    {
+     "id": "ms_sm2",
+     "date": "2026-10-21",
+     "desc": "赴福州协调FDE，支撑讲座文档生成指导",
+     "completed": true
+    },
+    {
+     "id": "ms_sm3",
+     "date": "2026-10-25",
+     "desc": "讲座活动日（周日下午）——FDE现场支撑",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-sanming"
+  },
+  {
+   "id": "wb20261025002",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-10-21T11:20:00",
+     "status": "pending",
+     "note": "口述记录创建"
+    }
+   ],
+   "reminded": false,
+   "name": "FDE团队调度（本周日）",
+   "completedAt": "",
+   "status": "pending",
+   "duration": "temp",
+   "content": "本周日（10/25）进行FDE团队调度（配合三明学院讲座支撑）",
+   "lead": "",
+   "updatedAt": "2026-10-21T11:20:00",
+   "progressNote": "",
+   "createdAt": "2026-10-21T11:20:00",
+   "deadline": "2026-10-25",
+   "milestones": [
+    {
+     "id": "ms_wb25b",
+     "date": "2026-10-25",
+     "desc": "调度执行日",
+     "completed": false
+    }
+   ],
+   "board": "product:p-teleagent"
+  },
+  {
+   "id": "wb-cust-minjiang",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-10-21T14:30:00",
+     "status": "in_progress",
+     "note": "口述创建：TA私有化为主线"
+    },
+    {
+     "time": "2026-10-21T15:00:00",
+     "status": "in_progress",
+     "note": "口径确认：约谈FDE、TA私有化部署为实际出方案线；三明学院讲座仅为支撑不并此线；教育版AI新功能暂不纳入；建议书正文由用户备稿，需生成文档时再制作"
+    },
+    {
+     "time": "2026-10-21T15:30:00",
+     "status": "in_progress",
+     "note": "教育版TA产品材料学习完成（FAQ+介绍PDF，已入库），支撑建议书差异化描述"
+    }
+   ],
+   "reminded": false,
+   "name": "闽江大学（TA私有化部署）",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "long",
+   "content": "主线：TA私有化部署——对接FDE配合调整给客户的方案，本周内出建议书；卡点：先进制造学院福富支撑的学校预算未明确，牵头待定（院长或徐戈）",
+   "lead": "",
+   "updatedAt": "2026-10-24T23:30:00",
+   "progressNote": "10/22 TA教育版专题会私有化部署研讨+与FDE团队就闽江问题逐项分析，16项遗留问题清单已整理；方案深化为校内通算+千卡池token（DS V4-flash）；下一步：清单发AI公司闭环、筹备POC；卡点仍是先进制造学院预算与牵头人",
+   "createdAt": "2026-10-21T14:30:00",
+   "deadline": "2026-10-31",
+   "milestones": [
+    {
+     "id": "ms_mj1",
+     "date": "2026-10-23",
+     "desc": "TA私有化部署建议书（本周内）",
+     "completed": false
+    },
+    {
+     "id": "ms_mj2",
+     "date": "",
+     "desc": "先进制造学院预算明确+牵头人确定（院长/徐戈）",
+     "completed": false
+    },
+    {
+     "date": "2026-10-28",
+     "desc": "遗留问题清单分发AI公司逐条闭环",
+     "completed": false
+    },
+    {
+     "date": "2026-10-31",
+     "desc": "POC测试方案筹备（模型选型/算力/首场景）",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-minjiang"
+  },
+  {
+   "id": "wb-cust-shida",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-10-21T14:30:00",
+     "status": "pending",
+     "note": "口述创建：复用闽江方案"
+    }
+   ],
+   "reminded": false,
+   "name": "福建师大（TA私有化复用落地）",
+   "completedAt": "",
+   "status": "pending",
+   "duration": "long",
+   "content": "复用闽江TA私有化方案争取师大落地。分支①C端：借私有化部署开AI讲座，客情需李亮、许佳共同推动；分支②B端：财务处应用场景研究（后拓展资产处），鸿信先上，FDE跟进评估TA能力，必要时联动福富承接",
+   "lead": "李亮、许佳（客情）",
+   "updatedAt": "2026-10-21T14:30:00",
+   "progressNote": "",
+   "createdAt": "2026-10-21T14:30:00",
+   "deadline": "",
+   "milestones": [
+    {
+     "id": "ms_sd1",
+     "date": "",
+     "desc": "C端：私有化部署+AI讲座落地（客情李亮/许佳）",
+     "completed": false
+    },
+    {
+     "id": "ms_sd2",
+     "date": "",
+     "desc": "B端：财务处应用场景研究（鸿信先上→FDE评估TA→福富备选承接）",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-shida"
+  },
+  {
+   "id": "wb-tokpak001",
+   "category": "vprod",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-10-21T13:00:00",
+     "status": "in_progress",
+     "note": "口述创建：Token包孵化"
+    }
+   ],
+   "reminded": false,
+   "name": "AI STORE Token包孵化（与知途好课一体化包装）",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "long",
+   "content": "知途好课作为教育AI STORE上架应用场景，与Token包一起包装孵化：①商业模式设计（课程运行Token→年度经常性算力收入，电信/知途/信产三方分成）②Token包内容设计",
+   "lead": "",
+   "updatedAt": "2026-10-21T13:00:00",
+   "progressNote": "方向已定（10/21），待出方案",
+   "createdAt": "2026-10-21T13:00:00",
+   "deadline": "2026-10-31",
+   "board": "product:p-shusuan",
+   "milestones": [
+    {
+     "id": "ms_tp1",
+     "date": "",
+     "desc": "Token包商业模式设计（定价/分成/结算）",
+     "completed": false
+    },
+    {
+     "id": "ms_tp2",
+     "date": "",
+     "desc": "Token包内容设计（算力+应用+权益组合）",
+     "completed": false
+    },
+    {
+     "id": "ms_tp3",
+     "date": "2026-10-31",
+     "desc": "方案初稿（建议月底前）",
+     "completed": false
+    }
+   ]
+  },
+  {
+   "id": "wb-weekly-report",
+   "category": "vprod",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-10-21T13:30:00",
+     "status": "in_progress",
+     "note": "周报体系创建"
+    }
+   ],
+   "reminded": false,
+   "name": "每周在线表填报（本周：3张周更表）",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "long",
+   "content": "每周任务：①周五16:30收周报与表格更新稿（微信推送）②复制粘贴到3张周更表——教育事业部周工作小结（自己sheet新增行）/3表合一（教育sheet主办行）/福州高校内部周报（3校sheet事项行）③填完说'周报表填好了'",
+   "lead": "",
+   "updatedAt": "2026-10-21T13:30:00",
+   "progressNote": "素材=本周日常'记录：…'；没记录我按日志+待办智能补齐",
+   "createdAt": "2026-10-21T13:30:00",
+   "deadline": "2026-10-23",
+   "board": "product:p-teleagent",
+   "milestones": [
+    {
+     "id": "ms_wr1",
+     "date": "2026-10-23",
+     "desc": "16:30收稿→复制到3张表",
+     "completed": false
+    },
+    {
+     "id": "ms_wr2",
+     "date": "2026-10-23",
+     "desc": "填完口述确认，关闭本周卡",
+     "completed": false
+    }
+   ]
+  },
+  {
+   "id": "wb-ta-demo-meet",
+   "category": "vsupport",
+   "remindTime": "2026-10-22T08:40:00",
+   "history": [
+    {
+     "time": "2026-10-21T15:31:51",
+     "status": "pending",
+     "note": "口述创建：明早8:40集团AI公司TA私有化教育版演示会"
+    }
+   ],
+   "reminded": false,
+   "name": "TA私有化教育版演示会（明早8:40）",
+   "completedAt": "",
+   "status": "pending",
+   "duration": "temp",
+   "content": "明早(10/22)8:40线上会议：集团AI公司TA私有化教育版演示，产线老师主讲演示。牵头召集相关同事参加，会后输出学习结果（演示要点/落地启发/待办分工）。",
+   "lead": "陈思然（牵头召集）",
+   "updatedAt": "2026-10-21T15:31:51",
+   "progressNote": "",
+   "createdAt": "2026-10-21T15:31:51",
+   "deadline": "2026-10-22",
+   "milestones": [
+    {
+     "id": "ms_demo1",
+     "date": "2026-10-22",
+     "desc": "明早8:40线上参会（产线老师演示教育版）",
+     "completed": false
+    },
+    {
+     "id": "ms_demo2",
+     "date": "",
+     "desc": "会后输出学习结果（演示要点/启发/分工）",
+     "completed": false
+    }
+   ],
+   "board": "product:p-taprivat"
+  },
+  {
+   "id": "wb-hy-shenbao",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-10-23T10:00:00",
+     "status": "in_progress",
+     "note": "10/23走访福建海洋职业技术学校（校长/信息处处长）后确认"
+    },
+    {
+     "time": "2026-10-29T07:45:00+08:00",
+     "status": "completed",
+     "note": "用户确认已完成"
+    }
+   ],
+   "reminded": false,
+   "name": "海洋职业技术学校（AI赋能教育试点申报）",
+   "completedAt": "2026-10-29",
+   "status": "completed",
+   "duration": "long",
+   "content": "中职AI赋能教育试点申报：申报截止10/30，已选定2项试点任务（任务6教学模式变革+任务11创新工具与场景）；交付以TA/FDE交付AI产品+云算力，二开与运维兜底，生态产品孵化验证；申报无单独预算拟纳入3000万二期统筹，验收明年12月",
+   "lead": "",
+   "updatedAt": "2026-10-29T07:45:00+08:00",
+   "progressNote": "10/23申报书定稿（任务6+11，实施方案4000字）；10/26提交学校、10/30教育厅截止；同步以创课+TA融合演示牵引AI创课商机",
+   "createdAt": "2026-10-23T10:00:00",
+   "deadline": "2026-10-30",
+   "milestones": [
+    {
+     "id": "ms_hy1",
+     "date": "2026-10-23",
+     "desc": "走访海洋职校校长/信息处，确认2项试点任务",
+     "completed": true
+    },
+    {
+     "id": "ms_hy2",
+     "date": "2026-10-26",
+     "desc": "申报书初稿提交学校",
+     "completed": false
+    },
+    {
+     "id": "ms_hy3",
+     "date": "2026-10-30",
+     "desc": "申报截止（教育厅受理）",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-haiyang",
+   "done_note": "用户2026-10-29确认完成"
+  },
+  {
+   "id": "wb-12355-v2",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-10-22T09:00:00",
+     "status": "in_progress",
+     "note": "与福富沟通需求与功能改进"
+    },
+    {
+     "time": "2026-10-29T07:45:00+08:00",
+     "status": "in_progress",
+     "note": "用户指示:本周五(10-30)方案确认，期限更新"
+    }
+   ],
+   "reminded": false,
+   "name": "12355呼叫中心方案（带多级功能点）",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "long",
+   "content": "与福富就12355呼叫中心方案进行需求与功能改进详细沟通；推进云资源估价；下周三(10/28)前提供带多级功能点的方案",
+   "lead": "",
+   "updatedAt": "2026-10-29T09:15:00+08:00",
+   "progressNote": "询价单已出(7项云资源:虚机x4/PG/redis/SFS/弹性IP20M/专线LAN20M,按私有化部署口径,10-30 12:00前回收报价)；报价回填费用节(三)即成定稿；提示:专线条数原方案空白(按1条)、9月预算表录音宝3750/月与10-25方案免费30天口径不一致需统一",
+   "createdAt": "2026-10-22T09:00:00",
+   "deadline": "2026-10-30",
+   "milestones": [
+    {
+     "id": "ms_tsw2a",
+     "date": "2026-10-30",
+     "desc": "与福富需求功能改进沟通",
+     "completed": true
+    },
+    {
+     "id": "ms_tsw2b",
+     "date": "2026-10-30",
+     "desc": "呼叫中心云资源估价",
+     "completed": false
+    },
+    {
+     "id": "ms_tsw2c",
+     "date": "2026-10-30",
+     "desc": "带多级功能点方案定稿",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-tuanshengwei"
+  },
+  {
+   "id": "wb-ksy-yanshou",
+   "category": "vsupport",
+   "remindTime": "",
+   "history": [
+    {
+     "time": "2026-10-22T10:00:00",
+     "status": "in_progress",
+     "note": "配合巡考验收材料"
+    }
+   ],
+   "reminded": false,
+   "name": "巡考项目验收材料配合（业务受理）",
+   "completedAt": "",
+   "status": "in_progress",
+   "duration": "temp",
+   "content": "配合巡考项目验收材料提供等，用于业务受理",
+   "lead": "",
+   "updatedAt": "2026-10-22T10:00:00",
+   "progressNote": "",
+   "createdAt": "2026-10-22T10:00:00",
+   "deadline": "",
+   "milestones": [],
+   "board": "customer:s-kaoshiyuan"
+  },
+  {
+   "id": "jc-apply1030",
+   "category": "customer",
+   "name": "警察学院AI赋能教育试点申报配合",
+   "content": "《人工智能赋能教育行动试点任务申报书》10.28版已交付(任务☑6☑8☑11)，配合学校完成申报：内审反馈修订/支撑材料/负责人联系人栏补齐",
+   "lead": "陈思然",
+   "status": "in_progress",
+   "duration": "temp",
+   "remindTime": "",
+   "reminded": false,
+   "completedAt": "",
+   "createdAt": "2026-10-29T07:45:00+08:00",
+   "updatedAt": "2026-10-29T09:15:00+08:00",
+   "deadline": "2026-10-30",
+   "progressNote": "10.29修订版已出(修4处:问答体/评阅体措辞、AI+警务科研攻关副标题、成果3时间线矛盾=6月首批试点12月全覆盖)；待用户确认学校反馈意见后定稿；负责人/联系人栏需学校定人",
+   "history": [
+    {
+     "time": "2026-10-29T07:45:00+08:00",
+     "status": "in_progress",
+     "note": "用户2026-10-29布置"
+    }
+   ],
+   "milestones": [
+    {
+     "id": "jc-apply1030_m1",
+     "date": "2026-10-30",
+     "desc": "截止日期",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-police"
+  },
+  {
+   "id": "jc-token1104",
+   "category": "customer",
+   "name": "警察学院AI大赛token配合提供",
+   "content": "为警察学院AI大赛提供token配合(结合Token包孵化主线)：额度测算/申请说明/开通对接",
+   "lead": "陈思然",
+   "status": "in_progress",
+   "duration": "temp",
+   "remindTime": "",
+   "reminded": false,
+   "completedAt": "",
+   "createdAt": "2026-10-29T07:45:00+08:00",
+   "updatedAt": "2026-10-29T07:45:00+08:00",
+   "deadline": "2026-11-04",
+   "progressNote": "下周三前",
+   "history": [
+    {
+     "time": "2026-10-29T07:45:00+08:00",
+     "status": "in_progress",
+     "note": "用户2026-10-29布置"
+    }
+   ],
+   "milestones": [
+    {
+     "id": "jc-token1104_m1",
+     "date": "2026-11-04",
+     "desc": "截止日期",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-police"
+  },
+  {
+   "id": "jc-course1106",
+   "category": "customer",
+   "name": "警察学院课程建设和数字人方案跟踪",
+   "content": "视频侦查技术课程建设(AI互动课堂方案已交付)持续跟踪 + 数字人方案输出落地，下周五前完成",
+   "lead": "陈思然",
+   "status": "in_progress",
+   "duration": "temp",
+   "remindTime": "",
+   "reminded": false,
+   "completedAt": "",
+   "createdAt": "2026-10-29T07:45:00+08:00",
+   "updatedAt": "2026-10-29T07:45:00+08:00",
+   "deadline": "2026-11-06",
+   "progressNote": "数字人方案为新增内容",
+   "history": [
+    {
+     "time": "2026-10-29T07:45:00+08:00",
+     "status": "in_progress",
+     "note": "用户2026-10-29布置"
+    }
+   ],
+   "milestones": [
+    {
+     "id": "jc-course1106_m1",
+     "date": "2026-11-06",
+     "desc": "截止日期",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-police"
+  }
+ ],
+ "logs": [
+  {
+   "id": "log_mju_0723",
+   "date": "2026-07-23",
+   "title": "闽江大学拜访会议纪要",
+   "category": "vsupport",
+   "content": "7月23日下午赴闽江大学，就新成立先进制造类学院实训平台建设交流。\n\n一、仿真平台能力介绍\n1. 通用仿真平台：落地十余年，覆盖超100家用户，可仿真180余种设备（六大类）。无大模型算力需求时仅需2-3台服务器，底座成本约70万，支撑50人以内班级并发。\n2. 工业仿真能力：采控一体平台对接主流PLC和传感器，落地厦门港口龙门吊远控、九牧施釉机械手、中车能源管控大模型等标杆项目。\n\n二、双方结合的三类实训系统项目与电信切入点\n1. 项目：机电一体化实训系统、机器人及智能制造实训系统、工业数字孪生实训系统\n2. 电信底座优势：数字化底座建设、网络部署与服务器运维、物联网接入、系统集成\n3. 合作期望：需提供一体化集成方案，统筹软硬件+实训平台+课程资源，打造智能制造实训教学体系\n\n三、下一步计划\n1. 梳理三类实训系统与电信算力/网络/物联网/云底座能力的结合方案\n2. 整合仿真平台+工业互联网+人工智能三大板块，输出方案及报价",
+   "createdAt": "2026-07-24T01:39:22.064728Z",
+   "updatedAt": "2026-07-24T01:39:22.064728Z"
+  },
+  {
+   "id": "xm20260722",
+   "date": "2026-07-22",
+   "title": "厦门思明教育局商机调研",
+   "category": "vsupport",
+   "content": "地市纵向支撑，了解厦门思明教育局商机。\n\n一、思明区总体：滨东小学已完成五育建设样板打造，后续官方认可智慧思明，由该合作伙伴专班牵头。本年度思明区各中小学整体预算有限，同时区域内本地服务商扎堆、项目利润空间低，我方常规渠道难以切入市场。\n\n二、应对举措：1.政企联动合作，计划主动对接智慧思明智慧校园专班，洽谈深度合作，融云融算力。2.省公司赋能支撑，需依托省公司许总指导破局，老姚团队前期完成的智慧体育顶层设计方案（已提交客户、待答复）。\n\n三、项目：有跟进第二实小项目，该校规划智慧体育、智慧德育建设板块，目前我方不承接相关内容。",
+   "createdAt": "2026-07-22T10:30:00Z",
+   "updatedAt": "2026-07-22T10:30:00Z"
+  }
+ ],
+ "schema_version": 3,
+ "schema_note": "board=所属线(product:*/customer:*)；done_note=完成成果；completedAt=完成时间"
+}

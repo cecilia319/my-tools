@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>托卡马克核聚变 · 交互动画</title>
+<style>
+:root{
+  --bg:#070a12;--panel:#0d1220;--panel2:#121a2c;--border:#22304a;--border2:#33476b;
+  --text:#e8eefc;--muted:#8ba0c4;--faint:#5a6e93;
+  --accent:#f2b63d;--blue:#4f8ef7;--cyan:#2fd8e6;--orange:#ff9a3c;--pink:#ff5fa2;
+  --plasma-top:#fff3c4;--plasma-mid:#ff9a3c;--plasma-bot:#e6482e;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:"Segoe UI","Microsoft YaHei",system-ui;overflow-x:hidden}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:5px}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ===== 封面 ===== */
+#cover{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 50% 40%,#0b1326 0%,#05070d 70%);}
+#cover .bgimg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.5;
+  -webkit-mask-image:radial-gradient(circle at 50% 45%,#000 30%,transparent 78%);mask-image:radial-gradient(circle at 50% 45%,#000 30%,transparent 78%)}
+#cover .logo{position:relative;font-size:13px;letter-spacing:6px;color:var(--cyan);margin-bottom:14px;font-weight:600;opacity:.85}
+#cover h1{position:relative;font-size:44px;font-weight:800;letter-spacing:2px;text-align:center;line-height:1.25;
+  background:linear-gradient(120deg,var(--plasma-mid),var(--cyan) 60%);-webkit-background-clip:text;background-clip:text;color:transparent}
+#cover .sub{position:relative;color:var(--muted);font-size:14px;margin-top:14px;letter-spacing:1px}
+#cover .btn{position:relative;margin-top:34px;padding:13px 44px;font-size:15px;border-radius:40px;cursor:pointer;
+  background:linear-gradient(120deg,var(--orange),var(--pink));color:#fff;border:none;font-weight:700;letter-spacing:2px;
+  box-shadow:0 8px 34px rgba(255,120,70,.35);transition:transform .2s}
+#cover .btn:hover{transform:scale(1.05)}
+#cover .hint{position:relative;color:var(--faint);font-size:11.5px;margin-top:16px}
+
+/* ===== 顶部 ===== */
+header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(7,10,20,.72);
+  border-bottom:1px solid var(--border);padding:14px 26px;display:flex;align-items:center;gap:18px}
+header .tt{font-size:19px;font-weight:800;letter-spacing:1px;white-space:nowrap}
+header .tt em{font-style:normal;color:var(--cyan)}
+.mode{display:flex;gap:8px;margin-left:auto}
+.mode .m{padding:8px 16px;font-size:12.5px;border-radius:20px;cursor:pointer;border:1px solid var(--border);
+  color:var(--muted);background:var(--panel);transition:all .2s;font-weight:600}
+.mode .m.on{background:linear-gradient(120deg,var(--cyan),var(--accent));color:#06121a;border-color:transparent}
+.stepbar{display:flex;gap:0;align-items:center;flex-wrap:wrap}
+.stepbar .s{font-size:11.5px;color:var(--faint);padding:6px 10px;border-radius:7px;cursor:pointer;transition:all .2s}
+.stepbar .s.on{color:var(--accent);background:rgba(242,185,61,.12)}
+.stepbar .s.done{color:var(--cyan)}
+
+/* ===== 主区 ===== */
+main{padding:22px 26px;max-width:1500px;margin:0 auto}
+.cols{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px}
+@media(max-width:1100px){.cols{grid-template-columns:1fr}}
+
+/* 舞台 */
+.stage{position:relative;background:radial-gradient(ellipse at 50% 45%,#0c1428 0%,#080c1a 70%);
+  border:1px solid var(--border);border-radius:18px;min-height:560px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center}
+.stage::before{content:"";position:absolute;inset:0;
+  background-image:radial-gradient(circle,var(--border) 1px,transparent 1px);background-size:26px 26px;opacity:.12}
+#scene{position:relative;z-index:2;width:auto;height:auto;max-width:620px;margin:0 auto;display:block}
+
+/* 侧栏 */
+.side{display:flex;flex-direction:column;gap:14px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px 20px}
+.panel h3{font-size:13px;color:var(--muted);letter-spacing:1px;margin-bottom:12px;font-weight:600}
+.nar{min-height:150px;font-size:16.5px;line-height:1.9;color:var(--text);padding-top:4px}
+.nar .q{color:var(--accent);font-weight:700}
+.nar .obs{color:var(--cyan)}
+.nar .exp{color:var(--orange)}
+#phase{font-size:12px;color:var(--cyan);letter-spacing:2px;font-weight:700;margin-bottom:8px;text-transform:uppercase}
+
+/* 图例 */
+.legend{display:flex;flex-wrap:wrap;gap:14px;color:var(--muted);font-size:11.5px;margin-top:8px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.legend .p i{background:linear-gradient(120deg,var(--plasma-mid),var(--plasma-bot))}
+.legend .c i{background:var(--blue)}
+.legend .f i{background:var(--accent)}
+.legend .s i{background:var(--muted)}
+
+/* 控件 */
+.ctrl{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.btn{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:8px 15px;border-radius:9px;
+  cursor:pointer;font-size:12.5px;transition:all .18s;font-weight:600}
+.btn:hover{border-color:var(--cyan)}
+.btn.on{background:linear-gradient(120deg,var(--cyan),var(--accent));color:#07131a;border-color:transparent}
+.btn.ghost{color:var(--muted)}
+
+/* 字幕/讲解轨道 */
+.subtitle{margin-top:4px;font-size:13px;color:var(--faint);line-height:1.6;min-height:40px}
+.timeline{margin-top:14px}
+.tl-row{display:flex;gap:8px;font-size:11.5px;color:var(--faint);line-height:1.7}
+.tl-row b{color:var(--text);min-width:150px;font-weight:600}
+.tl-row .cur{color:var(--accent)}
+
+/* 播放控制 */
+.playbar{display:flex;align-items:center;gap:14px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.playbar .pb{width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;font-size:15px;
+  background:linear-gradient(120deg,var(--cyan),var(--accent));color:#07131a;font-weight:700;transition:transform .15s}
+.playbar .pb:hover{transform:scale(1.1)}
+.prog{flex:1;height:5px;background:var(--panel2);border-radius:3px;overflow:hidden}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--accent));width:0%;transition:width .2s}
+.playbar .tm{color:var(--muted);font-size:11.5px;font-variant-numeric:tabular-nums}
+
+/* 底部说明 */
+.foot{margin-top:20px;padding:16px 20px;border:1px solid var(--border);border-radius:14px;background:var(--panel);
+  font-size:12px;color:var(--faint);line-height:1.8}
+.foot b{color:var(--muted)}
+
+/* SVG 动态 */
+#scene .plasmaRing{filter:drop-shadow(0 0 22px rgba(255,154,60,.55))}
+#scene .coil{transition:all .4s}
+#scene .coil.hl{filter:drop-shadow(0 0 10px var(--cyan)) brightness(1.35)}
+#scene .solenoid.hl{filter:drop-shadow(0 0 10px var(--accent)) brightness(1.3)}
+#scene .fieldline{stroke-dasharray:6 8;animation:dash 1.4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-14}}
+#scene .magline{transition:opacity .5s}
+#scene .smoke{opacity:.5}
+#scene .coil,#scene .solenoid,#scene .plasmaRing{cursor:pointer}
+#scene .coil:hover,#scene .solenoid:hover{filter:drop-shadow(0 0 8px #fff) brightness(1.3)}
+/* 悬浮提示 */
+#tip{position:absolute;pointer-events:none;z-index:5;background:rgba(10,16,32,.92);border:1px solid var(--border2);
+  color:var(--text);font-size:12px;padding:7px 12px;border-radius:8px;display:none;white-space:nowrap;
+  box-shadow:0 6px 24px rgba(0,0,0,.4);letter-spacing:.5px}
+/* 高亮按钮选中态 */
+.btn.sel{background:linear-gradient(120deg,var(--cyan),var(--accent));color:#07131a;border-color:transparent}
+/* 等离子体脉动 */
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:.9}}
+#plasmaGlow{animation:pulse 2.4s ease-in-out infinite}
+@keyframes breath{0%,100%{stroke-width:24}50%{stroke-width:29}}
+#plasmaRing{animation:breath 3.2s ease-in-out infinite}
+</style>
+</head>
+<body>
+
+<!-- ===== 封面 ===== -->
+<div id="cover">
+  <div class="bgimg" id="coverImg"></div>
+  <div class="logo">MAGNETIC CONFINEMENT FUSION</div>
+  <h1>托卡马克核聚变装置<br>磁约束 · 点亮太阳</h1>
+  <div class="sub">把千万度的等离子体，锁进一个看不见的磁场笼子里</div>
+  <button class="btn" onclick="enterScene()">开始探索 ▸</button>
+  <div class="hint">可交互 · 可拆解 · 双模式 · 逐环节演示</div>
+</div>
+
+<header>
+  <div class="tt">TOKAMAK <em>托卡马克</em></div>
+  <div class="mode">
+    <div class="m on" data-mode="a" onclick="setMode('a')">A · 科普讲解</div>
+    <div class="m" data-mode="c" onclick="setMode('c')">C · 课堂讲授</div>
+  </div>
+</header>
+
+<main>
+  <div class="stepbar" id="stepbar"></div>
+  <div class="cols" style="margin-top:18px">
+    <!-- 舞台 -->
+    <div class="stage" id="stageWrap">
+      <div id="tip"></div>
+      <svg id="scene" viewBox="0 0 560 460" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="plasmaGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff7dd"/>
+            <stop offset="35%" stop-color="#ffbe55"/>
+            <stop offset="70%" stop-color="#ff7b30"/>
+            <stop offset="100%" stop-color="#c93b24"/>
+          </radialGradient>
+          <linearGradient id="coilGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#7fb3ff"/><stop offset="100%" stop-color="#2c5aa8"/>
+          </linearGradient>
+          <linearGradient id="solGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ffe9a8"/><stop offset="100%" stop-color="#c98a2e"/>
+          </linearGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="softGlow"><feGaussianBlur stdDeviation="3"/></filter>
+        </defs>
+
+        <!-- 背景：环形磁场氛围 -->
+        <ellipse cx="280" cy="230" rx="200" ry="130" fill="none" stroke="#1b2c4e" stroke-width="1" opacity=".5"/>
+        <ellipse cx="280" cy="230" rx="160" ry="104" fill="none" stroke="#1b2c4e" stroke-width="1" opacity=".4"/>
+
+        <!-- ===== 纵场线圈组 (环向) ：沿大环分布 16 个 ===== -->
+        <g id="coilGroup" data-tip="环形纵场线圈 · 产生环向磁场，把等离子体箍在环里" data-pt="coil">
+          <g class="coil" data-part="coil"><ellipse cx="80" cy="230" rx="14" ry="40" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="105" cy="176" rx="14" ry="36" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5" transform="rotate(-24 105 176)"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="165" cy="140" rx="14" ry="30" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5" transform="rotate(-45 165 140)"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="230" cy="128" rx="13" ry="27" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="280" cy="122" rx="12" ry="26" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="330" cy="128" rx="13" ry="27" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="395" cy="140" rx="14" ry="30" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5" transform="rotate(45 395 140)"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="455" cy="176" rx="14" ry="36" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5" transform="rotate(24 455 176)"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="480" cy="230" rx="14" ry="40" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="455" cy="284" rx="14" ry="36" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5" transform="rotate(-24 455 284)"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="395" cy="320" rx="14" ry="30" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5" transform="rotate(-45 395 320)"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="330" cy="332" rx="13" ry="27" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="280" cy="338" rx="12" ry="26" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="230" cy="332" rx="13" ry="27" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="165" cy="320" rx="14" ry="30" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5" transform="rotate(45 165 320)"/></g>
+          <g class="coil" data-part="coil"><ellipse cx="105" cy="284" rx="14" ry="36" fill="url(#coilGrad)" stroke="#5b86c8" stroke-width="1.5" transform="rotate(24 105 284)"/></g>
+        </g>
+
+        <!-- ===== 中心螺线管 ===== -->
+        <g class="solenoid" id="solenoid" data-part="solenoid" data-tip="中心螺线管 · 驱动环向电流，产生极向磁场" data-pt="solenoid">
+          <rect x="262" y="112" width="36" height="236" rx="8" fill="url(#solGrad)" stroke="#b8792a" stroke-width="1.5"/>
+          <g opacity=".6" fill="none" stroke="#8a5a1e" stroke-width="1.4">
+            <line x1="270" y1="130" x2="290" y2="130"/><line x1="270" y1="150" x2="290" y2="150"/>
+            <line x1="270" y1="170" x2="290" y2="170"/><line x1="270" y1="190" x2="290" y2="190"/>
+            <line x1="270" y1="210" x2="290" y2="210"/><line x1="270" y1="230" x2="290" y2="230"/>
+            <line x1="270" y1="250" x2="290" y2="250"/><line x1="270" y1="270" x2="290" y2="270"/>
+            <line x1="270" y1="290" x2="290" y2="290"/><line x1="270" y1="310" x2="290" y2="310"/>
+            <line x1="270" y1="330" x2="290" y2="330"/>
+          </g>
+        </g>
+
+        <!-- ===== 等离子体环（大环） ===== -->
+        <g id="plasmaGroup" data-tip="等离子体 · 一亿度高温，受磁场约束悬浮绕行" data-pt="plasma">
+          <!-- 环形等离子体：用两段粗圆弧表示环形 -->
+          <path id="plasmaRing" class="plasmaRing"
+            d="M140,230 a140,90 0 1,0 280,0 a140,90 0 1,0 -280,0"
+            fill="none" stroke="url(#plasmaGrad)" stroke-width="26" stroke-linecap="round"/>
+          <path d="M140,230 a140,90 0 1,0 280,0 a140,90 0 1,0 -280,0"
+            fill="none" stroke="#fff8e0" stroke-width="3" opacity=".35" stroke-linecap="round"/>
+          <!-- 粒子 -->
+          <g id="particles"></g>
+        </g>
+
+        <!-- ===== 磁感线（约束磁场，绕等离子体） ===== -->
+        <g id="fieldlines">
+          <path class="fieldline magline" d="M120,230 a160,104 0 1,0 320,0 a160,104 0 1,0 -320,0"
+            fill="none" stroke="var(--cyan)" stroke-width="1.8" opacity=".8"/>
+          <path class="fieldline magline" d="M96,230 a184,120 0 1,0 368,0 a184,120 0 1,0 -368,0"
+            fill="none" stroke="var(--cyan)" stroke-width="1.2" opacity=".5"/>
+          <path class="fieldline magline" d="M158,230 a122,78 0 1,0 244,0 a122,78 0 1,0 -244,0"
+            fill="none" stroke="var(--cyan)" stroke-width="1.2" opacity=".45"/>
+        </g>
+
+        <!-- 等离子体悬浮特效：下方光晕 -->
+        <ellipse id="plasmaGlow" cx="280" cy="240" rx="150" ry="96" fill="url(#plasmaGrad)" opacity=".18" filter="url(#softGlow)"/>
+      </svg>
+    </div>
+
+    <!-- 侧栏 -->
+    <div class="side">
+      <div class="panel">
+        <div id="phase">情境 · 提问</div>
+        <div class="nar" id="nar"></div>
+        <div class="subtitle" id="subtitle"></div>
+        <div class="legend">
+          <span class="p"><i></i>等离子体</span>
+          <span class="c"><i></i>纵场线圈</span>
+          <span class="f"><i></i>中心螺线管</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>🧩 交互控制</h3>
+        <div class="ctrl">
+          <button class="btn on" id="btn-autoplay" onclick="toggleAutoplay()">▶ 自动演示</button>
+          <button class="btn ghost" id="btn-coil" onclick="highlightPart('coil')">高亮纵场线圈</button>
+          <button class="btn ghost" id="btn-sol" onclick="highlightPart('solenoid')">高亮中心螺线管</button>
+          <button class="btn ghost" id="btn-plasma" onclick="highlightPart('plasma')">高亮等离子体</button>
+          <button class="btn ghost" onclick="resetHL()">复位高亮</button>
+        </div>
+        <div class="playbar">
+          <button class="pb" id="playBtn" onclick="togglePlay()">▶</button>
+          <div class="prog"><i id="progBar"></i></div>
+          <span class="tm" id="tm">00:00 / 00:00</span>
+        </div>
+        <div class="timeline" id="timeline"></div>
+      </div>
+
+      <div class="panel">
+        <h3>💡 一句话原理</h3>
+        <div class="tl-row"><b>核心</b><span>用环形磁场（纵场+环向+极向叠加成"磁笼"），把亿度等离子体约束、悬浮、绕环运动，不与容器壁接触。</span></div>
+        <div class="tl-row" style="margin-top:8px"><b>比喻</b><span>把一颗太阳的火球，装进一个无形的磁场甜甜圈里。</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <b>科学严谨说明</b> · 本动画为教学示意，采用等距剖面表达托卡马克的环形磁约束构型：环形纵场线圈（环向磁约束）、中心螺线管（产生环向等离子体电流）、等离子体在环形真空室中受约束悬浮。结构符合磁约束聚变真实原理；示意部分已简化，用于理解"如何用磁场约束等离子体"这一核心知识点。
+  </div>
+</main>
+
+<script>
+/* ===== 场景数据 ===== */
+const STEPS_A = [
+  {phase:"情境 · 提问", nar:"<span class='q'>如果让你把一团一亿度的等离子体“装进”一个容器里，你会怎么做？</span>任何固体都会瞬间熔化。唯一不被烧穿的方法，就是——别让它碰到壁。", sub:"核心矛盾：等离子体太热，任何材料都碰不得。", hi:null},
+  {phase:"观察 · 结构", nar:"托卡马克的答案：一个<span class='obs'>环形磁场笼子</span>。外围一圈<span class='obs'>纵场线圈</span>产生环向磁场，把等离子体“箍”在环里。", sub:"环形磁场 = 天然的“笼子”，等离子体无法直线逃逸。", hi:['coil']},
+  {phase:"观察 · 中心", nar:"环中心是<span class='obs'>中心螺线管</span>——它在环向上感应出强大环向电流，让等离子体绕大环流动，<span class='exp'>电流本身又产生极向磁场</span>，把等离子体“拧紧”。", sub:"中心螺线管 → 环向电流 → 极向磁场，共同锁住等离子体。", hi:['solenoid','plasma']},
+  {phase:"解释 · 原理", nar:"外环的纵场磁场 + 中心的极向磁场，<span class='exp'>两个磁场拧合成螺旋磁感线</span>。等离子体被困在螺旋磁面上，像被无形的磁线“衔住”，绕环悬浮、不碰壁。", sub:"螺旋磁感线 = 磁笼的“骨架”，等离子体在磁面上绕行。", hi:['coil','solenoid','plasma']},
+  {phase:"改变条件 · 检验", nar:"现在<span class='q'>把中心螺线管电流加大</span>——极向磁场更强，磁感线拧得更紧，等离子体被进一步压缩、加热，聚变反应率提升。只改一个条件，观察证据验证：磁场强 → 约束强 → 温度升。", sub:"条件变化：增大磁场 → 等离子体被压缩 → 聚变增强（因果链点亮）。", hi:['solenoid','plasma']},
+  {phase:"总结 · 回顾", nar:"<span class='obs'>托卡马克 = 磁约束聚变</span>：环形磁笼约束、中心驱动环流、等离子体悬浮绕行。理论清洁、原料充足——但稳定约束、长期维持，仍是点亮太阳的最大难点。", sub:"要点回顾：磁笼约束 · 环流加热 · 悬浮绕行。", hi:['coil','solenoid','plasma']},
+];
+
+const STEPS_C = [
+  {phase:'情境 · 提问', nar:"<span class='q'>提问：磁约束聚变里，等离子体怎么被“关住”？</span>先别急着看答案，<b>你来预测</b>——如果只用一块磁铁，能让高温气体“悬浮”在空中吗？", sub:"引导学生预测：磁铁能否约束高温等离子体？", hi:null},
+  {phase:'预测 · 观察', nar:"很多同学会猜：<span class='obs'>磁铁只能吸铁，吸不住气</span>。但观察一下：当带电粒子遇到磁场，会<span class='exp'>绕磁感线螺旋运动</span>，不沿直线逃跑——这就是磁约束的起点。", sub:"观察：带电粒子在磁场中作螺旋运动，被磁感线“锁”住。", hi:['coil']},
+  {phase:'解释 · 概念', nar:"<span class='obs'>中心螺线管</span>通电，激发环向电流，等离子体开始绕大环流动；<span class='exp'>外圈纵场线圈</span>给出环形磁笼。两者一起，等离子体在笼子里<b>悬浮绕行</b>。", sub:"概念：外环磁场=笼，中心电流=驱动力，两者合成悬浮。", hi:['solenoid','coil','plasma']},
+  {phase:'改变条件 · 检验', nar:"<span class='q'>如果突然关掉外圈纵场线圈？</span>——磁笼消失，等离子体瞬间向外膨胀、撞壁、降温熄灭。反过来<span class='obs'>加大电流</span>，笼子收紧，等离子体被压缩得更热。", sub:"检验：关磁场=笼消失；加电流=压缩加热。", hi:['coil','plasma']},
+  {phase:'回顾 · 复述', nar:"<span class='obs'>回顾因果链：</span>中心螺线管→环向电流→等离子体绕行；纵场线圈→环向磁笼；两者合成→悬浮约束。核心一句：<b>磁场是笼，等离子体是笼中绕行的火球。</b>", sub:"<b>请你完整复述一遍</b>：磁场如何约束等离子体？", hi:['coil','solenoid','plasma']},
+];
+
+let currentMode='a', steps=STEPS_A, idx=0, timer=null, t=0, playing=false;
+const DUR = 22; // 每步时长
+
+/* 生成 SVG 粒子 */
+function buildParticles(){
+  const g=document.getElementById('particles'), xmlns='http://www.w3.org/2000/svg';
+  for(let i=0;i<46;i++){
+    const c=document.createElementNS(xmlns,'circle'); c.setAttribute('r', 1.4+Math.random()*1.6);
+    c.setAttribute('fill', Math.random()>.5?'#ffd27a':'#fff3c4');
+    c.setAttribute('opacity', .5+Math.random()*.4);
+    g.appendChild(c);
+  }
+}
+function drawParticles(time){
+  const g=document.getElementById('particles'), kids=[...g.children];
+  const a=280,b=230,ra=140,ra2=90; // 环
+  kids.forEach((c,i)=>{
+    const ang=(time*0.02+ i*0.14)%(Math.PI*2);
+    const wob=Math.sin(time*0.03+i)*6;
+    const r2=ra2+wob*0.4;
+    c.setAttribute('cx', a+ra*Math.cos(ang));
+    c.setAttribute('cy', b+r2*Math.sin(ang));
+  });
+  requestAnimationFrame(drawParticles);
+}
+
+/* 高亮 */
+function clearHL(){document.querySelectorAll('#scene .coil,#scene .solenoid').forEach(e=>e.classList.remove('hl'));}
+function highlight(parts){
+  clearHL();
+  if(!parts) return;
+  if(parts.includes('coil')) document.querySelectorAll('#scene .coil').forEach(e=>e.classList.add('hl'));
+  if(parts.includes('solenoid')) document.getElementById('solenoid').classList.add('hl');
+  if(parts.includes('plasma')){/* 等离子体常亮, 无需额外高亮 */}
+  // 按钮选中态
+  document.querySelectorAll('.ctrl .btn').forEach(b=>b.classList.remove('sel'));
+}
+function highlightPart(p){
+  highlight(p==='plasma'?['plasma']:(p==='solenoid'?['solenoid']:['coil']));
+  // 对应按钮选中态
+  const map={'coil':'btn-coil','solenoid':'btn-sol','plasma':'btn-plasma'};
+  document.querySelectorAll('.ctrl .btn').forEach(b=>b.classList.remove('sel'));
+  const b=document.getElementById(map[p]); if(b)b.classList.add('sel');
+}
+function resetHL(){highlight(null);document.querySelectorAll('.ctrl .btn').forEach(b=>b.classList.remove('sel'));}
+
+/* 悬浮提示 */
+const TIP_MAP={coil:'环形纵场线圈 · 环向磁场，箍住等离子体',solenoid:'中心螺线管 · 驱动环向电流，产生极向磁场',plasma:'等离子体 · 一亿度高温，受磁约束悬浮绕行'};
+function bindTips(){
+  const tip=document.getElementById('tip');
+  document.querySelectorAll('#scene [data-pt]').forEach(el=>{
+    el.addEventListener('mousemove',e=>{
+      tip.textContent=TIP_MAP[el.dataset.pt]||el.dataset.tip||'';
+      tip.style.display='block';
+      const s=document.getElementById('stageWrap').getBoundingClientRect();
+      tip.style.left=(e.clientX-s.left+14)+'px';
+      tip.style.top=(e.clientY-s.top-36)+'px';
+    });
+    el.addEventListener('mouseleave',()=>{tip.style.display='none';});
+  });
+}
+
+/* 导航 */
+function buildStepbar(){
+  const bar=document.getElementById('stepbar'); bar.innerHTML='';
+  steps.forEach((s,i)=>{
+    const el=document.createElement('div'); el.className='s'; el.textContent=(i+1)+'. '+s.phase;
+    el.onclick=()=>goTo(i); bar.appendChild(el);
+  });
+}
+function goTo(i){
+  idx=Math.max(0,Math.min(steps.length-1,i)); renderStep();
+  document.querySelectorAll('#stepbar .s').forEach((el,j)=>el.classList.toggle('on',j===idx));
+  document.querySelectorAll('#stepbar .s').forEach((el,j)=>el.classList.toggle('done',j<idx));
+}
+function renderStep(){
+  const s=steps[idx];
+  document.getElementById('phase').textContent=s.phase;
+  document.getElementById('nar').innerHTML=s.nar;
+  document.getElementById('subtitle').innerHTML=s.sub;
+  highlight(s.hi);
+  document.getElementById('timeline').innerHTML=steps.map((x,i)=>
+    `<div class="tl-row ${i===idx?'cur':''}"><b>${i+1}.${x.phase}</b><span>${x.sub.replace(/<[^>]*>/g,'').slice(0,34)}…</span></div>`).join('');
+}
+
+/* 模式 */
+function setMode(m){
+  currentMode=m;
+  document.querySelectorAll('.mode .m').forEach(x=>x.classList.toggle('on',x.dataset.mode===m));
+  steps=(m==='a'?STEPS_A:STEPS_C);
+  buildStepbar(); goTo(0); t=0;
+  clearTimeout(timer); playing=false;
+  document.getElementById('playBtn').textContent='▶';
+  document.getElementById('btn-autoplay').textContent='▶ 自动演示';
+}
+function enterScene(){document.getElementById('cover').style.display='none'; buildParticles(); requestAnimationFrame(drawParticles); setMode('a'); bindTips();}
+
+/* 播放 */
+function togglePlay(){
+  playing=!playing; document.getElementById('playBtn').textContent=playing?'⏸':'▶';
+  if(playing){t=0;goTo(0);autoStep();}
+  else clearTimeout(timer);
+}
+function autoStep(){
+  if(!playing)return;
+  document.getElementById('progBar').style.width='0%';
+  timer=setTimeout(()=>{ nextStep(); },DUR*1000);
+}
+function nextStep(){ if(!playing)return; goTo((idx+1)%steps.length); autoStep(); }
+
+/* 进度条循环 */
+let frame=0, lastT=0, playStart=0;
+function loop(ts){
+  frame++;
+  const el=document.getElementById('progBar');
+  if(playing){
+    const p=((ts/1000)%DUR)/DUR; el.style.width=(p*100)+'%';
+  }
+  const total=DUR*steps.length;
+  const mm=String(Math.floor(total/60)).padStart(2,'0'), ss=String(total%60).padStart(2,'0');
+  const elaps=(idx*DUR + ((ts/1000)%DUR));
+  const em=String(Math.floor(elaps/60)).padStart(2,'0'), es=String(Math.floor(elaps%60)).padStart(2,'0');
+  document.getElementById('tm').textContent=em+':'+es+' / '+mm+':'+ss;
+  requestAnimationFrame(loop);
+}
+// 自动演示按钮
+function toggleAutoplay(){
+  playing=!playing;
+  document.getElementById('btn-autoplay').textContent=playing?'⏸ 暂停':'▶ 自动演示';
+  document.getElementById('btn-autoplay').classList.toggle('on',playing);
+  if(playing){goTo(0);}
+  clearTimeout(timer);
+  if(playing)autoStep();
+}
+
+/* 封面图 */
+document.getElementById('coverImg').style.backgroundImage="url('tokamak-assets/cover.jpg')";
+// 启动渲染循环
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

@@ -769,16 +769,21 @@
      "time": "2026-10-21T12:43:08",
      "status": "in_progress",
      "note": "重构为持续型卡：支撑历程记录，10/25为活动日"
+    },
+    {
+     "time": "2026-10-30T10:30:00+08:00",
+     "status": "completed",
+     "note": "三明学院AI讲座支撑已完成（FDE团队调度到位，讲座顺利交付）"
     }
    ],
    "reminded": false,
    "name": "三明学院（AI讲座支撑）",
-   "completedAt": "",
-   "status": "in_progress",
+   "completedAt": "2026-10-25",
+   "status": "completed",
    "duration": "long",
    "content": "支撑三明学院AI讲座，10月25日下午举行；同步FDE团队调度",
    "lead": "",
-   "updatedAt": "2026-10-21T11:20:00",
+   "updatedAt": "2026-10-30T10:30:00+08:00",
    "progressNote": "支撑工作持续进行：10/15沟通流程+素材 → 10/21赴榕协调FDE指导文档 → 10/25下午讲座",
    "createdAt": "2026-10-21T11:20:00",
    "deadline": "2026-10-25",
@@ -799,10 +804,11 @@
      "id": "ms_sm3",
      "date": "2026-10-25",
      "desc": "讲座活动日（周日下午）——FDE现场支撑",
-     "completed": false
+     "completed": true
     }
    ],
-   "board": "customer:s-sanming"
+   "board": "customer:s-sanming",
+   "done_note": "三明学院AI讲座支撑已完成（FDE团队调度到位，讲座顺利交付）"
   },
   {
    "id": "wb20261025002",
@@ -813,16 +819,21 @@
      "time": "2026-10-21T11:20:00",
      "status": "pending",
      "note": "口述记录创建"
+    },
+    {
+     "time": "2026-10-30T10:30:00+08:00",
+     "status": "completed",
+     "note": "FDE团队调度已完成：即三明学院AI讲座支撑，团队到位、讲座完成"
     }
    ],
    "reminded": false,
    "name": "FDE团队调度（本周日）",
-   "completedAt": "",
-   "status": "pending",
+   "completedAt": "2026-10-25",
+   "status": "completed",
    "duration": "temp",
    "content": "本周日（10/25）进行FDE团队调度（配合三明学院讲座支撑）",
    "lead": "",
-   "updatedAt": "2026-10-21T11:20:00",
+   "updatedAt": "2026-10-30T10:30:00+08:00",
    "progressNote": "",
    "createdAt": "2026-10-21T11:20:00",
    "deadline": "2026-10-25",
@@ -831,10 +842,11 @@
      "id": "ms_wb25b",
      "date": "2026-10-25",
      "desc": "调度执行日",
-     "completed": false
+     "completed": true
     }
    ],
-   "board": "product:p-teleagent"
+   "board": "product:p-teleagent",
+   "done_note": "FDE团队调度已完成：即三明学院AI讲座支撑，团队到位、讲座完成"
   },
   {
    "id": "wb-cust-minjiang",
@@ -855,6 +867,11 @@
      "time": "2026-10-21T15:30:00",
      "status": "in_progress",
      "note": "教育版TA产品材料学习完成（FAQ+介绍PDF，已入库），支撑建议书差异化描述"
+    },
+    {
+     "time": "2026-10-30T10:30:00+08:00",
+     "status": "in_progress",
+     "note": "10/29 已为客户提供私有化部署方案，客户已同意采用"
     }
    ],
    "reminded": false,
@@ -864,8 +881,8 @@
    "duration": "long",
    "content": "主线：TA私有化部署——对接FDE配合调整给客户的方案，本周内出建议书；卡点：先进制造学院福富支撑的学校预算未明确，牵头待定（院长或徐戈）",
    "lead": "",
-   "updatedAt": "2026-10-24T23:30:00",
-   "progressNote": "10/22 TA教育版专题会私有化部署研讨+与FDE团队就闽江问题逐项分析，16项遗留问题清单已整理；方案深化为校内通算+千卡池token（DS V4-flash）；下一步：清单发AI公司闭环、筹备POC；卡点仍是先进制造学院预算与牵头人",
+   "updatedAt": "2026-10-30T10:30:00+08:00",
+   "progressNote": "10/22 TA教育版专题会私有化部署研讨+与FDE团队就闽江问题逐项分析，16项遗留问题清单已整理，方案深化为校内通算+千卡池token（DS V4-flash）；10/29 已向客户提供私有化部署方案，客户已同意采用；下一步：遗留问题清单发AI公司闭环、POC筹备（模型选型/算力/首场景）；卡点仍是先进制造学院预算与牵头人（院长/徐戈）",
    "createdAt": "2026-10-21T14:30:00",
    "deadline": "2026-10-31",
    "milestones": [
@@ -873,7 +890,7 @@
      "id": "ms_mj1",
      "date": "2026-10-23",
      "desc": "TA私有化部署建议书（本周内）",
-     "completed": false
+     "completed": true
     },
     {
      "id": "ms_mj2",
@@ -941,6 +958,11 @@
      "time": "2026-10-21T13:00:00",
      "status": "in_progress",
      "note": "口述创建：Token包孵化"
+    },
+    {
+     "time": "2026-10-30T10:30:00+08:00",
+     "status": "in_progress",
+     "note": "改为下周继续跟踪；本周与数研产品融合探讨，发现知途好课与workbuddy合作线索"
     }
    ],
    "reminded": false,
@@ -950,10 +972,10 @@
    "duration": "long",
    "content": "知途好课作为教育AI STORE上架应用场景，与Token包一起包装孵化：①商业模式设计（课程运行Token→年度经常性算力收入，电信/知途/信产三方分成）②Token包内容设计",
    "lead": "",
-   "updatedAt": "2026-10-21T13:00:00",
-   "progressNote": "方向已定（10/21），待出方案",
+   "updatedAt": "2026-10-30T10:30:00+08:00",
+   "progressNote": "10/21 方向已定；10/30 更新：本周与数研进行产品融合探讨，发现【知途好课与 workbuddy 合作】线索（待验证融合可行性）；Token包孵化本周不结项，改为下周（11/03-11/06）继续跟踪推进，补充新信息后再出包装方案",
    "createdAt": "2026-10-21T13:00:00",
-   "deadline": "2026-10-31",
+   "deadline": "2026-11-06",
    "board": "product:p-shusuan",
    "milestones": [
     {
@@ -1029,16 +1051,21 @@
      "time": "2026-10-21T15:31:51",
      "status": "pending",
      "note": "口述创建：明早8:40集团AI公司TA私有化教育版演示会"
+    },
+    {
+     "time": "2026-10-30T10:30:00+08:00",
+     "status": "completed",
+     "note": "TA私有化教育版演示会已如期举行（逾期待办已闭环）"
     }
    ],
    "reminded": false,
    "name": "TA私有化教育版演示会（明早8:40）",
-   "completedAt": "",
-   "status": "pending",
+   "completedAt": "2026-10-22",
+   "status": "completed",
    "duration": "temp",
    "content": "明早(10/22)8:40线上会议：集团AI公司TA私有化教育版演示，产线老师主讲演示。牵头召集相关同事参加，会后输出学习结果（演示要点/落地启发/待办分工）。",
    "lead": "陈思然（牵头召集）",
-   "updatedAt": "2026-10-21T15:31:51",
+   "updatedAt": "2026-10-30T10:30:00+08:00",
    "progressNote": "",
    "createdAt": "2026-10-21T15:31:51",
    "deadline": "2026-10-22",
@@ -1047,16 +1074,17 @@
      "id": "ms_demo1",
      "date": "2026-10-22",
      "desc": "明早8:40线上参会（产线老师演示教育版）",
-     "completed": false
+     "completed": true
     },
     {
      "id": "ms_demo2",
      "date": "",
      "desc": "会后输出学习结果（演示要点/启发/分工）",
-     "completed": false
+     "completed": true
     }
    ],
-   "board": "product:p-taprivat"
+   "board": "product:p-taprivat",
+   "done_note": "TA私有化教育版演示会已如期举行（逾期待办已闭环）"
   },
   {
    "id": "wb-hy-shenbao",
@@ -1188,13 +1216,13 @@
    "name": "警察学院AI赋能教育试点申报配合",
    "content": "《人工智能赋能教育行动试点任务申报书》10.28版已交付(任务☑6☑8☑11)，配合学校完成申报：内审反馈修订/支撑材料/负责人联系人栏补齐",
    "lead": "陈思然",
-   "status": "in_progress",
+   "status": "completed",
    "duration": "temp",
    "remindTime": "",
    "reminded": false,
-   "completedAt": "",
+   "completedAt": "2026-10-30",
    "createdAt": "2026-10-29T07:45:00+08:00",
-   "updatedAt": "2026-10-29T09:15:00+08:00",
+   "updatedAt": "2026-10-30T10:30:00+08:00",
    "deadline": "2026-10-30",
    "progressNote": "10.29修订版已出(修4处:问答体/评阅体措辞、AI+警务科研攻关副标题、成果3时间线矛盾=6月首批试点12月全覆盖)；待用户确认学校反馈意见后定稿；负责人/联系人栏需学校定人",
    "history": [
@@ -1202,6 +1230,11 @@
      "time": "2026-10-29T07:45:00+08:00",
      "status": "in_progress",
      "note": "用户2026-10-29布置"
+    },
+    {
+     "time": "2026-10-30T10:30:00+08:00",
+     "status": "completed",
+     "note": "警察学院AI赋能教育试点申报已完成上报（任务6/8/11，10.29修订版定稿）"
     }
    ],
    "milestones": [
@@ -1209,10 +1242,11 @@
      "id": "jc-apply1030_m1",
      "date": "2026-10-30",
      "desc": "截止日期",
-     "completed": false
+     "completed": true
     }
    ],
-   "board": "customer:s-police"
+   "board": "customer:s-police",
+   "done_note": "警察学院AI赋能教育试点申报已完成上报（任务6/8/11，10.29修订版定稿）"
   },
   {
    "id": "jc-token1104",
@@ -1284,13 +1318,13 @@
    "name": "海洋职校申报表预算最终上报（省厅10-30截止）",
    "content": "福建海洋职业技术学校人工智能赋能教育行动试点：申报表、预算等最终上报材料配合完成并确认学校提交，10月30日省厅截止。上报后转入试点落地与创课+TA签约商机培育。",
    "lead": "陈思然",
-   "status": "in_progress",
+   "status": "completed",
    "duration": "temp",
    "remindTime": "",
    "reminded": false,
-   "completedAt": "",
+   "completedAt": "2026-10-30",
    "createdAt": "2026-10-30T00:10:00+08:00",
-   "updatedAt": "2026-10-30T00:10:00+08:00",
+   "updatedAt": "2026-10-30T10:30:00+08:00",
    "deadline": "2026-10-30",
    "progressNote": "今日必办；试点申报书10.28版已交付（任务6+11），预算等最终材料10-30截止",
    "history": [
@@ -1298,6 +1332,11 @@
      "time": "2026-10-30T00:10:00+08:00",
      "status": "in_progress",
      "note": "用户2026-10-29布置:海洋学院完成申报表预算等最终上报,30日deadline"
+    },
+    {
+     "time": "2026-10-30T10:30:00+08:00",
+     "status": "completed",
+     "note": "海洋职校申报表及预算已最终上报（10-30省厅截止，按期完成）"
     }
    ],
    "milestones": [
@@ -1305,10 +1344,75 @@
      "id": "hy-report1030_m1",
      "date": "2026-10-30",
      "desc": "省厅申报截止",
+     "completed": true
+    }
+   ],
+   "board": "customer:s-haiyang",
+   "done_note": "海洋职校申报表及预算已最终上报（10-30省厅截止，按期完成）"
+  },
+  {
+   "id": "hy-jinan1030",
+   "category": "customer",
+   "name": "海洋职校：与晋安局、客户确认项目和预算",
+   "content": "海洋职业技术学校AI赋能教育试点（3000万项目中给客户报价50万，专项用于人工智能赋能教育试点）：昨日新增工作项——与晋安局及客户确认项目范围与预算，落实试点经费落地。",
+   "lead": "陈思然",
+   "status": "in_progress",
+   "duration": "temp",
+   "remindTime": "",
+   "reminded": false,
+   "completedAt": "",
+   "createdAt": "2026-10-30T10:30:00+08:00",
+   "updatedAt": "2026-10-30T10:30:00+08:00",
+   "deadline": "",
+   "progressNote": "试点申报已于10-30上报省厅；3000万项目框架内报价50万专项支持试点，需与晋安局、学校三方确认项目边界与预算归属",
+   "history": [
+    {
+     "time": "2026-10-30T10:30:00+08:00",
+     "status": "in_progress",
+     "note": "用户2026-10-30口述：昨日增加工作项"
+    }
+   ],
+   "milestones": [
+    {
+     "id": "hyj_m1",
+     "date": "",
+     "desc": "与晋安局+客户确认项目与预算",
      "completed": false
     }
    ],
    "board": "customer:s-haiyang"
+  },
+  {
+   "id": "nl-ta-private1030",
+   "category": "customer",
+   "name": "福建农林大学：TA私有化部署（客户同意优化部署方案）",
+   "content": "农大新增TA私有化部署任务：客户已同意采用优化部署方案（本地化部署、数据不出校），待我方支撑跟踪落地；与信创包3（306万）形成组合推进。",
+   "lead": "陈思然",
+   "status": "in_progress",
+   "duration": "long",
+   "remindTime": "",
+   "reminded": false,
+   "completedAt": "",
+   "createdAt": "2026-10-30T10:30:00+08:00",
+   "updatedAt": "2026-10-30T10:30:00+08:00",
+   "deadline": "",
+   "progressNote": "客户已同意优化部署方案；待输出实施跟踪计划（部署环境/算力配置/首场景）",
+   "history": [
+    {
+     "time": "2026-10-30T10:30:00+08:00",
+     "status": "in_progress",
+     "note": "用户2026-10-30口述：农大新增，客户同意优化部署方案，待支撑跟踪"
+    }
+   ],
+   "milestones": [
+    {
+     "id": "nlta_m1",
+     "date": "",
+     "desc": "部署实施跟踪计划输出",
+     "completed": false
+    }
+   ],
+   "board": "customer:s-nongda"
   }
  ],
  "logs": [

@@ -6,8 +6,8 @@
  */
 (function () {
   var CFG = {
-    ver: "V202610301019",          // 密码版本（每日轮换时更新）
-    hash: "95949212d88236f34c9ea7215e5b8fb7678f26d1cd40cd11d4531dd69a076fcc",     // SHA-256(salt + password) 十六进制
+    ver: "V202610301029",          // 密码版本（每日轮换时更新）
+    hash: "aad5fd3ba3b6c23609def118a636cbb7d178f9133e571ec5f3f9c742f39ec092",     // SHA-256(salt + password) 十六进制
     salt: "cecilia@my-tools",  // 盐
     api: "",                   // 后端OTP地址（如 https://xxx.vercel.app/api），留空=本地哈希模式
     mail: "1091773@qq.com",

@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>投资总控台</title>
-<script src="投资总控台数据.js"></script>
+<script src="console-data.js"></script>
 <style>
 :root{--bg:#0b0f14;--panel:#121924;--panel2:#182231;--border:#233044;--border2:#2f4057;
 --text:#e3ecf5;--muted:#8aa0b5;--faint:#5a7085;--accent:#f2b63d;--up:#f6465d;--down:#2ebd85;--blue:#4f8ef7;--purple:#a78bfa;}
@@ -163,7 +163,7 @@ if(wl.events){document.getElementById('wlEvent').innerHTML='<div style="margin-b
 // 信号一句话+跳转
 var sum=D.signal_summary||{};
 var isGit=(location.protocol==='https:');
-var wbHref=isGit?'股票助手工作台.html':'file:///D:/投资理财资料/股票助手/股票助手工作台.html';
+var wbHref=isGit?'assistant.html':'file:///D:/投资理财资料/股票助手/assistant.html';
 document.getElementById('sigLine').innerHTML='🎯 今日信号：高置信 '+(sum.high||0)+' 条 ｜ 中置信 '+(sum.mid||0)+' 条 ｜ 观察 '+(sum.watch||0)+' 条（模拟台账只收高/中置信）—— <a href="'+wbHref+'" style="color:var(--blue)">明细在股票助手工作台 →</a>';
 // ⑤ 模拟台账
 var pp=D.paper||{};
@@ -246,14 +246,14 @@ if(D.date){document.title='投资总控台 · '+D.date;}
 // 导航（GitHub/本地两套；一次性报告已归档知识库，不再入导航）
 var nav=document.getElementById('navBox');
 var links=isGit?[
-['盯盘作战台.html','🎯 盯盘作战台','盘中执行卡 · 9:00-15:00专用'],
- ['股票助手工作台.html','📈 股票助手工作台','个股池研究 · 101股/防狼/解禁/持仓'],
- ['抖音情报看板.html','📱 抖音情报看板','博主观点/方法论库/完整转写'],
+['battle.html','🎯 盯盘作战台','盘中执行卡 · 9:00-15:00专用'],
+ ['assistant.html','📈 股票助手工作台','个股池研究 · 101股/防狼/解禁/持仓'],
+ ['intel.html','📱 抖音情报看板','博主观点/方法论库/完整转写'],
  ['我的页面大全.html','🗂 我的页面大全','健身/小奕/工作/Demo 全站导航']
 ]:[
- ['file:///D:/投资理财资料/股票助手/盯盘作战台.html','🎯 盯盘作战台','盘中执行卡 · 9:00-15:00专用'],
- ['file:///D:/投资理财资料/股票助手/股票助手工作台.html','📈 股票助手工作台','个股池研究 · 101股/防狼/解禁/持仓'],
- ['file:///D:/投资理财资料/股票助手/抖音情报/抖音情报看板.html','📱 抖音情报看板','博主观点/方法论库/完整转写'],
+ ['file:///D:/投资理财资料/股票助手/battle.html','🎯 盯盘作战台','盘中执行卡 · 9:00-15:00专用'],
+ ['file:///D:/投资理财资料/股票助手/assistant.html','📈 股票助手工作台','个股池研究 · 101股/防狼/解禁/持仓'],
+ ['file:///D:/投资理财资料/股票助手/抖音情报/intel.html','📱 抖音情报看板','博主观点/方法论库/完整转写'],
  ['file:///D:/投资理财资料/知识库索引.html','📚 知识库索引','回测报告/速查等一次性产物（已归档）']
 ];
 nav.innerHTML=links.map(function(l){return '<a href="'+l[0]+'">'+l[1]+' <small>'+l[2]+'</small></a>';}).join('');

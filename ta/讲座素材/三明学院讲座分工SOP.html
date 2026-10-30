@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>讲座分工SOP·人机料法环（专家审阅版）</title>
+<style>
+:root{--red:#D22C2C;--blue:#1F4E8C;--bg:#F5F7FA;--card:#fff;--line:#E3E8EF;--ok:#2E7D32;--todo:#B26A00;--new:#1565C0;--flow:#0D47A1;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:var(--bg);color:#26303B;line-height:1.7;font-size:15px;}
+.wrap{max-width:1000px;margin:0 auto;padding:24px 18px 90px;}
+header{background:linear-gradient(135deg,#B71C1C,#D32F2F);color:#fff;border-radius:14px;padding:28px 26px;margin-bottom:20px;box-shadow:0 4px 14px rgba(183,28,28,.25);}
+header h1{font-size:24px;letter-spacing:1px;margin-bottom:10px;}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:14px;opacity:.96;}
+.meta b{font-weight:600;}
+.howto{background:#FFF8E1;border:1px solid #F0DFA0;border-radius:10px;padding:12px 16px;font-size:13.5px;color:#6B5A16;margin-bottom:20px;}
+h2.sec{font-size:19px;color:var(--blue);border-left:5px solid var(--red);padding-left:10px;margin:32px 0 6px;}
+.secsub{color:#7B8794;font-size:13px;margin-bottom:12px;}
+/* 总视图 */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-align:center;}
+.stat .n{font-size:26px;font-weight:800;color:var(--blue);}
+.stat .l{font-size:12.5px;color:#7B8794;}
+.gantt{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px 10px;margin-bottom:14px;}
+.gantt h3{font-size:15px;color:var(--flow);margin-bottom:10px;}
+.gbar{display:flex;border-radius:8px;overflow:hidden;font-size:11.5px;color:#fff;font-weight:600;text-align:center;}
+.gbar span{padding:9px 2px;min-width:30px;}
+.g0{background:#90A4AE;flex:15;}.g1{background:var(--blue);flex:3;}.g2{background:#5C8BC0;flex:4;border-left:2px dashed #fff;}.g3{background:var(--flow);flex:15;}.g4{background:#00838F;flex:30;}.g5{background:var(--red);flex:10;}
+.gbar small{display:block;font-weight:400;font-size:10px;opacity:.9;}
+.gnote{font-size:12.5px;color:#7B8794;margin-top:7px;}
+.kres{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+.kre{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 14px;font-size:13.5px;display:flex;justify-content:space-between;align-items:center;}
+.kre b{color:var(--red);font-size:16px;}
+/* 重点提示 */
+.risk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;}
+.risk{background:#fff;border:1.5px solid #E8912D;border-radius:12px;padding:14px 16px;}
+.risk .rno{display:inline-block;background:#E8912D;color:#fff;font-size:12px;border-radius:6px;padding:1px 8px;margin-bottom:6px;}
+.risk b{display:block;font-size:15px;color:#B26200;margin-bottom:4px;}
+.risk p{font-size:13.5px;color:#4A5568;}
+/* 核心流程 */
+.flow-card{background:linear-gradient(180deg,#F4F8FF,#fff);border:1.5px solid #C6D8F0;border-radius:14px;padding:16px 18px;margin-bottom:14px;position:relative;}
+.flow-card::before{content:"";position:absolute;left:-1.5px;top:18px;bottom:18px;width:5px;border-radius:3px;background:var(--flow);}
+.f-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:baseline;margin-bottom:8px;}
+.f-head b{font-size:17px;color:var(--flow);}
+.f-time{font-size:13px;background:var(--flow);color:#fff;border-radius:14px;padding:2px 12px;white-space:nowrap;}
+.f-who{font-size:13px;color:#47617E;margin-bottom:8px;}
+.f-who b{color:var(--flow);}
+.f-block{margin-bottom:8px;}
+.f-block h4{font-size:13.5px;color:#5B7391;margin-bottom:3px;}
+.f-block ul{padding-left:20px;}
+.f-block li{font-size:14px;margin-bottom:2px;}
+.f-tips{background:#FFF9E6;border-left:3px solid #F9A825;border-radius:0 8px 8px 0;padding:6px 10px;font-size:13.5px;color:#6B5A16;}
+.f-tips::before{content:"话术要点：";font-weight:700;}
+.f-chk{display:inline-block;background:#E8F5E9;color:#2E7D32;font-size:12.5px;border-radius:8px;padding:2px 10px;margin-top:6px;}
+.f-chk::before{content:"✓ 检查点：";font-weight:700;}
+/* 条目 */
+.badge{display:inline-block;font-size:12.5px;border-radius:20px;padding:2px 12px;font-weight:600;}
+.st-done{background:#E6F4EA;color:var(--ok);}
+.st-todo{background:#FFF3E0;color:var(--todo);}
+.st-new{background:#E3F2FD;color:var(--new);}
+.item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px 10px;margin-bottom:9px;position:relative;}
+.item::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:4px;border-radius:2px;}
+.item.done::before{background:var(--ok);}
+.item.todo::before{background:var(--todo);}
+.item.new::before{background:var(--new);}
+.item .row1{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;}
+.item .txt{flex:1;font-size:15px;}
+.item .owner{font-size:12.5px;color:#7B8794;margin-top:2px;}
+.note{background:#F0F6FF;border-left:3px solid var(--new);border-radius:0 8px 8px 0;padding:7px 10px;font-size:13.5px;color:#31527E;margin-top:7px;}
+.note::before{content:"专家提示：";font-weight:700;}
+.btn-note{background:none;border:1.5px solid var(--blue);color:var(--blue);border-radius:8px;padding:3px 12px;font-size:12.5px;cursor:pointer;white-space:nowrap;}
+.btn-note:hover{background:var(--blue);color:#fff;}
+.btn-note.has{background:var(--blue);color:#fff;}
+.cmtbox{display:none;margin-top:9px;background:#FAFBFC;border:1px dashed #B9C4D0;border-radius:8px;padding:9px;}
+.cmtbox.open{display:block;}
+.cmtbox textarea{width:100%;min-height:56px;border:1px solid var(--line);border-radius:6px;padding:7px;font-size:13.5px;font-family:inherit;resize:vertical;}
+.cmtbox .ops{margin-top:6px;display:flex;gap:8px;justify-content:flex-end;}
+.cmtbox button{border:none;border-radius:6px;padding:4px 14px;font-size:13px;cursor:pointer;}
+.cmtbox .save{background:var(--blue);color:#fff;}
+.cmtbox .cancel{background:#EDF1F5;color:#52606D;}
+.cmt-list .c{background:#FFFDE7;border-left:3px solid #F9A825;border-radius:0 6px 6px 0;padding:6px 10px;font-size:13px;color:#5B4A0B;margin-top:6px;white-space:pre-wrap;}
+/* 执行打勾与完成情况 */
+.donebox{display:flex;align-items:center;gap:4px;font-size:12.5px;color:#2E7D32;white-space:nowrap;cursor:pointer;user-select:none;}
+.donebox input{transform:scale(1.3);accent-color:#2E7D32;cursor:pointer;}
+.item.finished,.flow-card.finished{outline:2px solid #A5D6A7;background:#FBFFF9;}
+.knote{background:#EDF7ED;border-left:3px solid #2E7D32;border-radius:0 6px 6px 0;padding:6px 10px;font-size:13px;color:#295B2C;margin-top:6px;white-space:pre-wrap;}
+.knote::before{content:"完成情况：";font-weight:700;}
+.btn-knote{background:none;border:1.5px solid #2E7D32;color:#2E7D32;border-radius:8px;padding:3px 12px;font-size:12.5px;cursor:pointer;white-space:nowrap;}
+.btn-knote:hover{background:#2E7D32;color:#fff;}
+.btn-knote.has{background:#2E7D32;color:#fff;}
+.prog{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:14px;}
+.prog .pbar{height:14px;background:#EDF1F5;border-radius:8px;overflow:hidden;margin-top:7px;}
+.prog .pfill{height:100%;background:linear-gradient(90deg,#66BB6A,#2E7D32);border-radius:8px;transition:width .3s;}
+.prog .ptxt{font-size:13.5px;color:#3E4C59;display:flex;justify-content:space-between;}
+.cmt-list .c .del{float:right;color:#B26A00;cursor:pointer;font-size:12px;}
+.timeline{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+.tl-item{display:flex;gap:12px;padding:7px 0;border-bottom:1px dashed var(--line);}
+.tl-item:last-child{border-bottom:none;}
+.tl-item .t{flex:0 0 130px;font-weight:700;color:var(--red);font-size:13.5px;}
+.tl-item .d{flex:1;font-size:14px;}
+.tl-item .d small{display:block;color:#7B8794;font-size:12.5px;}
+.checklist{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 18px 12px;}
+.chk{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14.5px;}
+.chk:last-child{border-bottom:none;}
+.chk input{margin-top:5px;transform:scale(1.25);accent-color:var(--red);}
+.chk .ct{flex:1;}
+.chk .ct small{display:block;color:#7B8794;font-size:12.5px;}
+.toolbar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.97);border-top:1.5px solid var(--line);padding:10px;display:flex;gap:12px;justify-content:center;align-items:center;box-shadow:0 -3px 12px rgba(0,0,0,.08);z-index:99;flex-wrap:wrap;}
+.toolbar button{border:none;border-radius:8px;padding:8px 20px;font-size:14px;cursor:pointer;font-family:inherit;}
+.toolbar .exp{background:var(--red);color:#fff;}
+.toolbar .prt{background:#fff;border:1.5px solid var(--line);color:#3E4C59;}
+.toolbar .cnt{font-size:13px;color:#7B8794;}
+@media print{.toolbar,.btn-note,.cmtbox,.howto{display:none!important;}header{box-shadow:none;-webkit-print-color-adjust:exact;}.flow-card,.item{break-inside:avoid;}}
+@media (max-width:640px){
+ .wrap{padding:14px 10px 100px;}
+ header{padding:18px 16px;border-radius:10px;}
+ header h1{font-size:18px;}
+ .meta{font-size:12.5px;gap:4px 12px;}
+ h2.sec{font-size:16px;margin:24px 0 4px;}
+ .gbar{font-size:9px;}.gbar span{padding:6px 1px;}
+ .gbar small{font-size:8px;}
+ .kre{font-size:12px;padding:7px 10px;}
+ .f-head{flex-direction:column;align-items:flex-start;}
+ .f-time{align-self:flex-start;}
+ .item .row1{flex-direction:column;align-items:flex-start;}
+ .item .row1>div:last-child{flex-direction:row;flex-wrap:wrap;align-items:center;}
+ .tl-item{flex-direction:column;gap:2px;}
+ .tl-item .t{flex:none;font-size:12.5px;}
+ .toolbar{padding:8px;gap:8px;}
+ .toolbar button{padding:7px 14px;font-size:13px;}
+ .howto{font-size:12.5px;}
+ .flow-card,.item{padding:12px 12px 10px;}
+ .cmtbox textarea{font-size:13px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<h1>"把杂活丢给AI"智能体应用主题讲座<br>分工SOP · 人机料法环（专家审阅版）</h1>
+<div class="meta">
+<span><b>时间</b>：10月13日（周二）14:30—15:30</span>
+<span><b>地点</b>：福建医科大学 逸夫楼93教</span>
+<span><b>系列</b>：第50期青创讲堂</span>
+<span><b>主办</b>：信息化办公室、校团委</span>
+</div>
+</header>
+
+<div class="howto">
+<b>使用说明（省级专家审阅＋执行对照）：</b>本页基于承办方"人机料法环"SOP底稿，叠加高校讲座资深专家视角查缺补漏。核心流程每个动作、复合条目每个子项均可<b>打勾销项＋点记备注写完成情况</b>，勾满自动联动父项完成；每条目可点批注填写审阅意见（本机自动保存）；顶部实时显示执行进度；手机端可直接打开使用。审阅/执行完成后点底部<b>导出执行与批注报告</b>，生成独立网页文件可直接分享。
+</div>
+
+<h2 class="sec">总视图</h2>
+<div class="stats" id="stats"></div>
+<div class="prog"><div class="ptxt"><span id="progTxt">执行进度：0/52</span><span id="progPct">0%</span></div><div class="pbar"><div class="pfill" id="progFill" style="width:0%"></div></div></div>
+<div class="gantt">
+<h3>60分钟流程总控条</h3>
+<div class="gbar">
+<span class="g0">入场15′<small>发礼品·背景视频</small></span>
+<span class="g1">导览3′</span>
+<span class="g2">展示4′<small>弹性段</small></span>
+<span class="g3">场景15′</span>
+<span class="g4">实操体验30′<small>含赛事宣讲·全场核心</small></span>
+<span class="g5">抽奖答疑10′</span>
+</div>
+<div class="gnote">正环节加总约62分钟，超出通知口径2分钟——建议实操段按座位区分批轮转控时，抽奖答疑压至8分钟即回到60分钟内（详见"重点提示"）。</div>
+</div>
+<div class="kres">
+<div class="kre">讲师＋省专家<span><b>4-5人</b></span></div>
+<div class="kre">FDE辅导（10组分片）<span><b>10+人</b></span></div>
+<div class="kre">备用电脑<span><b>10台</b></span></div>
+<div class="kre">花卷<span><b>2台</b></span></div>
+<div class="kre">人手礼品（本子＋袋）<span><b>已备</b></span></div>
+<div class="kre">门型展架<span><b>已备</b></span></div>
+</div>
+
+<h2 class="sec" style="margin-top:30px">核心流程细化（成败关键 · 逐环节执行脚本）</h2>
+<div class="secsub">六个环节按分钟级拆解：时间 / 执行人 / 动作 / 话术 / 检查点，供现场照单执行与专家逐段审阅</div>
+<div id="flowArea"></div>
+
+<h2 class="sec">重点提示</h2>
+<div class="risk-grid" id="riskGrid"></div>
+
+<div id="mainCats"></div>
+
+<h2 class="sec">倒排时间轴（10月10日—10月14日）</h2>
+<div class="secsub">按"讲座前3天"倒排，标注每节点责任方</div>
+<div class="timeline" id="timeline"></div>
+
+<h2 class="sec">待确认事项清单（可勾选销项）</h2>
+<div class="secsub">汇总底稿原有待确认项与新增待拍板项，确认后打勾</div>
+<div class="checklist" id="checklist"></div>
+
+</div>
+
+<div class="toolbar">
+<span class="cnt" id="cmtCount">批注 0 条</span>
+<button class="exp" onclick="exportReport()">导出执行与批注报告（HTML·可分享）</button>
+<button class="prt" onclick="window.print()">打印/存PDF</button>
+</div>
+
+<script>
+const RISKS=[
+ {no:"重点1",t:"总时长超口径2分钟",p:"底稿环节加总约62分钟（含省专家赛事宣讲10分钟），超通知口径。建议：①省专家宣讲与实操同步走场式进行、不占独立时段；②抽奖答疑压至8分钟；③总控明确压缩顺序——先压场景演示（15→12分钟）、再压答疑。彩排时实测一遍走时长。"},
+ {no:"重点2",t:"周二下午到场率",p:"14:30面向全校师生，与正课时间重叠。需校方明确动员抓手（第二课堂认定/讲座盖章/班级群转发），并强化预登记；建议预登记低于座位数60%时启动院系定向动员。"}
+];
+const FLOW=[
+ {t:"引导入座",time:"14:15—14:30（提前15分钟）",who:"FDE分片就位＋志愿者引路",
+  acts:["背景视频循环播放：智能体生成的30—60秒短片＋轻音乐，音量适中（本身即产品能力展示）","FDE按10组认领座位区站位（工牌背面写分区号），学生入座时一对一发放礼品（本子装袋封口）","口播一句话推荐：扫座位区立牌二维码，今天讲的工具免费就能用","志愿者门口引导：提醒后排就座（前排实操辅导密度更高）","借备用电脑的学生到后排登记处领机（1—10号机已预装预登录）"],
+  tips:"礼品随入座发放而不是散场发，好处：①开场不拥堵②学生手里有实体物，听讲心理卷入度更高。",
+  chk:"14:28确认：入座率、礼品发放进度、抽奖程序是否已生成待启动"},
+ {t:"开场导览",time:"14:30—14:33（3分钟）",who:"主持人或主讲人",
+  acts:["生动提出主题：智能体能替你干什么，30秒讲清'今天怎么偷懒'——不急着回答，让学生60分钟过程自己理解","现场AI生成抽奖程序并启动，口播规则：'程序现场生成、过程公开透明、全程在场即可参与'","提醒：自带电脑的同学现在开机连网，没带电脑举手示意"],
+  tips:"开场唯一目标：3分钟内让全场知道'今天看真的、60分钟内自己会'。不念欢迎词不念流程。",
+  chk:"话筒音量确认；抽奖程序生成成功并可见；总控给主讲人'3分钟剩30秒'手势"},
+ {t:"智能体展示",time:"14:33—14:37（约4分钟·弹性段）",who:"主讲人",
+  acts:["以TeleAgent为例讲清三大角色定位：高效助手（干杂活）、专属老师（随时问）、万能工具（都能干）","现场跑一个立等可取的小任务作证（如现场生成一份'讲座纪要'或开场已生成的抽奖程序回看）"],
+  tips:"不展开讲技术原理，4分钟只做一件事：建立信任——'它真的能干活'。超时压这里，不够用时场景演示前补一句串词即可。",
+  chk:"演示任务一次成功；主讲人收尾句衔接场景演示"},
+ {t:"场景真操演示",time:"14:37—14:52（15分钟）",who:"主讲人＋演示机",
+  acts:["五场景各3分钟，节奏：演示40秒＋讲解80秒＋效果对比20秒＋切换40秒","顺序：课堂补学→考研冲刺→文献开题→数据处理→答辩彩排（先学习场景、后科研场景，情绪递进）","演示素材全部用预演过的脱敏素材包（演示机＋备份机各一份）"],
+  tips:"每个场景结束时口播过渡句衔接下一场景，如：'刚才是一节课的量，考研一年的量怎么解决？看下一个'。",
+  chk:"每场景3分钟节点总控举牌提示；演示若失败立刻切备份机并口播'网络问题不影响大家自己试，实操环节见真章'"},
+ {t:"实操体验",time:"14:52—15:22（30分钟·全场核心）",who:"全体FDE分片辅导＋省云中台专家走场",
+  acts:["学生用自带材料实操：真题、笔记、文献、数据、答辩稿皆可；目标人人完成至少一次操作","省专家赛事宣讲：实操开始约5分钟后走场式进行（约10分钟）：介绍《2026年海峡大学生人工智能创意大赛》要点，不占独立时段、不中断实操","FDE一对一辅导按分区进行；发现共性问题（如注册卡壳、上传失败）即时举手示意主讲人广播统一解答","备用电脑区持续登记借还；问卷二维码在此环节开始引导填写"],
+  tips:"这30分钟是整场讲座的价值交付段。FDE别站在过道等提问，主动巡排找人问'试到哪了'；宁可少讲一句，让学生的屏幕上出结果。",
+  chk:"15:15总控提醒'实操剩5分钟'；目测实操完成率，低于50%则现场加播一段集中答疑"},
+ {t:"抽奖答疑",time:"15:22—15:30（约8—10分钟）",who:"主讲人＋主持人",
+  acts:["AI抽奖程序现场抽取：一/二/三等奖，中奖上台领奖、登记签收（专人保管箱）","结合体验中的真实案例交流使用心得（台下学生案例优先）","答疑：预埋3—5个真实问题兜底（'数据会上传吗''和豆包区别''医学生哪个场景最实用'）","收尾：免费体验指引＋自愿扫码入群（群公告写明用途）＋一句底线话：智能体辅助学习、独立思考永远是底线","散场提示：礼品已发到手的请走两侧出口，志愿者分流引导"],
+  tips:"抽奖放答疑前——先发奖品再提问，现场提问意愿明显更高；答疑冷场时FDE举手带动预埋问题。",
+  chk:"15:30准时结束；散场动线启动；数据回收：预登记数/到场数/实操完成数/问卷数/入群数当场记录"}
+];
+const DATA={
+ "人":[
+  {s:"done",t:"校方对接事项",o:"校方（信息办/团委）",sub:["提出讲座指导意见","提前一周官网通知","预定场地和网络环境","安排团委和志愿者对接会务"]},
+  {s:"done",t:"志愿者团队",o:"校方团委/志愿者",n:"摄影建议列环节清单（开场、实操特写、抽奖、合影），否则拿不到能用于宣传的照片。",sub:["确认总体联络人（已组群对接）","主持人对接（预约10月12日周一上午11点入校交流）","摄影与工作人员（器材、服装、小礼品待确认）"]},
+  {s:"done",t:"电信员工力量",o:"省/市公司",n:"分10组要落到座位区：每个FDE认领固定区域（写在工牌背面），避免扎堆前排、后排没人管。",sub:["市公司讲师2人：暖场＋五场景演示","省云中台专家1—2人：过渡＋赛事宣讲（约10分钟）","省市FDE至少各5人，分10组一对一辅导"]},
+  {s:"new",t:"增设总控/计时员1名（场控），对各环节剩时提示",o:"市公司",n:"讲师2人＋省专家接力授课，没有总控必超时。这是多人讲座最容易漏的岗位。"},
+  {s:"new",t:"讲师缺席预案：主讲人缺席由带队负责人顶替；省专家缺席则赛事宣讲并入实操口播",o:"市/省公司",n:"备好可接管的课件版本（主讲人环境同步到带队笔记本）。"},
+  {s:"new",t:"校方对接A/B角：场地、网络、志愿者每事项双联系人",o:"校方+市公司",n:"防单点失联，活动当天只认A/B角电话。"},
+  {s:"new",t:"志愿者岗前培训30分钟（10月12日踩点时同步进行）：引导入座、礼品发放点位、疏散路线、协助演示账号",o:"市公司FDE培训",n:"志愿者不培训，当天就是不确定因素。"}
+ ],
+ "机":[
+  {s:"done",t:"设备清单",o:"省/市公司FDE",n:"备用电脑会前必须预装体验环境＋预登录账号＋贴编号（1—10号），到场即用。",sub:["FDE准备10台备用电脑","省市教育中心准备2台花卷（已到位）"]},
+  {s:"new",t:"踩点时网络实测：30台手机同时访问体验环境验证流畅度；备用4—6部手机热点分散接入",o:"市公司",n:"阶梯教室校园网按教学负载设计，实操30分钟是全场峰值，提前实测心里有底。"},
+  {s:"new",t:"转接头套装：HDMI/Type-C/DP各2套＋排插4条（学生电脑充电）",o:"市公司",n:"阶梯教室插座稀缺，排插沿座位区两侧布置，注意走线安全。"},
+  {s:"new",t:"话筒2支（答疑环节递话筒），10月12日与校方音响师对好",o:"校方电教+市公司",n:"阶梯教室后排提问靠喊是听不见的。"},
+  {s:"new",t:"主讲笔记本双机备份：演示机＋备份机同步环境，故障60秒内切换",o:"市公司讲师",n:"演示是全场核心，单机故障即冷场。"}
+ ],
+ "料":[
+  {s:"done",t:"精美礼品（本子＋袋子，已具备）；抽奖礼品（周一上午参考主持人意见）；TA、花卷门型展架（已具备）；7折算力优惠券（只有jpg无宣传原图）",o:"省/市公司",n:"优惠券建议不现场核销：内部先跑通'扫码→领取→到账'全流程，现场只教一步，'扫这个码点领取，教程会后发群'，避免现场排队。"},
+  {s:"new",t:"演示素材包：全部虚构/脱敏（模拟病历、脱敏文献、编造数据集），同步至演示机＋备份机",o:"省云中台专家+讲师",n:"医学生实操现场建议口播提醒一句：请勿上传真实患者信息，演示与练习用脱敏素材。"},
+  {s:"todo",t:"礼品包装方式待定：本子是否装入袋子",o:"市公司",n:"建议：本子装袋封口，随入座发放（见核心流程环节一）。借电脑登记与礼品发放分开两张表。"},
+  {s:"new",t:"抽奖奖品专人保管箱＋中奖登记签收表",o:"市公司"},
+  {s:"new",t:"预登记二维码＋问卷二维码合并为一张立牌，每分区一块",o:"市公司",n:"减少学生扫码动作，扫码转化率更高。"},
+  {s:"new",t:"入口'活动照片用于宣传，如有异议请告知'告示牌1块",o:"市公司",n:"通知里承诺了照片宣传征得同意，现场要有落地载体。"}
+ ],
+ "法":[
+  {s:"done",t:"引导入座（智能体生成视频/音乐作背景，FDE一对一发放礼品并推荐免费工具）；开场导览3分钟；智能体展示（助手/老师/万能工具）；场景真操演示15分钟；实操体验30分钟（含赛事宣讲）；抽奖答疑10分钟",o:"全体",n:"已按分钟级细化到上方「核心流程细化」专区，请专家重点审阅该区。"},
+  {s:"new",t:"10月12日15:00—16:30全流程彩排：讲师串词、省专家衔接、抽奖程序完整生成＋抽取演示、热点切换演练、走一遍时长",o:"省/市公司全员",n:"审议稿已向学校承诺'讲座前一天完成全流程彩排'，SOP必须落实，且彩排要在实场地。"},
+  {s:"new",t:"冷场预案：预埋3—5个真实问题，安排FDE举手带动",o:"市公司FDE",n:"答疑环节冷场是高校讲座最常见的现场事故。"},
+  {s:"new",t:"应急预案卡（一页纸发全体工作人员）：断网→热点；断电→等校方；冷场→预埋问题；设备故障→备用机；学生不适→联动校医",o:"市公司",n:"人手一张卡，比临场喊话可靠。"},
+  {s:"todo",t:"互动群建立与运营归属（待确认，最好企业微信体系打通、专人运营）",o:"市公司",n:"建议升级为正式分工：建群口播'自愿加入'，群公告写明用途；指定市级FDE为群主——这是BC协同的入口，讲座结束才是运营的开始。"},
+  {s:"new",t:"复盘机制：活动后48小时内复盘会＋数据回收（预登记数、到场数、实操完成数、问卷结果、入群数），一周内总结报告送省公司与校方",o:"市公司牵头",n:"审议稿已承诺一周内交总结，数据当场指定专人收集，散场后别靠回忆。"}
+ ],
+ "环":[
+  {s:"done",t:"阶梯教室踩点（10月12日周一上午10点前）",o:"市公司+校方",n:"踩点清单化逐项销号，拍照留存插座分布与出口位置。",sub:["布局与座位数核验","讲台投屏、投影制式16:9确认","电源插座分布确认","网络环境与并发实测","备用电脑摆放区选定（后排两侧）"]},
+  {s:"done",t:"进校地图指引（周一下午3点前）；入校报备和出行方式（周一下午3点前）",o:"市公司",n:"报备名单覆盖彩排日和活动日两批人，含车牌；车辆进校路线与器材搬运路线分开标注。"},
+  {s:"new",t:"散场动线：确认教室出口数量，志愿者分流引导，目标5分钟内散场完毕",o:"校方志愿者+市公司",n:"300人阶梯教室若单门出入，散场会拥堵，踩点时必须确认出口并设计发放点位。"},
+  {s:"new",t:"场地恢复：桌椅归位、垃圾清理、物料撤场，与校方场地管理员当面交接",o:"志愿者+市公司",n:"教学场地恢复不干净会影响校方评价，直接影响后续合作场次。"},
+  {s:"new",t:"现场布置分工：展架位置（入口两侧）、立牌（讲台＋后场）、备用电脑区、礼品存放点，10月13日13:45前完成",o:"市公司FDE",n:"13:45到场、14:15开放入场，留30分钟布置并试线。"}
+ ]
+};
+const TIMELINE=[
+ {t:"10月10日（周六）",d:"课件终稿＋演示素材包定稿（含合规审查）；抽奖礼品确认",sub:"省专家/讲师/市公司"},
+ {t:"10月11日（周日）",d:"10台备用电脑预装＋编号；物料分装（本子装袋封口）；应急预案卡印发",sub:"FDE"},
+ {t:"10月12日（周一）10:00",d:"场地踩点（按清单逐项：座位/插座/网络实测/投影/音响/出口）",sub:"市公司+校方"},
+ {t:"10月12日（周一）11:00",d:"主持人入校交流：串词对稿＋志愿者30分钟培训",sub:"讲师+团委"},
+ {t:"10月12日（周一）15:00",d:"地图指引＋入校报备完成（彩排日+活动日两批）",sub:"市公司"},
+ {t:"10月12日（周一）15:00—16:30",d:"全流程实场地彩排：串词衔接、抽奖程序完整跑一遍、热点切换演练、走时长",sub:"全体"},
+ {t:"10月13日（周二）13:45",d:"工作人员到场布置：展架/立牌/备用电脑区/礼品存放点/试线",sub:"FDE"},
+ {t:"10月13日（周二）14:15",d:"开放入场：背景视频循环、FDE随场引导入座并发礼品",sub:"志愿者+FDE"},
+ {t:"10月13日（周二）14:30—15:30",d:"讲座进行（总控计时，按压缩顺序预案控时）",sub:"全体"},
+ {t:"10月13日（周二）15:30—15:50",d:"散场动线＋场地恢复＋数据回收（预登记/到场/实操/问卷/入群）",sub:"志愿者+FDE"},
+ {t:"10月14日—15日",d:"48小时复盘会；一周内总结报告送省公司＋校方",sub:"市公司牵头"}
+];
+const CHECKS=[
+ {t:"礼品包装方式（本子是否装袋）",s:"建议装袋封口、随入座发放"},
+ {t:"抽奖礼品内容确认（原定周一上午参考主持人意见）",s:"建议提前至10月10日，给周日备货留时间"},
+ {t:"7折算力优惠券领取流程优化（原图为jpg）",s:"建议内部跑通全流程，现场只教'扫码-点领取'一步"},
+ {t:"互动群运营归属与企业微信打通",s:"建议指定市级FDE为群主，专人运营"},
+ {t:"省专家10分钟赛事宣讲的时段安排",s:"建议实操开始5分钟后走场式进行，不占独立时段"},
+ {t:"周二下午与正课冲突的动员方案",s:"需校方明确第二课堂认定/讲座盖章等抓手"},
+ {t:"工作人员服装统一",s:"建议白衬衫或电信蓝马甲＋工牌"},
+ {t:"摄影器材与拍摄脚本",s:"器材谁提供待定，建议列环节清单"},
+ {t:"现场AI生成抽奖程序技术验证",s:"10月12日彩排必须完整生成＋抽取跑通一次"}
+];
+const CATORDER=["人","机","料","法","环"];
+const CATNAME={"人":"第一部分 · 人（岗位与分工）","机":"第二部分 · 机（设备与网络）","料":"第三部分 · 料（物料与礼品）","法":"第四部分 · 法（流程与预案）","环":"第五部分 · 环（场地与动线）"};
+const STLABEL={"done":"已安排","todo":"待确认","new":"建议新增"};
+let cmts=JSON.parse(localStorage.getItem("lectureSopCmts")||"{}");
+let checks=JSON.parse(localStorage.getItem("lectureSopChecks")||"{}");
+let doneMap=JSON.parse(localStorage.getItem("lectureSopDone")||"{}");
+let noteMap=JSON.parse(localStorage.getItem("lectureSopNotes")||"{}");
+function allIds(){
+ let ids=[];
+ FLOW.forEach((f,i)=>ids.push("flow-"+i));
+ CATORDER.forEach(c=>DATA[c].forEach((it,i)=>ids.push(c+"-"+i)));
+ TIMELINE.forEach((t,i)=>ids.push("tl-"+i));
+ CHECKS.forEach((c,i)=>ids.push("ck-"+i));
+ return ids;
+}
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function renderStats(){
+ let done=0,todo=0,news=0;
+ CATORDER.forEach(c=>DATA[c].forEach(it=>{if(it.s==="done")done++;else if(it.s==="todo")todo++;else news++;}));
+ const flowN=FLOW.length;
+ const h=`<div class="stat"><div class="n">${done+todo+news}</div><div class="l">SOP条目总数</div></div>
+ <div class="stat"><div class="n">${flowN}</div><div class="l">核心流程环节</div></div>
+ <div class="stat"><div class="n" style="color:var(--ok)">${done}</div><div class="l">已有安排</div></div>
+ <div class="stat"><div class="n" style="color:var(--new)">${news}</div><div class="l">建议新增</div></div>
+ <div class="stat"><div class="n" style="color:var(--todo)">${todo+CHECKS.length}</div><div class="l">待确认/待办</div></div>`;
+ document.getElementById("stats").innerHTML=h;
+}
+function renderRisks(){
+ let h="";
+ RISKS.forEach(r=>{h+=`<div class="risk"><span class="rno">${r.no}</span><b>${r.t}</b><p>${r.p}</p></div>`;});
+ document.getElementById("riskGrid").innerHTML=h;
+}
+function cmtHtml(id){
+ let list=cmts[id]||[];
+ return `<button class="btn-note ${list.length?"has":""}" onclick="toggleCmt('${id}',this)">批注${list.length?"("+list.length+")":""}</button>
+ <div class="cmtbox"><textarea placeholder="请填写审阅意见、修订建议…" id="ta_${id}"></textarea>
+ <div class="ops"><button class="cancel" onclick="toggleCmt('${id}',this.closest('.cmtbox').previousElementSibling)">收起</button><button class="save" onclick="saveCmt('${id}')">保存批注</button></div>
+ <div class="cmt-list" id="cl_${id}">${list.map((c,i)=>`<div class="c"><span class="del" onclick="delCmt('${id}',${i})">删除</span>${esc(c)}</div>`).join("")}</div></div>`;
+}
+function renderFlow(){
+ let h="";
+ FLOW.forEach((f,i)=>{
+  const id="flow-"+i;const dn=!!doneMap[id];
+  const acts=f.acts.map((a,k)=>actHtml(id+"-a"+k,a)).join("");
+  const dnN=f.acts.filter((a,k)=>doneMap[id+"-a"+k]).length;
+  h+=`<div class="flow-card ${dn?"finished":""}" id="fc_${id}">
+   <div class="f-head"><b>环节${["一","二","三","四","五","六"][i]} · ${f.t}${f.acts.length?`<span style="font-size:12px;color:#5B7391;">（动作 ${dnN}/${f.acts.length}）</span>`:""}</b><span class="f-time">${f.time}</span>${cmtHtml(id)}</div>
+   <div class="f-who">执行人：<b>${f.who}</b></div>
+   <div class="f-block"><h4>动作分解（逐项打勾＋点记备注写完成情况）</h4>${acts}</div>
+   <div class="f-tips">${f.tips}</div>
+   <div class="f-chk">${f.chk}</div>
+  </div>`;
+ });
+ document.getElementById("flowArea").innerHTML=h;
+}
+function renderCats(){
+ let h="";
+ CATORDER.forEach(cat=>{
+  h+=`<h2 class="sec">${CATNAME[cat]}</h2><div class="secsub">绿=已有安排 · 黄=待确认 · 蓝=建议新增</div>`;
+  DATA[cat].forEach((it,i)=>{
+   const id=cat+"-"+i;const dn=!!doneMap[id];
+   const subs=(it.sub||[]).map((s,k)=>actHtml(id+"-s"+k,s)).join("");
+   const dnN=(it.sub||[]).length?it.sub.filter((s,k)=>doneMap[id+"-s"+k]).length:0;
+   h+=`<div class="item ${it.s} ${dn?"finished":""}">
+    <div class="row1"><div class="txt"><span class="badge st-${it.s}">${STLABEL[it.s]}</span> ${it.t}${it.sub?`<span style="font-size:12px;color:#5B7391;">（子项 ${dnN}/${it.sub.length}）</span>`:""}<div class="owner">责任方：${it.o||"—"}</div></div><div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">${it.sub?"":execHtml(id)}${cmtHtml(id)}</div></div>
+    ${it.sub?`<div style="margin-top:6px;">${subs}</div>`:""}
+    ${it.n?`<div class="note">${it.n}</div>`:""}
+   </div>`;
+  });
+ });
+ document.getElementById("mainCats").innerHTML=h;
+}
+function renderTimeline(){
+ let h="";
+ TIMELINE.forEach((t,i)=>{
+  const id="tl-"+i;const dn=!!doneMap[id];
+  h+=`<div class="tl-item"><div class="t">${execHtml(id,"mini")}<br>${t.t}</div><div class="d">${t.d}<small>责任方：${t.sub}${dn?"　<span style='color:#2E7D32'>✓已完成</span>":""}</small></div></div>`;
+ });
+ document.getElementById("timeline").innerHTML=h;
+}
+function renderChecks(){
+ let h="";
+ CHECKS.forEach((c,i)=>{
+  const id="ck-"+i;const dn=!!doneMap[id];const kn=noteMap[id]||"";
+  h+=`<label class="chk"><input type="checkbox" ${dn?"checked":""} onchange="setDone('${id}',this.checked)"><div class="ct">${c.t}<small>${c.s}${kn?`　<span style="color:#2E7D32">完成情况：${esc(kn)}</span>`:""}</small></div></label>`;
+ });
+ document.getElementById("checklist").innerHTML=h;
+}
+function toggleCmt(id,btn){const box=btn.nextElementSibling;box.classList.toggle("open");if(box.classList.contains("open"))document.getElementById("ta_"+id).focus();}
+function saveCmt(id){
+ const ta=document.getElementById("ta_"+id);
+ const v=ta.value.trim();
+ if(!v){alert("批注内容为空");return;}
+ (cmts[id]=cmts[id]||[]).push(v);
+ localStorage.setItem("lectureSopCmts",JSON.stringify(cmts));
+ ta.value="";updateAll();
+}
+function delCmt(id,i){
+ cmts[id].splice(i,1);
+ if(!cmts[id].length)delete cmts[id];
+ localStorage.setItem("lectureSopCmts",JSON.stringify(cmts));
+ updateAll();
+}
+function execHtml(id,kind){
+ const dn=!!doneMap[id];
+ const kn=noteMap[id]||"";
+ if(kind==="mini"){
+  return `<label class="donebox"><input type="checkbox" ${dn?"checked":""} onchange="setDone('${id}',this.checked)">完成</label>`;
+ }
+ return `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+  <label class="donebox"><input type="checkbox" ${dn?"checked":""} onchange="setDone('${id}',this.checked)">完成</label>
+  <button class="btn-knote ${kn?"has":""}" onclick="toggleKnote('${id}',this)">完成情况${kn?"✓":""}</button>
+ </div>
+ <div class="cmtbox" id="kb_${id}"><textarea placeholder="填写完成情况（如：已采购到位/已完成踩点，实测并发40台不卡）…" id="kta_${id}">${esc(kn)}</textarea>
+ <div class="ops"><button class="cancel" onclick="document.getElementById('kb_${id}').classList.remove('open')">收起</button><button class="save" onclick="saveKnote('${id}')">保存情况</button></div></div>
+ ${kn?`<div class="knote">${esc(kn)}</div>`:""}`;
+}
+function subOf(pid){
+ if(pid.startsWith("flow-")){const i=+pid.split("-")[1];return FLOW[i].acts.map((a,k)=>pid+"-a"+k);}
+ const m=pid.match(/^([人机料法环])-(\d+)$/);
+ if(m){const it=DATA[m[1]][+m[2]];return (it.sub||[]).map((s,k)=>pid+"-s"+k);}
+ return null;
+}
+function parentDone(pid,v){
+ const subs=subOf(pid);
+ if(!subs)return;
+ doneMap[pid]=v?subs.every(s=>doneMap[s]):false;
+ if(!doneMap[pid])delete doneMap[pid];
+ localStorage.setItem("lectureSopDone",JSON.stringify(doneMap));
+}
+function setDone(id,v){
+ doneMap[id]=v;localStorage.setItem("lectureSopDone",JSON.stringify(doneMap));
+ const subs=subOf(id);
+ if(v&&subs){subs.forEach(s=>doneMap[s]=true);localStorage.setItem("lectureSopDone",JSON.stringify(doneMap));}
+ if(!v&&subs){subs.forEach(s=>delete doneMap[s]);localStorage.setItem("lectureSopDone",JSON.stringify(doneMap));}
+ const mp=id.match(/^(.*)-(?:a|s)\d+$/);
+ if(mp)parentDone(mp[1],true);
+ updateAll();
+}
+function toggleKnote(id,btn){const box=document.getElementById("kb_"+id);box.classList.toggle("open");if(box.classList.contains("open"))document.getElementById("kta_"+id).focus();}
+function saveKnote(id){
+ const v=document.getElementById("kta_"+id).value.trim();
+ if(v)noteMap[id]=v;else delete noteMap[id];
+ localStorage.setItem("lectureSopNotes",JSON.stringify(noteMap));
+ updateAll();
+}
+function actHtml(pid,text){
+ const dn=!!doneMap[pid];const kn=noteMap[pid]||"";
+ return `<div style="display:flex;align-items:flex-start;gap:6px;margin-bottom:3px;">
+ <input type="checkbox" style="margin-top:5px;transform:scale(1.2);accent-color:#2E7D32;cursor:pointer;flex:none;" ${dn?"checked":""} onchange="setDone('${pid}',this.checked)">
+ <div style="flex:1;"><span style="${dn?"color:#2E7D32;text-decoration:line-through;opacity:.75;":""}">${text}</span>
+ ${kn?`<div style="color:#2E7D32;font-size:12px;">↳ ${esc(kn)}</div>`:""}
+ <a href="javascript:void(0)" style="font-size:11.5px;color:#78909C;" onclick="knoteInline('${pid}',this)">记备注</a></div></div>`;
+}
+function knoteInline(pid,el){
+ const cur=noteMap[pid]||"";
+ const v=prompt("完成情况备注（留空则清除）：",cur);
+ if(v===null)return;
+  const t=v.trim();
+  if(t)noteMap[pid]=t;else delete noteMap[pid];
+  localStorage.setItem("lectureSopNotes",JSON.stringify(noteMap));
+  updateAll();
+}
+function updateProgress(){
+  const ids=allIds();
+ const dn=ids.filter(i=>doneMap[i]).length;
+ const pct=Math.round(dn/ids.length*100);
+ document.getElementById("progTxt").textContent="执行进度："+dn+"/"+ids.length+"（已勾选完成）";
+ document.getElementById("progPct").textContent=pct+"%";
+ document.getElementById("progFill").style.width=pct+"%";
+}
+function updateAll(){renderFlow();renderCats();renderTimeline();renderChecks();updateCount();updateProgress();}
+function updateCount(){
+ const n=Object.values(cmts).reduce((a,b)=>a+b.length,0);
+ document.getElementById("cmtCount").textContent="批注 "+n+" 条";
+}
+function statusBadge(id){
+ const dn=doneMap[id]?"<span style='color:#2E7D32;font-weight:700;'>✓ 已完成</span>":"<span style='color:#9AA5B1;'>□ 未完成</span>";
+ const kn=noteMap[id]?`<div style='background:#EDF7ED;border-left:3px solid #2E7D32;padding:5px 10px;font-size:13px;color:#295B2C;margin-top:5px;'><b>完成情况：</b>${esc(noteMap[id])}</div>`:"";
+ return dn+(kn?"　"+kn:"");
+}
+function exportReport(){
+ const ids=allIds();
+ const doneN=ids.filter(i=>doneMap[i]).length;
+ const cmtN=Object.values(cmts).reduce((a,b)=>a+b.length,0);
+ if(!doneN&&!cmtN){alert("尚无完成记录或批注可导出");return;}
+ let h=`<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>讲座SOP执行与批注报告</title>
+ <style>body{font-family:"Microsoft YaHei";max-width:900px;margin:0 auto;padding:30px 20px;color:#26303B;line-height:1.8;}
+ h1{color:#B71C1C;font-size:22px;border-bottom:3px solid #B71C1C;padding-bottom:8px;}
+ h2{color:#1F4E8C;font-size:17px;margin:26px 0 8px;border-left:4px solid #D22C2C;padding-left:8px;}
+ .meta{color:#7B8794;font-size:13px;margin-bottom:10px;}
+ .fc{background:#F4F8FF;border:1px solid #C6D8F0;border-radius:10px;padding:12px 15px;margin-bottom:12px;}
+ .fc b{color:#0D47A1;font-size:15.5px;}
+ .it{background:#fff;border:1px solid #E3E8EF;border-radius:8px;padding:10px 14px;margin-bottom:8px;font-size:14px;}
+ .tag{font-size:12px;border-radius:10px;padding:1px 10px;margin-right:6px;}
+ .g{background:#E6F4EA;color:#2E7D32;}.y{background:#FFF3E0;color:#B26A00;}.b{background:#E3F2FD;color:#1565C0;}
+ .st{margin:6px 0 2px;font-size:13.5px;}
+ .cm{background:#FFFDE7;border-left:3px solid #F9A825;border-radius:0 6px 6px 0;padding:6px 10px;font-size:13px;color:#5B4A0B;margin-top:6px;}</style></head><body>
+ <h1>"把杂活丢给AI"讲座分工SOP · 执行与批注报告</h1>
+ <div class="meta">导出时间：${new Date().toLocaleString()} ｜ 已完成 ${doneN}/${ids.length} 项 ｜ 批注 ${cmtN} 条</div>
+ <h2>一、核心流程环节</h2>`;
+ FLOW.forEach((f,i)=>{
+  const id="flow-"+i;const cl=cmts[id]||[];
+  const subs=f.acts.map((a,k)=>id+"-a"+k).filter(s=>doneMap[s]).length;
+  if(doneMap[id]||noteMap[id]||cl.length||subs){
+   const undone=f.acts.map((a,k)=>({a,d:doneMap[id+"-a"+k],n:noteMap[id+"-a"+k]})).filter(x=>!x.d);
+   h+=`<div class="fc"><b>环节${["一","二","三","四","五","六"][i]} · ${f.t}（${f.time}）</b><div class="st">动作完成：${subs}/${f.acts.length} ${statusBadge(id)}</div>${cl.map(c=>`<div class="cm"><b>审阅批注：</b>${esc(c)}</div>`).join("")}${undone.length&&subs?`<div style="font-size:12.5px;color:#9AA5B1;margin-top:4px;">待完成动作：${undone.map(x=>x.a.slice(0,20)+"…").join("；")}</div>`:""}</div>`;
+  }
+ });
+ h+=`<h2>二、人机料法环条目</h2>`;
+ CATORDER.forEach(cat=>{
+  DATA[cat].forEach((it,i)=>{
+   const id=cat+"-"+i;const cl=cmts[id]||[];
+   if(doneMap[id]||noteMap[id]||cl.length){h+=`<div class="it"><span class="tag ${it.s==="done"?"g":it.s==="todo"?"y":"b"}">${STLABEL[it.s]}</span>${it.t}<div class="st">${statusBadge(id)}</div>${cl.map(c=>`<div class="cm"><b>审阅批注：</b>${esc(c)}</div>`).join("")}</div>`;}
+  });
+ });
+ h+=`<h2>三、倒排时间轴节点</h2>`;
+ TIMELINE.forEach((t,i)=>{const id="tl-"+i;if(doneMap[id]||noteMap[id]){h+=`<div class="it"><b>${t.t}</b> ${t.d}<div class="st">${statusBadge(id)}</div></div>`;}});
+ h+=`<h2>四、待确认事项</h2>`;
+ CHECKS.forEach((c,i)=>{const id="ck-"+i;const cl=[];if(doneMap[id]||noteMap[id]){h+=`<div class="it">${c.t}<div class="st">${statusBadge(id)}</div></div>`;}});
+ h+=`<p style="color:#7B8794;font-size:12.5px;margin-top:20px;">本报告由"讲座分工SOP·人机料法环（专家审阅版）"导出，含完成状态、完成情况备注与审阅批注，可直接分享。</p></body></html>`;
+ const blob=new Blob(["\ufeff"+h],{type:"text/html;charset=utf-8"});
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);
+ a.download="讲座SOP执行与批注报告.html";
+ a.click();
+ alert("执行与批注报告已导出（HTML文件），可直接分享给团队查看");
+}
+renderStats();renderRisks();updateAll();
+</script>
+</body>
+</html>

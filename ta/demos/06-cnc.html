@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>五轴数控加工中心——数字孪生交互演示</title>
+<style>
+:root{--bg:#263238;--bg2:#20292e;--pn:#2e3b42;--pn2:#37474f;--ln:#162025;--tx:#cfd8dc;--dim:#8fa3ad;--or:#FF6D00;--bl:#0277BD;--gr:#43A047;--rd:#E53935;--yl:#FBC02D}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:"Microsoft YaHei","PingFang SC",sans-serif;font-size:15px;line-height:1.6;padding-bottom:52px}
+.wrap{max-width:1360px;margin:0 auto;padding:0 16px}
+header{background:linear-gradient(135deg,#1b2429,#2b3a41 60%,#1f2a30);border-bottom:3px solid var(--or);padding:20px 0 16px}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.logo{display:inline-block;background:var(--or);color:#1a1a1a;font-weight:900;font-size:15px;padding:2px 8px;border-radius:3px;letter-spacing:1px;transform:skewX(-8deg);margin-bottom:8px}
+h1{font-size:24px;color:#fff;letter-spacing:1px;font-weight:800}
+h1 em{color:var(--or);font-style:normal}
+.sub{color:var(--dim);font-size:14px;margin-top:6px}
+.badges{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.badge{background:#3d2a18;border:1px solid var(--or);color:#ffb74d;padding:5px 12px;border-radius:4px;font-size:13px;font-weight:700;white-space:nowrap}
+.badge.b2{background:#102b3a;border-color:#38a3d8;color:#81d4fa}
+nav{position:sticky;top:0;z-index:60;background:#1b2429;border-bottom:1px solid var(--ln);box-shadow:0 2px 10px rgba(0,0,0,.35)}
+nav .wrap{display:flex;gap:2px;overflow-x:auto}
+nav a{color:var(--dim);text-decoration:none;font-size:13.5px;padding:9px 14px;border-bottom:2px solid transparent;white-space:nowrap}
+nav a:hover{color:#fff;background:#232f35}
+nav a.on{color:var(--or);border-bottom-color:var(--or)}
+section{padding:18px 0 6px;scroll-margin-top:52px}
+.sech{display:flex;align-items:center;gap:10px;margin-bottom:14px;border-bottom:1px solid #33444c;padding-bottom:8px;flex-wrap:wrap}
+.sech b{background:var(--or);color:#1c1c1c;font-size:13px;padding:1px 8px;border-radius:3px;font-family:Consolas,monospace}
+.sech h2{font-size:18px;color:#eceff1;font-weight:800;letter-spacing:.5px}
+.sech .hint{margin-left:auto;font-size:12.5px;color:var(--dim)}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:8px;padding:14px;position:relative}
+.mcard{background:var(--pn2);border:1px solid #445a63;border-radius:8px;padding:14px 16px;font-size:13.5px;line-height:1.7;min-height:150px}
+.mcard .mh{font-size:16px;color:var(--or);font-weight:800;margin-bottom:2px}
+.mcard .ma{color:#81d4fa;font-size:12.5px;font-family:Consolas,monospace;margin-bottom:8px}
+.mcard p{color:#c6d2d8}
+.mrow{display:flex;gap:14px;align-items:flex-start}
+.mrow canvas{max-width:100%;height:auto;background:#1c262b;border:1px solid var(--ln);border-radius:8px;cursor:pointer}
+.mcol{width:250px;flex:0 0 250px}
+.main3{display:grid;grid-template-columns:296px minmax(0,620px) 1fr;gap:14px;align-items:start}
+@media(max-width:1300px){.main3{grid-template-columns:290px 1fr}.gcwrap{grid-column:1/-1}}
+.grp{margin-bottom:8px}
+.grp .gt{font-size:12px;color:var(--dim);letter-spacing:1px;margin-bottom:5px;font-family:Consolas,monospace}
+.pbtn{width:100%;text-align:left;background:#29373e;border:1px solid #3c4f58;color:var(--tx);border-radius:6px;padding:6px 12px;font-size:14px;cursor:pointer;margin-bottom:5px;font-family:inherit;transition:.15s}
+.pbtn small{color:var(--dim);font-size:12px;margin-left:6px}
+.pbtn:hover{border-color:#5b7380;background:#2f3f47}
+.pbtn.on{background:linear-gradient(90deg,#5a2c00,#3a2109);border-color:var(--or);color:#ffd180;box-shadow:inset 3px 0 0 var(--or)}
+.mg{margin-bottom:9px}
+.mg-top{display:flex;align-items:baseline;gap:6px;font-size:13px;color:#b0bec5}
+.mg-top b{font-family:Consolas,monospace;font-size:18px;color:#fff;margin-left:auto}
+.mg-top .u{font-size:11.5px;color:var(--dim);font-family:Consolas,monospace}
+input[type=range]{width:100%;-webkit-appearance:none;height:22px;background:transparent;margin-top:2px}
+input[type=range]::-webkit-slider-runnable-track{height:6px;background:#1b262c;border:1px solid #3c4f58;border-radius:3px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:20px;margin-top:-8px;background:linear-gradient(#ffb74d,#FF6D00);border:1px solid #7a3702;border-radius:3px;cursor:pointer}
+.band{position:relative;height:7px;background:#1b262c;border-radius:3px;margin:2px 0 3px;border:1px solid #2c3b43}
+.band i{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,#2e7d32,#66bb6a);border-radius:3px;opacity:.85}
+.mg-rec{font-size:11.5px;color:#8fa3ad;font-family:Consolas,monospace}
+.ind{display:flex;align-items:center;gap:8px;font-size:12.5px;margin-bottom:5px;color:#b0bec5}
+.ind span{width:88px;flex:0 0 88px}
+.ind .bar{flex:1;height:12px;background:#1b262c;border:1px solid #3c4f58;border-radius:3px;overflow:hidden}
+.ind .bar i{display:block;height:100%;width:0;transition:width .25s;background:var(--gr)}
+.ind b{width:34px;text-align:right;font-family:Consolas,monospace;font-size:13px;color:#fff}
+.mrr{font-size:11.5px;color:#8fa3ad;font-family:Consolas,monospace;margin-top:2px}
+.warns{margin-top:8px;border-top:1px dashed #3c4f58;padding-top:6px}
+.w{font-size:12.5px;color:#5f7078;display:flex;align-items:center;gap:7px;margin-bottom:4px;transition:.15s}
+.w .dot{width:9px;height:9px;border-radius:50%;background:#3c4f58;flex:0 0 9px}
+.w.on{color:#ffab91;font-weight:700}
+.w.on .dot{background:var(--rd);box-shadow:0 0 8px var(--rd)}
+.w.warn.on{color:#ffd54f}.w.warn.on .dot{background:var(--yl);box-shadow:0 0 8px var(--yl)}
+.w.ok{color:#66bb6a;font-weight:700}.w.ok .dot{background:var(--gr);box-shadow:0 0 8px var(--gr)}
+.w.ok.off{color:#5f7078;font-weight:400}.w.ok.off .dot{background:#3c4f58;box-shadow:none}
+.ctl{display:flex;gap:8px;margin:4px 0 0}
+.btn{flex:1;padding:9px 10px;border-radius:6px;border:1px solid #4a606a;background:#33454e;color:#e0e8ec;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.btn:hover{background:#3d525c}
+.btn.pri{background:linear-gradient(#ff8a34,#e05e00);border-color:#8a3b00;color:#1c1308}
+.btn.pri:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:default}
+.cool{display:flex;align-items:center;gap:7px;font-size:13px;color:#b0bec5;margin-top:6px;cursor:pointer;user-select:none}
+.cool input{width:15px;height:15px;accent-color:#FF6D00}
+.gcwrap{display:flex;flex-direction:column;gap:0}
+.gc-h{background:#1b2429;border:1px solid var(--ln);border-bottom:1px solid #3c4f58;border-radius:8px 8px 0 0;padding:8px 12px;display:flex;justify-content:space-between;align-items:center}
+.gc-h b{font-family:Consolas,monospace;font-size:14px;color:var(--or)}
+.gc-h span{font-size:11.5px;color:var(--dim);font-family:Consolas,monospace}
+.gc{position:relative;background:#151d21;border:1px solid #3c4f58;border-top:none;border-radius:0 0 8px 8px;height:492px;overflow-y:auto;padding:8px 0;font-family:Consolas,"Courier New",monospace;font-size:12.6px;line-height:1.55}
+.gl{padding:2px 12px;white-space:pre-wrap;word-break:break-all;color:#a9c0cb;border-left:3px solid transparent}
+.gl .cm{color:#5b737f}
+.gl.dim{color:#647a84}
+.gl.on{background:linear-gradient(90deg,rgba(255,109,0,.28),rgba(255,109,0,.05));border-left-color:var(--or);color:#ffd180;font-weight:700}
+.gl.on .cm{color:#c8a06a}
+.gc-foot{font-size:11.5px;color:#8fa3ad;margin-top:6px;line-height:1.5}
+.evalbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:12px;padding:10px 14px}
+.evalbar .ind{margin-bottom:0;width:236px}
+.evalbar .ind span{width:70px;flex:0 0 70px}
+.evalbar .mrr{margin:0;font-size:11.5px}
+.evalbar .w{margin-bottom:0;padding:2px 11px;border:1px solid #35454d;border-radius:14px;background:#243137}
+.evalbar .w.on{border-color:#b3563a;background:#33231c}
+.evalbar .w.warn.on{border-color:#8f7420;background:#332d19}
+.evalbar .w.ok.off{border-color:#35454d;background:#243137}
+.evalbar .w.ok{background:#1e3322;border-color:#2e7d32}
+.ax-wrap{display:flex;gap:14px;flex-wrap:wrap}
+.ax-main{flex:1 1 640px;min-width:420px}
+.ax-side{flex:0 0 300px;min-width:260px}
+.axctl{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.mbtn{padding:8px 18px;border-radius:6px;border:1px solid #4a606a;background:#2b3a41;color:#b0bec5;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.mbtn.on{background:linear-gradient(#0b5d8d,#014a72);border-color:#38a3d8;color:#e1f5fe;box-shadow:0 0 12px rgba(3,169,244,.35)}
+.mbtn.on.ax3{background:linear-gradient(#6d3a10,#4a2606);border-color:#c07a2a;color:#ffe0b2;box-shadow:0 0 12px rgba(255,109,0,.3)}
+.ax-side ul{list-style:none;font-size:13.3px;color:#c0ccd2;line-height:1.65}
+.ax-side li{padding:7px 0 7px 14px;border-bottom:1px dashed #3c4f58;position:relative}
+.ax-side li::before{content:"";position:absolute;left:0;top:14px;width:6px;height:6px;background:var(--bl);border-radius:1px}
+.ax-side li b{color:#81d4fa}
+.qbtns{display:flex;gap:8px;margin-bottom:10px}
+canvas{display:block;max-width:100%}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:1000px){.grid3{grid-template-columns:1fr}}
+details{background:var(--pn);border:1px solid var(--ln);border-radius:8px;padding:0 14px;margin-bottom:10px}
+summary{cursor:pointer;list-style:none;padding:12px 0;font-weight:700;color:#e3ebef;font-size:15px;display:flex;align-items:center;gap:9px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"\25B8";color:var(--or);font-size:13px;transition:transform .18s;display:inline-block}
+details[open] summary::before{transform:rotate(90deg)}
+details .dc{padding:0 0 14px 22px;font-size:13.8px;color:#c0ccd2;line-height:1.75}
+details .dc b{color:#ffcc80}
+details .dc code{font-family:Consolas,monospace;background:#1b262c;padding:1px 6px;border-radius:3px;color:#81d4fa;font-size:12.8px}
+details .dc .li{padding:5px 0;display:flex;gap:8px}
+details .dc .li .k{color:var(--or);font-weight:800;font-family:Consolas,monospace;flex:0 0 auto}
+.talk{background:#33291b;border-color:#5c4425}
+.talk summary{color:#ffcc80}
+.talk .dc .li .k{font-size:15px}
+footer{position:fixed;left:0;right:0;bottom:0;z-index:80;background:#11181c;border-top:2px solid var(--or);padding:7px 0;font-size:12.5px;color:#8fa3ad;text-align:center;letter-spacing:.3px}
+footer b{color:#FF8A34}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hd">
+    <div>
+      <span class="logo">TA</span>
+      <h1>五轴数控加工中心<em>——数字孪生交互演示</em></h1>
+      <p class="sub">数控技术 · 多轴加工 · 适用机械制造 / 数控技术 / 智能制造专业　｜　交互式设备认知 · 工序仿真 · 参数联动 · 五轴联动对比</p>
+    </div>
+    <div class="badges">
+      <span class="badge">建议演示：5 分钟</span>
+      <span class="badge b2">演示模型 · 可按实训室设备清单定制</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#s1">01 设备认知</a><a href="#s2">02 加工演示</a><a href="#s3">03 五轴联动</a><a href="#s4">04 加工质量</a><a href="#s5">05 教学要点</a><a href="#s6">06 演示话术</a>
+</div></nav>
+
+<!-- 01 设备认知 -->
+<section id="s1"><div class="wrap">
+  <div class="sech"><b>01</b><h2>设备认知 · 五轴加工中心结构与坐标轴</h2><span class="hint">点击图中任一部件，右侧显示功能说明</span></div>
+  <div class="mrow">
+    <canvas id="mcv" width="920" height="440"></canvas>
+    <div class="mcol"><div class="mcard" id="mcard"></div></div>
+  </div>
+</div></section>
+
+<!-- 02 加工演示 -->
+<section id="s2"><div class="wrap">
+  <div class="sech"><b>02</b><h2>加工演示 · 工序选择 / 过程仿真 / 数控程序</h2><span class="hint">选择工序 → 调参数 → 点"开始加工"</span></div>
+  <div class="main3">
+
+    <div class="card">
+      <div class="grp">
+        <div class="gt">工序 / OPERATION</div>
+        <button class="pbtn on" data-p="face">① 面铣<small>端面加工</small></button>
+        <button class="pbtn" data-p="cav">② 型腔铣<small>凹槽粗加工</small></button>
+        <button class="pbtn" data-p="drill">③ 钻孔<small>孔加工 G81</small></button>
+      </div>
+      <div class="ctl">
+        <button class="btn pri" id="run">开始加工</button>
+        <button class="btn" id="rst">重置</button>
+      </div>
+      <label class="cool"><input type="checkbox" id="cool">冷却液喷淋（粒子效果）</label>
+      <div class="grp">
+        <div class="gt">参数 / PARAMETERS</div>
+        <div class="mg">
+          <div class="mg-top"><span>S 主轴转速</span><b id="vv-s">8000</b><span class="u">r/min</span></div>
+          <input type="range" id="sl-s" min="1000" max="12000" step="100" value="8000">
+          <div class="band"><i id="bd-s"></i></div>
+          <div class="mg-rec" id="rec-s">推荐 5000 ~ 8000</div>
+        </div>
+        <div class="mg">
+          <div class="mg-top"><span>F 进给速度</span><b id="vv-f">800</b><span class="u">mm/min</span></div>
+          <input type="range" id="sl-f" min="100" max="2000" step="10" value="800">
+          <div class="band"><i id="bd-f"></i></div>
+          <div class="mg-rec" id="rec-f">推荐 600 ~ 1200</div>
+        </div>
+        <div class="mg">
+          <div class="mg-top"><span id="lb-ap">ap 切削深度</span><b id="vv-ap">0.6</b><span class="u" id="u-ap">mm</span></div>
+          <input type="range" id="sl-ap" min="0.2" max="3" step="0.1" value="0.6">
+          <div class="band"><i id="bd-ap"></i></div>
+          <div class="mg-rec" id="rec-ap">推荐 0.5 ~ 2.0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:10px">
+      <canvas id="millcv" width="620" height="560" style="border-radius:6px"></canvas>
+    </div>
+
+    <div class="gcwrap">
+      <div class="gc-h"><b id="gctitle">O1001 面铣</b><span id="gcst">等待启动</span></div>
+      <div class="gc" id="gc"></div>
+      <div class="gc-foot">当前行橙色高亮随动画推进；参数变化会实时改写 S / F / Z 数值行（G代码语法：G54 G90 G17·G00/G01·G02 I/J·G81/G80）。</div>
+    </div>
+  </div>
+  <div class="card evalbar">
+    <div class="ind"><span>加工质量</span><div class="bar"><i id="bar-q"></i></div><b id="vq">100</b></div>
+    <div class="ind"><span>去除效率</span><div class="bar"><i id="bar-e" style="background:var(--or)"></i></div><b id="ve">0</b></div>
+    <div class="mrr" id="mrr">MRR ≈ ap × ae × F = 0 cm³/min</div>
+    <div class="w" id="w1"><span class="dot"></span>刀具磨损风险（转速过高）</div>
+    <div class="w" id="w2"><span class="dot"></span>表面粗糙度变差（进给过快）</div>
+    <div class="w warn" id="w3"><span class="dot"></span>振纹 / 崩刃风险（切深过大）</div>
+    <div class="w ok off" id="w0"><span class="dot"></span>√ 参数位于推荐区间</div>
+  </div>
+</div></section>
+
+<!-- 03 五轴联动 -->
+<section id="s3"><div class="wrap">
+  <div class="sech"><b>03</b><h2>五轴联动示意 · 三轴模式 vs 五轴联动模式</h2><span class="hint">切换模式，观察工件 A/C 轴姿态与刀具可达性</span></div>
+  <div class="card">
+    <div class="ax-wrap">
+      <div class="ax-main">
+        <canvas id="axcv" width="920" height="330" style="background:#1c262b;border:1px solid var(--ln);border-radius:8px"></canvas>
+        <div class="axctl">
+          <button class="mbtn on ax3" id="m3">三轴模式（X/Y/Z）</button>
+          <button class="mbtn" id="m5">五轴联动（X/Y/Z + A/C）</button>
+        </div>
+      </div>
+      <div class="ax-side card" style="padding:12px 14px">
+        <div class="gt" style="font-size:12.5px;color:var(--dim);font-family:Consolas,monospace;margin-bottom:6px">五轴联动加工优势</div>
+        <ul>
+          <li>一次装夹完成叶轮流道、叶身、叶顶的连续加工，三轴通常需 <b>3~4 次翻面装夹</b>，重复定位误差累积</li>
+          <li>刀轴矢量随曲面法向连续偏摆，球头刀以最佳切削点接触，刀痕一致、<b>Ra 可降一档</b></li>
+          <li>负角、深腔、陡壁等三轴"刀够不到"的区域，五轴可通过 <b>A 摆角 + C 回转</b> 到达</li>
+          <li>编程仍按刀尖点坐标编写，旋转轴引起的刀心偏移由系统 <b>RTCP（刀尖点跟随）</b> 实时补偿</li>
+          <li>典型零件：整体叶轮、叶片、精密模具型腔、航空结构件</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 04 加工质量 -->
+<section id="s4"><div class="wrap">
+  <div class="sech"><b>04</b><h2>加工质量对比 · 粗加工 / 精加工表面纹理</h2><span class="hint">表面纹理与轮廓放大为示意，Ra 值随当前参数联动</span></div>
+  <div class="card">
+    <div class="qbtns">
+      <button class="mbtn on ax3" id="qr">粗加工（粗铣）</button>
+      <button class="mbtn" id="qf">精加工（精铣）</button>
+      <span style="font-size:13px;color:var(--dim);margin-left:8px;align-self:center" id="qnote"></span>
+    </div>
+    <canvas id="qcv" width="920" height="300" style="background:#1c262b;border:1px solid var(--ln);border-radius:8px"></canvas>
+  </div>
+</div></section>
+
+<!-- 05 教学要点 -->
+<section id="s5"><div class="wrap">
+  <div class="sech"><b>05</b><h2>教学要点</h2><span class="hint">点开折叠卡，课堂上按需展开</span></div>
+  <div class="grid3">
+    <details>
+      <summary>五轴与三轴的区别</summary>
+      <div class="dc">
+        <div class="li"><span class="k">运动轴</span><span>三轴 = X/Y/Z 三个直线轴；五轴 = 三个直线轴 + <b>两个旋转轴</b>（A 绕 X、C 绕 Z）。旋转轴可做在主轴侧（A/C 双摆头），也可做在工作台（摇篮转台式）。</span></div>
+        <div class="li"><span class="k">刀轴姿态</span><span>三轴加工中刀轴方向始终竖直，复杂曲面只能靠球头刀逐点拟合；五轴刀轴矢量可随曲面法向连续偏摆。</span></div>
+        <div class="li"><span class="k">装夹与精度</span><span>复杂零件三轴需多次翻面装夹，重复定位误差累积；五轴可一次装夹完成多面加工，缩短工序链。</span></div>
+        <div class="li"><span class="k">典型应用</span><span>整体叶轮、叶片、精密模具、航空结构件——三轴加工死角（负角/深腔）多，五轴是工艺刚需。</span></div>
+      </div>
+    </details>
+    <details>
+      <summary>刀具半径补偿（G41 / G42 / D）</summary>
+      <div class="dc">
+        <div class="li"><span class="k">概念</span><span>按图纸轮廓尺寸直接编程，数控系统自动把刀心轨迹向轮廓法向偏移一个刀具半径，刀心走"偏置曲线"。</span></div>
+        <div class="li"><span class="k">指令</span><span><code>G41</code> 左补偿（沿进给方向看，刀具在轮廓左侧）／<code>G42</code> 右补偿／<code>G40</code> 取消补偿；半径值存入 <code>D</code> 寄存器（如 D02 = 5.012mm）。</span></div>
+        <div class="li"><span class="k">价值</span><span>刀具磨损、重磨或换刀后只需改 D 值，不必重写程序；精加工余量也能用 D 值偏置控制，是"程序与刀具解耦"的经典手段。</span></div>
+        <div class="li"><span class="k">注意</span><span>补偿建立/取消段必须走直线且大于刀具半径，否则易过切报警。</span></div>
+      </div>
+    </details>
+    <details>
+      <summary>切削三要素对质量的影响</summary>
+      <div class="dc">
+        <div class="li"><span class="k">vc</span><span><b>切削速度</b>（m/min）= π·D·n / 1000，由主轴转速 n 与刀具直径 D 决定；主要决定刀具寿命——过高烧刀、过低积屑瘤。</span></div>
+        <div class="li"><span class="k">f / F</span><span><b>进给量</b> f（mm/r）与进给速度 F（mm/min）；每齿切削厚度直接反映在残留高度上，主要决定表面粗糙度与切削力。</span></div>
+        <div class="li"><span class="k">ap</span><span><b>切削深度</b>（mm），每刀垂直切入量；主要决定材料去除率与机床/刀具负荷，过大易让刀、振纹甚至崩刃。</span></div>
+        <div class="li"><span class="k">权衡</span><span>MRR ≈ ap × ae × F，三者乘积越大效率越高，但与表面质量、刀具寿命相互制约；工程上以刀具样本推荐参数表为起点，再由试切修正。</span></div>
+      </div>
+    </details>
+  </div>
+</div></section>
+
+<!-- 06 话术 -->
+<section id="s6"><div class="wrap">
+  <div class="sech"><b>06</b><h2>给演示者的 3 个话术点</h2><span class="hint">拜访客户时照着说</span></div>
+  <details class="talk">
+    <summary>展开：3 句话讲清价值（建议配合本页交互现场演示）</summary>
+    <div class="dc">
+      <div class="li"><span class="k">①</span><span>"这是 <b>TA 生成的交互式设备孪生</b>——学生上课前就能把机床结构、工序、参数关系玩明白，老师上课不用再对着静态图纸讲轴系。"</span></div>
+      <div class="li"><span class="k">②</span><span>"按你们实训室的设备清单，<b>数控、AGV、工业机器人每台都能做一版</b>，一件约半天，样式统一、可以挂在课程平台上用。"</span></div>
+      <div class="li"><span class="k">③</span><span>"和<b>真实设备联动控制属于二开边界</b>，我们如实说明；<b>教学演示版今天就能用</b>，本地单文件运行、数据不出校。"</span></div>
+    </div>
+  </details>
+</div></section>
+
+<footer>本演示由 <b>TeleAgent（TA）教育版</b> 生成 · 本地单文件运行、数据不出校 · 设备参数可按实训室清单定制</footer>
+
+<script>
+'use strict';
+var $=function(i){return document.getElementById(i)};
+function clamp(v,a,b){return v<a?a:(v>b?b:v)}
+function rnd(a,b){return a+Math.random()*(b-a)}
+
+/* ================= 01 机床结构图 ================= */
+var PARTS={
+ bed:{n:'床身',a:'基础结构件',d:'整机基础：内部布置滚珠丝杠、直线导轨与驱动电机，承受切削力与运动件质量。其刚性与阻尼直接决定抗振能力和精度保持性。'},
+ table:{n:'工作台 / 十字滑台',a:'X 轴（左右）· Y 轴（前后）',d:'两层滑台叠加：下层沿床身导轨左右移动（X），上层带动工作台前后移动（Y）。顶部装夹毛坯，或安装摇篮转台组成五轴。'},
+ cradle:{n:'摇篮转台（A / C 轴）',a:'A 轴 绕 X 摆动 · C 轴 绕 Z 回转',d:'五轴核心：A 轴让摇篮整体俯仰（常见 ±110°），C 轴让工件 360° 回转。与 X/Y/Z 三直线轴联动即构成五轴加工；另一种方案是把 A/C 双摆头装在主轴端。'},
+ column:{n:'立柱 / 横梁',a:'Z 轴支撑结构',d:'支撑主轴箱并为其 Z 向升降导向。龙门式结构左右立柱+顶梁闭合受力，抗扭刚性好，适合五轴联动时的多向切削力。'},
+ spindle:{n:'主轴箱 / 主轴',a:'Z 轴（垂直进给）',d:'主轴电机驱动刀具旋转（S 指令设定转速 r/min），主轴箱沿立柱上下进给（Z）。高速主轴配 HSK/BT 刀柄，刀具由刀库自动更换。'},
+ mag:{n:'圆盘刀库',a:'ATC 自动换刀',d:'常见 16/24 刀位圆盘式刀库，程序中出现 T 指令即触发自动换刀（机械手或直接式）。一次装夹完成铣、钻、镗多道工序，是"加工中心"名称的由来。'},
+ door:{n:'防护门',a:'安全防护 · 联锁',d:'隔断切屑与冷却液飞溅，带加厚观察窗。与机床联锁：开门即中断进给——这是实训安全教育的第一课，也是评分点。'}
+};
+var mcv=$('mcv'),mctx=mcv.getContext('2d'),hits=[];
+function rr(c,x,y,w,h,f,s){c.fillStyle=f;c.fillRect(x,y,w,h);if(s){c.strokeStyle=s;c.lineWidth=1.5;c.strokeRect(x,y,w,h)}}
+function arrow2(c,x1,y1,x2,y2,col,lab){
+ c.strokeStyle=col;c.fillStyle=col;c.lineWidth=2;
+ c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();
+ var ang=Math.atan2(y2-y1,x2-x1);
+ [[x2,y2,ang],[x1,y1,ang+Math.PI]].forEach(function(p){
+  c.beginPath();c.moveTo(p[0],p[1]);
+  c.lineTo(p[0]-9*Math.cos(p[2]-0.4),p[1]-9*Math.sin(p[2]-0.4));
+  c.lineTo(p[0]-9*Math.cos(p[2]+0.4),p[1]-9*Math.sin(p[2]+0.4));
+  c.closePath();c.fill();
+ });
+ if(lab){c.font='bold 15px Consolas,monospace';c.textAlign='center';c.fillText(lab,(x1+x2)/2,(y1+y2)/2-8)}
+}
+function drawMachine(sel){
+ var c=mctx,W=920,H=440;
+ hits=[];
+ c.clearRect(0,0,W,H);
+ var g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#1e2a30');g.addColorStop(1,'#161f24');
+ c.fillStyle=g;c.fillRect(0,0,W,H);
+ c.fillStyle='#7f949e';c.font='13px "Microsoft YaHei"';c.textAlign='left';
+ c.fillText('五轴立式加工中心（摇篮转台式）· 结构示意',22,26);
+ c.fillStyle='#4a5a62';c.font='11.5px Consolas,monospace';
+ c.fillText('5-AXIS VMC / TRUNNION TABLE',22,44);
+ // 地面
+ c.strokeStyle='#3a4a52';c.lineWidth=2;c.beginPath();c.moveTo(80,398);c.lineTo(880,398);c.stroke();
+ // 立柱框架（后）
+ rr(c,146,60,58,240,'#3d4c55','#2a3a42');
+ rr(c,494,60,58,240,'#3d4c55','#2a3a42');
+ rr(c,138,50,414,42,'#44535d','#2a3a42');
+ c.fillStyle='#9fb0b8';c.font='12px "Microsoft YaHei"';c.fillText('立柱/横梁',150,80);
+ // 刀库（右后）
+ var mx0=650,my0=122,mr=58;
+ rr(c,548,104,48,18,'#3d4c55','#2a3a42');
+ c.beginPath();c.arc(mx0,my0,mr,0,7);c.fillStyle='#33434c';c.fill();
+ c.strokeStyle='#54666f';c.lineWidth=2;c.stroke();
+ c.beginPath();c.arc(mx0,my0,mr-13,0,7);c.strokeStyle='#4a5c66';c.stroke();
+ for(var i=0;i<12;i++){
+  var a=i*Math.PI/6,px=mx0+Math.cos(a)*(mr-24),py=my0+Math.sin(a)*(mr-24);
+  c.beginPath();c.arc(px,py,6,0,7);c.fillStyle='#5a6d77';c.fill();
+  c.beginPath();c.arc(px,py,2.6,0,7);c.fillStyle='#263238';c.fill();
+ }
+ c.beginPath();c.arc(mx0,my0,14,0,7);c.fillStyle='#6b7f8a';c.fill();c.strokeStyle='#263238';c.stroke();
+ c.fillStyle='#9fb0b8';c.font='12px "Microsoft YaHei"';c.textAlign='center';
+ c.fillText('圆盘刀库',mx0,my0+mr+18);
+ c.fillStyle='#5f7078';c.font='11px Consolas,monospace';
+ c.fillText('16 TOOLS · ATC',mx0,my0+mr+34);
+ c.textAlign='left';
+ // 床身
+ rr(c,128,296,470,92,'#46565f','#2b3a42');
+ rr(c,128,296,470,14,'#54646d',null);
+ c.fillStyle='#9fb0b8';c.font='12px "Microsoft YaHei"';c.textAlign='left';c.fillText('床身',142,378);
+ // X 滑台
+ rr(c,206,266,330,32,'#5b6d77','#2b3a42');
+ rr(c,206,266,330,7,'#6d7f89',null);
+ c.fillStyle='#cfd8dc';c.font='11.5px "Microsoft YaHei"';c.fillText('X 滑座 / 工作台',206,288);
+ // 摇篮底座
+ rr(c,262,244,200,24,'#55676f','#2b3a42');
+ // 摇篮侧板
+ rr(c,262,166,30,80,'#5f727c','#2b3a42');
+ rr(c,432,166,30,80,'#5f727c','#2b3a42');
+ // 回转盘 C
+ var cx=362,cy=200;
+ var gr=c.createRadialGradient(cx-14,cy-18,10,cx,cy,58);
+ gr.addColorStop(0,'#8ea3ad');gr.addColorStop(1,'#4f636d');
+ c.beginPath();c.arc(cx,cy,56,0,7);c.fillStyle=gr;c.fill();
+ c.strokeStyle='#2b3a42';c.lineWidth=2;c.stroke();
+ c.beginPath();c.arc(cx,cy,44,0,7);c.strokeStyle='#3c4f58';c.stroke();
+ c.beginPath();c.arc(cx,cy,12,0,7);c.fillStyle='#37474f';c.fill();c.strokeStyle='#22303a';c.stroke();
+ for(var t=0;t<4;t++){
+  var ta=t*Math.PI/2+0.4;
+  c.beginPath();c.moveTo(cx+Math.cos(ta)*14,cy+Math.sin(ta)*14);
+  c.lineTo(cx+Math.cos(ta)*42,cy+Math.sin(ta)*42);c.strokeStyle='#3f525c';c.lineWidth=3;c.stroke();
+ }
+ // 工件
+ rr(c,340,166,44,30,'#c9d3d9','#8d9ba2');
+ c.fillStyle='#5b6d77';c.font='10.5px Consolas,monospace';c.fillText('工件',346,186);
+ // 主轴箱 + 主轴 + 刀
+ rr(c,296,96,128,88,'#5f727c','#2b3a42');
+ rr(c,296,96,128,10,'#728690',null);
+ c.fillStyle='#cfd8dc';c.font='11.5px "Microsoft YaHei"';c.fillText('主轴箱',302,128);
+ c.fillStyle='#8fa3ad';c.font='10.5px Consolas,monospace';c.fillText('SPINDLE',302,144);
+ rr(c,340,184,44,56,'#6b7f8a','#2b3a42');
+ // 刀具
+ c.beginPath();c.moveTo(352,240);c.lineTo(372,240);c.lineTo(366,264);c.lineTo(358,264);c.closePath();
+ c.fillStyle='#FFB74D';c.fill();c.strokeStyle='#b25a00';c.lineWidth=1.2;c.stroke();
+ c.strokeStyle='#b25a00';c.beginPath();c.moveTo(358,254);c.lineTo(366,254);c.stroke();
+ // 轴箭头
+ arrow2(c,612,350,694,350,'#4FC3F7','X');
+ arrow2(c,610,310,692,278,'#4FC3F7','Y');
+ arrow2(c,452,178,452,86,'#4FC3F7','Z');
+ // A 轴弧
+ c.strokeStyle='#FF6D00';c.lineWidth=2.2;
+ c.beginPath();c.arc(277,204,36,-2.3,-0.85);c.stroke();
+ var ea=-0.85;c.beginPath();c.moveTo(277+Math.cos(ea)*36,204+Math.sin(ea)*36);
+ c.lineTo(277+Math.cos(ea+0.35)*30,204+Math.sin(ea+0.35)*30);
+ c.lineTo(277+Math.cos(ea-0.1)*30,204+Math.sin(ea-0.1)*30);c.closePath();c.fillStyle='#FF6D00';c.fill();
+ c.font='bold 15px Consolas,monospace';c.textAlign='center';c.fillText('A',248,168);
+ // C 轴弧
+ c.strokeStyle='#FF6D00';c.beginPath();c.arc(cx,cy,66,-0.5,1.1);c.stroke();
+ var ec=1.1;c.beginPath();c.moveTo(cx+Math.cos(ec)*66,cy+Math.sin(ec)*66);
+ c.lineTo(cx+Math.cos(ec+0.3)*60,cy+Math.sin(ec+0.3)*60);
+ c.lineTo(cx+Math.cos(ec-0.25)*60,cy+Math.sin(ec-0.25)*60);c.closePath();c.fill();
+ c.fillStyle='#FF6D00';c.font='bold 15px Consolas,monospace';c.fillText('C',cx+80,cy+62);
+ c.fillStyle='#b0bec5';c.font='11.5px "Microsoft YaHei"';c.textAlign='left';
+ c.fillText('摇篮转台 A/C',468,216);
+ c.strokeStyle='#8fa3ad';c.setLineDash([4,3]);c.beginPath();c.moveTo(466,212);c.lineTo(424,206);c.stroke();c.setLineDash([]);
+ // 防护门（半透明覆盖）
+ c.fillStyle='rgba(2,119,189,0.08)';c.fillRect(108,46,500,352);
+ c.strokeStyle='#4a7086';c.lineWidth=3;c.strokeRect(108,46,500,352);
+ c.strokeStyle='#38505c';c.lineWidth=2;c.beginPath();c.moveTo(358,48);c.lineTo(358,396);c.stroke();
+ rr(c,338,214,10,24,'#8fa3ad','#3c4f58');
+ rr(c,368,214,10,24,'#8fa3ad','#3c4f58');
+ c.fillStyle='#7f949e';c.font='11.5px "Microsoft YaHei"';
+ c.fillText('防护门',24,200);c.fillText('观察窗',24,216);c.fillText('安全联锁',24,232);
+ c.strokeStyle='#4a7086';c.setLineDash([4,3]);c.beginPath();c.moveTo(64,206);c.lineTo(108,206);c.stroke();c.setLineDash([]);
+ // 选中高亮
+ if(sel&&PARTS[sel]){
+  c.save();c.strokeStyle='#FF6D00';c.lineWidth=3.5;c.shadowColor='#FF6D00';c.shadowBlur=10;
+  var hl={bed:[124,292,478,100],table:[202,262,338,40],cradle:[258,162,208,110],column:[134,46,422,258],spindle:[292,92,140,120],mag:[584,56,132,136],door:[104,42,508,360]}[sel];
+  c.strokeRect(hl[0],hl[1],hl[2],hl[3]);c.restore();
+ }
+ // 五轴图例
+ c.fillStyle='#7f949e';c.font='12.5px "Microsoft YaHei"';c.textAlign='left';
+ c.fillText('五轴定义：X / Y / Z 三个直线轴 ＋ A 轴（绕 X 摆动 · 摇篮俯仰）＋ C 轴（绕 Z 回转 · 盘面旋转）',22,428);
+ hits=[
+  {r:[14,184,86,58],id:'door'},
+  {r:[258,162,208,110],id:'cradle'},{r:[584,56,132,140],id:'mag'},
+  {r:[292,92,140,120],id:'spindle'},{r:[202,262,338,40],id:'table'},
+  {r:[124,292,478,100],id:'bed'},{r:[134,46,422,258],id:'column'}
+ ];
+}
+drawMachine(null);
+mcv.addEventListener('click',function(e){
+ var b=mcv.getBoundingClientRect(),k=mcv.width/b.width;
+ var x=(e.clientX-b.left)*k,y=(e.clientY-b.top)*k,pick=null,i;
+ for(i=0;i<hits.length;i++){var h=hits[i].r;if(x>=h[0]&&x<=h[0]+h[2]&&y>=h[1]&&y<=h[1]+h[3]){pick=hits[i].id;break}}
+ if(!pick){
+  var dx=Math.min(Math.abs(x-108),Math.abs(x-608)),dy=Math.min(Math.abs(y-46),Math.abs(y-398));
+  if(dx<14||dy<14){pick='door'}
+ }
+ if(!pick){$('mcard').innerHTML='<div class="mh">点击部件查看说明</div><div class="ma">CLICK A PART →</div><p>图中各部件均可点击：床身、工作台（X/Y）、摇篮转台（A/C）、立柱、主轴箱、刀库、防护门。橙色框为当前选中部件。</p>';drawMachine(null);return}
+ var P=PARTS[pick];
+ $('mcard').innerHTML='<div class="mh">'+P.n+'</div><div class="ma">'+P.a+'</div><p>'+P.d+'</p>';
+ drawMachine(pick);
+});
+$('mcard').innerHTML='<div class="mh">点击部件查看说明</div><div class="ma">CLICK A PART →</div><p>图中各部件均可点击：床身、工作台（X/Y 轴）、摇篮转台（A/C 轴）、立柱、主轴箱、刀库、防护门。演示时可按"床身 → 工作台 → 摇篮（A/C）→ 主轴 → 刀库"顺序讲一圈结构。</p>';
+
+/* ================= 02 加工仿真 ================= */
+var state={s:8000,f:800,ap:0.6,key:'face',cool:false,fin:'rough'};
+var MM=2.8, ORX=60, ORY=170, BW=100, BH=80, SIM=1.6;
+
+var PROCS={
+ face:{
+  title:'O1001 面铣（端面加工）',tool:'φ32 面铣刀（4刃 · 铝合金专用）',tR:16,tmm:32,blankZ:6,depth:1.2,
+  sr:[5000,8000],fr:[600,1200],ar:[0.5,2.0],def:{s:8000,f:800,ap:0.6},
+  note:['毛坯：铝合金 100×80×6mm','端面整面铣平'],
+  build:function(z,fin){
+   var s=state.s,f=state.f;
+   return [
+    {c:'O1001 (FACE_MILLING 面铣)',x:'程序号 / 工序说明'},
+    {c:'N10 G54 G90 G17',x:'G54工件坐标系 · G90绝对编程 · G17 XY平面'},
+    {c:'N20 T01 M06',x:'换 1 号刀：φ32 面铣刀'},
+    {c:'N30 G43 H01 Z50.',x:'刀具长度补偿 · 抬至安全高度'},
+    {c:'N40 S'+s+' M03',x:'主轴正转 · S = '+s+' r/min',d:'s'},
+    {c:'N50 G00 X0. Y0. Z10.',x:'快速定位起刀点上方'},
+    {c:'N60 G01 Z-'+z.toFixed(1)+' F150',x:'工进下刀到当前层',d:'z'},
+    {c:'N70 G01 X100. F'+f,x:'直线插补铣削第1行',d:'f'},
+    {c:'N80 G01 Y20.',x:'Y 向行进 20 mm（行距）'},
+    {c:'N90 G01 X0.',x:'返程铣削'},
+    {c:'N100 G01 Y40.',x:''},
+    {c:'N110 G01 X100.',x:''},
+    {c:'N120 G01 Y60.',x:''},
+    {c:'N130 G01 X0.',x:''},
+    {c:'N140 G00 Z20.',x:fin?'抬刀 · 加工完成':'抬刀 → 下一层继续（继承当前 S/F）'},
+    {c:'N150 M05 M30',x:'主轴停转 · 程序结束并复位'}
+   ];
+  },
+  ops:function(z){return [
+   {l:5,t:'r',x:0,y:0,z:10},
+   {l:6,t:'p',z:-z},
+   {l:7,t:'f',x:100,y:0},
+   {l:8,t:'f',x:100,y:20},
+   {l:9,t:'f',x:0,y:20},
+   {l:10,t:'f',x:0,y:40},
+   {l:11,t:'f',x:100,y:40},
+   {l:12,t:'f',x:100,y:60},
+   {l:13,t:'f',x:0,y:60},
+   {l:14,t:'r',x:0,y:60,z:12}
+  ];}
+ },
+ cav:{
+  title:'O1002 型腔铣（凹槽粗加工）',tool:'φ10 立铣刀（2刃 · 高进给）',tR:5,tmm:10,blankZ:8,depth:2.4,
+  sr:[8000,12000],fr:[500,1200],ar:[0.5,1.5],def:{s:10000,f:800,ap:1.0},
+  note:['毛坯：铝合金 100×80×8mm','跑道形型腔（半圆R25）'],
+  build:function(z,fin){
+   var s=state.s,f=state.f;
+   return [
+    {c:'O1002 (CAVITY_MILLING 型腔铣)',x:'跑道形型腔：行切开粗 + 轮廓精修'},
+    {c:'N10 G54 G90 G17',x:'G54工件坐标系 · 绝对编程 · XY平面'},
+    {c:'N20 T02 M06',x:'换 2 号刀：φ10 立铣刀'},
+    {c:'N30 G43 H02 Z50.',x:'刀具长度补偿'},
+    {c:'N40 S'+s+' M03',x:'主轴正转 · S = '+s+' r/min',d:'s'},
+    {c:'N50 G00 X50. Y40. Z5.',x:'定位型腔中心上方（下刀点）'},
+    {c:'N60 G01 Z-'+z.toFixed(1)+' F120',x:'下刀到当前层深度',d:'z'},
+    {c:'N70 G01 X75. F'+f,x:'行切：Y40 行 → 东侧',d:'f'},
+    {c:'N80 G01 Y50.',x:'行距方向偏移'},
+    {c:'N90 G01 X25.',x:'Y50 行返程'},
+    {c:'N100 G01 Y60.',x:''},
+    {c:'N110 G01 X75.',x:'Y60 行'},
+    {c:'N120 G01 Y20.',x:'沿右侧清壁（竖切）'},
+    {c:'N130 G01 X25.',x:'Y20 行'},
+    {c:'N140 G01 Y15.',x:'到达型腔轮廓起点'},
+    {c:'N150 G02 X25. Y65. I0. J25.',x:'左端半圆精修 · I/J = 圆心相对起点增量'},
+    {c:'N160 G01 X75. Y65.',x:'沿边直线精修'},
+    {c:'N170 G02 X75. Y15. I0. J-25.',x:'右端半圆精修'},
+    {c:'N180 G01 X25. Y15.',x:'轮廓闭合'},
+    {c:'N190 G00 Z50.',x:fin?'抬刀 · 加工完成':'抬刀 → 下一层'},
+    {c:'N200 M05 M30',x:'程序结束'}
+   ];
+  },
+  ops:function(z){return [
+   {l:5,t:'r',x:50,y:40,z:5},
+   {l:6,t:'p',z:-z},
+   {l:7,t:'f',x:75,y:40},
+   {l:8,t:'f',x:75,y:50},
+   {l:9,t:'f',x:25,y:50},
+   {l:10,t:'f',x:25,y:60},
+   {l:11,t:'f',x:75,y:60},
+   {l:12,t:'f',x:75,y:20},
+   {l:13,t:'f',x:25,y:20},
+   {l:14,t:'f',x:25,y:15},
+   {l:15,t:'a',cx:25,cy:40,r:25,a0:-90,a1:-270},
+   {l:16,t:'f',x:75,y:65},
+   {l:17,t:'a',cx:75,cy:40,r:25,a0:90,a1:-90},
+   {l:18,t:'f',x:25,y:15},
+   {l:19,t:'r',x:25,y:15,z:8}
+  ];}
+ },
+ drill:{
+  title:'O1003 钻孔（G81 固定循环）',tool:'φ8 麻花钻（顶角118°）',tR:4,tmm:8,blankZ:25,depth:22,
+  sr:[2000,4000],fr:[80,200],ar:[0.5,1.5],def:{s:3000,f:140,ap:1.0},
+  note:['毛坯：块料 100×80×25mm','5×φ8 通孔 · 孔深22'],
+  build:function(z,fin){
+   var s=state.s,f=state.f;
+   return [
+    {c:'O1003 (DRILLING 钻孔)',x:'5 × φ8 孔 · G81 固定循环'},
+    {c:'N10 G54 G90 G17',x:'G54工件坐标系 · 绝对编程 · XY平面'},
+    {c:'N20 T03 M06',x:'换 3 号刀：φ8 麻花钻'},
+    {c:'N30 G43 H03 Z50.',x:'刀具长度补偿'},
+    {c:'N40 S'+s+' M03',x:'钻削：低转速大扭矩 · S = '+s,d:'s'},
+    {c:'N50 G00 X12. Y40. Z10.',x:'定位第 1 孔上方'},
+    {c:'N60 G99 G81 Z-22. R3. F'+f,x:'固定循环：快进至R点→工进钻孔→退回R平面',d:'f'},
+    {c:'N70 X31.',x:'模态循环续钻第2孔（无需重写G81）'},
+    {c:'N80 X50.',x:'第 3 孔'},
+    {c:'N90 X69.',x:'第 4 孔'},
+    {c:'N100 X88.',x:'第 5 孔'},
+    {c:'N110 G80',x:'取消固定循环'},
+    {c:'N120 G00 Z50.',x:'抬刀'},
+    {c:'N130 M05 M30',x:'程序结束'}
+   ];
+  },
+  ops:function(z){return [
+   {l:5,t:'r',x:12,y:40,z:10},
+   {l:6,t:'r',x:12,y:40,z:3},{l:6,t:'d',x:12,y:40,z:-22},
+   {l:7,t:'r',x:31,y:40,z:3},{l:7,t:'d',x:31,y:40,z:-22},
+   {l:8,t:'r',x:50,y:40,z:3},{l:8,t:'d',x:50,y:40,z:-22},
+   {l:9,t:'r',x:69,y:40,z:3},{l:9,t:'d',x:69,y:40,z:-22},
+   {l:10,t:'r',x:88,y:40,z:3},{l:10,t:'d',x:88,y:40,z:-22},
+   {l:12,t:'r',x:88,y:40,z:50}
+  ];}
+ }
+};
+
+function px(wx){return ORX+wx*MM}
+function py(wy){return ORY+(BH-wy)*MM}
+
+var blankC=document.createElement('canvas'),shadeC=document.createElement('canvas'),trailC=document.createElement('canvas');
+blankC.width=shadeC.width=trailC.width=BW*MM;blankC.height=shadeC.height=trailC.height=BH*MM;
+var bctx=blankC.getContext('2d'),sctx=shadeC.getContext('2d'),tctx=trailC.getContext('2d');
+
+var sim={key:'face',running:false,done:false,pos:{x:0,y:0,z:10},ops:[],oi:0,tt:0,p0:null,
+ layer:0,layers:1,zNow:0,particles:[],trailPrev:null,curLine:-1};
+
+function proc(){return PROCS[sim.key]}
+
+function buildBlank(){
+ var W=blankC.width,H=blankC.height;
+ bctx.globalCompositeOperation='source-over';
+ bctx.clearRect(0,0,W,H);
+ var g=bctx.createLinearGradient(0,0,W,H);
+ g.addColorStop(0,'#d3dce1');g.addColorStop(.5,'#c3cfd6');g.addColorStop(1,'#b4c2c9');
+ bctx.fillStyle=g;bctx.fillRect(0,0,W,H);
+ bctx.strokeStyle='#9fb0b8';bctx.lineWidth=1;
+ for(var i=0;i<70;i++){
+  bctx.globalAlpha=.25;
+  bctx.beginPath();bctx.moveTo(rnd(0,W),rnd(0,H));bctx.lineTo(rnd(0,W),rnd(0,H));bctx.stroke();
+ }
+ bctx.globalAlpha=1;
+ bctx.strokeStyle='#8d9ba2';bctx.lineWidth=2;bctx.strokeRect(1,1,W-2,H-2);
+ bctx.fillStyle='#7c8b92';bctx.font='11px Consolas,monospace';
+ bctx.fillText('AL-7075  100×80mm',8,16);
+ sctx.clearRect(0,0,W,H);tctx.clearRect(0,0,W,H);
+}
+
+function calcLayers(){
+ if(sim.key==='drill')return 1;
+ return Math.min(4,Math.max(1,Math.ceil(proc().depth/state.ap)));
+}
+function resetSim(keepParam){
+ sim.running=false;sim.done=false;sim.oi=0;sim.tt=0;sim.layer=0;sim.zNow=0;
+ sim.pos={x:0,y:0,z:10};sim.p0=null;sim.particles=[];sim.trailPrev=null;sim.curLine=-1;
+ sim.layers=calcLayers();
+ sim.ops=proc().ops(curLz());
+ buildBlank();
+ renderGcode();
+ highlight(-1);
+ $('run').textContent='开始加工';$('run').disabled=false;
+ $('gcst').textContent='等待启动';
+ drawMill();
+}
+
+function fmtF(){return Math.round(state.f)}
+
+function renderGcode(){
+ var P=proc();
+ sim.lines=P.build(curLz(),false);
+ var box=$('gc'),h='';
+ sim.lines.forEach(function(L,i){
+  h+='<div class="gl" data-i="'+i+'"><span class="cmt"></span>'+L.c+' <span class="cm">'+(L.x?('; '+L.x):'')+'</span></div>';
+ });
+ box.innerHTML=h;
+ $('gctitle').textContent=P.title;
+ sim.lineEls=box.querySelectorAll('.gl');
+}
+function curLz(){
+ return Math.min(proc().depth,state.ap*(sim.layer+1));
+}
+function refreshDyn(){
+ var P=proc(),arr=P.build(curLz(),sim.layer>=sim.layers-1);
+ var changed=false;
+ arr.forEach(function(L,i){
+  if(L.d&&sim.lines&&sim.lines[i]&&sim.lines[i].c!==L.c){sim.lines[i].c=L.c;var el=sim.lineEls[i];if(el){el.innerHTML=L.c+' <span class="cm">'+(L.x?('; '+L.x):'')+'</span>'}changed=true}
+ });
+}
+function highlight(i){
+ sim.curLine=i;
+ if(!sim.lineEls)return;
+ for(var k=0;k<sim.lineEls.length;k++){sim.lineEls[k].classList.toggle('on',k===i)}
+ if(i>=0&&sim.lineEls[i]){
+  var el=sim.lineEls[i],box=$('gc');
+  var top=el.offsetTop-box.clientHeight/2+el.clientHeight;
+  box.scrollTop=Math.max(0,top);
+ }
+}
+function setOp(idx){
+ sim.oi=idx;
+ if(idx>=sim.ops.length){layerDone();return}
+ var o=sim.ops[idx];
+ sim.p0={x:sim.pos.x,y:sim.pos.y,z:sim.pos.z};sim.tt=0;
+ if(o.t==='a'){
+  var a=o.a0*Math.PI/180;
+  sim.pos.x=o.cx+Math.cos(a)*o.r;
+  sim.pos.y=o.cy+Math.sin(a)*o.r;
+ }
+ highlight(o.l);
+}
+function layerDone(){
+ sim.layer++;
+ if(sim.layer>=sim.layers){finishJob();return}
+ sim.ops=proc().ops(curLz());
+ sim.oi=0;sim.tt=0;
+ sim.p0={x:sim.pos.x,y:sim.pos.y,z:sim.pos.z};
+ var o=sim.ops[0];
+ if(o.t==='a'){var a=o.a0*Math.PI/180;sim.pos.x=o.cx+Math.cos(a)*o.r;sim.pos.y=o.cy+Math.sin(a)*o.r}
+ highlight(o.l);
+ refreshDyn();
+ $('gcst').textContent='运行中… 第 '+(sim.layer+1)+'/'+sim.layers+' 层';
+}
+function finishJob(){
+ sim.done=true;sim.running=false;
+ highlight(sim.lines.length-1);
+ $('run').textContent='已完成 · 重置再演示';$('run').disabled=false;
+ $('gcst').textContent='加工完成 ✓';
+}
+
+function startJob(){
+ if(sim.done)resetSim();
+ sim.running=true;
+ $('run').textContent='暂停';
+ if(sim.oi===0&&sim.tt===0){
+  sim.ops=proc().ops(curLz());
+  sim.oi=0;
+  var o=sim.ops[0];sim.p0={x:sim.pos.x,y:sim.pos.y,z:sim.pos.z};
+  highlight(o.l);
+ }
+ $('gcst').textContent='运行中… 第 '+(sim.layer+1)+'/'+sim.layers+' 层';
+}
+
+/* 步进 */
+var feedPx=function(){return state.f/60*MM*SIM};
+function stepOp(dt){
+ if(!sim.running||sim.done)return;
+ if(sim.oi>=sim.ops.length){layerDone();return}
+ var o=sim.ops[sim.oi];
+ var spd;
+ if(o.t==='r')spd=340;
+ else if(o.t==='p')spd=Math.min(140,feedPx()*1.4);
+ else spd=feedPx()*(o.t==='d'?0.75:1);
+
+ var tgx=(o.x!=null?o.x:sim.pos.x),tgy=(o.y!=null?o.y:sim.pos.y),tgz=(o.z!=null?o.z:sim.pos.z);
+ var dist;
+ if(o.t==='a'){dist=Math.abs(o.a1-o.a0)*Math.PI/180*o.r*MM}
+ else{dist=Math.sqrt(Math.pow(tgx-sim.pos.x,2)+Math.pow(tgy-sim.pos.y,2)+Math.pow(tgz-sim.pos.z,2))*MM}
+ if(dist<0.4){sim.pos.x=tgx;sim.pos.y=tgy;sim.pos.z=tgz;sim.tt=0;setOp(sim.oi+1);return}
+ sim.tt+=spd*dt/dist;
+ if(sim.tt>1)sim.tt=1;
+ var ox=sim.pos.x,oy=sim.pos.y;
+ if(o.t==='a'){
+  var a=(o.a0+(o.a1-o.a0)*sim.tt)*Math.PI/180;
+  sim.pos.x=o.cx+Math.cos(a)*o.r;sim.pos.y=o.cy+Math.sin(a)*o.r;
+ }else{
+  sim.pos.x=sim.p0.x+(tgx-sim.p0.x)*sim.tt;
+  sim.pos.y=sim.p0.y+(tgy-sim.p0.y)*sim.tt;
+  sim.pos.z=sim.p0.z+(tgz-sim.p0.z)*sim.tt;
+ }
+ sim.zNow=sim.pos.z;
+ // 切削副作用
+ if(o.t==='f'||o.t==='a'||o.t==='p'||o.t==='d'){
+  cutEffect(ox,oy,o.t);
+ }
+ if(sim.tt>=1){sim.tt=0;setOp(sim.oi+1)}
+}
+var layerAlpha=function(){return 0.26+0.11*sim.layer};
+function cutEffect(ox,oy,type){
+ var r=proc().tR*MM,cx=sim.pos.x*MM,cy=(BH-sim.pos.y)*MM;
+ if(type==='d'){
+  bctx.globalCompositeOperation='destination-out';
+  bctx.beginPath();bctx.arc(cx,cy,r,0,7);bctx.fill();
+  bctx.globalCompositeOperation='source-over';
+  var dp=clamp(-sim.pos.z/22,0,1);
+  var g=sctx.createRadialGradient(cx,cy,1,cx,cy,r);
+  g.addColorStop(0,'rgba(12,20,26,'+(0.35+dp*0.55)+')');
+  g.addColorStop(1,'rgba(30,44,54,'+(0.2+dp*0.4)+')');
+  sctx.fillStyle=g;sctx.beginPath();sctx.arc(cx,cy,r,0,7);sctx.fill();
+  sctx.strokeStyle='rgba(150,170,180,0.5)';sctx.lineWidth=1;sctx.beginPath();sctx.arc(cx,cy,r*0.55,0,7);sctx.stroke();
+  tctx.fillStyle='rgba(2,119,189,0.55)';tctx.beginPath();tctx.arc(cx,cy,2,0,7);tctx.fill();
+  return;
+ }
+ sctx.fillStyle='rgba(34,50,62,'+layerAlpha()+')';
+ sctx.beginPath();sctx.arc(cx,cy,r,0,7);sctx.fill();
+ bctx.globalCompositeOperation='destination-out';
+ bctx.beginPath();bctx.arc(cx,cy,r,0,7);bctx.fill();
+ bctx.globalCompositeOperation='source-over';
+ if(type!=='p'){
+  tctx.strokeStyle='rgba(2,119,189,0.42)';tctx.lineWidth=1.6;
+  tctx.beginPath();
+  if(sim.trailPrev){tctx.moveTo(sim.trailPrev.x,sim.trailPrev.y);tctx.lineTo(cx,cy)}
+  else{tctx.moveTo(cx,cy);tctx.lineTo(cx+0.1,cy)}
+  tctx.stroke();
+ }
+ sim.trailPrev={x:cx,y:cy};
+}
+
+/* 绘制加工画面 */
+var mcv2=$('millcv'),m2=mcv2.getContext('2d');
+function drawMill(){
+ var c=m2,W=620,H=560;
+ c.clearRect(0,0,W,H);
+ var bg=c.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#1d282e');bg.addColorStop(1,'#161f24');
+ c.fillStyle=bg;c.fillRect(0,0,W,H);
+ // 顶部状态条
+ c.fillStyle='#121a1f';c.fillRect(0,0,W,44);
+ c.strokeStyle='#2e3f48';c.beginPath();c.moveTo(0,44.5);c.lineTo(W,44.5);c.stroke();
+ var pr=clamp(sim.layers>0?((sim.layer+sim.oi/Math.max(1,sim.ops.length))/sim.layers*100):0,0,100);
+ var txt='S '+state.s+' r/min  |  F '+state.f+' mm/min  |  ap '+state.ap.toFixed(1)+' mm  |  第 '+Math.min(sim.layer+1,sim.layers)+'/'+sim.layers+' 层  |  进度 '+Math.round(pr)+'%';
+ c.fillStyle='#9fd8ff';c.font='bold 13px Consolas,monospace';c.textAlign='left';
+ c.fillText(txt,10,20);
+ c.fillStyle='#5f7078';c.font='11px Consolas,monospace';
+ c.fillText('STATUS · 实时切削状态',10,36);
+ // 工作台
+ c.fillStyle='#22303a';c.fillRect(ORX-22,ORY-22,BW*MM+44,BH*MM+44);
+ c.strokeStyle='#3c4f58';c.lineWidth=1.5;c.strokeRect(ORX-22,ORY-22,BW*MM+44,BH*MM+44);
+ c.strokeStyle='#2e424d';c.lineWidth=3;
+ for(var t=0;t<3;t++){var ty=ORY+18+t*(BH*MM-36)/2;c.beginPath();c.moveTo(ORX-16,ty);c.lineTo(ORX+BW*MM+16,ty);c.stroke()}
+ // 已切削暗层 + 毛坯 + 轨迹
+ c.drawImage(shadeC,ORX,ORY);
+ c.drawImage(blankC,ORX,ORY);
+ c.drawImage(trailC,ORX,ORY);
+ // 坐标原点
+ c.strokeStyle='#FF6D00';c.lineWidth=2;
+ c.beginPath();c.moveTo(ORX,ORY+BH*MM+14);c.lineTo(ORX+30,ORY+BH*MM+14);c.stroke();
+ c.beginPath();c.moveTo(ORX,ORY+BH*MM+14);c.lineTo(ORX,ORY+BH*MM-16);c.stroke();
+ c.fillStyle='#FF6D00';c.font='10.5px Consolas,monospace';
+ c.fillText('X',ORX+33,ORY+BH*MM+18);c.fillText('Y',ORX-14,ORY+BH*MM-18);
+ c.fillStyle='#7f949e';c.fillText('G54 原点',ORX+6,ORY+BH*MM+30);
+ // 刀具（俯视）
+ if(!sim.done||true){
+  var cx=px(sim.pos.x),cy=py(sim.pos.y);
+  var cutting=sim.running&&!sim.done;
+  c.save();
+  c.globalAlpha=.28;c.fillStyle='#4FC3F7';
+  c.beginPath();c.arc(cx,cy,proc().tR*MM,0,7);c.fill();
+  c.globalAlpha=1;
+  c.strokeStyle=cutting?'#4FC3F7':'#78909c';c.lineWidth=2;
+  c.setLineDash([5,4]);c.beginPath();c.arc(cx,cy,proc().tR*MM,0,7);c.stroke();c.setLineDash([]);
+  var rot=performance.now()/1000*state.s/600;
+  c.strokeStyle=cutting?'#FFB74D':'#90a4ae';c.lineWidth=2.5;
+  for(var b=0;b<3;b++){
+   var aa=rot+b*Math.PI*2/3;
+   c.beginPath();c.moveTo(cx+Math.cos(aa)*5,cy+Math.sin(aa)*5);
+   c.lineTo(cx+Math.cos(aa)*(proc().tR*MM-3),cy+Math.sin(aa)*(proc().tR*MM-3));c.stroke();
+  }
+  c.beginPath();c.arc(cx,cy,5,0,7);c.fillStyle=cutting?'#FF6D00':'#90a4ae';c.fill();
+  c.strokeStyle='#121a1f';c.lineWidth=1.5;c.stroke();
+  c.restore();
+  // 冷却液粒子
+  if(state.cool&&cutting&&sim.ops[sim.oi]&&sim.ops[sim.oi].t!=='r'){
+   for(var p=0;p<2;p++){
+    sim.particles.push({x:cx+rnd(-6,6),y:cy-proc().tR*MM*0.7,vx:rnd(-50,50),vy:rnd(20,90),life:rnd(.4,.8)});
+   }
+  }
+  for(var q=sim.particles.length-1;q>=0;q--){
+   var pt=sim.particles[q];
+   pt.x+=pt.vx*0.016;pt.y+=pt.vy*0.016;pt.vy+=380*0.016;pt.life-=0.016;
+   if(pt.life<=0){sim.particles.splice(q,1);continue}
+   c.fillStyle='rgba(64,196,255,'+clamp(pt.life*0.85,0,.6)+')';
+   c.beginPath();c.arc(pt.x,pt.y,1.8,0,7);c.fill();
+  }
+ }
+ // 刀具信息
+ c.fillStyle='#0f1519';c.fillRect(404,54,204,142);
+ c.strokeStyle='#2e3f48';c.strokeRect(404.5,54.5,203,141);
+ c.fillStyle='#8fa3ad';c.font='11px Consolas,monospace';c.textAlign='left';
+ c.fillText('TOOL / 当前刀具',414,72);
+ c.fillStyle='#FFB74D';c.font='bold 12.5px "Microsoft YaHei"';
+ var tl=proc().tool,pp=tl.indexOf('（');
+ if(pp>0){c.fillText(tl.slice(0,pp),414,92);c.fillText(tl.slice(pp),414,107)}
+ else c.fillText(tl,414,92);
+ c.fillStyle='#cfd8dc';c.font='11px "Microsoft YaHei"';
+ proc().note.forEach(function(s2,i){c.fillText(s2,414,123+i*15)});
+ c.fillStyle='#8fa3ad';c.font='11px Consolas,monospace';
+ c.fillText('工序：'+({face:'面铣 FACE MILL',cav:'型腔铣 CAVITY',drill:'钻孔 DRILL'}[sim.key]),414,172);
+ c.fillText('冷却：'+(state.cool?'ON 喷淋':'OFF'),414,188);
+ // 侧视小图
+ var sx=404,sy=206,sw=204,sh=150;
+ c.fillStyle='#0f1519';c.fillRect(sx,sy,sw,sh);c.strokeStyle='#2e3f48';c.strokeRect(sx+.5,sy+.5,sw-1,sh-1);
+ c.fillStyle='#8fa3ad';c.font='11px Consolas,monospace';c.fillText('侧视（Z 分层）',sx+10,sy+16);
+ var bz=proc().blankZ, areaX=sx+16,areaY=sy+30,areaW=sw-32,areaH=sh-56;
+ var wTop=areaY, wBot=areaY+areaH, bodyH=areaH-10;
+ c.fillStyle='#2a3a44';c.fillRect(areaX,wBot-10,areaW,10);
+ c.fillStyle='#a9b8c1';c.fillRect(areaX,wTop,areaW,bodyH);
+ // 分层线
+ for(var l=0;l<sim.layers;l++){
+  var ly=wTop+bodyH*(state.ap*(l+1)/bz);
+  c.strokeStyle='#64747d';c.setLineDash([3,3]);
+  c.beginPath();c.moveTo(areaX,ly);c.lineTo(areaX+areaW,ly);c.stroke();c.setLineDash([]);
+ }
+ // 已切深度（当前层）
+ var cutDep=clamp((sim.pos.z<0?-sim.pos.z:sim.layer*state.ap),0,bz);
+ var cy2=wTop+bodyH*(cutDep/bz);
+ c.fillStyle='#3a4c56';
+ c.fillRect(areaX,wTop,areaW,cy2-wTop);
+ c.strokeStyle='#cfd8dc';c.strokeRect(areaX+.5,wTop+.5,areaW-1,bodyH);
+ // 刀具位置
+ var tx=areaX+areaW*(sim.pos.x/BW);
+ c.fillStyle='#FF6D00';c.fillRect(tx-5,wTop-14,10,14);
+ c.beginPath();c.moveTo(tx-6,wTop);c.lineTo(tx+6,wTop);c.lineTo(tx,wTop+7);c.closePath();c.fill();
+ c.fillStyle='#9fd8ff';c.font='10.5px Consolas,monospace';
+ c.fillText('Z '+sim.pos.z.toFixed(1),sx+10,sy+sh-8);
+ c.fillText('毛坯 '+bz+'mm',sx+sw-92,sy+sh-8);
+ // 主轴转速仪表
+ var gcx=506,gcy=404,gr2=40;
+ c.beginPath();c.arc(gcx,gcy,gr2,0,7);c.fillStyle='#0f1519';c.fill();
+ c.strokeStyle='#2e3f48';c.lineWidth=2;c.stroke();
+ for(var s2=0;s2<12;s2++){
+  var sa=s2*Math.PI/6;
+  c.beginPath();c.moveTo(gcx+Math.cos(sa)*(gr2-4),gcy+Math.sin(sa)*(gr2-4));
+  c.lineTo(gcx+Math.cos(sa)*(gr2-9),gcy+Math.sin(sa)*(gr2-9));
+  c.strokeStyle='#3c4f58';c.lineWidth=1.5;c.stroke();
+ }
+ var rotA=performance.now()/1000*state.s/240;
+ c.strokeStyle='#FF6D00';c.lineWidth=2.5;
+ for(var b2=0;b2<3;b2++){
+  var aa2=rotA+b2*Math.PI*2/3;
+  c.beginPath();c.moveTo(gcx,gcy);
+  c.lineTo(gcx+Math.cos(aa2)*(gr2-12),gcy+Math.sin(aa2)*(gr2-12));c.stroke();
+ }
+ c.beginPath();c.arc(gcx,gcy,3,0,7);c.fillStyle='#FFB74D';c.fill();
+ c.fillStyle='#cfd8dc';c.font='10.5px Consolas,monospace';c.textAlign='center';
+ c.fillText('S '+state.s,gcx,gcy+gr2+14);
+ c.textAlign='left';
+ // 图例
+ c.fillStyle='#0f1519';c.fillRect(404,462,204,84);c.strokeStyle='#2e3f48';c.strokeRect(404.5,462.5,203,83);
+ c.fillStyle='#8fa3ad';c.font='10.5px Consolas,monospace';
+ c.fillText('图例 / LEGEND',414,478);
+ c.strokeStyle='rgba(2,119,189,0.9)';c.lineWidth=2;c.beginPath();c.moveTo(414,494);c.lineTo(444,494);c.stroke();
+ c.fillStyle='#cfd8dc';c.fillText('进给轨迹 F',450,498);
+ c.fillStyle='#22303a';c.fillRect(414,504,30,10);c.strokeStyle='#3c4f58';c.strokeRect(414.5,504.5,29,9);
+ c.fillStyle='#cfd8dc';c.fillText('已去除材料',450,513);
+ c.fillStyle='#c9d3d9';c.fillRect(414,520,30,10);c.strokeStyle='#8d9ba2';c.strokeRect(414.5,520.5,29,9);
+ c.fillStyle='#cfd8dc';c.fillText('毛坯余量',450,529);
+ // 提示
+ c.fillStyle='#5f7078';c.font='11.5px "Microsoft YaHei"';c.textAlign='center';
+ c.fillText(sim.done?'加工完成 ✓ 点"重置"可再次演示':(sim.running?'仿真中…':'点左侧"开始加工"启动逐层铣削'),210,540);
+ c.textAlign='left';
+}
+function wrapText(s,n){
+ var out=[],cur='';
+ for(var i=0;i<s.length;i++){cur+=s[i];if(cur.length>=n){out.push(cur);cur=''}}
+ if(cur)out.push(cur);return out;
+}
+
+/* ================= 03 五轴联动 ================= */
+var axcv=$('axcv'),ax=axcv.getContext('2d');
+var axMode='3ax',axT=0;
+function drawAx(){
+ var c=ax,W=920,H=330;
+ c.clearRect(0,0,W,H);
+ var bg=c.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#1e2a30');bg.addColorStop(1,'#151d22');
+ c.fillStyle=bg;c.fillRect(0,0,W,H);
+ // 标题
+ c.fillStyle='#8fa3ad';c.font='12px Consolas,monospace';c.textAlign='left';
+ c.fillText(axMode==='3ax'?'MODE: 3-AXIS（X/Y/Z）':'MODE: 5-AXIS（X/Y/Z + A/C 联动）',20,26);
+ // 台面
+ c.fillStyle='#22303a';c.fillRect(170,268,240,20);
+ c.strokeStyle='#3c4f58';c.strokeRect(170.5,268.5,239,19);
+ var cx=286,cy=172;
+ var A,C;
+ if(axMode==='5ax'){C=axT*0.5;A=0.18+0.22*Math.sin(axT*0.9)}else{C=0;A=0}
+ c.save();
+ c.translate(cx,cy);
+ c.scale(1,Math.cos(A));
+ c.rotate(C);
+ // 叶片
+ for(var i=0;i<5;i++){
+  var th=i*Math.PI*2/5-1.57;
+  var grad=c.createLinearGradient(0,0,Math.cos(th)*112,Math.sin(th)*112);
+  grad.addColorStop(0,'#3f5866');grad.addColorStop(1,'#6e93a6');
+  c.beginPath();
+  c.moveTo(Math.cos(th+0.22)*40,Math.sin(th+0.22)*40);
+  c.quadraticCurveTo(Math.cos(th+0.05)*78,Math.sin(th+0.05)*78,Math.cos(th-0.12)*110,Math.sin(th-0.12)*110);
+  c.lineTo(Math.cos(th+0.16)*108,Math.sin(th+0.16)*108);
+  c.quadraticCurveTo(Math.cos(th+0.3)*74,Math.sin(th+0.3)*74,Math.cos(th+0.44)*40,Math.sin(th+0.44)*40);
+  c.closePath();
+  c.fillStyle=grad;c.fill();
+  c.strokeStyle=axMode==='5ax'?'rgba(67,160,71,0.9)':'#4a6472';
+  c.lineWidth=2;c.stroke();
+ }
+ // 轮毂
+ var hg=c.createRadialGradient(-12,-14,6,0,0,44);
+ hg.addColorStop(0,'#9db3bf');hg.addColorStop(1,'#4f636d');
+ c.beginPath();c.arc(0,0,40,0,7);c.fillStyle=hg;c.fill();
+ c.strokeStyle='#2b3a42';c.lineWidth=2.5;c.stroke();
+ c.beginPath();c.arc(0,0,13,0,7);c.fillStyle='#22303a';c.fill();c.strokeStyle='#75898f';c.stroke();
+ c.strokeStyle='#3c4f58';
+ for(var k=0;k<6;k++){var ka=k*Math.PI/3;c.beginPath();c.moveTo(Math.cos(ka)*15,Math.sin(ka)*15);c.lineTo(Math.cos(ka)*36,Math.sin(ka)*36);c.stroke()}
+ c.restore();
+ // C 轴弧 + A 轴标注
+ c.strokeStyle='rgba(79,195,247,0.85)';c.lineWidth=2;
+ c.beginPath();c.ellipse(cx,cy,102,Math.max(14,Math.cos(A))*102,0,-0.6,1.4);c.stroke();
+ c.fillStyle='#4FC3F7';c.font='bold 14px Consolas,monospace';c.fillText('C',cx+108,cy+72);
+ c.strokeStyle='#FF6D00';c.lineWidth=2;
+ var ra=Math.abs(Math.cos(A))*60+18;
+ c.beginPath();c.ellipse(cx,cy,ra,ra*0.32,0,0,7);c.stroke();
+ c.fillStyle='#FF6D00';c.fillText('A',cx-ra-22,cy+4);
+ // 刀具
+ var knifeX=cx+72,knifeY=cy-58;
+ var tilt=axMode==='5ax'?(-A*1.6):0;
+ c.save();c.translate(knifeX,knifeY);c.rotate(tilt);
+ c.fillStyle='#9aa9b1';c.fillRect(-6,-86,12,66);
+ c.strokeStyle='#5c6e78';c.strokeRect(-6,-86,12,66);
+ c.beginPath();c.moveTo(-6,-20);c.lineTo(6,-20);c.lineTo(3,-2);c.lineTo(-3,-2);c.closePath();
+ c.fillStyle=axMode==='5ax'?'#66bb6a':'#FF7043';c.fill();c.strokeStyle='#2b3a42';c.stroke();
+ c.beginPath();c.arc(0,-1,3.4,0,7);c.fillStyle='#e0e8ec';c.fill();
+ // 主轴旋转示意
+ for(var r2=0;r2<3;r2++){
+  var raa=axT*6+r2*2.09;
+  c.beginPath();c.moveTo(Math.cos(raa)*7,-52+Math.sin(raa)*7);
+  c.lineTo(Math.cos(raa)*11,-52+Math.sin(raa)*11);
+  c.strokeStyle='rgba(255,183,77,0.8)';c.lineWidth=2;c.stroke();
+ }
+ c.restore();
+ // 工件/刀具姿态文字
+ c.fillStyle='#9fd8ff';c.font='13px Consolas,monospace';c.textAlign='left';
+ var aDeg=axMode==='5ax'?(A*180/Math.PI):0;
+ var cDeg=axMode==='5ax'?((C*180/Math.PI)%360+360)%360:0;
+ c.fillText('A = '+aDeg.toFixed(1)+'°',20,290);
+ c.fillText('C = '+cDeg.toFixed(1)+'°',20,310);
+ // 右栏注记
+ var rx=520;
+ c.fillStyle=axMode==='5ax'?'#81c784':'#ffab91';
+ c.font='bold 15px "Microsoft YaHei"';
+ c.fillText(axMode==='5ax'?'✓ 五轴联动：全部区域可达':'✕ 三轴：存在加工死角',rx,64);
+ var rows=[
+  ['叶根 R40~60（缓坡）','✓','✓'],
+  ['叶身 R60~95（陡壁）','✕ 刀轴干涉','✓ 刀轴随法向偏摆'],
+  ['叶梢 / 流道（负角）','✕ 够不到','✓ A/C 联动可达']
+ ];
+ c.font='13px "Microsoft YaHei"';
+ rows.forEach(function(r,i){
+  var y=100+i*56;
+  c.fillStyle='#8fa3ad';c.fillText(r[0],rx,y);
+  c.fillStyle='#e57373';c.fillText('三轴 '+r[1],rx,y+22);
+  c.fillStyle='#81c784';c.fillText('五轴 '+r[2],rx+170,y+22);
+ });
+ c.strokeStyle='#2e3f48';c.beginPath();c.moveTo(rx-16,44);c.lineTo(rx-16,290);c.stroke();
+ c.fillStyle='#5f7078';c.font='11.5px "Microsoft YaHei"';
+ c.fillText(axMode==='5ax'?'工件随 A 轴俯仰、C 轴回转，刀轴始终垂直于加工表面':'工件固定平放，刀轴只能竖直——曲面靠球刀逐点拟合，台阶刀痕明显',rx-8,314);
+}
+
+/* ================= 04 质量对比 ================= */
+var qcv=$('qcv'),qctx=qcv.getContext('2d');
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var roughPts=[],finePts=[],roughProf=[],fineProf=[];
+(function(){
+ var r1=mulberry32(20261029);
+ for(var i=0;i<600;i++)roughPts.push({x:r1(),y:r1(),s:r1()*2.2+1.2});
+ var r2=mulberry32(7717);
+ for(i=0;i<130;i++)finePts.push({x:r2(),y:r2(),s:r2()*1+0.4});
+ for(i=0;i<26;i++)roughProf.push(rnd(-1,1));
+ for(i=0;i<26;i++)fineProf.push(rnd(-1,1)*0.16);
+})();
+function raValue(){
+ var P=proc(),base=state.fin==='rough'?6.3:1.6;
+ var mid=(P.fr[0]+P.fr[1])/2;
+ var k=1+clamp((state.f-mid)/mid,-0.6,1.2)*0.55;
+ return base*k;
+}
+function drawQual(){
+ var c=qctx,W=920,H=300;
+ c.clearRect(0,0,W,H);
+ c.fillStyle='#1a242a';c.fillRect(0,0,W,H);
+ // 左：纹理区
+ var X=30,Y=44,Wd=530,Hd=170;
+ var bg=c.createLinearGradient(X,Y,X+Wd,Y+Hd);
+ bg.addColorStop(0,'#c6d2d8');bg.addColorStop(1,'#a9b8c1');
+ c.fillStyle=bg;c.fillRect(X,Y,Wd,Hd);
+ c.strokeStyle='#8d9ba2';c.strokeRect(X+.5,Y+.5,Wd-1,Hd-1);
+ var pts=state.fin==='rough'?roughPts:finePts;
+ pts.forEach(function(p){
+  c.fillStyle='rgba(40,55,66,'+(state.fin==='rough'?0.5:0.28)+')';
+  c.beginPath();c.arc(X+p.x*Wd,Y+p.y*Hd,p.s*(state.fin==='rough'?1:0.55),0,7);c.fill();
+ });
+ // 刀痕
+ var step=state.fin==='rough'?12:26;
+ c.strokeStyle=state.fin==='rough'?'rgba(90,105,115,0.55)':'rgba(120,135,145,0.22)';
+ c.lineWidth=state.fin==='rough'?1.6:0.8;
+ for(var y=Y+8;y<Y+Hd;y+=step){
+  c.beginPath();
+  for(var x=X;x<=X+Wd;x+=10){
+   var amp=state.fin==='rough'?2.2:0.5;
+   var yy=y+Math.sin(x*0.06+y)*amp;
+   x===X?c.moveTo(x,yy):c.lineTo(x,yy);
+  }
+  c.stroke();
+ }
+ c.fillStyle='#37474f';c.font='12px "Microsoft YaHei"';
+ c.fillText(state.fin==='rough'?'粗铣表面（步距大 · 残留高）':'精铣表面（步距小 · 残留低）',X+10,Y+18);
+ // 右：轮廓放大
+ var PX=590,PY=44,PW=300,PH=170;
+ c.fillStyle='#121a1f';c.fillRect(PX,PY,PW,PH);
+ c.strokeStyle='#2e3f48';c.strokeRect(PX+.5,PY+.5,PW-1,PH-1);
+ c.fillStyle='#8fa3ad';c.font='12px "Microsoft YaHei"';
+ c.fillText('轮廓放大（纵向放大 200×）',PX+10,PY+20);
+ var mid=PY+PH/2+10, amp=state.fin==='rough'?44:10;
+ var prof=state.fin==='rough'?roughProf:fineProf;
+ c.strokeStyle=state.fin==='rough'?'#FF8A65':'#4FC3F7';c.lineWidth=2;
+ c.beginPath();
+ prof.forEach(function(v,i){
+  var x=PX+14+i*((PW-28)/(prof.length-1));
+  var y=mid+v*amp;
+  i?c.lineTo(x,y):c.moveTo(x,y);
+ });
+ c.stroke();
+ c.strokeStyle='rgba(143,163,173,0.4)';c.setLineDash([4,4]);c.lineWidth=1;
+ c.beginPath();c.moveTo(PX+10,mid);c.lineTo(PX+PW-10,mid);c.stroke();c.setLineDash([]);
+ // Ra 数值
+ var ra=raValue();
+ c.fillStyle=state.fin==='rough'?'#FF8A65':'#4FC3F7';
+ c.font='bold 22px Consolas,monospace';
+ c.fillText('Ra ≈ '+ra.toFixed(1)+' μm',PX+10,PY+PH+34);
+ c.fillStyle='#8fa3ad';c.font='11.5px "Microsoft YaHei"';
+ var tip=state.fin==='rough'?'粗铣常见 Ra 6.3~12.5 μm（IT11~IT13 级）':'精铣常见 Ra 0.8~3.2 μm（IT7~IT9 级）';
+ c.fillText(tip,PX+10,PY+PH+54);
+ c.fillStyle='#5f7078';c.font='11.5px "Microsoft YaHei"';
+ c.fillText('Ra：轮廓算术平均偏差 — 表面粗糙度最常用评定参数（数值为示意，随参数联动）',30,H-14);
+ $('qnote').textContent='当前参数估算 Ra ≈ '+ra.toFixed(1)+' μm（随 F 偏离推荐区间变化）';
+}
+
+/* ================= 事件绑定 ================= */
+function loadProc(key){
+ state.key=key;sim.key=key;
+ var P=PROCS[key];
+ document.querySelectorAll('.pbtn').forEach(function(b){b.classList.toggle('on',b.dataset.p===key)});
+ state.s=P.def.s;state.f=P.def.f;state.ap=P.def.ap;
+ $('sl-s').value=state.s;$('sl-f').value=state.f;$('sl-ap').value=state.ap;
+ $('lb-ap').textContent=key==='drill'?'ap 啄钻段深':'ap 切削深度';
+ $('u-ap').textContent='mm';
+ resetSim(true);
+ evalParams();
+}
+function bandSet(id,min,max,r0,r1){
+ var el=$(id);
+ el.style.left=((r0-min)/(max-min)*100)+'%';
+ el.style.width=((r1-r0)/(max-min)*100)+'%';
+}
+function evalParams(){
+ var P=proc(),q=100,e=0,B=0;
+ $('vv-s').textContent=state.s;$('vv-f').textContent=state.f;$('vv-ap').textContent=state.ap.toFixed(1);
+ $('rec-s').textContent='推荐 '+P.sr[0]+' ~ '+P.sr[1];
+ $('rec-f').textContent='推荐 '+P.fr[0]+' ~ '+P.fr[1];
+ $('rec-ap').textContent='推荐 '+P.ar[0].toFixed(1)+' ~ '+P.ar[1].toFixed(1);
+ bandSet('bd-s',1000,12000,P.sr[0],P.sr[1]);
+ bandSet('bd-f',100,2000,P.fr[0],P.fr[1]);
+ bandSet('bd-ap',0.2,3,P.ar[0],P.ar[1]);
+ var w1=state.s>P.sr[1]*1.02,w2=state.f>P.fr[1]*1.02,w3=state.ap>P.ar[1]*1.02;
+ if(w1)q-=clamp((state.s-P.sr[1])/P.sr[1]*160,8,55);
+ if(w2)q-=clamp((state.f-P.fr[1])/P.fr[1]*170,8,55);
+ if(w3)q-=clamp((state.ap-P.ar[1])/P.ar[1]*130,6,45);
+ if(state.f<P.fr[0])q-=clamp((P.fr[0]-state.f)/P.fr[0]*40,0,18);
+ if(state.s<P.sr[0]&&state.f>P.fr[0]*0.9)q-=8;
+ q=clamp(Math.round(q),0,100);
+ e=clamp(Math.round(state.f*state.ap/(P.fr[1]*P.ar[1])*100),3,100);
+ $('vq').textContent=q;$('ve').textContent=e;
+ var bq=$('bar-q');bq.style.width=q+'%';
+ bq.style.background=q>75?'#43A047':(q>45?'#FBC02D':'#E53935');
+ $('bar-e').style.width=e+'%';
+ $('w1').classList.toggle('on',w1);
+ $('w2').classList.toggle('on',w2);
+ $('w3').classList.toggle('on',w3);
+ var allOk=!w1&&!w2&&!w3;
+ $('w0').classList.toggle('off',!allOk);
+ var ae=sim.key==='face'?32:(sim.key==='cav'?10:0);
+ var mrr=sim.key==='drill'? Math.PI*16*state.f/1000 : state.ap*ae*state.f/1000;
+ $('mrr').textContent='MRR ≈ ap × ae × F = '+mrr.toFixed(1)+' cm³/min（示意）';
+ refreshDyn();
+ drawQual();
+}
+
+/* 滑块事件 */
+$('sl-s').addEventListener('input',function(){state.s=+this.value;evalParams()});
+$('sl-f').addEventListener('input',function(){state.f=+this.value;evalParams()});
+$('sl-ap').addEventListener('input',function(){
+ state.ap=+this.value;
+ sim.layers=calcLayers();
+ evalParams();
+});
+document.querySelectorAll('.pbtn').forEach(function(b){
+ b.addEventListener('click',function(){loadProc(b.dataset.p)});
+});
+$('run').addEventListener('click',function(){
+ if(sim.running){sim.running=false;this.textContent='继续加工';$('gcst').textContent='已暂停';}
+ else if(sim.done){resetSim(true);startJob()}
+ else startJob();
+});
+$('rst').addEventListener('click',function(){resetSim(true);evalParams()});
+$('cool').addEventListener('change',function(){state.cool=this.checked});
+document.addEventListener('keydown',function(e){
+ if(e.code==='Space'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();$('run').click()}
+});
+
+/* 五轴模式按钮 */
+$('m3').addEventListener('click',function(){
+ axMode='3ax';this.classList.add('on','ax3');$('m5').classList.remove('on','ax3');
+});
+$('m5').addEventListener('click',function(){
+ axMode='5ax';this.classList.add('on','ax3');$('m3').classList.remove('on','ax3');
+});
+/* 质量按钮 */
+$('qr').addEventListener('click',function(){
+ state.fin='rough';this.classList.add('on','ax3');$('qf').classList.remove('on','ax3');drawQual();
+});
+$('qf').addEventListener('click',function(){
+ state.fin='fine';this.classList.add('on','ax3');$('qr').classList.remove('on','ax3');drawQual();
+});
+
+/* 主循环 */
+var lastT=performance.now();
+function loop(t){
+ var dt=Math.min(0.05,(t-lastT)/1000);lastT=t;
+ stepOp(dt);
+ drawMill();
+ axT+=dt;drawAx();
+ requestAnimationFrame(loop);
+}
+loadProc('face');
+evalParams();
+drawAx();
+drawQual();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

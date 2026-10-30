@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iCAN大赛 × TeleAgent——哪些能做、哪些不能做、怎么合规地做</title>
+<style>
+/* ========== Reset & Base（墨蓝专业风） ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { min-height: 100%; }
+body {
+  position: relative;
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", "Noto Sans SC", sans-serif;
+  color: #1f2d3d;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  background: linear-gradient(160deg, #f8fafc 0%, #ffffff 45%, #cfe0f5 100%);
+  min-height: 100vh;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 45% 35% at 12% 8%, rgba(255,255,255,0.55) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 88% 90%, rgba(59,130,246,0.08) 0%, transparent 55%);
+}
+body > * { position: relative; z-index: 1; }
+
+/* ========== 封面 Hero ========== */
+.title {
+  position: relative; overflow: hidden;
+  padding: 52px 40px 46px;
+  text-align: center;
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5aa8 55%, #3b82f6 100%);
+  color: #ffffff;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(30,58,95,0.3);
+}
+.title::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 18% 82%, rgba(255,255,255,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 40% at 82% 18%, rgba(255,255,255,0.08) 0%, transparent 55%);
+  pointer-events: none;
+}
+.title > * { position: relative; z-index: 1; }
+.title .eyebrow {
+  font-size: 12px; letter-spacing: 3px; color: #cfe0f5;
+  display: inline-block; border-top: 1px solid rgba(207,224,245,0.5); border-bottom: 1px solid rgba(207,224,245,0.5);
+  padding: 5px 18px; margin-bottom: 20px;
+}
+.title h1 { font-size: 29px; font-weight: 800; margin: 0 0 14px 0; letter-spacing: 1px; color: #ffffff; line-height: 1.35; }
+.title .accent-line { width: 56px; height: 3px; background: rgba(255,255,255,0.85); margin: 0 auto 16px; border-radius: 2px; }
+.title .sub { font-size: 15.5px; color: rgba(255,255,255,0.9); margin: 0 0 20px; letter-spacing: 1px; }
+.title .badges { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.title .badges span {
+  font-size: 12px; color: #e8f0fe;
+  border: 1px solid rgba(255,255,255,0.45); border-radius: 20px;
+  padding: 4px 14px; letter-spacing: 1px;
+}
+
+/* ========== 章节标题 ========== */
+h1.heading {
+  font-size: 24px; color: #0f1e33;
+  margin: 34px 0 14px 0; font-weight: 700;
+  border-left: 5px solid #3b82f6; padding-left: 14px;
+  letter-spacing: 1px; line-height: 1.35;
+}
+h2.heading {
+  font-size: 19px; color: #0f1e33;
+  margin: 22px 0 10px; padding-bottom: 7px;
+  border-bottom: 2px solid #c9d6f3; font-weight: 600;
+}
+
+/* ========== 正文 / 列表 ========== */
+.paragraph { font-size: 15px; color: #1f2d3d; line-height: 1.85; margin: 0 0 14px 0; }
+.paragraph b, .paragraph strong { color: #0f1e33; }
+.list { margin: 0 0 14px 0; padding-left: 24px; font-size: 15px; color: #1f2d3d; line-height: 1.85; }
+.list li { margin-bottom: 7px; }
+.list li::marker { color: #3b82f6; }
+
+/* ========== 文档区容器 ========== */
+.doc-section {
+  background: #ffffff; border-radius: 12px;
+  padding: 22px 26px; margin: 0 0 14px 0;
+  box-shadow: 0 2px 12px rgba(15,30,51,0.05);
+  border: 1px solid #dbe4ef;
+}
+
+/* ========== callout ========== */
+.callout {
+  margin: 0 0 14px 0; padding: 15px 22px;
+  background: #e8f0fe; border-left: 4px solid #3b82f6;
+  border-radius: 8px; font-size: 14.5px; line-height: 1.8;
+}
+.callout p { margin: 0 0 6px; color: #1f2d3d; }
+.callout p:last-child { margin: 0; }
+.callout[data-variant="warning"] { background: #FFF3E0; border-left-color: #d97706; }
+.callout[data-variant="warning"] p { color: #5d3a10; }
+.callout[data-variant="quote"] { background: #eef5ff; border-left-color: #2563eb; }
+
+/* ========== 表格 ========== */
+.table-wrap {
+  background: #ffffff; border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(15,30,51,0.05);
+  overflow: hidden; margin: 0 0 14px 0; border: 1px solid #dbe4ef;
+}
+.table-caption {
+  padding: 11px 16px; background: linear-gradient(135deg, #c9d6f3, #e8f0fe);
+  color: #0f1e33; font-size: 14px; font-weight: 600; text-align: center;
+  border-bottom: 1px solid #dbe4ef;
+}
+table.table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; }
+table.table thead th {
+  padding: 11px 14px; text-align: left;
+  background: #eef5ff; color: #0f1e33; font-weight: 700;
+  border-bottom: 2px solid #dbe4ef; word-break: break-word;
+}
+table.table tbody td { padding: 11px 14px; border-bottom: 1px solid #e8eef7; color: #1f2d3d; word-break: break-word; line-height: 1.7; }
+table.table tbody tr:last-child td { border-bottom: none; }
+table.table tbody tr:hover { background: #f4f8fe; }
+
+/* ========== stat ========== */
+.stat-grid { display: flex; gap: 14px; margin: 0 0 14px 0; }
+.stat {
+  flex: 1; text-align: center; padding: 22px 16px;
+  background: #ffffff; border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(15,30,51,0.05);
+  border: 1px solid #dbe4ef; border-top: 3px solid #3b82f6;
+}
+.stat .num { font-size: 30px; color: #2563eb; font-weight: 800; line-height: 1.15; }
+.stat .num em { font-style: normal; font-size: 15px; }
+.stat .label { font-size: 12.5px; color: #5b6b80; margin-top: 6px; line-height: 1.5; }
+
+/* ========== 能做/不能做 对比双列 ========== */
+.compare-grid { display: flex; gap: 14px; margin: 0 0 14px 0; align-items: stretch; }
+.cmp-col { flex: 1; border-radius: 12px; padding: 20px 22px; }
+.cmp-col.cmp-yes { background: #ffffff; border: 1.5px solid #16a34a; box-shadow: 0 2px 12px rgba(22,163,74,0.08); }
+.cmp-col.cmp-no { background: #ffffff; border: 1.5px solid #dc2626; box-shadow: 0 2px 12px rgba(220,38,38,0.08); }
+.cmp-col h3 { font-size: 17px; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
+.cmp-col.cmp-yes h3 { color: #15803d; }
+.cmp-col.cmp-no h3 { color: #b91c1c; }
+.cmp-col h3 .dot { width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; flex-shrink: 0; }
+.cmp-col.cmp-yes h3 .dot { background: #16a34a; }
+.cmp-col.cmp-no h3 .dot { background: #dc2626; }
+.cmp-item { padding: 10px 0 10px; border-bottom: 1px dashed #dbe4ef; }
+.cmp-item:last-child { border-bottom: none; padding-bottom: 2px; }
+.cmp-item b { display: block; font-size: 14.5px; margin-bottom: 2px; }
+.cmp-col.cmp-yes .cmp-item b { color: #14532d; }
+.cmp-col.cmp-no .cmp-item b { color: #7f1d1d; }
+.cmp-item span { font-size: 13px; color: #5b6b80; line-height: 1.65; display: block; }
+
+/* ========== 图表组件（通用类） ========== */
+.chart-row { display: flex; gap: 6px; align-items: flex-end; height: 96px; margin: 0 0 8px 0; }
+.chart-row .bar { flex: 1; border-radius: 4px 4px 0 0; min-height: 6px; background: linear-gradient(180deg, #3b82f6, #e8f0fe); position: relative; }
+.chart-row .bar .pct { position: absolute; top: -22px; left: 0; right: 0; text-align: center; font-size: 12.5px; font-weight: 700; color: #0f1e33; }
+.chart-labels { display: flex; gap: 6px; margin-top: 2px; }
+.chart-labels span { flex: 1; text-align: center; font-size: 12px; color: #5b6b80; }
+.stat-inline { display: flex; gap: 24px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #dbe4ef; }
+.stat-inline .item .v { font-size: 20px; font-weight: 800; color: #0f1e33; }
+.stat-inline .item .l { font-size: 11.5px; color: #5b6b80; margin-top: 2px; }
+
+/* ========== 卡片 ========== */
+.card-grid { display: flex; gap: 14px; margin: 0 0 14px 0; }
+.card {
+  flex: 1; background: #ffffff; padding: 20px 22px;
+  border-radius: 12px; box-shadow: 0 2px 12px rgba(15,30,51,0.05);
+  border: 1px solid #dbe4ef; border-top: 3px solid #3b82f6;
+}
+.card h3 { font-size: 16px; color: #0f1e33; margin: 0 0 8px 0; font-weight: 700; }
+.card p { font-size: 13.5px; color: #5b6b80; margin: 0; line-height: 1.7; }
+.card .num-tag { font-size: 11.5px; color: #2563eb; letter-spacing: 2px; display: block; margin-bottom: 6px; font-weight: 700; }
+
+/* ========== 实证案例横幅卡 ========== */
+.demo-card {
+  background: linear-gradient(135deg, #eef5ff 0%, #ffffff 55%, #e8f0fe 100%);
+  border: 1.5px solid #c9d6f3; border-radius: 14px;
+  padding: 24px 28px; margin: 0 0 14px 0;
+}
+.demo-card h3 { font-size: 18px; color: #0f1e33; margin: 0 0 4px; }
+.demo-card .demo-sub { font-size: 13px; color: #2563eb; margin: 0 0 14px; letter-spacing: 1px; }
+.demo-card .demo-body p { font-size: 14px; color: #1f2d3d; margin: 0 0 8px; line-height: 1.8; }
+.demo-card .demo-body p:last-child { margin: 0; }
+.demo-card .demo-body b { color: #0f1e33; }
+
+/* ========== timeline ========== */
+.timeline { list-style: none; padding: 0; margin: 0 0 14px 0; }
+.timeline li {
+  position: relative; padding-left: 28px; padding-bottom: 16px;
+  border-left: 2px solid #c9d6f3; margin-left: 6px;
+}
+.timeline li:last-child { border-left-color: transparent; padding-bottom: 0; }
+.timeline li::before {
+  content: ''; position: absolute; left: -7px; top: 5px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #3b82f6; border: 2px solid #f4f7fb; box-shadow: 0 0 0 2px #e8f0fe;
+}
+.timeline strong { font-size: 14.5px; color: #0f1e33; }
+.timeline p { font-size: 14.5px; color: #1f2d3d; margin: 4px 0 0 0; line-height: 1.8; }
+
+/* ========== 来源列表 ========== */
+.cite {
+  font-size: 11px; color: #2563eb; font-weight: 600;
+  vertical-align: super; margin-left: 2px;
+  text-decoration: none; cursor: pointer;
+}
+.cite:hover { color: #0f1e33; text-decoration: underline; }
+.source-list { margin: 0 0 14px 0; }
+.source-list ol { padding-left: 20px; font-size: 13px; color: #5b6b80; line-height: 2.0; }
+.source-list ol li { margin-bottom: 6px; }
+.source-list ol li strong { color: #0f1e33; }
+.source-list .src-id { display: inline-block; width: 24px; font-weight: 700; color: #2563eb; }
+
+/* ========== 尾页 ========== */
+.end_page {
+  margin-top: 22px; padding: 46px 26px; text-align: center;
+  background: linear-gradient(135deg, #c9d6f3 0%, #e8f0fe 100%);
+  border-radius: 16px;
+}
+.end_page h1 { font-size: 22px; color: #0f1e33; margin: 0 0 12px 0; font-weight: 800; letter-spacing: 2px; }
+.end_page p { font-size: 13.5px; color: #5b6b80; margin: 0 0 8px; line-height: 1.8; }
+
+/* ========== 响应式 ========== */
+@media screen and (max-width: 640px) {
+  body { padding: 16px 12px !important; }
+  h1.heading { font-size: 20px !important; }
+  h2.heading { font-size: 17px !important; }
+  .stat-grid, .card-grid, .compare-grid { flex-direction: column; }
+  .title h1 { font-size: 23px; }
+}
+
+/* ========== 打印优化 ========== */
+@media print {
+  body { padding: 0 !important; margin: 0 !important; background: #f4f7fb; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body::before { display: none; }
+  .title, .end_page { border-radius: 0; box-shadow: none; }
+  .doc-section, .card, .stat, .table-wrap, .cmp-col, .demo-card { box-shadow: none; }
+  section { break-inside: auto !important; }
+  .card, .cmp-item { break-inside: avoid; }
+}
+</style>
+</head>
+<body class="mode-doc" data-palette="ink-blue">
+
+  <!-- ===== 封面 ===== -->
+  <section class="title">
+    <div class="eyebrow">AI COMPETITION CAPABILITY MAP</div>
+    <h1>第二十届iCAN大学生创新创业大赛<br>× TeleAgent 能力对比</h1>
+    <div class="accent-line"></div>
+    <p class="sub">哪些能做 · 哪些不能做 · 怎么合规地做</p>
+    <div class="badges" data-layout="row">
+      <span>教育部A2类赛事</span>
+      <span>福建赛区112强</span>
+      <span>10·31泉州师院决赛</span>
+    </div>
+  </section>
+
+  <!-- ===== 一、大赛速览 ===== -->
+  <h1 class="heading" data-level="1">一、大赛速览与评分构成</h1>
+  <div class="stat-grid" data-cols="4">
+    <div class="stat"><div class="num">112</div><div class="label">福建赛区入围决赛项目</div></div>
+    <div class="stat"><div class="num">80<em>%</em></div><div class="label">路演答辩权重（巡展评审占20%）</div></div>
+    <div class="stat"><div class="num">55</div><div class="label">答辩评分中人权重分（创新35＋原创20）</div></div>
+    <div class="stat"><div class="num">45</div><div class="label">可被AI大幅加速分（实用25＋技术20）</div></div>
+  </div>
+  <div class="table-wrap">
+    <table class="table" data-caption="赛制与评分构成">
+      <colgroup><col style="width:22%"><col style="width:78%"></colgroup>
+      <tbody>
+        <tr><td><b>赛事与赛道</b></td><td>第二十届iCAN大学生创新创业大赛（2026年4-11月，教育部A2类赛事）<a class="cite" href="#source-1">[1]</a>；设创新、创业、挑战三赛道</td></tr>
+        <tr><td><b>参赛材料四件套</b></td><td>产品说明书＋答辩PPT（产品介绍占20分）＋实物演示视频＋原创性说明</td></tr>
+        <tr><td><b>决赛赛制</b></td><td>巡展评审（3分钟/项目）占20%＋分组路演答辩（8分钟＝讲解演示≤6＋评委问答≤2）占80%<a class="cite" href="#source-2">[2]</a>；巡展评分中"现场演示效果"占50分，原则上不允许播放录像</td></tr>
+        <tr><td><b>答辩评分构成</b></td><td>创新性35＋实用性25＋原创性20＋技术方案20；原创性定义＝"开发过程可追溯、佐证材料真实有效"</td></tr>
+        <tr><td><b>合规红线</b></td><td><b>明文"代做直接取消资格"</b>——AI定位必须是辅助研发工具＋过程留痕，不是代做</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 二、核心对比 ===== -->
+  <h1 class="heading" data-level="1">二、核心对比：TeleAgent 能做什么、不能做什么</h1>
+  <div class="compare-grid" data-cols="2">
+    <div class="cmp-col cmp-yes">
+      <h3><span class="dot">✓</span>TeleAgent 能做（AI辅助层）</h3>
+      <div class="cmp-item"><b>① 参赛材料全家桶</b><span>产品说明书、答辩PPT、原创性说明、演示脚本——按评审标准逐项生成初稿，人做终审</span></div>
+      <div class="cmp-item"><b>② 调研与考证建档</b><span>选题空位分析、竞品扫描、数据佐证联网核实并注明出处（政策/标准/行业数据）</span></div>
+      <div class="cmp-item"><b>③ 数字作品Demo</b><span>纯软件类作品本体可直接生成：单文件交互式HTML应用（含实时渲染、Canvas输出、数据联动）</span></div>
+      <div class="cmp-item"><b>④ 情境演示视频</b><span>内网文生视频接口生成开场/情境素材（写实叙事类），解决"现场不允许放录像"之外的片头素材需求</span></div>
+      <div class="cmp-item"><b>⑤ 答辩陪练</b><span>AI分饰评委按评分表追问（创新性/实用性/技术方案），模拟8分钟路演问答，逐项复盘话术</span></div>
+      <div class="cmp-item"><b>⑥ 原创性研发留痕</b><span>开发全程自动生成研发日志：需求→设计→实现→踩坑→修复，正对"过程可追溯、佐证真实有效"的原创性20分定义</span></div>
+    </div>
+    <div class="cmp-col cmp-no">
+      <h3><span class="dot">✕</span>TeleAgent 不能做（人的领地）</h3>
+      <div class="cmp-item"><b>① 硬件实物</b><span>电路焊接、结构装配、传感器调试等物理制作——112强中硬件类约占49%，这部分AI无法代劳</span></div>
+      <div class="cmp-item"><b>② 真实实验数据</b><span>实测采集、生物医药实验（约18%）等真实数据必须来自团队实验，AI编造＝造假出局</span></div>
+      <div class="cmp-item"><b>③ 创意决策归属</b><span>选题拍板、方案取舍、创新点定义是人的知识产权——AI给选项，人做决策并署名</span></div>
+      <div class="cmp-item"><b>④ 现场答辩与巡展</b><span>3分钟巡展讲解＋评委现场问答必须学生本人完成——AI只能赛前陪练，不能替身登场</span></div>
+      <div class="cmp-item" style="margin-top:10px;border-bottom:none;background:#f8fafc;border-radius:8px;padding:12px 14px;"><b style="color:#0f1e33;">定位一句话</b><span style="color:#1f2d3d;">AI做"研发加速器＋材料工厂＋陪练教练"，人保"创意、实体、临场"——这正是合规线：<b style="color:#b91c1c;">辅助留痕，拒绝代做</b></span></div>
+    </div>
+  </div>
+
+  <!-- ===== 三、量化覆盖 ===== -->
+  <h1 class="heading" data-level="1">三、量化对照：112强项目 × TeleAgent覆盖度</h1>
+  <div class="doc-section">
+    <h2 class="heading">作品形态分布（112个入围项目）<a class="cite" href="#source-2">[2]</a></h2>
+    <div class="chart-row">
+      <div class="bar" style="height:96%;"><span class="pct">约49%</span></div>
+      <div class="bar" style="height:48%;"><span class="pct">约24%</span></div>
+      <div class="bar" style="height:36%;"><span class="pct">约18%</span></div>
+      <div class="bar" style="height:18%;"><span class="pct">约9%</span></div>
+    </div>
+    <div class="chart-labels">
+      <span>硬件实物类<br>（约55项）</span>
+      <span>纯软件类<br>（约27项）</span>
+      <span>生物医药类<br>（约20项）</span>
+      <span>文创非遗类<br>（约10项）</span>
+    </div>
+    <div class="stat-inline">
+      <div class="item"><div class="v">33%</div><div class="l">作品本体可AI直接生成（纯软件＋文创）</div></div>
+      <div class="item"><div class="v">100%</div><div class="l">项目材料包可AI辅助（全体参赛队）</div></div>
+      <div class="item"><div class="v">45分</div><div class="l">答辩评分中AI可大幅加速的部分</div></div>
+    </div>
+  </div>
+  <aside class="callout">
+    <p><b>覆盖结论：</b>作品本体层，纯软件＋文创非遗约33%可由AI直接生成Demo；材料包层100%覆盖——每支队伍的产品说明书、PPT、原创性说明都能加速。硬件类（49%）AI做不了实物，但研发日志、技术方案文档、演示脚本同样全链路辅助。</p>
+  </aside>
+  <div class="table-wrap">
+    <div class="table-caption">答辩评分表 × AI辅助方式</div>
+    <table class="table" data-caption="评分表对照">
+      <colgroup><col style="width:16%"><col style="width:12%"><col style="width:24%"><col style="width:48%"></colgroup>
+      <thead><tr><th>评分项</th><th>分值</th><th>属性</th><th>TeleAgent辅助方式</th></tr></thead>
+      <tbody>
+        <tr><td><b>创新性</b></td><td>35</td><td>人权重</td><td>AI提供选题空位分析与竞品扫描供人决策，创新点归属团队</td></tr>
+        <tr><td><b>实用性</b></td><td>25</td><td>AI可加速</td><td>应用场景论证、用户调研框架、数据佐证由AI起草核实</td></tr>
+        <tr><td><b>原创性</b></td><td>20</td><td>人权重＋AI留痕</td><td>开发过程AI自动留痕生成研发日志，佐证"可追溯、真实有效"</td></tr>
+        <tr><td><b>技术方案</b></td><td>20</td><td>AI可加速</td><td>架构说明、技术路线图、Demo实现由AI大幅加速</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 四、实证案例 ===== -->
+  <h1 class="heading" data-level="1">四、实证：一个作品用TeleAgent完整做出来</h1>
+  <div class="demo-card">
+    <h3>《今生簪花——蟳埔女习俗AI数字共创体验馆》</h3>
+    <p class="demo-sub">iCAN参赛示范成品 · 2026-10-27 用TeleAgent全流程生成</p>
+    <div class="demo-body">
+      <p><b>选题空位分析：</b>逐一核对112强名单——无"簪花围"题材＝赛道空位；决赛在泉州师范学院＝评委在地共鸣<a class="cite" href="#source-3">[3]</a>。</p>
+      <p><b>调研考证建档：</b>2008年蟳埔女习俗列入国家级非遗、2024年蟳埔村游客约850万人次/旅游收入约18亿元、全网播放约150亿次、泉州地方标准DB3505/T 16-2024——每项数据均核实并注明出处。</p>
+      <p><b>数字作品本体：</b>单文件HTML交互作品（六页签：簪花档案馆/AI簪花设计师——选场合花材配色实时渲染双层花环15朵＋自动生成命名寓意文案/打卡纪念卡Canvas合成一键下载/文旅价值/关于作品）。</p>
+      <p><b>情境视频：</b>内网文生视频接口生成开场情境素材MP4。</p>
+      <p><b>原创性留痕：</b>研发日志如实记录开发全程——含实测抓到并修复的2个bug（themeName未定义变量引用、花围命名逻辑），正是"开发过程可追溯"的活教材。</p>
+    </div>
+  </div>
+
+  <!-- ===== 五、技能化方向 ===== -->
+  <h1 class="heading" data-level="1">五、四个技能化方向（形成"学了→用了→再沉淀"闭环）</h1>
+  <div class="card-grid" data-cols="2">
+    <div class="card"><span class="num-tag">SKILL-01</span><h3>参赛材料包生成</h3><p>四件套（说明书/PPT/演示视频脚本/原创性说明）按评审标准逐项生成，支持变式重写。</p></div>
+    <div class="card"><span class="num-tag">SKILL-02</span><h3>答辩陪练</h3><p>AI分饰评委按评分四维追问，模拟路演问答并逐项复盘，输出话术改进清单。</p></div>
+  </div>
+  <div class="card-grid" data-cols="2">
+    <div class="card"><span class="num-tag">SKILL-03</span><h3>原创性研发留痕</h3><p>开发过程自动生成时间戳研发日志（需求→设计→踩坑→修复），直击原创性20分定义。</p></div>
+    <div class="card"><span class="num-tag">SKILL-04</span><h3>参赛查新</h3><p>选题前空位分析：历史获奖作品扫描、赛道密度、竞品对比，降低撞车风险。</p></div>
+  </div>
+
+  <!-- ===== 六、服务窗口 ===== -->
+  <h1 class="heading" data-level="1">六、服务窗口时间线</h1>
+  <ol class="timeline">
+    <li>
+      <strong>现在 → 10月31日（本周六决赛）：4天冲刺陪练窗口</strong>
+      <p>本届来不及从零参赛，但可作冲刺陪练＋材料打磨的demo题材：答辩问答模拟、巡展3分钟讲解稿打磨——112强队伍就在泉州师院，需求最热。</p>
+    </li>
+    <li>
+      <strong>11月起：全国赛阶段</strong>
+      <p>晋级队伍材料升级、答辩强化，服务延续。</p>
+    </li>
+    <li>
+      <strong>2027届完整服务窗口（明年4月报名启动）</strong>
+      <p>面向高校双创学院（福建农林大学/闽江学院/福建师大等）办"AI+参赛"训练营；民办院校双创组织化程度高（本届112强中占56%），是教育AI的天然切口。参赛季＝教育场景Token消耗高峰。</p>
+    </li>
+  </ol>
+
+  <!-- ===== 合规红线 ===== -->
+  <aside class="callout" data-variant="warning">
+    <p><b>合规底线（务必遵守）：</b>大赛明文规定"代做直接取消资格"。TeleAgent的一切使用必须定位为<b>AI辅助研发工具</b>：人做创意决策与实验、AI做加速与留痕、过程可追溯、佐证真实有效——这既是红线要求，也恰好是原创性20分的得分点。</p>
+  </aside>
+
+  <!-- ===== 附：数据来源 ===== -->
+  <h1 class="heading" data-level="1">附：数据来源</h1>
+  <div class="source-list">
+    <ol class="list">
+      <li id="source-1"><span class="src-id">[1]</span>第二十届iCAN大学生创新创业大赛章程、赛道设置与参赛材料要求（赛事官方发布）</li>
+      <li id="source-2"><span class="src-id">[2]</span>iCAN福建赛区决赛入围项目明细（112项，含作品形态与院校分布，2026-10-27读取自官方公布附件）</li>
+      <li id="source-3"><span class="src-id">[3]</span>蟳埔簪花文旅公开数据：国家级非遗认定（2008年）、游客量与旅游收入（2024年公开报道）、泉州地方标准DB3505/T 16-2024</li>
+    </ol>
+  </div>
+
+  <!-- ===== 尾页 ===== -->
+  <section class="title end_page">
+    <h1>辅助留痕 · 拒绝代做</h1>
+    <p>AI做研发加速器、材料工厂、陪练教练；人保创意、实体、临场。</p>
+    <p>本页由AI辅助整理，数据来源见上方列表，供业务研讨参考。</p>
+  </section>
+
+</body>
+</html>

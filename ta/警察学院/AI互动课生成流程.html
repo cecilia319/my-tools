@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 互动课是怎样生成的 · 演示</title>
+<style>
+  :root{
+    --ink:#182433; --paper:#f5f6f8; --card:#ffffff; --line:#d8dee6;
+    --navy:#12365e; --navy-2:#1d4e7e; --steel:#4a6785; --faint:#8496a9;
+    --gold:#b8862d; --red:#a63c2a; --green:#2c7a52;
+    --shadow:0 1px 2px rgba(16,32,52,.06),0 8px 24px -12px rgba(16,32,52,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);
+    font:16px/1.75 "Source Han Sans SC","Noto Sans SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 28px 80px}
+  .kicker{display:flex;align-items:center;gap:10px;color:var(--steel);
+    font-size:13px;letter-spacing:.22em;font-weight:600}
+  .kicker::before{content:"";width:26px;height:2px;background:var(--gold)}
+  h1{font-size:34px;line-height:1.3;margin:10px 0 6px;color:var(--navy);font-weight:800}
+  .sub{color:var(--steel);font-size:16.5px;max-width:860px}
+  .sub b{color:var(--navy-2)}
+  .meta{margin-top:14px;font-size:13px;color:var(--faint)}
+  .meta a{color:var(--steel);text-decoration:none;border-bottom:1px solid var(--line)}
+
+  /* ---------- 流程轨道 ---------- */
+  .rail{margin-top:26px;display:grid;grid-template-columns:repeat(5,1fr);gap:0;
+    position:relative}
+  .rail::before{content:"";position:absolute;left:4%;right:4%;top:27px;height:2px;background:var(--line)}
+  .step{position:relative;text-align:center;padding:0 8px;cursor:pointer;user-select:none}
+  .step .dot{width:56px;height:56px;border-radius:50%;margin:0 auto;background:var(--card);
+    border:2px solid var(--line);display:flex;align-items:center;justify-content:center;
+    font-size:20px;font-weight:800;color:var(--faint);position:relative;z-index:1;
+    transition:.22s;font-family:Georgia,serif}
+  .step .lbl{margin-top:10px;font-size:15.5px;font-weight:700;color:var(--steel)}
+  .step .hint{font-size:12px;color:var(--faint);margin-top:2px}
+  .step:hover .dot{border-color:var(--navy-2);color:var(--navy-2);transform:translateY(-2px)}
+  .step.on .dot{background:var(--navy);border-color:var(--navy);color:#fff;
+    box-shadow:0 0 0 5px rgba(18,54,94,.14)}
+  .step.on .lbl{color:var(--navy)}
+  .step.done .dot{border-color:var(--green);color:var(--green)}
+
+  /* ---------- 详情面板 ---------- */
+  .stage{margin-top:20px;display:grid;grid-template-columns:1.25fr .9fr;gap:22px;align-items:stretch}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:26px 32px;min-height:380px;display:flex;flex-direction:column}
+  .panel .tag{display:inline-flex;gap:8px;align-items:center;align-self:flex-start;
+    font-size:12.5px;font-weight:700;letter-spacing:.14em;color:var(--gold);
+    border:1px solid #e6d9bd;background:#fdf9ef;border-radius:999px;padding:4px 12px}
+  .panel h2{font-size:25px;color:var(--navy);margin:14px 0 4px;line-height:1.35}
+  .panel .lede{color:var(--steel);font-size:15px;margin-bottom:16px}
+  .panel h3{font-size:13px;letter-spacing:.18em;color:var(--faint);margin:18px 0 8px;font-weight:700}
+  .panel ul{list-style:none}
+  .panel li{padding:7px 0 7px 26px;position:relative;font-size:15.5px;border-bottom:1px dashed #e8ecf1}
+  .panel li:last-child{border-bottom:none}
+  .panel li::before{content:"";position:absolute;left:4px;top:16px;width:9px;height:9px;
+    border-radius:2px;background:var(--navy-2);transform:rotate(45deg)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .chip{font-size:13px;font-weight:600;padding:5px 13px;border-radius:999px;
+    background:#eef3f8;color:var(--navy-2);border:1px solid #d5e0ec}
+  .chip.hl{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .io{display:grid;grid-template-columns:1fr 34px 1fr;gap:10px;align-items:center;margin-top:10px}
+  .io .box{border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px;background:#fafbfc}
+  .io .box b{display:block;font-size:12px;color:var(--faint);letter-spacing:.15em;margin-bottom:4px}
+  .io .arr{text-align:center;color:var(--gold);font-size:20px;font-weight:800}
+  .police{margin-top:auto;background:#f0f5f1;border:1px solid #cfdfd2;border-left:4px solid var(--green);
+    border-radius:10px;padding:14px 18px;font-size:14.5px;color:#2c4a38}
+  .police b{color:var(--green)}
+
+  /* 右侧：流程示意 SVG */
+  .diagram{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:18px;display:flex;align-items:flex-start;justify-content:center}
+  .diagram svg{width:100%;height:auto;max-height:418px}
+
+  /* ---------- 技能墙 ---------- */
+  .wall{margin-top:46px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:30px 34px}
+  .wall h2{font-size:21px;color:var(--navy)}
+  .wall .note{color:var(--steel);font-size:14px;margin:4px 0 18px}
+  .wall code{background:#eef3f8;border-radius:4px;padding:1px 6px;font-size:12.5px}
+  .wall-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .wgroup{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fafbfc}
+  .wgroup h3{font-size:14px;color:var(--navy);margin-bottom:2px}
+  .wgroup .cap{font-size:12px;color:var(--faint);margin-bottom:10px}
+  .witem{display:flex;gap:8px;align-items:baseline;padding:4px 0;font-size:14px;flex-wrap:wrap}
+  .witem .n{font-weight:700;color:var(--navy-2);white-space:nowrap}
+  .witem .d{color:var(--steel);font-size:13px}
+  .witem .st{font-size:11px;color:var(--green);border:1px solid #cfe3d6;border-radius:4px;
+    padding:0 5px;white-space:nowrap}
+
+  /* ---------- 传统对比 ---------- */
+  .versus{margin-top:46px;background:var(--navy);color:#fff;border-radius:14px;
+    padding:32px 36px;box-shadow:var(--shadow)}
+  .versus h2{font-size:22px;color:#fff}
+  .versus .note{color:#b9cbdd;font-size:14px;margin:4px 0 20px}
+  .vtable{width:100%;border-collapse:collapse}
+  .vtable th,.vtable td{border:1px solid rgba(255,255,255,.16);padding:11px 14px;
+    font-size:14px;text-align:left;vertical-align:top;line-height:1.7}
+  .vtable th{background:rgba(255,255,255,.08);font-size:13.5px;letter-spacing:.06em}
+  .vtable td:first-child{color:#f0d9a8;font-weight:700;white-space:nowrap;width:88px}
+  .vtable td:nth-child(2){color:#a9bccf;width:34%}
+  .vtable td:nth-child(3){color:#eaf1f7}
+  .vtable b{color:#f0d9a8;font-weight:700}
+  .vsample{margin-top:16px;background:rgba(255,255,255,.07);border:1px dashed rgba(255,255,255,.25);
+    border-radius:10px;padding:14px 18px;font-size:13.5px;color:#c8d7e5;line-height:1.9}
+
+  /* ---------- 样例 CTA ---------- */
+  .cta{margin-top:30px;display:flex;gap:20px;align-items:center;background:var(--navy);
+    color:#fff;border-radius:14px;padding:26px 32px;box-shadow:var(--shadow)}
+  .cta .big{font-size:20px;font-weight:800}
+  .cta .small{color:#b9cbdd;font-size:14px;margin-top:4px;max-width:640px}
+  .cta a{margin-left:auto;white-space:nowrap;background:var(--gold);color:#fff;text-decoration:none;
+    font-weight:700;font-size:16px;padding:13px 26px;border-radius:10px;transition:.2s}
+  .cta a:hover{filter:brightness(1.08)}
+
+  footer{margin-top:34px;font-size:12.5px;color:var(--faint);line-height:1.9;
+    border-top:1px solid var(--line);padding-top:18px}
+  .kbd{display:inline-block;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;
+    padding:0 6px;font-size:12px;background:#fff;color:var(--steel)}
+  @media (max-width:960px){
+    .stage{grid-template-columns:1fr}
+    .step .hint{display:none}
+    .wall-grid{grid-template-columns:1fr}
+    .cta{flex-direction:column;align-items:flex-start}
+    .cta a{margin-left:0}
+    h1{font-size:26px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">面向教师的教学设计演示 · 警察学院专场</div>
+  <h1>AI 互动课是怎样生成的</h1>
+  <p class="sub">从一句话教学需求，到一门<b>可互动、可判分、可导出</b>的完整课件 —— 共五步。
+    方法论来自<b>清华大学 THU-MAIC 团队开源的 OpenMAIC</b>（23 个教学设计 Skill），
+    图示工艺来自开源 <b>Anatomy</b> 技能。本页本身即按该流程产出。</p>
+  <p class="meta">方法论出处：<a href="https://github.com/THU-MAIC/OpenMAIC">OpenMAIC 开源仓库（MIT）</a> ·
+    论文《From MOOC to MAIC》（JCST 2026） · <span class="kbd">←</span> <span class="kbd">→</span> 键切换步骤</p>
+
+  <!-- 流程轨道 -->
+  <div class="rail" id="rail"></div>
+
+  <!-- 详情 -->
+  <div class="stage">
+    <div class="panel" id="panel"></div>
+    <div class="diagram" id="diagram"></div>
+  </div>
+
+  <!-- 技能墙 -->
+  <div class="wall">
+    <h2>教学法 Skill 清单：23 个技能，四层分工</h2>
+    <p class="note">清华 OpenMAIC <code>skills/agent-runtime</code> 目录内置 23 个教学设计 Skill；
+      下表为按职责归组的代表项，标 <span style="color:var(--green);font-weight:700">已装</span> 者为本机现役技能。</p>
+    <div class="wall-grid" id="wall"></div>
+  </div>
+
+  <!-- 传统对比 -->
+  <div class="versus" id="versus">
+    <h2>怎么教：与传统课堂的七个区别</h2>
+    <p class="note">左列是大家都熟悉的做法，右列是本套方法论（OpenMAIC 教学法 + 知途七类任务体系）改变的部分。<b style="color:#f0d9a8">右列每一条，都能在《情报分析》课件里指到对应环节。</b></p>
+    <table class="vtable">
+      <tr><th style="width:88px">维度</th><th style="width:34%">传统课堂 / 传统课件</th><th>AI 互动课（本套方法论）</th></tr>
+      <tr><td>备课</td><td>数周打磨讲义，案例靠个人积累，找视频素材碰运气</td><td>选教学法→出大纲→做场景分钟级完成；<b>三版草图先确认再全量生成</b>，不返工</td></tr>
+      <tr><td>内容形态</td><td>静态 PPT、录播视频——看完为止，学生是否看懂无人知晓</td><td>七类任务：互动文档/视频/辩论/场景模拟/练习/自互评/PBL——<b>每一步都可动手、可判分、有反馈</b></td></tr>
+      <tr><td>案例</td><td>教材案例年年重复，学生可以背答案；真实案例不能进课堂</td><td>AI 生成<b>虚构合规案例</b>（标注虚构），线索、假设、评分全链路联动，每届可换新</td></tr>
+      <tr><td>情境素材</td><td>监控/现场类视频素材难找、拍摄贵，只能文字描述让学生“想象”</td><td>教师输入一段案情文字，<b>几分钟后生情境视频直接当分析对象</b>（课件“视频线索”环节即真实案例）</td></tr>
+      <tr><td>评价</td><td>期末一考定成绩，过程是黑箱；课堂问答无法留存</td><td>排序、矩阵、判定、汇报、复述<b>每个操作都是评价证据</b>，完成标准逐项可核对，教师看板实时汇总</td></tr>
+      <tr><td>教学节奏</td><td>统一进度单向讲授，先听后练；会与不会走同一条路</td><td>任务引擎<b>先做后学</b>（接任务→缺方法→学方法→再干活）；费曼<b>先讲后对</b>；检查点放在论证接缝而非每页一考</td></tr>
+      <tr><td>方法论沉淀</td><td>好课的经验在老师个人手里，退休就带走</td><td>教学法封装成 Skill（23+3 个），“怎么教”变成<b>可复用、可迁移、可迭代的资产</b></td></tr>
+    </table>
+    <div class="vsample">在《情报分析》课件里逐一对应：视频线索提取（情境素材）、时间线＋事实/推断标注（内容形态）、ACH 矩阵（评价）、GO/STOP 判定点（教学节奏）、向带队民警汇报的场景模拟（内容形态）、费曼复述（教学节奏）、七项完成标准（评价）。</div>
+  </div>
+
+  <!-- 实跑样例 -->
+  <div class="cta">
+    <div>
+      <div class="big">现场实跑样例：《情报分析初步——从线索到研判》</div>
+      <div class="small">严格按本页五步流程产出：任务引擎骨架（vocational）＋ 费曼复述（feynman-learning）＋
+        讲授密度（lecture-style）＋ 事实核查（fact-check）。点击右侧直接进入学生端试玩。</div>
+    </div>
+    <a href="./情报分析互动课件.html">进入互动课件 →</a>
+  </div>
+
+  <footer>
+    ① 教学法与课堂结构依据清华 THU-MAIC 团队 OpenMAIC 项目公开文档；七类任务体系、题目规范与申报合规要点复刻自知途好课平台公开方法论（BOPPPS / OBE-PBL / 任务类型规格）；图示工艺依据开源 Anatomy 技能文档。<br>
+    ② 本页两份文件均为单文件 HTML（课件含内嵌演示视频），可离线播放、可投屏演示、可发给学生自主完成；学习记录仅保存在本机浏览器。课件中的监控视频由文生视频模型根据一段案情文字生成，画面为虚构演示，不指向任何真实人物、地点或案件。
+  </footer>
+</div>
+
+<script>
+/* ============ 五步流程数据 ============ */
+const STEPS = [
+  {
+    lbl:"定教学法", hint:"第①步 · 备课",
+    tag:"STEP 1 · 备课定位",
+    title:"先选教学法，再选内容 —— 模式决定整门课的骨架",
+    lede:"同一个主题，选不同的教学 Skill，产出的课堂结构完全不同。这一步回答：这堂课到底要学生「听懂」「会做」还是「讲得出」。",
+    points:[
+      "系统讲解类 → 「大师讲授」：一镜到底的论证链，案例贯穿，检查点少而精",
+      "素养课堂类 → 「核心素养教学设计」：真实情境、任务群、表现性评价",
+      "检查理解类 → 「费曼学习法」：学生先讲 → 暴露缺口 → 重建解释 → 迁移",
+      "动手实训类 → 「任务引擎（职业实训）」：任务简报 → 操作阶段 → GO/STOP 判定 → 完成标准",
+      "探索发现类 → 「深度交互」：3D / 模拟实验 / 游戏 / 思维导图 / 在线编程"
+    ],
+    chips:["lecture-style ✓","k12-core-literacy ✓","feynman-learning ✓","vocational ✓","deep-interactive","workshop-style","…共23个"],
+    io:{in:"教学目标 + 学情（学制 / 岗位 / 课时）", out:"教学法决定的大纲骨架与互动节奏"},
+    police:"警务课程多为「会做」型：《情报分析》《查缉战术》适合任务引擎＋GO/STOP 判定；《犯罪学理论》适合大师讲授。"
+  },
+  {
+    lbl:"出大纲", hint:"第②步 · 教学设计",
+    tag:"STEP 2 · 大纲生成（两阶段流水线 · 上）",
+    title:"一句话或一份教材，生成结构化课堂大纲",
+    lede:"OpenMAIC 的生成流水线第一阶段：AI 分析主题与上传材料（PDF / Word / PPT / 音视频均可），产出整门课的页面计划。",
+    points:[
+      "逐页大纲：每页的标题、要点密度、场景类型（讲授页 / 互动页 / 测验页）",
+      "角色（roster）：AI 主讲教师 + AI 同学/教练的人设与分工，如「追问型新同事」",
+      "互动节奏：检查点放在论证弧的接缝处，而不是每页一考",
+      "评价证据：每页外化什么能力、收集什么学习证据",
+      "产出前先给三版草图供确认 —— 定了风格再跑全流程，避免返工"
+    ],
+    chips:["大纲生成","roster 设计","三版草图确认"],
+    io:{in:"主题一句话 / 教材文件", out:"整课大纲：页面计划 + 角色 + 评价点"},
+    police:"可直接上传现有讲义、教材章节、典型案例卷宗（脱敏），AI 在既有材料上重组，而不是凭空编。"
+  },
+  {
+    lbl:"做场景", hint:"第③步 · 内容工程",
+    tag:"STEP 3 · 七类任务（复刻知途好课方法论）",
+    title:"每个知识点，长成七类 AI 任务之一",
+    lede:"这是知途好课平台沉淀的任务体系：七类任务覆盖从“读一遍”到“做一遍”的全场景。本演示无平台环境，用单文件课件复刻同一套任务形态。",
+    points:[
+      "AI互动文档：讲义/卷宗在关键节点弹出客观题与讨论题，AI 随时提炼重点",
+      "AI互动视频：视频时间轴插入互动点；更进一步——教师输入一段文字，AI 生成情境视频作为分析素材",
+      "AI辩论：学生选立场，与 AI 多轮对辩，AI 从知识库调论据并生成总结",
+      "场景模拟：AI 扮演角色（当事人/带队民警/客户），按评分标准多维打分出报告",
+      "常规练习：单选/多选/判断/简答，随机组卷、AI 自适应难度",
+      "自互评练习：自评、组内互评、组间互评、教师核验",
+      "PBL任务：真实情境拆解里程碑，分组协作、多方评价出交付物"
+    ],
+    chips:["七类任务体系","Anatomy 图示 ✓","TTS 配音","文生视频 ✓"],
+    io:{in:"大纲骨架", out:"七类任务组成的可运行课堂"},
+    police:"警务对应：场景模拟＝询问/接处警/研判汇报训练；AI辩论＝执法边界议题；PBL＝专案研判贯穿任务。"
+  },
+  {
+    lbl:"过质检", hint:"第④步 · 质量关卡",
+    tag:"STEP 4 · 事实核查与验收",
+    title:"交付前把「知识性错误」拦在课堂外",
+    lede:"「事实核查」Skill 在生成完成后逐页检查关键论断：只抓影响信任的少数硬伤，逐条给出证据与修改建议。",
+    points:[
+      "关键论断逐条核对：法条条号、数据、时限、程序步骤等硬事实",
+      "输出证据支撑的核查报告，由教师决定改哪些",
+      "音画验收：语音、字幕、动画高亮与讲解同步",
+      "案例合规检查：教学案例标注「虚构」，不出现真实案件细节",
+      "AI 合规红线：AI 生成内容显著标识；价值观引领、情感关怀等育人环节不交由 AI（依据教师 AI 应用指引）"
+    ],
+    chips:["fact-check ✓","音画同步验收","案例合规"],
+    io:{in:"生成的全部页面", out:"核查报告 + 修订后的定稿"},
+    police:"警务教学的硬事实密度高（法条、程序、时限），这一步是 AI 课件能不能进课堂的门槛。"
+  },
+  {
+    lbl:"上课堂", hint:"第⑤步 · 运行与评价",
+    tag:"STEP 5 · 多智能体课堂与导出",
+    title:"上课：AI 教师主讲，AI 同学追问，学生动手",
+    lede:"课堂不是播放视频：多智能体实时讨论、点名学生作答、白板推演；学生的每次操作都被记录为评价证据。",
+    points:[
+      "课堂讨论：AI 同学主动发问，学生随时插入或被点名",
+      "圆桌辩论：多个不同立场的智能体围绕案情推演互辩",
+      "深度交互：学生亲手调参数、做实验、玩知识关卡",
+      "实时评价：测验判分、操作过程记录、费曼复述留存",
+      "导出：PPTX（可编辑）/ 离线 HTML（断网可放）/ 资源包（进内网）"
+    ],
+    chips:["多智能体","白板推演","成绩记录","四种导出"],
+    io:{in:"定稿课堂", out:"上课运行数据 + 可分发的成课文件"},
+    police:"内网部署直接用「资源包 / 离线 HTML」导出 —— 播放时不访问任何公网，符合校园网环境要求。"
+  }
+];
+
+/* ============ 技能墙数据（按职责归组） ============ */
+const WALL = [
+  { h:"教学法层 · 定课堂形态", cap:"决定这堂课「怎么教」",
+    items:[
+      ["lecture-style 大师讲授","一镜到底论证链，案例贯穿","已装"],
+      ["k12-core-literacy 素养教学","真实情境·任务群·表现性评价","已装"],
+      ["feynman-learning 费曼","先讲→缺口→重建→迁移","已装"],
+      ["vocational 任务引擎","操作流程＋GO/STOP 判定","已装"],
+      ["workshop-style 工作坊","动手产出，而非听讲",""],
+      ["deep-interactive 深度交互","3D/模拟/游戏/导图/编程",""],
+      ["learning-to-learn 学会学习","学习策略作为主线",""]
+    ]},
+  { h:"平台建设层 · 知途好课方法论", cap:"决定任务「在平台上怎么建」",
+    items:[
+      ["boppps 教学设计","BOPPPS六环节＋题目规范","已装"],
+      ["obe-pbl 模块建设","OBE逆向＋PBL贯穿任务","已装"],
+      ["grant-proposal 申报书","政策依据＋八维自检＋合规红线","已装"],
+      ["task-type-specs 七类任务","互动文档/视频/辩论/模拟…规格","已装"],
+      ["platform-features 任务清单","平台功能与任务匹配","已装"]
+    ]},
+  { h:"内容工程层 · 造课堂材料", cap:"决定课堂「用什么呈现」",
+    items:[
+      ["anatomy 结构图示","精密立体建模·部件高亮","已装"],
+      ["文生视频（H3）","文字→情境视频，当分析素材","已装"],
+      ["pptx-import PPT 导入","既有课件原样转入",""],
+      ["style-clone 风格复用","按品牌模板成课",""],
+      ["image 生成","配图与插图",""]
+    ]},
+  { h:"质量层 · 守课堂底线", cap:"决定课件「能不能进教室」",
+    items:[
+      ["fact-check 事实核查","硬事实逐条核对","已装"],
+      ["editing 编辑","结构与表述修订",""],
+      ["deep-research 深度调研","现势性内容补证",""],
+      ["curriculum planning 课纲规划","多课时课程体系",""],
+      ["stage-design 舞台规范","页面/持久化/音频验收",""]
+    ]}
+];
+
+/* ============ 流程示意 SVG ============ */
+function diagramSVG(active){
+  const W=430,H=462,cx=W/2;
+  const nodes=[
+    {x:cx,y:52,t:"教学需求",d:"一句话 / 一份教材"},
+    {x:cx,y:140,t:"大纲骨架",d:"页面 · 角色 · 互动节奏"},
+    {x:cx-118,y:238,t:"七类任务",d:"互动文档/视频/辩论/模拟等"},
+    {x:cx+118,y:238,t:"图示配音",d:"Anatomy·TTS·文生视频"},
+    {x:cx,y:334,t:"事实核查",d:"关键论断＋证据"},
+    {x:cx,y:420,t:"AI 互动课堂",d:"运行 · 评价 · 导出"}
+  ];
+  const edges=[[0,1],[1,2],[1,3],[2,4],[3,4],[4,5]];
+  const nodeStep=[0,1,2,2,3,4];
+  const box=(x,y,t,d,hl)=>{
+    const c=hl?"#12365e":"#ffffff",tc=hl?"#ffffff":"#182433",
+      dc=hl?"#b9cbdd":"#8496a9",bc=hl?"#12365e":"#d8dee6";
+    return `<rect x="${x-86}" y="${y-24}" width="172" height="48" rx="9" fill="${c}" stroke="${bc}" stroke-width="1.4"/>
+      <text x="${x}" y="${y-3}" text-anchor="middle" font-size="14.5" font-weight="700" fill="${tc}">${t}</text>
+      <text x="${x}" y="${y+14}" text-anchor="middle" font-size="10.5" fill="${dc}">${d}</text>`;
+  };
+  let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="生成流程示意">`;
+  s+=`<text x="${cx}" y="18" text-anchor="middle" font-size="11.5" letter-spacing="3" fill="#8496a9">AI 互动课生成流水线</text>`;
+  for(const [a,b] of edges){
+    const A=nodes[a],B=nodes[b];
+    const hot=nodeStep[a]<=active&&nodeStep[b]<=active;
+    const mx=(A.x+B.x)/2, my=(A.y+B.y)/2;
+    s+=`<path d="M${A.x} ${A.y+24+((a===1)?6:8)} Q${mx} ${my} ${B.x} ${B.y-32}" fill="none"
+        stroke="${hot?"#12365e":"#d8dee6"}" stroke-width="${hot?2.2:1.6}" ${hot?'':'stroke-dasharray="4 4"'}/>`;
+  }
+  nodes.forEach((n,i)=>{ s+=box(n.x,n.y,n.t,n.d, nodeStep[i]<=active); });
+  s+=`</svg>`;
+  return s;
+}
+
+/* ============ 渲染 ============ */
+const rail=document.getElementById("rail"),
+      panel=document.getElementById("panel"),
+      dia=document.getElementById("diagram");
+let cur=0;
+STEPS.forEach((st,i)=>{
+  const d=document.createElement("div");
+  d.className="step";d.dataset.i=i;
+  d.innerHTML=`<div class="dot">${["一","二","三","四","五"][i]}</div>
+    <div class="lbl">${st.lbl}</div><div class="hint">${st.hint}</div>`;
+  d.onclick=()=>go(i);
+  rail.appendChild(d);
+});
+function go(i){
+  cur=Math.max(0,Math.min(STEPS.length-1,i));
+  const st=STEPS[cur];
+  [...rail.children].forEach((n,k)=>{
+    n.classList.toggle("on",k===cur);
+    n.classList.toggle("done",k<cur);
+  });
+  panel.innerHTML=`
+    <span class="tag">${st.tag}</span>
+    <h2>${st.title}</h2>
+    <p class="lede">${st.lede}</p>
+    <ul>${st.points.map(p=>`<li>${p}</li>`).join("")}</ul>
+    <h3>用到的方法 / 技能</h3>
+    <div class="chips">${st.chips.map((c,k)=>`<span class="chip${k===0?" hl":""}">${c}</span>`).join("")}</div>
+    <div class="io">
+      <div class="box"><b>输入</b>${st.io.in}</div><div class="arr">→</div>
+      <div class="box"><b>输出</b>${st.io.out}</div>
+    </div>
+    <div class="police"><b>对警院落地的提示：</b>${st.police}</div>`;
+  dia.innerHTML=diagramSVG(cur);
+}
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight")go(cur+1);
+  if(e.key==="ArrowLeft")go(cur-1);
+});
+/* 技能墙 */
+document.getElementById("wall").innerHTML=WALL.map(g=>`
+  <div class="wgroup"><h3>${g.h}</h3><div class="cap">${g.cap}</div>
+    ${g.items.map(([n,d,st])=>`
+      <div class="witem"><span class="n">${n}</span>
+      ${st?`<span class="st">已装</span>`:""}
+      <span class="d">${d}</span></div>`).join("")}
+  </div>`).join("");
+go(0);
+</script>
+</body>
+</html>

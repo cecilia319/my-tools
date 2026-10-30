@@ -114,8 +114,9 @@
 
   function unlock() {
     try { sessionStorage.setItem(SK, CFG.ver); } catch (e) {}
-    var m = document.getElementById('__gate'); if (m) m.remove();
+    var m = document.getElementById('__gate');
     document.documentElement.style.visibility = '';
+    if (m) setTimeout(function () { if (m.parentNode) m.parentNode.removeChild(m); }, 250);
   }
 
   function build() {

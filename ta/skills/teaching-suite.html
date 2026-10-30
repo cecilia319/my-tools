@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TA技能现场演示 · 备课五件套</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#F4F6FA;color:#1F2937;line-height:1.7}
+.container{max-width:1080px;margin:0 auto;padding:22px 18px 70px}
+header.hero{background:linear-gradient(135deg,#0A2E5C,#0B57A4 60%,#1273D1);color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:18px}
+header.hero h1{font-size:24px}
+header.hero .sub{font-size:13.5px;opacity:.92;margin-top:6px}
+.badges{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 13px;font-size:12.5px}
+.badge b{color:#FFD54F}
+.warn{background:#FFF8E1;border-left:4px solid #F9A825;border-radius:6px;padding:9px 13px;font-size:12.5px;margin-bottom:16px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tab{background:#fff;border:1px solid #C9D8EA;border-radius:9px;padding:9px 16px;font-size:13.5px;font-weight:600;color:#0A2E5C;cursor:pointer;transition:.15s}
+.tab:hover{border-color:#1273D1}
+.tab.on{background:#0B57A4;color:#fff;border-color:#0B57A4}
+.module{display:none;background:#fff;border-radius:14px;padding:22px 26px;box-shadow:0 2px 12px rgba(15,40,80,.07)}
+.module.on{display:block}
+.module h2{font-size:17px;color:#0A2E5C;border-left:5px solid #1273D1;padding-left:11px;margin-bottom:12px}
+.scene{background:#F0F6FF;border:1px dashed #9DC3EE;border-radius:9px;padding:12px 15px;font-size:13px;margin-bottom:12px}
+.scene b{color:#0B57A4}
+.io{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.io{grid-template-columns:1fr}}
+.panel{border:1px solid #D7DEE8;border-radius:10px;overflow:hidden}
+.panel .ph{background:#0A2E5C;color:#fff;font-size:13px;font-weight:600;padding:7px 13px}
+.panel .pb{padding:13px 15px;font-size:13px;min-height:220px;background:#FCFDFE}
+.runbtn{background:#1273D1;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:14px;font-weight:700;cursor:pointer;margin:10px 0}
+.runbtn:hover{background:#0B57A4}
+.out{white-space:pre-wrap;font-size:13px;line-height:1.8}
+.cursor{display:inline-block;width:8px;height:15px;background:#1273D1;vertical-align:-2px;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+table.dt{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0}
+table.dt th{background:#EAF3FC;color:#0A2E5C;padding:6px 9px;border:1px solid #C9D8EA;text-align:left}
+table.dt td{padding:6px 9px;border:1px solid #D7DEE8}
+.mark{color:#0B57A4;background:#EAF3FC;border-radius:3px;padding:0 4px;font-weight:600}
+.good{color:#1B5E20;background:#E8F5E9;border-radius:3px;padding:0 4px}
+.bad{color:#C62828;background:#FFEBEE;border-radius:3px;padding:0 4px;font-weight:700}
+.bar{display:inline-block;height:12px;background:linear-gradient(90deg,#1273D1,#7FB8EE);border-radius:3px;vertical-align:middle}
+.note{font-size:12px;color:#6B7280;margin-top:10px}
+footer{text-align:center;font-size:12px;color:#6B7280;padding:16px 0 8px}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="hero">
+  <h1>备课五件套 · 现场演示</h1>
+  <div class="sub">教师教学线 ｜ 智能备课 → 教案助写 → 互动课件 → 作业批改 → 学情分析 ｜ A 级技能 · 装好即用</div>
+  <div class="badges"><span class="badge">演示动线：<b>现场生成一件教案 → 分身扮学生 → 批改一份作文 → 出一份学情</b></span><span class="badge">客户：<b>教师 / 教务处 / 师范类院校</b></span></div>
+</header>
+<div class="warn"><b>口径：</b>真实环境由校园网内 TA 执行，教研资料不出校。本页为运行效果演示，现场可用贵校真实课题复跑。</div>
+
+<div class="tabs">
+  <div class="tab on" data-m="m1">① 智能备课</div>
+  <div class="tab" data-m="m2">② 教案助写</div>
+  <div class="tab" data-m="m3">③ 互动课件</div>
+  <div class="tab" data-m="m4">④ 作业批改</div>
+  <div class="tab" data-m="m5">⑤ 学情分析</div>
+</div>
+
+<div class="module on" id="m1">
+  <h2>① 智能备课 · 输入课题，30 秒出教学设计</h2>
+  <div class="scene"><b>场景：</b>王老师明天要讲《生态系统的能量流动》（人教版高中生物必修3），今晚要备出教学设计。TA 输入课题+学情，秒出框架。</div>
+  <div class="io">
+    <div class="panel"><div class="ph">输入</div><div class="pb out">课题：生态系统的能量流动
+学情：高二（4）班，45人，上学期期末生物平均分 72
+要求：40分钟课；含1个课堂互动；联系农业生产实际</div></div>
+    <div class="panel"><div class="ph">TA 输出（点击运行）</div><div class="pb"><button class="runbtn" onclick="typeOut('out1', R.prep)">▶ 生成教学设计</button><div class="out" id="out1">等待运行…</div></div></div>
+  </div>
+  <div class="note">说明：可按班级学情调整难度梯度；输出可直接存为 Word 教案初稿，教师在此基础上修改定稿。</div>
+</div>
+
+<div class="module" id="m2">
+  <h2>② 教案助写 · 标准格式教案一键成文</h2>
+  <div class="scene"><b>场景：</b>教务处检查要求按学校模板交教案。TA 把教学设计扩写成含"师生活动+设计意图+时间分配"的完整教案。</div>
+  <div class="io">
+    <div class="panel"><div class="ph">输入</div><div class="pb out">基于上一步教学设计，按我校教案模板扩写：
+要求含【师生活动】【设计意图】【时间分配】三列
+配套板书设计与课后作业分层（基础/提高/挑战）</div></div>
+    <div class="panel"><div class="ph">TA 输出（点击运行）</div><div class="pb"><button class="runbtn" onclick="typeOut('out2', R.plan)">▶ 生成教案</button><div class="out" id="out2">等待运行…</div></div></div>
+  </div>
+  <div class="note">说明：支持上传学校教案模板（docx），TA 按模板格式回填；历史教案入库后可延续个人风格。</div>
+</div>
+
+<div class="module" id="m3">
+  <h2>③ 互动课件 · 知识点变成课堂可玩的小交互</h2>
+  <div class="scene"><b>场景：</b>能量流动的两个难点：营养级传递效率 10%~20%、为什么食物链一般不超过5级——做成课堂现场能点的小交互。</div>
+  <div class="io" style="grid-template-columns:1fr">
+    <div class="panel"><div class="ph">TA 生成的互动课件 · 现场点给学生看（点击运行后可交互）</div><div class="pb">
+      <button class="runbtn" onclick="document.getElementById('sim').style.display='block';this.style.display='none'">▶ 生成互动课件</button>
+      <div id="sim" style="display:none">
+        <div style="font-size:13px;margin-bottom:8px"><b>能量流动模拟器</b>：点"流到下一级"看能量怎么变少（输入10%效率可改）</div>
+        <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px">
+          <div style="flex:1;min-width:100px;text-align:center"><div id="b1" style="height:120px;background:linear-gradient(180deg,#43A047,#81C784);border-radius:6px 6px 0 0"></div><div style="font-size:12px">生产者<br><b id="v1">10000 kJ</b></div></div>
+          <div style="flex:1;min-width:100px;text-align:center"><div id="b2" style="height:18px;background:#FB8C00;border-radius:6px 6px 0 0"></div><div style="font-size:12px">初级消费者<br><b id="v2">—</b></div></div>
+          <div style="flex:1;min-width:100px;text-align:center"><div id="b3" style="height:6px;background:#E53935;border-radius:6px 6px 0 0"></div><div style="font-size:12px">次级消费者<br><b id="v3">—</b></div></div>
+          <div style="flex:1;min-width:100px;text-align:center"><div id="b4" style="height:3px;background:#8D6E63;border-radius:3px 3px 0 0"></div><div style="font-size:12px">三级消费者<br><b id="v4">—</b></div></div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <label style="font-size:13px">传递效率 <input id="eff" type="number" value="15" min="5" max="25" style="width:56px;padding:4px 6px"> %</label>
+          <button class="runbtn" style="margin:0;padding:7px 14px" onclick="flow()">流到下一级 ▶</button>
+          <button class="runbtn" style="margin:0;padding:7px 14px;background:#607D8B" onclick="resetFlow()">重置</button>
+          <span id="flowMsg" style="font-size:13px;color:#0B57A4;font-weight:600"></span>
+        </div>
+        <div style="font-size:12px;color:#6B7280;margin-top:8px">课堂追问：改成10%和20%，第四级还剩多少？——这就是"食物链为什么一般不超过5级"的数学直觉。</div>
+      </div>
+    </div></div>
+  </div>
+  <div class="note">说明：TA 可按任意知识点生成此类单文件互动小课件（本页即 TA 风格），也支持扫码发布到学生手机即玩。</div>
+</div>
+
+<div class="module" id="m4">
+  <h2>④ 作业批改 · 作文四维诊断 + 逐句点评</h2>
+  <div class="scene"><b>场景：</b>45 本作文，老师上次说"批一班作业要 90 分钟"。TA 按"内容/结构/语言/书写"四维打分+逐句点评，教师只做终审。</div>
+  <div class="io">
+    <div class="panel"><div class="ph">输入：学生作文（节选）</div><div class="pb out" style="font-size:12.5px">《那一刻，我读懂了坚持》
+　马拉松赛道上，我的双腿像灌了铅。30公里处，放弃的念头第无数次冒出来……但我想起训练时父亲说的话：跑不完可以走，但不能停。我最终以4小时52分完赛。坚持不是不累，而是累了还向前。</div></div>
+    <div class="panel"><div class="ph">TA 批改输出（点击运行）</div><div class="pb"><button class="runbtn" onclick="typeOut('out4', R.grade)">▶ 批改</button><div class="out" id="out4">等待运行…</div></div></div>
+  </div>
+  <div class="note">说明：四维雷达+升级建议；同类问题全班汇总（如"30%同学开头平淡"），反哺讲评课。</div>
+</div>
+
+<div class="module" id="m5">
+  <h2>⑤ 学情分析 · 成绩单变成行动清单</h2>
+  <div class="scene"><b>场景：</b>月考成绩表交上来，除了排名还要回答三个问题：哪些知识点塌了？哪些学生临界生？下阶段怎么补？</div>
+  <div class="io">
+    <div class="panel"><div class="ph">输入：高二(4)班月考成绩（节选）</div><div class="pb out">45人 · 生物平均分68.5（年级71.2）
+低分集中题：第12题（能量计算）得分率31%
+临界生：8人（490~505分段，一本线下15分内）</div></div>
+    <div class="panel"><div class="ph">TA 输出（点击运行）</div><div class="pb"><button class="runbtn" onclick="typeOut('out5', R.analysis)">▶ 生成学情分析</button><div class="out" id="out5">等待运行…</div></div></div>
+  </div>
+  <div class="note">说明：输出=班级画像+知识点归因+临界生名单+两周补差计划；可一键生成家长会版（脱敏）。</div>
+</div>
+
+<footer>TA教育版 · 备课五件套现场演示页 ｜ A级标准技能，部署后现场用贵校真实课题复跑 ｜ 内部销售支持材料，请勿外发客户</footer>
+</div>
+
+<script>
+var R = {
+prep: '教学设计（初稿 · 30秒）✅\n\n【教学目标】\n1. 概述能量流动的过程与特点（生命观念）\n2. 建立能量流动模型并进行计算（科学思维）\n3. 应用传递效率分析农业生产实践（社会责任）\n\n【重点难点】\n重点：能量流动过程与特点 | 难点：传递效率相关计算\n\n【流程设计（40分钟）】\n0-5′ 情境导入：一亩田能养活几个人？\n5-15′ 建构模型：输入→传递→散失三路径\n15-25′ 互动实验：能量流动模拟器（改效率看结果）\n25-35′ 应用：生态农业（桑基鱼塘）为什么"不浪费"\n35-40′ 小结+分层作业布置\n\n【互动环节】能量流动模拟器：学生改传递效率，观察第四营养级能量——引出"5级封顶"的数学直觉。',
+plan: '教案（按模板扩写）✅\n\n<table class="dt"><tr><th>环节</th><th>师生活动</th><th>设计意图</th><th>时间</th></tr>' +
+'<tr><td>情境导入</td><td>师问"一亩田为什么养不活50个人"，生猜测</td><td>制造认知冲突，指向能量约束</td><td>5′</td></tr>' +
+'<tr><td>模型建构</td><td>生画能量流动图，师板书三路径</td><td>具象→抽象，落实生命观念</td><td>10′</td></tr>' +
+'<tr><td>互动实验</td><td>生操作模拟器，改效率记录第四级数值</td><td>用数据说话，突破计算难点</td><td>10′</td></tr>' +
+'<tr><td>实际应用</td><td>小组分析桑基鱼塘物质循环图</td><td>联系农业实践，落实社会责任</td><td>10′</td></tr>' +
+'<tr><td>小结作业</td><td>思维导图小结；分层作业</td><td>结构化收口</td><td>5′</td></tr></table>\n' +
+'【板书】能量流动：输入→传递→散失；相邻效率10~20%；单向流动逐级递减\n' +
+'【分层作业】基础：教材P96 1-3 | 提高：传递效率计算2题 | 挑战：设计一个庭院生态农业能量方案',
+grade: '批改完成 ✅  四维评分 + 逐句点评\n\n【四维雷达】内容 <span class="bar" style="width:132px"></span> 22/25 ｜ 结构 <span class="bar" style="width:126px"></span> 21/25 ｜ 语言 <span class="bar" style="width:138px"></span> 23/25 ｜ 书写 <span class="bar" style="width:120px"></span> 20/25\n【总评】<span class="good">86/100 · 二类文上（升一类文建议如下）</span>\n\n【逐句点评】\n1. "双腿像灌了铅"——<span class="good">比喻贴切，有画面感</span>\n2. "放弃的念头第无数次冒出来"——<span class="bad">"第无数次"搭配不当</span>，建议"无数次"\n3. "跑不完可以走，但不能停"——<span class="mark">全文文眼，建议独立成段放大张力</span>\n4. 结尾"坚持不是不累，而是累了还向前"——<span class="good">哲理句有升华</span>，若前面加一个具体细节（如补给站志愿者递水的瞬间）会更可信\n\n【全班共性】（45份汇总）：31%的同学开头平淡——讲评课安排"场景切入法"专项。',
+analysis: '学情分析（2026年10月月考）✅\n\n【班级画像】平均68.5（年级71.2，差2.7）；标准差14.3，两极分化明显\n\n【知识点归因 TOP3】\n<span class="bad">1. 能量传递效率计算</span> 得分率31% —— 概念"相邻营养级"混淆是主因\n<span class="bad">2. 实验设计题</span> 得分率48% —— 变量控制表述不规范\n<span class="bad">3. 生态农业评价</span> 得分率55% —— 缺"物质循环再生"答题术语\n\n【临界生名单】（8人，姓名略）——共性：选择题失分集中在遗传+生态计算，主观题得分率正常，属"会而不对"型\n\n【两周补差计划】\n第1周：传递效率专项（3节微专题+每日2题打卡）\n第2周：实验设计表述模板训练；生态农业术语清单背诵\n\n【家长会版】已同步生成（脱敏，不含个体排名）。'
+};
+function typeOut(id, html){
+  var el = document.getElementById(id);
+  el.innerHTML = '';
+  var i = 0, step = 7;
+  clearInterval(el._t);
+  var plain = html.replace(/<[^>]+>/g, '');
+  el._t = setInterval(function(){
+    i += step;
+    if(i >= plain.length){ el.innerHTML = html; clearInterval(el._t); return; }
+    el.textContent = plain.slice(0, i);
+    var c = document.createElement('span'); c.className='cursor'; el.appendChild(c);
+  }, 14);
+}
+document.querySelectorAll('.tab').forEach(function(t){
+  t.onclick = function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+    document.querySelectorAll('.module').forEach(function(x){x.classList.remove('on')});
+    t.classList.add('on');
+    document.getElementById(t.dataset.m).classList.add('on');
+  };
+});
+function flow(){
+  var e = Math.min(25, Math.max(5, parseFloat(document.getElementById('eff').value) || 15)) / 100;
+  var v1 = 10000, v2 = v1*e, v3 = v2*e, v4 = v3*e;
+  document.getElementById('v2').textContent = Math.round(v2).toLocaleString() + ' kJ';
+  document.getElementById('v3').textContent = Math.round(v3).toLocaleString() + ' kJ';
+  document.getElementById('v4').textContent = Math.round(v4*100)/100 + ' kJ';
+  document.getElementById('b2').style.height = Math.max(4, 120*e) + 'px';
+  document.getElementById('b3').style.height = Math.max(3, 120*e*e) + 'px';
+  document.getElementById('b4').style.height = Math.max(2, 120*e*e*e) + 'px';
+  document.getElementById('flowMsg').textContent = '效率' + Math.round(e*100) + '%：第四营养级仅剩 ' + (Math.round(v4*100)/100) + ' kJ —— 不足生产者的千分之四';
+}
+function resetFlow(){
+  document.getElementById('v2').textContent = '—'; document.getElementById('v3').textContent = '—'; document.getElementById('v4').textContent = '—';
+  document.getElementById('b2').style.height = '18px'; document.getElementById('b3').style.height = '6px'; document.getElementById('b4').style.height = '3px';
+  document.getElementById('flowMsg').textContent = '';
+}
+</script>
+</body>
+</html>

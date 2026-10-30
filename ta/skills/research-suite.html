@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TA技能现场演示 · 科研学术六项</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#F4F6FA;color:#1F2937;line-height:1.7}
+.container{max-width:1080px;margin:0 auto;padding:22px 18px 70px}
+header.hero{background:linear-gradient(135deg,#0A2E5C,#0B57A4 60%,#1273D1);color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:18px}
+header.hero h1{font-size:24px}
+header.hero .sub{font-size:13.5px;opacity:.92;margin-top:6px}
+.badges{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 13px;font-size:12.5px}
+.badge b{color:#FFD54F}
+.warn{background:#FFF8E1;border-left:4px solid #F9A825;border-radius:6px;padding:9px 13px;font-size:12.5px;margin-bottom:16px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tab{background:#fff;border:1px solid #C9D8EA;border-radius:9px;padding:9px 16px;font-size:13.5px;font-weight:600;color:#0A2E5C;cursor:pointer}
+.tab.on{background:#0B57A4;color:#fff;border-color:#0B57A4}
+.module{display:none;background:#fff;border-radius:14px;padding:22px 26px;box-shadow:0 2px 12px rgba(15,40,80,.07)}
+.module.on{display:block}
+.module h2{font-size:17px;color:#0A2E5C;border-left:5px solid #1273D1;padding-left:11px;margin-bottom:12px}
+.scene{background:#F0F6FF;border:1px dashed #9DC3EE;border-radius:9px;padding:12px 15px;font-size:13px;margin-bottom:12px}
+.scene b{color:#0B57A4}
+.io{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.io{grid-template-columns:1fr}}
+.panel{border:1px solid #D7DEE8;border-radius:10px;overflow:hidden}
+.panel .ph{background:#0A2E5C;color:#fff;font-size:13px;font-weight:600;padding:7px 13px}
+.panel .pb{padding:13px 15px;font-size:13px;min-height:210px;background:#FCFDFE}
+.runbtn{background:#1273D1;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:14px;font-weight:700;cursor:pointer;margin:10px 0}
+.out{white-space:pre-wrap;font-size:13px;line-height:1.8}
+.cursor{display:inline-block;width:8px;height:15px;background:#1273D1;vertical-align:-2px;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+.aibtn{display:inline-block;background:#FFEBEE;color:#C62828;border:1px solid #EF9A9A;border-radius:5px;padding:1px 7px;font-size:12px;margin:2px 2px 2px 0}
+.human{display:inline-block;background:#E8F5E9;color:#1B5E20;border:1px solid #A5D6A7;border-radius:5px;padding:1px 7px;font-size:12px;margin:2px 2px 2px 0}
+.linkcard{background:#EAF3FC;border:1px solid #B9D4EE;border-radius:9px;padding:10px 14px;font-size:13px;margin-top:10px}
+.linkcard a{color:#0B57A4;font-weight:700}
+.note{font-size:12px;color:#6B7280;margin-top:10px}
+footer{text-align:center;font-size:12px;color:#6B7280;padding:16px 0 8px}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="hero">
+  <h1>科研学术六项 · 现场演示</h1>
+  <div class="sub">科研学术线 ｜ 选题→申报→文献→写作→校准→投稿 ｜ A 级技能 · 装好即用</div>
+  <div class="badges"><span class="badge">演示动线：<b>现场把老师的一个想法，变成一页申报书框架</b></span><span class="badge">客户：<b>科研处 / 有申报压力的中青年教师</b></span></div>
+</header>
+<div class="warn"><b>口径：</b>TA 做框架、格式、语言与检索辅助——学术观点、数据与结论由教师负责；检索以学校已购库为主。本页为运行效果演示。</div>
+
+<div class="tabs">
+  <div class="tab on" data-m="m1">① 课题申报书框架</div>
+  <div class="tab" data-m="m2">② 文献链路</div>
+  <div class="tab" data-m="m3">③ 润色去 AI 味</div>
+  <div class="tab" data-m="m4">④ 论文格式校准</div>
+</div>
+
+<div class="module on" id="m1">
+  <h2>① 课题申报书框架 · 从想法到一页纸</h2>
+  <div class="scene"><b>场景：</b>苏老师（人文学院）11月要报省社科规划项目，只有个模糊方向。TA 30秒出申报书框架+选题依据句式。</div>
+  <div class="io">
+    <div class="panel"><div class="ph">输入</div><div class="pb out">方向：地方古籍的数字化整理
+我的底子：做过2个市厅级古籍相关项目
+要求：省社科规划项目框架，突出福建特色</div></div>
+    <div class="panel"><div class="ph">TA 输出（点击运行）</div><div class="pb"><button class="runbtn" onclick="typeOut('out1', R.prop)">▶ 生成框架</button><div class="out" id="out1">等待运行…</div></div></div>
+  </div>
+  <div class="note">说明：输出含选题依据、研究综述句式、内容框架、创新点表述模板；对接学校科研处历史立项库可分析"什么样的题目容易中"。</div>
+</div>
+
+<div class="module" id="m2">
+  <h2>② 文献链路 · 综述脉络一张图</h2>
+  <div class="scene"><b>场景：</b>写综述最怕"罗列文献没有脉络"。TA 把一个主题的文献组织成"三条学术脉络+各脉络代表文献+空缺点"。</div>
+  <div class="io">
+    <div class="panel"><div class="ph">输入</div><div class="pb out">主题：古籍智能整理（OCR后处理/命名实体/知识图谱）
+文献集：28篇（教师已下载，附清单）
+要求：找研究空缺，支撑选题依据</div></div>
+    <div class="panel"><div class="ph">TA 输出（点击运行）</div><div class="pb"><button class="runbtn" onclick="typeOut('out2', R.lit)">▶ 生成脉络</button><div class="out" id="out2">等待运行…</div></div></div>
+  </div>
+  <div class="note">说明：文献元数据来自教师提供的题录（不联网编造）；脉络与空缺供教师复核后写入申报书。</div>
+</div>
+
+<div class="module" id="m3">
+  <h2>③ 润色去 AI 味 · 把"AI腔"改成人话</h2>
+  <div class="scene"><b>场景：</b>初稿用AI辅助写了，期刊编辑一眼看出"AI味"。TA 逐句改写：去套话、换口语化连接、注入具体细节。</div>
+  <div class="io">
+    <div class="panel"><div class="ph">输入：初稿句（AI味重）</div><div class="pb out">"在数字化时代的背景下，古籍整理工作具有十分重要的意义，它不仅能够传承中华优秀传统文化，而且能够推动学术研究的创新发展。"</div></div>
+    <div class="panel"><div class="ph">TA 改写输出（点击运行）</div><div class="pb"><button class="runbtn" onclick="typeOut('out3', R.polish)">▶ 改写</button><div class="out" id="out3">等待运行…</div></div></div>
+  </div>
+  <div class="note">说明：改写原则=具体替代空泛、动词替代名词化、删冗余限定；保留作者原意，逐句对照可回退。</div>
+</div>
+
+<div class="module" id="m4">
+  <h2>④ 论文格式校准 · 学位论文送审前最后一道关</h2>
+  <div class="scene"><b>场景：</b>学位论文格式错误是送审退回第一原因。TA 按学校规范逐项校准：标题层级、图表编号、参考文献格式、页眉页脚。</div>
+  <div class="io" style="grid-template-columns:1fr">
+    <div class="panel"><div class="ph">已上线交互版</div><div class="pb">
+      <div style="font-size:13px"> TeleAgent学位论文格式校准报告 v2.2 —— 上传论文后逐项出校准报告，含问题定位与修改建议。</div>
+      <div class="linkcard">▶ <a href="../works/thesis-check.html" target="_blank">打开《学位论文格式校准交互报告 v2.2》</a>（已在本库 works 目录）</div>
+    </div></div>
+  </div>
+  <div class="note">说明：校准规则按学校研究生院规范配置；一次配置，全校毕业生复用——科研处的年度刚需场景。</div>
+</div>
+
+<footer>TA教育版 · 科研学术六项现场演示页 ｜ 选题申报/文献/润色/校准/开题/投稿 ｜ 内部销售支持材料，请勿外发客户</footer>
+</div>
+
+<script>
+var R = {
+prop: '申报书框架（一页纸）✅\n\n【选题名称（3选1）】\n1. 福建地方古籍智能化整理的知识组织研究——以××馆藏××类文献为例\n2. 数字人文视域下闽人著述的实体识别与知识图谱构建\n3. 面向地方文化传承的古籍整理人机协同模式研究\n\n【选题依据（句式已备）】\n学术价值：现有古籍整理研究多聚焦"版本—校勘"传统路径，对"智能整理"的知识组织环节研究不足……\n应用价值：服务福建文化强省建设，成果可直接支撑××馆数字化工程……\n\n【内容框架】（四部分）\n① 闽地古籍资源特征与整理现状 → ② 智能整理关键技术适配（实体/图谱）→ ③ 人机协同工作流构建 → ④ 示范应用与共享平台\n\n【创新点模板】\n- 对象创新：首次以××类闽人著述为语料……\n- 方法创新：将知识图谱引入地方古籍整理流程……\n\n【研究基础衔接句】"申请人在市厅级项目A、B中已完成××，为本项目提供了……"',
+lit: '文献脉络（28篇 → 三条线 + 空缺）✅\n\n【脉络一 · 识别技术线】（12篇）\nOCR → 后处理纠错 → 版面分析\n代表：Wang2020(OCR纠错) / Chen2022(版面) …\n【脉络二 · 知识组织线】（9篇）\n命名实体识别 → 关系抽取 → 领域知识图谱\n代表：Li2021(NER古籍) / Zhou2023(图谱) …\n【脉络三 · 应用平台线】（7篇）\n数字化平台 → 众包整理 → 开放共享\n代表：国家图书馆"中华古籍资源库"实践 …\n\n【研究空缺（可直接写进申报书）】\n1. 三线交汇处缺人：地方性文献（闽人著述）的实体识别语料稀缺——现有NER多基于《四库全书》类通用语料\n2. 平台线与组织线脱节：图谱研究少有落地到整理工作流\n3. 人机协同的流程规范基本空白\n（脉络中每篇附题录号，可回溯核对）',
+polish: '改写完成 ✅  3处AI味已处理\n\n<ai>原文：</ai>"在数字化时代的背景下，古籍整理工作具有十分重要的意义，它不仅能够传承中华优秀传统文化，而且能够推动学术研究的创新发展。"\n\n<ai>AI味诊断：</ai>①"在…背景下"空泛开场 ②"十分重要的意义"无信息量 ③"不仅…而且…"套话连接\n\n改写A（学术版）：\n"古籍整理正从影印与校勘转向知识化生产，其意义已不止于文献保存：当整理对象从'一部书'变为'可检索的语料库'，研究范式也随之改变。"\n\n改写B（申报书版）：\n"将智能技术引入福建地方古籍整理，可直接服务于两个现实需求：一是××馆30万册古籍的深度数字化，二是地方文化研究对结构化文献数据的迫切需要。"\n\n<span class="human">处理原则：</span>空泛→具体 / 名词化→动词 / 删三层套话；每处可一键回退。'
+};
+function typeOut(id, html){
+  var el = document.getElementById(id);
+  el.innerHTML = '';
+  var i = 0, step = 7;
+  clearInterval(el._t);
+  var plain = html.replace(/<[^>]+>/g, '');
+  el._t = setInterval(function(){
+    i += step;
+    if(i >= plain.length){ el.innerHTML = html; clearInterval(el._t); return; }
+    el.textContent = plain.slice(0, i);
+    var c = document.createElement('span'); c.className='cursor'; el.appendChild(c);
+  }, 14);
+}
+document.querySelectorAll('.tab').forEach(function(t){
+  t.onclick = function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+    document.querySelectorAll('.module').forEach(function(x){x.classList.remove('on')});
+    t.classList.add('on');
+    document.getElementById(t.dataset.m).classList.add('on');
+  };
+});
+</script>
+</body>
+</html>

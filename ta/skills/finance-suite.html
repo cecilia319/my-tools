@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TA技能现场演示 · 财务四件套</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#F4F6FA;color:#1F2937;line-height:1.7}
+.container{max-width:1080px;margin:0 auto;padding:22px 18px 70px}
+header.hero{background:linear-gradient(135deg,#0A2E5C,#0B57A4 60%,#1273D1);color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:18px}
+header.hero h1{font-size:24px}
+header.hero .sub{font-size:13.5px;opacity:.92;margin-top:6px}
+.badges{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 13px;font-size:12.5px}
+.badge b{color:#FFD54F}
+.warn{background:#FFF8E1;border-left:4px solid #F9A825;border-radius:6px;padding:9px 13px;font-size:12.5px;margin-bottom:16px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tab{background:#fff;border:1px solid #C9D8EA;border-radius:9px;padding:9px 16px;font-size:13.5px;font-weight:600;color:#0A2E5C;cursor:pointer;transition:.15s}
+.tab:hover{border-color:#1273D1}
+.tab.on{background:#0B57A4;color:#fff;border-color:#0B57A4}
+.module{display:none;background:#fff;border-radius:14px;padding:22px 26px;box-shadow:0 2px 12px rgba(15,40,80,.07)}
+.module.on{display:block}
+.module h2{font-size:17px;color:#0A2E5C;border-left:5px solid #1273D1;padding-left:11px;margin-bottom:12px}
+.scene{background:#F0F6FF;border:1px dashed #9DC3EE;border-radius:9px;padding:12px 15px;font-size:13px;margin-bottom:12px}
+.scene b{color:#0B57A4}
+.io{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.io{grid-template-columns:1fr}}
+.panel{border:1px solid #D7DEE8;border-radius:10px;overflow:hidden}
+.panel .ph{background:#0A2E5C;color:#fff;font-size:13px;font-weight:600;padding:7px 13px}
+.panel .pb{padding:13px 15px;font-size:13px;min-height:200px;background:#FCFDFE}
+.runbtn{background:#1273D1;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:14px;font-weight:700;cursor:pointer;margin:10px 0}
+.runbtn:hover{background:#0B57A4}
+.out{white-space:pre-wrap;font-size:13px;line-height:1.8}
+.cursor{display:inline-block;width:8px;height:15px;background:#1273D1;vertical-align:-2px;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+table.dt{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0}
+table.dt th{background:#EAF3FC;color:#0A2E5C;padding:6px 9px;border:1px solid #C9D8EA;text-align:left}
+table.dt td{padding:6px 9px;border:1px solid #D7DEE8}
+table.dt tr.total td{background:#FFF8E1;font-weight:700}
+.masked{color:#1B5E20;background:#E8F5E9;border-radius:3px;padding:0 3px;font-weight:600}
+.err{color:#C62828;background:#FFEBEE;border-radius:3px;padding:0 3px;font-weight:700}
+.note{font-size:12px;color:#6B7280;margin-top:10px}
+footer{text-align:center;font-size:12px;color:#6B7280;padding:16px 0 8px}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="hero">
+  <h1>财务四件套 · 现场演示</h1>
+  <div class="sub">行政办公 16 项技能之财务线 ｜ A 级标准技能 · 装好即用 · 本页为运行效果演示</div>
+  <div class="badges"><span class="badge">演示动线：<b>脱敏 → 汇总 → 填报 → 审核</b>，四步走完约 5 分钟</span><span class="badge">客户：<b>高校财务处 / 二级学院办公室</b></span></div>
+</header>
+<div class="warn"><b>口径：</b>真实环境由部署在校园网内的 TA 执行——数据不出校。本页用样例数据模拟运行效果，现场可在贵校 TA 上用脱敏样例复跑。</div>
+
+<div class="tabs">
+  <div class="tab on" data-m="m1">① 数据脱敏外发</div>
+  <div class="tab" data-m="m2">② Excel 汇总合并</div>
+  <div class="tab" data-m="m3">③ 报表填报</div>
+  <div class="tab" data-m="m4">④ 公文审核</div>
+</div>
+
+<div class="module on" id="m1">
+  <h2>① 数据脱敏外发 · "报销数据外发一键脱敏"</h2>
+  <div class="scene"><b>场景：</b>财务处要把各学院差旅费情况发外部审计所核对，原始明细含教师身份证号、银行卡号、手机号——外发前必须脱敏。过去逐条手改半小时，TA 秒级完成并留脱敏记录。</div>
+  <div class="io">
+    <div class="panel"><div class="ph">原始数据（含敏感字段）</div><div class="pb out">经管学院 · 2026年10月差旅报销明细
+------------------------------------------
+姓名：张三丰  身份证：350102199203154417
+银行卡：6222 0202 0000 1234 567  手机：13859201234
+事项：福州→厦门 高铁往返 + 住宿2晚  金额：¥1,286.00
+------------------------------------------
+姓名：李思危  身份证：350103198811226650
+银行卡：6217 0015 0000 8866 221  手机：15960187654
+事项：泉州教研会议 交通+餐补      金额：¥432.50</div></div>
+    <div class="panel"><div class="ph">TA 脱敏输出（点击运行）</div><div class="pb"><button class="runbtn" onclick="typeOut('out1', RESULT.mask)">▶ 运行脱敏</button><div class="out" id="out1">等待运行…</div></div></div>
+  </div>
+  <div class="note">说明：掩码规则可配置（保留前3后4 / 全掩 / 哈希化），输出自动附《脱敏操作记录》备查。</div>
+</div>
+
+<div class="module" id="m2">
+  <h2>② Excel 汇总合并 · 三张分院表一键成总表</h2>
+  <div class="scene"><b>场景：</b>月底三个学院各交一张报销汇总表，格式不一、科目名各异。TA 自动识别列、统一科目口径、合并透视，并标出异常金额。</div>
+  <div class="io">
+    <div class="panel"><div class="ph">输入：三个学院各一张表（格式不一）</div><div class="pb out">【经管学院.xlsx】列：姓名/事由/金额/日期
+【文学院.xlsx】列：报销人/摘要/费用（元）/时间
+【理工学院.xlsx】列：教工/事项/花费/经办日
+→ 科目叫法不同："金额""费用（元）""花费"</div></div>
+    <div class="panel"><div class="ph">TA 合并输出（点击运行）</div><div class="pb"><button class="runbtn" onclick="typeOut('out2', RESULT.merge)">▶ 运行合并</button><div class="out" id="out2">等待运行…</div></div></div>
+  </div>
+  <div class="note">说明：列映射规则一次校准、长期复用；支持按学院/科目/月份多维透视，异常行（超标准、缺票据号）自动标黄。</div>
+</div>
+
+<div class="module" id="m3">
+  <h2>③ 报表填报 · 半成表自动补齐</h2>
+  <div class="scene"><b>场景：</b>上级下发的月度资金执行情况表只填了基础数，还要按口径算执行率、同比、结转——口径规则一多就容易错。TA 按口径库自动算并填齐。</div>
+  <div class="io">
+    <div class="panel"><div class="ph">输入：半成品报表（只填基础数）</div><div class="pb out">项目 | 预算(万) | 已执行(万) | 执行率 | 同比 | 结转
+实训平台 | 300 | 186.3 | ？ | ？ | ？
+智慧教室 | 150 | 41.0  | ？ | ？ | ？
+（上年同期：实训 120.5 / 智慧 66.8）</div></div>
+    <div class="panel"><div class="ph">TA 填报输出（点击运行）</div><div class="pb"><button class="runbtn" onclick="typeOut('out3', RESULT.fill)">▶ 运行填报</button><div class="out" id="out3">等待运行…</div></div></div>
+  </div>
+  <div class="note">说明：口径规则（执行率分母、同比取数区间）入库后每次填报口径一致，附计算过程可追溯。</div>
+</div>
+
+<div class="module" id="m4">
+  <h2>④ 公文审核 · 一份通知找齐四处问题</h2>
+  <div class="scene"><b>场景：</b>拟发《关于开展2026年度差旅费报销自查的通知》，发文前让 TA 按公文格式与财务口径过一遍。</div>
+  <div class="io">
+    <div class="panel"><div class="ph">输入：待审通知（暗藏问题）</div><div class="pb out">关于开展2026年度差旅费报销自察的通知
+
+各单位：
+　为规范报销管理，经研究，定于11月1日至11月15日开展差旅费报销自查工作。现将有关事项通知如下：
+　一、自查范围。2026年1月至10月所有差旅费报销单据。
+　二、时间安排。请各单位于11月10前将自查报告报送财务处。
+　三、工作要求。逾期未报送的，将予通报。
+
+（联系人：王老师，电话：13905912345）</div></div>
+    <div class="panel"><div class="ph">TA 审核输出（点击运行）</div><div class="pb"><button class="runbtn" onclick="typeOut('out4', RESULT.review)">▶ 运行审核</button><div class="out" id="out4">等待运行…</div></div></div>
+  </div>
+  <div class="note">说明：审核维度=公文格式（标题/结构层次/日期规范）+ 错别字 + 内部口径（时间逻辑、落款要素），输出逐条修改建议，一键采纳回写。</div>
+</div>
+
+<footer>TA教育版 · 财务四件套现场演示页 ｜ A级标准技能，部署 TA 后现场以贵校脱敏样例复跑 ｜ 内部销售支持材料，请勿外发客户</footer>
+</div>
+
+<script>
+var RESULT = {
+mask: '脱敏完成 ✅  2条记录 · 3类敏感字段处理\n' +
+'------------------------------------------\n' +
+'姓名：张三丰  身份证：<masked>350***********4417</masked>\n' +
+'银行卡：<masked>6222 **** **** 567</masked>  手机：<masked>138****1234</masked>\n' +
+'事项：福州→厦门 高铁往返 + 住宿2晚  金额：¥1,286.00\n' +
+'------------------------------------------\n' +
+'姓名：李思危  身份证：<masked>350***********6650</masked>\n' +
+'银行卡：<masked>6217 **** **** 221</masked>  手机：<masked>159****7654</masked>\n' +
+'事项：泉州教研会议 交通+餐补      金额：¥432.50\n' +
+'------------------------------------------\n' +
+'已生成《脱敏操作记录》：操作时间/规则/字段数，可导出留档。',
+merge: '合并完成 ✅  3张表 → 1张总表（列映射自动识别）\n\n' +
+'<table class="dt"><tr><th>学院</th><th>姓名</th><th>事由</th><th>金额(元)</th></tr>' +
+'<tr><td>经管学院</td><td>张三丰</td><td>差旅</td><td>1,286.00</td></tr>' +
+'<tr><td>文学院</td><td>陈墨</td><td>会议费</td><td>760.00</td></tr>' +
+'<tr><td>理工学院</td><td>赵子航</td><td>差旅</td><td>2,145.50</td></tr>' +
+'<tr><td>理工学院</td><td>钱一鸣</td><td>培训费</td><td>3,200.00</td></tr>' +
+'<tr class="total"><td colspan="3">合计</td><td>7,391.50</td></tr></table>\n' +
+'⚠ 异常提示 1 条：理工学院-培训费 3,200 元超出单次 3,000 元标准，已标黄待复核。',
+fill: '填报完成 ✅  按口径库 v2026.10 计算\n\n' +
+'<table class="dt"><tr><th>项目</th><th>预算(万)</th><th>已执行</th><th>执行率</th><th>同比</th><th>结转</th></tr>' +
+'<tr><td>实训平台</td><td>300</td><td>186.3</td><td>62.1%</td><td>+54.6%</td><td>113.7</td></tr>' +
+'<tr><td>智慧教室</td><td>150</td><td>41.0</td><td>27.3%</td><td>-38.6%</td><td>109.0</td></tr></table>\n' +
+'计算口径：执行率=已执行/预算；同比=(本期-上年同期)/上年同期；结转=预算-已执行。\n' +
+'⚠ 提示：智慧教室执行率低于序时进度（10月应达83%），建议列入督办。',
+review: '审核完成 ✅  发现 4 处问题\n\n' +
+'<err>① 标题错别字</err>："自察" → 应为"自查"（与正文统一）\n' +
+'<err>② 日期格式</err>："11月10前" → 应为"11月10日前"（缺"日"）\n' +
+'<err>③ 时间逻辑</err>：自查期至11月15日，但要求11月10日前报送报告——报送截止早于自查结束，请核实（建议改为11月18日前）\n' +
+'<err>④ 落款要素不全</err>：缺发文单位与成文日期（"××大学财务处 / 2026年10月×日"）\n\n' +
+'已按建议生成修订稿，可一键采纳。'
+};
+function typeOut(id, html){
+  var el = document.getElementById(id);
+  el.innerHTML = '';
+  var i = 0, step = 7;
+  clearInterval(el._t);
+  var plain = html.replace(/<[^>]+>/g, '');
+  el._t = setInterval(function(){
+    i += step;
+    if(i >= plain.length){ el.innerHTML = html; clearInterval(el._t); return; }
+    el.textContent = plain.slice(0, i);
+    var c = document.createElement('span'); c.className='cursor'; el.appendChild(c);
+  }, 14);
+}
+document.querySelectorAll('.tab').forEach(function(t){
+  t.onclick = function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+    document.querySelectorAll('.module').forEach(function(x){x.classList.remove('on')});
+    t.classList.add('on');
+    document.getElementById(t.dataset.m).classList.add('on');
+  };
+});
+</script>
+</body>
+</html>

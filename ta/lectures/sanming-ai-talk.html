@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI搭子·一句话搞定一切——三明学院信息工程学院AI讲堂</title>
+<style>
+:root{
+  --navy:#072A75; --blue:#0E4FB3; --hi:#1685FF; --sky:#7EC8FF;
+  --gold:#FFE56E; --lime:#D0F078; --gold-deep:#E8C547; --gold-dark:#A8871A;
+  --ink:#122344; --ink-soft:#3A4A6B; --grey:#7C89A6;
+  --grey-bg:#F3F6FB; --line:#DBE3F0; --white:#FFFFFF; --dark:#061F58;
+  --tip-bg:#EDF4FF; --warn-bg:#FFF9E3;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--dark);}
+body{font-family:"PingFang SC","Hiragino Sans GB","Source Han Sans SC","Noto Sans SC","Microsoft YaHei UI","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+#deck{display:flex;height:100vh;width:10000vw;transition:transform .55s cubic-bezier(.65,0,.25,1);will-change:transform;}
+.slide{width:100vw;height:100vh;flex-shrink:0;position:relative;background:var(--white);overflow:hidden;padding:3.9vh 4.5vw;display:flex;flex-direction:column;}
+/* ===== 页头 ===== */
+.kicker{display:flex;align-items:center;gap:12px;margin-bottom:1.1vh;}
+.kicker .tag{background:var(--blue);color:#fff;font-size:13px;font-weight:700;padding:3px 12px;border-radius:3px;letter-spacing:2px;}
+.kicker .tag.gold{background:var(--gold-deep);}
+.kicker .tag.navy{background:var(--navy);}
+.kicker .sub{font-size:13px;color:var(--grey);letter-spacing:1px;font-weight:600;}
+.kicker .time{margin-left:auto;font-size:13px;color:var(--hi);font-weight:700;background:var(--tip-bg);padding:3px 12px;border-radius:3px;border:1px solid #cfe3f7;}
+h1.title{font-size:3.85vh;font-weight:800;color:var(--ink);letter-spacing:.5px;line-height:1.25;margin-bottom:1vh;position:relative;}
+h1.title em{font-style:normal;color:var(--hi);}
+.gradbar{height:3px;width:100%;background:linear-gradient(90deg,var(--hi),var(--sky),var(--gold),var(--lime));border-radius:2px;margin-bottom:1.2vh;}
+.subtitle{font-size:1.98vh;color:var(--ink-soft);margin-bottom:1.4vh;font-weight:400;line-height:1.45;}
+.subtitle b{color:var(--blue);}
+.content{flex:1;display:flex;flex-direction:column;min-height:0;}
+/* ===== 卡片 ===== */
+.grid{display:grid;gap:1.5vh 1.2vw;}
+.card{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:1.35vh 1.2vw;position:relative;box-shadow:0 2px 10px rgba(18,35,68,.05);}
+.card h3{font-size:2.05vh;font-weight:700;color:var(--ink);margin-bottom:.55vh;display:flex;align-items:center;gap:8px;}
+.card p{font-size:1.82vh;color:var(--ink-soft);line-height:1.48;}
+.card .num{font-family:"DIN Alternate","Arial",sans-serif;font-size:2.4vh;font-weight:800;color:var(--blue);}
+.icon-dot{width:10px;height:10px;border-radius:2px;background:var(--hi);display:inline-block;flex-shrink:0;}
+.icon-dot.g{background:var(--gold-deep);}
+.icon-dot.d{background:var(--navy);}
+.card.blue-top{border-top:3px solid var(--hi);}
+.card.gold-top{border-top:3px solid var(--gold-deep);}
+.card.navy-top{border-top:3px solid var(--navy);}
+/* ===== 深色页 ===== */
+.slide.dark{background:linear-gradient(135deg,#061F58 0%,#0E4FB3 100%);color:#fff;}
+.slide.dark h1.title{color:#fff;}
+.slide.dark .subtitle{color:rgba(255,255,255,.72);}
+.slide.dark .card{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18);}
+.slide.dark .card h3{color:#fff;}
+.slide.dark .card p{color:rgba(255,255,255,.85);}
+.slide.dark .gradbar{background:linear-gradient(90deg,#5AC8FF,var(--gold),var(--lime));}
+/* ===== 封面 ===== */
+.cover{justify-content:center;align-items:center;text-align:center;background:
+  radial-gradient(ellipse at 75% 20%,rgba(22,133,255,.45) 0%,transparent 55%),
+  radial-gradient(ellipse at 15% 85%,rgba(255,229,110,.16) 0%,transparent 50%),
+  linear-gradient(135deg,#061F58 0%,#072A75 55%,#0E4FB3 100%);}
+.cover::before{content:"";position:absolute;inset:0;background-image:
+  linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:44px 44px;pointer-events:none;}
+.cover>*{position:relative;}
+.cover .brand{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:3.6vh;flex-wrap:wrap;}
+.cover .brand .logo{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;font-weight:800;font-size:15px;padding:6px 14px;border-radius:4px;letter-spacing:1px;}
+.cover .brand span{color:rgba(255,255,255,.78);font-size:14px;letter-spacing:2px;}
+.cover .attr{display:flex;justify-content:center;gap:12px;margin-bottom:3vh;}
+.cover .attr span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.9);font-size:14px;padding:5px 16px;border-radius:20px;letter-spacing:2px;font-weight:600;}
+.cover .glow{font-size:8vh;font-weight:900;line-height:1.22;letter-spacing:4px;margin-bottom:1.4vh;text-align:center;
+  background:linear-gradient(95deg,#FFE56E 20%,#D0F078 80%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  text-shadow:0 0 45px rgba(255,229,110,.35);}
+.cover h1{font-size:3.2vh;font-weight:600;color:#fff;letter-spacing:2px;margin-bottom:3.4vh;opacity:.95;text-align:center;}
+.cover h1 b{color:var(--gold);font-weight:800;}
+.cover .meta{display:flex;justify-content:center;gap:3.2vw;border-top:1px solid rgba(255,255,255,.25);padding-top:2.6vh;flex-wrap:wrap;max-width:78vw;}
+.cover .meta div{font-size:1.9vh;color:rgba(255,255,255,.68);line-height:1.85;}
+.cover .meta b{color:#fff;font-size:1.98vh;display:block;font-weight:700;}
+.cover .topics{display:flex;justify-content:center;gap:1vw;margin-top:3.2vh;flex-wrap:wrap;}
+.cover .topics span{background:rgba(22,133,255,.22);border:1px solid rgba(126,200,255,.45);color:#fff;font-size:1.9vh;font-weight:700;padding:1.1vh 1.4vw;border-radius:10px;letter-spacing:1px;}
+.cover .topics span b{color:var(--gold);font-weight:800;font-family:"DIN Alternate","Arial",sans-serif;margin-right:6px;}
+/* ===== 篇章页 ===== */
+.section{justify-content:center;background:
+  radial-gradient(ellipse at 80% 30%,rgba(22,133,255,.4) 0%,transparent 55%),
+  linear-gradient(135deg,#061F58 0%,#0E4FB3 100%);}
+.section .chnum{font-family:"DIN Alternate","Arial",sans-serif;font-size:16vh;font-weight:900;line-height:1;opacity:.16;position:absolute;right:4vw;top:4vh;}
+.section .chtag{display:inline-block;background:linear-gradient(90deg,var(--gold),var(--lime));color:var(--navy);font-weight:800;font-size:15px;padding:5px 18px;border-radius:20px;letter-spacing:3px;margin-bottom:2.6vh;}
+.section h1{font-size:6vh;font-weight:900;color:#fff;line-height:1.25;letter-spacing:2px;margin-bottom:2.4vh;}
+.section h1 em{font-style:normal;background:linear-gradient(95deg,var(--gold),var(--lime));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.section p{font-size:2.2vh;color:rgba(255,255,255,.78);line-height:1.8;max-width:62vw;}
+.section .chitems{margin-top:3.2vh;display:flex;gap:1vw;}
+.section .chitems span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:1.2vh 1.1vw;font-size:1.82vh;color:#fff;font-weight:600;letter-spacing:1px;}
+/* ===== 时间轴/旅程 ===== */
+.timeline{display:flex;flex:1;align-items:stretch;gap:1vw;margin-top:1vh;}
+.tl-block{flex:1;border-radius:12px;padding:1.4vh 1vw;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.tl-block .t{font-size:2.75vh;font-weight:800;margin-bottom:.6vh;display:flex;align-items:baseline;gap:10px;}
+.tl-block .t span{font-size:1.95vh;font-weight:600;opacity:.75;}
+.tl-block .d{font-size:1.9vh;line-height:1.52;opacity:.9;}
+.tl-a{background:linear-gradient(150deg,#0E4FB3,#072A75);color:#fff;}
+.tl-b{background:linear-gradient(150deg,#1685FF,#0E4FB3);color:#fff;}
+.tl-c{background:linear-gradient(150deg,#E8C547,#C9A227);color:#fff;}
+.tl-d{background:linear-gradient(150deg,#1E2A4A,#0A1738);color:#fff;border:1px solid #2c3a5e;}
+.tl-block .big{font-family:"DIN Alternate","Arial",sans-serif;font-size:7vh;font-weight:900;line-height:1;margin-bottom:1.2vh;opacity:.25;position:absolute;right:1vw;bottom:.6vh;}
+.tl-steps{margin-top:.9vh;border-top:1px solid rgba(255,255,255,.25);padding-top:.7vh;}
+.tl-steps li{font-size:1.72vh;line-height:1.62;list-style:none;display:flex;gap:8px;align-items:baseline;}
+.tl-steps li::before{content:"▸";font-size:1.72vh;}
+/* ===== 表格 ===== */
+table.nice{width:100%;border-collapse:collapse;background:#fff;}
+table.nice th{background:var(--blue);color:#fff;font-size:1.9vh;font-weight:700;padding:.85vh .9vw;text-align:left;letter-spacing:1px;}
+table.nice td{font-size:1.82vh;color:var(--ink-soft);padding:.72vh .9vw;border-bottom:1px solid #EFEFEF;line-height:1.5;vertical-align:top;}
+table.nice tr td:first-child{font-weight:700;color:var(--ink);}
+table.nice tr:nth-child(even) td{background:#F7FAFE;}
+table.nice td b{color:var(--blue);font-weight:700;}
+table.nice.gold th{background:var(--gold-deep);color:var(--navy);}
+/* ===== 步骤条 ===== */
+.stepbar{display:flex;gap:.7vw;margin-bottom:1.4vh;}
+.stepbar .s{flex:1;text-align:center;padding:1.1vh 0;border-radius:8px;background:var(--grey-bg);border:1.5px solid var(--line);font-size:1.82vh;font-weight:700;color:var(--grey);position:relative;transition:all .3s;}
+.stepbar .s small{display:block;font-size:1.7vh;font-weight:400;margin-top:2px;}
+.stepbar .s.active{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 6px 18px rgba(14,79,179,.3);transform:translateY(-2px);}
+.stepbar .s.done{background:var(--tip-bg);border-color:var(--hi);color:var(--blue);}
+.stepbar .s.done::after{content:"✓";position:absolute;right:6px;top:2px;font-size:1.72vh;}
+/* ===== 演示提示条 ===== */
+.demo-tip{margin-top:auto;background:linear-gradient(90deg,var(--tip-bg) 0%,#fff 70%);border:1.5px dashed var(--hi);border-radius:10px;padding:1.05vh 1.1vw;display:flex;align-items:center;gap:14px;}
+.demo-tip .dt{background:var(--blue);color:#fff;font-size:1.72vh;font-weight:800;padding:4px 10px;border-radius:4px;letter-spacing:2px;flex-shrink:0;}
+.demo-tip .dt.gold{background:var(--gold-deep);color:var(--navy);}
+.demo-tip p{font-size:1.82vh;color:var(--ink);line-height:1.5;}
+.demo-tip p b{color:var(--blue);}
+/* ===== 提示词框 ===== */
+.prompt-box{background:#0A1F4E;border-radius:10px;padding:1.1vh 1.1vw;font-family:"JetBrains Mono","Consolas",monospace;color:#E8EEF9;font-size:1.72vh;line-height:1.52;}
+.prompt-box .ph{color:#A6EFA6;}
+.prompt-box .pk{color:#F0C674;}
+/* ===== 内容图片卡 ===== */
+.imgcard{background:#fff;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-height:0;box-shadow:0 2px 10px rgba(18,35,68,.06);}
+.imgcard .ph{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:#0D1B33;overflow:hidden;}
+.imgcard .ph img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;}
+.imgcard .cap{background:var(--navy);color:#fff;font-size:1.72vh;font-weight:600;padding:.75vh .8vw;line-height:1.5;flex-shrink:0;}
+.imgcard .cap b{color:var(--gold);}
+.pgrid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2vh 1vw;flex:1;min-height:0;}
+.pgrid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2vh 1vw;flex:1;min-height:0;}
+.prow{display:grid;gap:1.2vh 1vw;}
+.pcol{display:flex;flex-direction:column;gap:1vh;min-height:0;}
+.pcol .pcol-head{font-size:1.9vh;font-weight:800;color:var(--blue);display:flex;align-items:center;gap:8px;}
+.pcol .pcol-head .bdg{background:var(--blue);color:#fff;font-size:1.7vh;padding:2px 9px;border-radius:3px;letter-spacing:1px;flex-shrink:0;}
+.pcol{gap:.88vh;}
+.p3t td{padding:.5vh .9vw;line-height:1.23;font-size:1.72vh;}
+.p3t th{padding:.62vh .9vw;font-size:1.78vh;}
+table.p4t td{padding:.4vh .8vw;line-height:1.3;font-size:1.68vh;}
+table.p4t th{padding:.42vh .8vw;font-size:1.72vh;}
+/* ===== 讲师热场条 ===== */
+.teacher-bar{display:flex;align-items:center;gap:1vw;background:linear-gradient(90deg,var(--tip-bg),#fff 75%);border:1.5px solid var(--line);border-left:5px solid var(--gold-deep);border-radius:10px;padding:.9vh 1.1vw;margin-bottom:1.1vh;flex:0 0 auto;}
+.teacher-bar .avatar{width:6vh;height:6vh;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--hi));color:#fff;display:flex;align-items:center;justify-content:center;font-size:2.6vh;font-weight:900;flex-shrink:0;}
+.teacher-bar .tb-t{font-size:1.9vh;font-weight:800;color:var(--ink);}
+.teacher-bar .tb-t b{color:var(--blue);}
+.teacher-bar .tb-d{font-size:1.72vh;color:var(--ink-soft);line-height:1.5;}
+/* ===== 资源下载条 ===== */
+.res-bar{display:flex;align-items:center;gap:.9vw;background:linear-gradient(90deg,#FFF9E3,#fff 70%);border:1.5px solid var(--gold-deep);border-radius:10px;padding:.75vh .9vw;flex:0 0 auto;}
+.res-bar .rb-ico{font-size:2.6vh;flex-shrink:0;}
+.res-bar .rb-txt{flex:1;min-width:0;font-size:1.7vh;color:var(--ink);line-height:1.45;}
+.res-bar .rb-txt b{color:var(--gold-dark);}
+.res-bar a.dl-btn{background:linear-gradient(135deg,#C8102E,#E23A4E);color:#fff;font-size:1.7vh;font-weight:800;padding:.55vh .9vw;border-radius:6px;text-decoration:none;flex-shrink:0;letter-spacing:1px;border:1px solid rgba(255,255,255,.3);}
+.res-bar a.dl-btn:hover{filter:brightness(1.12);}
+.res-bar img.qr{width:6.5vh;height:6.5vh;flex-shrink:0;border-radius:4px;border:1px solid #E8D9A0;}
+/* ===== 二维码卡 ===== */
+.qr-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4vh;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:.7vh;min-height:0;}
+.qr-card img{width:10.5vh;height:10.5vh;flex-shrink:0;}
+.qr-card p{font-size:1.7vh;color:var(--ink-soft);text-align:center;line-height:1.4;}
+.qr-card p b{color:var(--blue);}
+/* ===== 卡片配图 ===== */
+.card .card-img{width:100%;height:8vh;object-fit:cover;border-radius:7px;margin-bottom:.6vh;flex-shrink:0;}
+.card .ui-img{width:100%;height:14vh;object-fit:cover;object-position:top left;border-radius:7px;margin-bottom:.5vh;flex-shrink:0;border:1px solid var(--line);}
+.card .uicap{display:block;font-size:1.7vh;color:var(--grey);margin-top:.45vh;}
+/* ===== 海报框 ===== */
+.poster-frame{display:flex;gap:.9vw;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:.7vh .8vw;flex:0 0 auto;}
+.poster-frame img{height:11.5vh;width:auto;object-fit:cover;border-radius:6px;flex-shrink:0;}
+.poster-frame .pf-txt{flex:1;min-width:0;}
+.poster-frame .pf-txt b{font-size:1.7vh;color:var(--navy);}
+.poster-frame .pf-txt p{font-size:1.7vh;color:var(--ink-soft);line-height:1.5;margin-top:.3vh;}
+/* ===== B站嵌入 ===== */
+.bili-frame{width:100%;height:15vh;border-radius:8px;overflow:hidden;border:1.5px solid var(--line);background:#0D1B33;flex-shrink:0;margin-bottom:.4vh;position:relative;cursor:pointer;}
+.bili-frame iframe{width:100%;height:100%;border:0;}
+/* ===== RAG流程图 ===== */
+.ragflow{display:flex;flex-direction:column;gap:.5vh;}
+.rf-row{display:flex;gap:.4vw;align-items:stretch;}
+.rf-node{flex:1;background:var(--tip-bg);border:1.3px solid var(--hi);border-radius:7px;padding:.42vh .5vw;text-align:center;min-width:0;}
+.rf-node b{display:block;font-size:1.72vh;color:var(--blue);line-height:1.28;}
+.rf-node span{font-size:1.68vh;color:var(--ink-soft);line-height:1.28;}
+.rf-node.gold{background:#FFF9E3;border-color:var(--gold);}
+.rf-node.gold b{color:var(--gold-dark);}
+.rf-a{display:flex;align-items:center;font-size:1.6vh;color:var(--blue);font-weight:900;flex:0 0 auto;}
+/* ===== TA架构图 ===== */
+.ta-arch .ta-layer{display:flex;align-items:center;gap:.6vw;border-radius:8px;padding:.56vh .75vw;margin:0;}
+.ta-arch .ta-layer b{font-size:1.72vh;flex-shrink:0;letter-spacing:1px;min-width:5vw;}
+.ta-arch .ta-layer span{font-size:1.68vh;line-height:1.34;}
+.ta-arch .ta-arrow{text-align:center;color:var(--blue);font-size:1.4vh;line-height:1;margin:.12vh 0;font-weight:900;}
+.ta-layer.l-app{background:linear-gradient(90deg,#072A75,#0E4FB3);color:#fff;}
+.ta-layer.l-app span{color:rgba(255,255,255,.9);}
+.ta-layer.l-cap{background:linear-gradient(90deg,#1685FF,#5AA8FF);color:#fff;}
+.ta-layer.l-cap span{color:#fff;}
+.ta-layer.l-cap span b{color:#FFE56E;}
+.ta-layer.l-md{background:linear-gradient(90deg,#EDF4FF,#fff);border:1.3px solid var(--hi);}
+.ta-layer.l-md b{color:var(--blue);}
+.ta-layer.l-md span{color:var(--ink);}
+.ta-layer.l-sec{background:linear-gradient(90deg,#FFF9E3,#fff);border:1.3px solid var(--gold);}
+.ta-layer.l-sec b{color:var(--gold-dark);}
+.ta-layer.l-sec span{color:var(--ink);}
+/* ===== TA界面截图 ===== */
+.ta-shot{flex:1;min-height:0;display:flex;flex-direction:column;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:.5vh;overflow:hidden;}
+.ta-shot img{flex:1;min-height:0;width:100%;max-height:52vh;object-fit:contain;object-position:top left;border-radius:6px;}
+.ta-shot .cap{font-size:1.68vh;color:var(--grey);padding:.3vh .3vw 0;line-height:1.32;flex-shrink:0;}
+/* ===== 场景卡均衡 ===== */
+.scene-card .sd{flex:1;display:flex;flex-direction:column;justify-content:center;padding:.4vh 0;}
+.scene-card .stools{flex:0 0 auto;}
+.scene-card .sv{flex:0 0 auto;margin-top:.7vh;}
+/* ===== 参赛工具索引 ===== */
+.tool-idx{flex:0 0 auto;background:linear-gradient(90deg,#FFF9E3,#fff 60%);border:1.5px solid var(--gold-deep);border-radius:10px;padding:.85vh 1vw;}
+.ti-head{font-size:1.8vh;font-weight:800;color:var(--ink);margin-bottom:.65vh;display:flex;align-items:center;gap:8px;}
+.ti-head .bdg2{background:linear-gradient(90deg,#C8102E,#E23A4E);color:#fff;font-size:1.7vh;font-weight:800;padding:2px 10px;border-radius:3px;letter-spacing:1px;flex-shrink:0;}
+.ti-row{display:grid;grid-template-columns:repeat(6,1fr);gap:.55vw;}
+.ti-cell{background:#fff;border:1px solid var(--line);border-radius:7px;padding:.55vh .55vw;display:flex;flex-direction:column;gap:2px;}
+.ti-cell b{font-size:1.72vh;color:var(--navy);}
+.ti-cell span{font-size:1.7vh;color:var(--ink-soft);line-height:1.35;}
+/* ===== 大字提醒 ===== */
+.bigcallout{margin-top:1.1vh;flex:0 0 auto;background:linear-gradient(90deg,#FFF3C4,#FFF9E3);border:2px solid var(--gold-deep);border-radius:10px;padding:1.1vh 1.2vw;font-size:2vh;font-weight:800;color:var(--gold-dark);text-align:center;line-height:1.55;box-shadow:0 3px 14px rgba(232,197,71,.35);}
+/* ===== 编辑模式 ===== */
+#editBtn{position:fixed;top:12px;right:152px;z-index:110;background:linear-gradient(135deg,#0E4FB3,#1685FF);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:6px;padding:7px 14px;font-size:14px;font-weight:800;letter-spacing:2px;cursor:pointer;box-shadow:0 3px 12px rgba(14,79,179,.4);font-family:inherit;display:flex;align-items:center;gap:6px;}
+#editBtn:hover{filter:brightness(1.12);}
+.editable-on .edit-zone{outline:2.5px dashed var(--gold-deep);outline-offset:4px;border-radius:10px;cursor:text;}
+.slide a{color:var(--hi);font-weight:700;text-decoration:underline;}
+.slide.dark a{color:var(--gold);}
+/* ===== 视频/音频框 ===== */
+.video-frame{flex:1 1 0;min-height:0;display:flex;flex-direction:column;border-radius:10px;overflow:hidden;border:1.5px solid var(--line);background:#0D1B33;box-shadow:0 3px 14px rgba(18,35,68,.18);margin-bottom:0;}
+.video-frame video{flex:1 1 auto;min-height:0;width:100%;height:100%;object-fit:contain;background:#0D1B33;display:block;}
+.video-frame .v-cap{background:var(--navy);color:#fff;font-size:1.7vh;font-weight:700;padding:.8vh .9vw;line-height:1.45;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.video-frame .v-cap .vtag{background:linear-gradient(90deg,#C8102E,#E23A4E);color:#fff;font-size:1.7vh;font-weight:800;padding:2px 9px;border-radius:3px;letter-spacing:1px;flex-shrink:0;}
+.audio-bar{flex:0 0 auto;display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,var(--tip-bg),#fff 65%);border:1.5px dashed var(--hi);border-radius:10px;padding:.9vh 1vw;}
+.audio-bar audio{height:3.4vh;flex:1;min-width:0;}
+.audio-bar .ab-tag{background:linear-gradient(90deg,#C8102E,#E23A4E);color:#fff;font-size:1.7vh;font-weight:800;padding:3px 10px;border-radius:3px;letter-spacing:2px;flex-shrink:0;}
+.audio-bar p{font-size:1.7vh;color:var(--ink);font-weight:600;flex-shrink:0;}
+/* ===== 全屏按钮（全局） ===== */
+#fsBtn{position:fixed;top:12px;right:20px;z-index:110;background:linear-gradient(135deg,#C8102E,#E23A4E);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:6px;padding:7px 16px;font-size:14px;font-weight:800;letter-spacing:2px;cursor:pointer;box-shadow:0 3px 12px rgba(200,16,46,.4);font-family:inherit;display:flex;align-items:center;gap:6px;transition:transform .15s,box-shadow .15s;}
+#fsBtn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(200,16,46,.55);}
+#fsBtn .fs-ico{font-size:15px;line-height:1;}
+/* ===== 算账对比 ===== */
+.account{display:flex;align-items:stretch;gap:.7vw;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:1.1vh .9vw;flex:0 0 auto;}
+.account .lab{font-size:1.7vh;font-weight:800;color:var(--grey);letter-spacing:2px;display:flex;align-items:center;flex:0 0 auto;}
+.account .old,.account .new{flex:1;border-radius:8px;padding:.9vh .7vw;text-align:center;}
+.account .old{background:var(--grey-bg);}
+.account .old b{font-size:1.98vh;color:var(--grey);display:block;}
+.account .old small,.account .new small{display:block;font-size:1.7vh;color:var(--grey);margin-top:2px;}
+.account .new{background:var(--tip-bg);border:1px solid #BFD9F5;}
+.account .new b{font-size:2.35vh;color:var(--blue);display:block;}
+.account .fa{align-self:center;color:#B9C6DC;font-weight:800;font-size:1.9vh;flex:0 0 auto;}
+/* ===== 场景卡工具标签 ===== */
+.scene-card .stools{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.7vh;}
+.scene-card .stools span{font-size:1.7vh;padding:2px 8px;border-radius:3px;background:var(--tip-bg);border:1px solid #CFE3F7;color:var(--blue);font-weight:600;}
+/* ===== 底部栏 ===== */
+.footer{display:flex;justify-content:space-between;align-items:center;margin-top:1.3vh;padding-top:.9vh;border-top:1px solid #ECEFF6;}
+.footer span{font-size:1.7vh;color:#A8B2C6;letter-spacing:1px;}
+.footer .must{font-size:1.72vh;color:var(--blue);font-weight:700;}
+.slide.dark .footer{border-top-color:rgba(255,255,255,.16);}
+.slide.dark .footer span{color:rgba(255,255,255,.45);}
+.slide.dark .footer .must{color:var(--gold);}
+/* ===== 导航 ===== */
+#nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:99;align-items:center;}
+#nav .dot{width:8px;height:8px;border-radius:5px;background:rgba(150,165,190,.45);border:none;cursor:pointer;transition:all .25s;padding:0;}
+#nav .dot.on{width:22px;background:var(--hi);}
+#pageno{position:fixed;bottom:12px;right:20px;color:rgba(255,255,255,.85);font-size:13px;z-index:99;font-family:"Arial",sans-serif;text-shadow:0 1px 3px rgba(0,0,0,.4);}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--hi),var(--gold),var(--lime));z-index:100;transition:width .4s;}
+/* ===== 大字页 ===== */
+.statement{justify-content:center;}
+.statement .bignum{font-family:"DIN Alternate","Arial",sans-serif;font-size:15vh;font-weight:900;color:var(--hi);line-height:.95;opacity:.09;position:absolute;right:3vw;bottom:1vh;}
+/* ===== 清单 ===== */
+.checklist{display:flex;flex-direction:column;gap:1.1vh;}
+.checklist .item{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:9px;padding:1vh 1.05vw;}
+.checklist .no{width:3vh;height:3vh;border-radius:50%;background:var(--tip-bg);color:var(--blue);font-weight:800;font-size:1.98vh;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.checklist .no.gold{background:var(--warn-bg);color:var(--gold-dark);}
+.checklist h4{font-size:1.9vh;font-weight:700;margin-bottom:3px;color:var(--ink);}
+.checklist p{font-size:1.78vh;color:var(--ink-soft);line-height:1.45;}
+.checklist p b{color:var(--blue);}
+/* ===== 二列 ===== */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:1.4vw;flex:1;min-height:0;}
+/* ===== 演进链 ===== */
+.evo{display:flex;align-items:center;gap:.7vw;margin-bottom:1.1vh;flex:0 0 auto;}
+.evo .node{flex:1;background:#fff;border:1.5px solid var(--line);border-radius:9px;padding:.8vh .8vw;text-align:center;}
+.evo .node h4{font-size:1.86vh;font-weight:800;}
+.evo .node p{font-size:1.68vh;color:var(--grey);margin-top:2px;line-height:1.3;}
+.evo .node.on{border-color:var(--hi);background:var(--tip-bg);}
+.evo .node.on h4{color:var(--blue);}
+.evo .arrow{font-size:2.35vh;color:#B9C6DC;flex-shrink:0;font-weight:700;}
+/* ===== 实例/任务卡 ===== */
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4vh 1.2vw;flex:1;min-height:0;}
+.menu-card{border:1.5px solid var(--line);border-radius:10px;padding:1.5vh 1.2vw;display:flex;flex-direction:column;background:#fff;}
+.menu-card .mt{display:flex;align-items:center;gap:10px;margin-bottom:.8vh;}
+.menu-card .mt .badge{font-size:1.7vh;font-weight:800;padding:3px 10px;border-radius:3px;letter-spacing:1px;}
+.menu-card h4{font-size:2.05vh;font-weight:800;color:var(--ink);}
+.menu-card .mb{background:var(--grey-bg);border-radius:7px;padding:1vh .9vw;margin-bottom:.9vh;}
+.menu-card .mb p{font-size:1.78vh;line-height:1.5;color:var(--ink-soft);}
+.menu-card .mb p b{color:var(--blue);}
+.menu-card .tool{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap;}
+.menu-card .tool span{font-size:1.7vh;font-weight:700;padding:3px 10px;border-radius:3px;background:#fff;border:1px solid var(--line);color:var(--grey);}
+.menu-card .tool span.hot{border-color:var(--hi);color:var(--blue);background:var(--tip-bg);}
+/* ===== 代码块 ===== */
+.code-box{background:#0A1F4E;border-radius:10px;padding:1.3vh 1.1vw;font-family:"Consolas","JetBrains Mono",monospace;font-size:1.72vh;line-height:1.48;color:#DCE6F5;overflow:hidden;}
+.code-box .ck{color:#7EC8FF;}
+.code-box .cv{color:#FF9DA4;}
+.code-box .cg{color:#8BE28B;}
+.code-box .cc{color:#6B7C99;}
+/* ===== 警示卡 ===== */
+.warn-card{background:var(--warn-bg);border:1.5px solid var(--gold-deep);border-radius:10px;padding:1.5vh 1.2vw;}
+.warn-card h3{font-size:1.98vh;font-weight:800;color:var(--gold-dark);margin-bottom:.7vh;display:flex;align-items:center;gap:8px;}
+.warn-card p{font-size:1.78vh;color:var(--ink-soft);line-height:1.48;}
+.warn-card p b{color:var(--gold-dark);}
+/* ===== 场景卡（五场景总览） ===== */
+.scene-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1.1vw;flex:1;align-items:stretch;}
+.scene-card{border-radius:11px;padding:1.6vh 1vw;display:flex;flex-direction:column;background:linear-gradient(160deg,#fff,#F3F8FF);border:1.5px solid var(--line);position:relative;}
+.scene-card .sn{font-family:"DIN Alternate","Arial",sans-serif;font-size:3.2vh;font-weight:900;color:rgba(22,133,255,.34);position:absolute;right:.8vw;top:.6vh;line-height:1;}
+.scene-card h4{font-size:1.98vh;font-weight:800;color:var(--navy);margin-bottom:.6vh;padding-left:1.5vh;border-left:4px solid var(--hi);}
+.scene-card .sd{font-size:1.72vh;color:var(--ink-soft);line-height:1.5;margin-bottom:.8vh;}
+.scene-card .sd b{color:var(--blue);}
+.scene-card .sv{margin-top:auto;background:var(--tip-bg);border-radius:6px;padding:.6vh .6vw;font-size:1.7vh;color:var(--blue);font-weight:700;text-align:center;}
+/* ===== 场景页四步法 ===== */
+.fourstep{display:flex;align-items:stretch;gap:.6vw;margin-bottom:1.2vh;}
+.fourstep .fs{flex:1;background:var(--grey-bg);border:1.5px solid var(--line);border-radius:9px;padding:1vh .8vw;text-align:center;}
+.fourstep .fs b{display:block;font-size:1.78vh;color:var(--blue);font-weight:800;}
+.fourstep .fs small{font-size:1.7vh;color:var(--grey);}
+.fourstep .fa{align-self:center;color:#B9C6DC;font-size:2.05vh;font-weight:800;flex-shrink:0;}
+/* ===== 竞赛地图卡 ===== */
+.map-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2vh 1vw;flex:1;align-items:stretch;}
+/* ===== 大数字 ===== */
+.bignum-inline{font-family:"DIN Alternate","Arial",sans-serif;font-size:4.6vh;font-weight:900;color:var(--blue);line-height:1;}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<button id="fsBtn" title="点击全屏播放，Esc退出"><span class="fs-ico">⛶</span>全屏播放</button>
+<button id="editBtn" title="编辑收尾页任务内容（自动保存）"><span class="fs-ico">✎</span>编辑任务</button>
+<nav id="nav"></nav>
+<div id="pageno"></div>
+<div id="deck">
+
+<!-- P1 封面 -->
+<section class="slide cover">
+  <div class="brand">
+    <div class="logo">星辰超级智能体 TeleAgent</div>
+    <span>AI EMPOWERMENT · FUTURE READY｜中国电信自研 · 央企出品 · 安全可靠</span>
+  </div>
+  <div class="attr"><span>教育行业 · 高校专场</span><span>人工智能专题讲座</span><span>计算机专业定制课</span></div>
+  <div class="glow">AI搭子<br>一句话搞定一切</div>
+  <h1>把杂活丢给AI —— <b>从大模型到智能体，计算机专业的 AI 进化课</b></h1>
+  <div class="meta">
+    <div><b>信息工程学院率先体验</b>参与对象</div>
+    <div><b>现场实测 AI 真干活</b>学生真实场景演示</div>
+    <div><b>信息工程学院 · 三明电信</b>联合主办</div>
+  </div>
+  <div class="topics"><span><b>01</b>精读文献</span><span><b>02</b>随堂补学</span><span><b>03</b>计算机考试</span><span><b>04</b>数据处理</span><span><b>05</b>毕业答辩</span></div>
+</section>
+
+<!-- P2 路线图 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">开场</div><div class="sub">这60分钟的路线图</div><div class="time">2 min</div></div>
+  <h1 class="title">60分钟，五步走：<em>看清它 → 用上它 → 赢比赛 → 守住它 → 望远方</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">不念概念，只走真流程。前半场看清 AI 的边界与方法、现场看真干活；后半场打通<b>竞赛攻略、代码安全、未来路线</b>三件大事，最后人人动手。</div>
+  <div class="content">
+    <div class="teacher-bar">
+      <div class="avatar">傅</div>
+      <div>
+        <div class="tb-t">本期讲师：傅老师（傅玮）<b>——计算机科班出身的"师兄视角"</b></div>
+        <div class="tb-d">北京邮电大学本科、福州大学硕士，高级工程师；现任中国电信福建公司政企 AI 专员、省政企"AI+"行动专题牵头责任人，带队 16 人做 AI 落地。今天演示的 TeleAgent，就是他和属地团队每天在产线上用的工具——不讲玄学，只讲你们毕业前就能用上的真本事。</div>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="tl-block tl-a">
+        <div class="t">第一篇章 <span>12 min</span></div>
+        <div class="big">01</div>
+        <div class="d"><b>看清它：AI 时代全景与前沿技术</b>——从范式革命、大模型、生成技术到智能体，看清这波浪潮从哪来、到哪去。</div>
+        <ul class="tl-steps">
+          <li>AI 全景：三波浪潮与范式革命</li>
+          <li>大模型四时代 · 生成技术三线并进</li>
+          <li>智能体：大脑＋工具＋循环</li>
+          <li>TeleAgent：全场唯一工具介绍</li>
+        </ul>
+      </div>
+      <div class="tl-block tl-b">
+        <div class="t">第二篇章 <span>15 min</span></div>
+        <div class="big">02</div>
+        <div class="d"><b>用上它：五大场景真操演示</b>——文献、补学、计算机考试、数据、答辩，每场现场跑一遍。</div>
+        <ul class="tl-steps">
+          <li>四步演示法：丢任务→老办法→真操→算账</li>
+          <li>计算机加餐：代码生成·审查·调试</li>
+          <li>演示纪律：AI 会编，你得核</li>
+          <li>每场配提示词，拍照即可抄走</li>
+        </ul>
+      </div>
+      <div class="tl-block tl-c">
+        <div class="t">第三篇章 <span>10 min</span></div>
+        <div class="big">03</div>
+        <div class="d"><b>赢比赛：竞赛地图与参赛攻略</b>——创意大赛规则、评分五维、五步实战，加一份计算机竞赛全景。</div>
+        <ul class="tl-steps">
+          <li>评分五维＝你的发力点</li>
+          <li>蓝桥杯·CCPC·计算机设计大赛</li>
+          <li>顺手带走一份计算机竞赛日历</li>
+          <li>五步实战走全程，屏上步骤可拍照</li>
+        </ul>
+      </div>
+      <div class="tl-block tl-d">
+        <div class="t">第四篇章 <span>8 min</span></div>
+        <div class="big">04</div>
+        <div class="d"><b>守住它：AI 时代的代码安全</b>——别的讲座不讲的一课：AI 写的代码，谁来查？怎么查？</div>
+        <ul class="tl-steps">
+          <li>真实审计报告逐条拆解</li>
+          <li>人机协同工程纪律 BGHKM</li>
+          <li>人无我有：源代码安全＝加分项</li>
+          <li>参赛避坑五条，一个都别碰</li>
+        </ul>
+      </div>
+      <div class="tl-block tl-a">
+        <div class="t">第五篇章 <span>15 min</span></div>
+        <div class="big">05</div>
+        <div class="d"><b>望远方＋现场实操</b>——四次跃迁看懂行业走向，四条就业线对号入座，最后动手做一件正事。</div>
+        <ul class="tl-steps">
+          <li>大模型→智能体→多智能体→具身智能</li>
+          <li>任务三选一，做出能截图的作品</li>
+          <li>今天结束：作品存在，方法带走</li>
+          <li>学术伦理三不＋四条就业线</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="audio-bar">
+    <div class="ab-tag">开场热身</div>
+    <audio controls preload="metadata" src="media/media1.mp3"></audio>
+    <p>30 秒录音，看谁记得全——<b style="color:var(--blue)">待会儿让 AI 证明：它 3 秒记得全，还能整理成纪要</b></p>
+  </div>
+  <div class="footer"><span>信息工程学院 AI 讲堂 · AI搭子一句话搞定一切</span><span class="must">今天带走三样：一个判断 · 五个场景 · 一件作品</span></div>
+</section>
+
+<!-- P3-1 AI时代全景：三波浪潮 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">第一篇章 · 看清它</div><div class="sub">AI 时代全景 · 从达特茅斯到范式革命</div><div class="time">2 min</div></div>
+  <h1 class="title">AI 时代全景：<em>七十年，三波浪潮，两次寒冬，一次范式革命</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">1956 年达特茅斯会议提出"人工智能"——此后浪潮与寒冬交替，直到 <b>Transformer（2017）点燃、ChatGPT（2022）引爆</b>；看懂历史，就懂今天。</div>
+  <div class="content">
+    <table class="nice p3t">
+      <tr><th style="width:12%">浪潮</th><th style="width:13%">时间</th><th style="width:23%">核心思想</th><th style="width:27%">标志性事件</th><th>局限与教训（两次寒冬的根源）</th></tr>
+      <tr><td><b>第一波</b><br>符号主义</td><td>1956—1974<br>复兴于1980s</td><td>知识用符号表示、推理用规则引擎驱动——"把专家知识写成规则存进计算机，它就能像专家一样思考"</td><td>1957 罗森布拉特发明<b>感知机</b>；1980s 专家系统商业化；<b>1997 IBM 深蓝</b>击败国际象棋世界冠军卡斯帕罗夫</td><td>真实世界知识无法穷尽成规则，知识获取瓶颈难破→<b>第一次寒冬</b>；逻辑推理容易，感知与运动极难（<b>莫拉维克悖论</b>）</td></tr>
+      <tr><td><b>第二波</b><br>联结主义</td><td>1980—2010s</td><td>统计学习＋深度神经网络——"不再手写规则，让模型从数据中学特征"，从规则定义跨越到特征学习</td><td>1986 辛顿等重新发现<b>反向传播算法</b>；2012 AlexNet 引爆深度学习；<b>2016 AlphaGo</b> 击败李世石</td><td>黑盒难解释；依赖海量标注；缺常识推理、泛化差→<b>第二次寒冬</b>：单点突破撑不起通用智能</td></tr>
+      <tr><td><b>第三波</b><br>生成式与具身</td><td>2017—至今</td><td>生成式预训练＋具身智能——Transformer 统一架构、LLM 通用语义表征，<b>涌现能力</b>出现，进入物理世界认知与行动闭环</td><td>2017 Google 提出 <b>Transformer</b>；2022 <b>ChatGPT</b> 两月破亿用户；2024 诺贝尔物理/化学奖<b>双颁 AI 学者</b>；2026 智能体与具身量产元年</td><td>新命题：幻觉与可解释性、算力与成本、安全与对齐——<b>但这一次，浪潮由通用性驱动，未见拐点</b></td></tr>
+    </table>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:1vh .8vw;margin-top:.72vh;flex:0 0 auto;">
+      <div class="card navy-top" style="text-align:center;padding:.92vh 1vw;"><div class="bignum-inline">7亿+</div><p style="margin-top:.4vh;font-size:1.7vh;line-height:1.34">全球生成式 AI 用户（CNNIC 2026）——每两个中国人，就有一个在用</p></div>
+      <div class="card navy-top" style="text-align:center;padding:.92vh 1vw;"><div class="bignum-inline">50%+</div><p style="margin-top:.4vh;font-size:1.7vh;line-height:1.34">普及率已过半——AI 从黑科技变成基本素养</p></div>
+      <div class="card navy-top" style="text-align:center;padding:.92vh 1vw;"><div class="bignum-inline">1万亿$</div><p style="margin-top:.4vh;font-size:1.7vh;line-height:1.34">2026 全球 AI 投资量级——英伟达市值站稳 5 万亿美元</p></div>
+      <div class="card gold-top" style="text-align:center;padding:.92vh 1vw;"><div class="bignum-inline" style="color:var(--gold-dark)">60+年</div><p style="margin-top:.4vh;font-size:1.7vh;line-height:1.34">规则→学习→涌现：每一波都站上上一波的肩膀</p></div>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:1vh .8vw;margin-top:.72vh;flex:1;align-items:stretch;">
+      <div class="card blue-top" style="padding:1.02vh 1.1vw"><h3 style="font-size:1.9vh;margin-bottom:.32vh"><span class="icon-dot"></span>范式转移：从专才到通才</h3><p style="font-size:1.72vh;line-height:1.28">此前 AI 是"碎片化专才"：文本、视觉、音频、逻辑各管一摊。这一波跃迁为<b>全域通用"通才"</b>：①从碎片到统一——跨领域处理能力；②从识别到理解——"标签分类"升级为常识级"语义对齐"；③从统计到逻辑——在统一表征空间建立<b>物理常识</b>。</p></div>
+      <div class="card blue-top" style="padding:1.02vh 1.1vw"><h3 style="font-size:1.9vh;margin-bottom:.32vh"><span class="icon-dot"></span>能力闭环：感知·决策·执行</h3><p style="font-size:1.72vh;line-height:1.28"><b>感知（输入）</b>：多模态构建物理环境的高保真数字孪生；<b>决策（逻辑）</b>：Agent 自主拆解任务、规划路径、长程推理；<b>执行（输出）</b>：数字指令转化为物理动作，精准干预现实。<b>人类定义目标，AI 完成任务链条</b>——"协助"而非"替代"：解放机械重复劳动，让人专注决策与创新。</p></div>
+      <div class="card gold-top" style="padding:1.02vh 1.1vw"><h3 style="font-size:1.9vh;margin-bottom:.32vh"><span class="icon-dot g"></span>为什么第三次不一样</h3><p style="font-size:1.72vh;line-height:1.28">前两波靠<b>人写规则/人标数据</b>堆出"特定任务自动化"。这次本质区别三条：①<b>Scaling Law</b>：参数×数据×算力同步放大，能力随规模涌现——GPT-3 参数是 GPT-2 的 117 倍，Few-shot"无中生有"；②<b>通用性</b>：一个底座写代码、看片子、做规划、开机器人；③<b>行动性</b>：模型之上装"手脚"（智能体）与"身体"（具身），从"会说话"到"会做事"。<b>技术、产业、政策三线首次同频</b>。</p></div>
+    </div>
+  </div>
+  <div class="footer"><span>来源：达特茅斯会议（1956）公开史实 · CNNIC《生成式人工智能应用发展报告（2026）》 · 行业公开数据</span><span class="must">一句话记住三波浪潮：规则 → 学习 → 涌现</span></div>
+</section>
+
+<!-- P3-2 大模型：演进与格局 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">第一篇章 · 看清它</div><div class="sub">认知底座 · 大模型的四个时代与全球格局</div><div class="time">2 min</div></div>
+  <h1 class="title">大模型：<em>从架构之争到智能体时代，多强并立、国产崛起</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">全球 AI 模型市场约 <b>6120 亿美元</b>（+40%）；ChatGPT 月活超 11 亿但份额跌破 50%——海外 <b>GPT-6、Claude 5.5、Gemini 4</b> 三强缠斗，国产 <b>DeepSeek V4.1、GLM-5.3、Kimi K3</b> 集群崛起：能力收敛后，竞争转向生态与成本。</div>
+  <div class="content">
+    <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:1vh .8vw;flex:0 0 auto;">
+      <div class="card navy-top" style="padding:.95vh 1vw"><h3 style="font-size:1.82vh;margin-bottom:.32vh">2018-2019 架构之争</h3><p style="font-size:1.7vh;line-height:1.24">编码器/解码器可拆开单独用：<b>BERT</b> 双向"填空"（极致理解）；<b>GPT-1/2</b> 赌自回归"续写"（生成即智能）——两条路线 2018 年分野。</p></div>
+      <div class="card navy-top" style="padding:.95vh 1vw"><h3 style="font-size:1.82vh;margin-bottom:.32vh">2020-2022 暴力美学</h3><p style="font-size:1.7vh;line-height:1.24"><b>GPT-3 参数 1750 亿</b>（117 倍于 GPT-2），Scaling Law 验证；<b>Llama</b> 定义开源"小而强"，埋下开源种子。</p></div>
+      <div class="card navy-top" style="padding:.95vh 1vw"><h3 style="font-size:1.82vh;margin-bottom:.32vh">2023-2024 多模态爆发</h3><p style="font-size:1.7vh;line-height:1.24">GPT-4 图文多模态、GPT-4o 统一文本音频图像；<b>DeepSeek 以 MoE 架构</b>极低成本冲进第一梯队，开源反击战开打。</p></div>
+      <div class="card navy-top" style="padding:.95vh 1vw"><h3 style="font-size:1.82vh;margin-bottom:.32vh">2025-2026 推理与智能体</h3><p style="font-size:1.7vh;line-height:1.24"><b>o1/GPT-5</b> 引入 RL 思维链攻克奥数难题；<b>GPT-6、Claude 5.5</b> 推智能体走向"主动式"（Duet 关机也干活）——为智能体时代铺路。</p></div>
+    </div>
+    <table class="nice gold p4t" style="margin-top:.58vh;">
+      <tr><th style="width:10%">厂牌</th><th style="width:14%">性格定位</th><th style="width:15%">代表模型</th><th>优势领域与"对你的用法"</th></tr>
+      <tr><td>OpenAI</td><td>暴力美学 · 全能全知</td><td>GPT-6 / o3</td><td>综合生态与推理天花板，Codex 成开发者标配——复杂推理与创意，成本较高</td></tr>
+      <tr><td>Google</td><td>多模态王者 · 工程基石</td><td>Gemini 4 Argon</td><td><b>百万 Token 上下文</b>，HSS 55.4% 登顶，输入约 2 美元/百万 Token——长文档与预算敏感</td></tr>
+      <tr><td>Anthropic</td><td>文人风骨 · 编程大师</td><td>Claude Opus 5.5</td><td><b>Agentic Coding 事实标准</b>，Claude Code 成标配；5.5 驱动 Duet 主动智能体</td></tr>
+      <tr><td>Meta</td><td>开源教主 · 社区核心</td><td>Llama 4</td><td>本地部署微调生态最成熟——竞赛项目<b>零成本本地跑</b>；开源头名让位国产</td></tr>
+      <tr><td>DeepSeek</td><td>性价比之王 · 算法极客</td><td>DeepSeek V4.1</td><td><b>V4.1-Flash 登顶 Code Arena 开源榜</b>——国内部署与参赛务实之选</td></tr>
+      <tr><td>智谱 Z.ai</td><td>开源新王 · 编码极客</td><td>GLM-5.3 / 5.2</td><td>5.2 开源横扫、采用速度超 DeepSeek V4；5.3 编码最强开源——<b>国产首选</b></td></tr>
+      <tr><td>月之暗面</td><td>长文本之王 · 上下文专家</td><td>Kimi K3</td><td><b>万亿级 MoE＋顶级长上下文</b>，AI 办公软件争相接入——长文档利器</td></tr>
+      <tr><td>MiniMax</td><td>多模态卷王 · 速度狂人</td><td>M3.1 Flash</td><td>Space Bunny 处理 <b>200T+ Token</b> 登顶 OpenRouter；速度 3 倍价降 70</td></tr>
+    </table>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:.7vh .8vw;margin-top:.58vh;flex:1;align-items:stretch;">
+      <div class="card blue-top" style="padding:.95vh 1vw"><h3 style="font-size:1.82vh;margin-bottom:.32vh"><span class="icon-dot"></span>大模型怎么"炼"成（三阶段）</h3><p style="font-size:1.7vh;line-height:1.3">①<b>预训练</b>学知识：海量语料玩"猜词"接龙；②<b>SFT</b>学回答：问答对教它"听懂指令"；③<b>RLHF</b>学偏好：人类反馈强化，让输出得体合规。</p></div>
+      <div class="card blue-top" style="padding:.95vh 1vw"><h3 style="font-size:1.82vh;margin-bottom:.32vh"><span class="icon-dot"></span>前沿一：多模态统一（LLM→LMM）</h3><p style="font-size:1.7vh;line-height:1.3">从"翻译官"到"视觉直觉"：早期"视觉→文字→推理"接力有损；原生多模态把<b>图像语音文本放进同一表征空间</b>——直接理解像素与语义，跨模态联合推理。</p></div>
+      <div class="card blue-top" style="padding:.95vh 1vw"><h3 style="font-size:1.82vh;margin-bottom:.32vh"><span class="icon-dot"></span>前沿二：慢思考（System 1/2）</h3><p style="font-size:1.7vh;line-height:1.3"><b>System 1</b>直觉：快但易错，适合闲聊润色；<b>System 2</b>逻辑：慢但可靠，先规划再执行、可自验证。o1 用 RL 训练"隐形思维链"让模型<b>三思而后行</b>，是 Agent 灵魂。</p></div>
+      <div class="card gold-top" style="padding:.95vh 1vw"><h3 style="font-size:1.82vh;margin-bottom:.32vh"><span class="icon-dot g"></span>选型逻辑（记这条就够）</h3><p style="font-size:1.7vh;line-height:1.3">选模型＝选性格，<b>先定任务再定厂牌</b>：写 Agent 看<b>推理与工具调用</b>；竞赛看<b>成本与部署自由度</b>；研究看<b>长上下文多模态</b>；国内优先国产；能力收敛后<b>工程化是差异化</b>。</p></div>
+    </div>
+  </div>
+  <div class="footer"><span>数据来源：Sensor Tower《2026年AI现状报告》· OpenAI/Google/Anthropic/Meta/DeepSeek/智谱/月之暗面/MiniMax 官方发布（2026.10）· Arena 公开榜单</span><span class="must">记住三阶段：预训练学知识 → SFT 学回答 → RLHF 对齐偏好</span></div>
+</section>
+
+<!-- P3-3 生成技术：图像·视频·3D -->
+<section class="slide">
+  <div class="kicker"><div class="tag">第一篇章 · 看清它</div><div class="sub">认知底座 · 生成技术三线并进</div><div class="time">2 min</div></div>
+  <h1 class="title">生成技术三线并进：<em>更美 · 更真 · 更立体</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">2026 年的分水岭：<b>视频生成价格从"元"降到"分"、4K 直出成为标配</b>——生成质量的竞争天花板从"像不像"转向<b>"物理一致性"</b>：图像拼美学、视频拼物理、3D 拼几何。</div>
+  <div class="content">
+    <div class="pgrid3">
+      <div class="pcol">
+        <div class="pcol-head"><span class="bdg">图像生成</span>从"美"到"准"</div>
+        <div class="card blue-top" style="flex:1;"><h3 style="font-size:1.78vh">原理一句话：扩散模型</h3><p style="font-size:1.7vh;line-height:1.36">训练时往图片里"加噪"再学"去噪"；生成时从纯噪声一步步<b>还原</b>出图——所以能"无中生有"，也能对已有图局部重绘（一句话改图、补图、换风格）。</p></div>
+        <div class="card blue-top" style="flex:1;"><h3 style="font-size:1.78vh">AI 之"美"：视觉巅峰</h3><p style="font-size:1.7vh;line-height:1.36">光影、构图、材质达到专业级——海报、插画、概念设计一句话生成，<b>普通人的创意表达门槛被铲平</b>；文生图模型（如 Nano Banana 2）已挂载实时搜索，生成内容可与时事秒级同步。</p></div>
+        <div class="card blue-top" style="flex:1;"><h3 style="font-size:1.78vh">AI 之"准"：工业可用</h3><p style="font-size:1.7vh;line-height:1.36">结构理解（透视、几何一致）、多参考图控制（十余张混合参考）、精准编辑——广告、电商、教辅配图进入<b>工业量产</b>阶段。</p></div>
+        <div class="card navy-top" style="flex:1;"><h3 style="font-size:1.78vh">对计算机专业的意义</h3><p style="font-size:1.7vh;line-height:1.36">前端原型、可视化素材、竞赛 Demo 配图<b>从"找图"变成"生成图"</b>；但生成内容能以假乱真——<b>鉴伪与溯源成为新技能</b>，版权与真实性底线必须守住（第四篇章细讲）。</p></div>
+      </div>
+      <div class="pcol">
+        <div class="pcol-head"><span class="bdg">视频生成</span>从"像"到"物理一致"</div>
+        <div class="card gold-top" style="flex:1;"><h3 style="font-size:1.78vh">Seedance 2.0（字节·即梦）</h3><p style="font-size:1.7vh;line-height:1.36">2026 年 2 月上线，<b>图/文/音/视四维混合输入、最多 12 个参考文件</b>：跨场景角色一致性、自动分镜、导演级运镜——历史痛点（动作崩坏、音画割裂）逐一解决；<b>90% 首次尝试即获可用素材，成本削减 90%、周期压缩至分钟级</b>；马斯克转发点评"进展太快"。</p></div>
+        <div class="card gold-top" style="flex:1;"><h3 style="font-size:1.78vh">Kling 4.0（快手·可灵）</h3><p style="font-size:1.7vh;line-height:1.36">2026 年 9 月内测：单次原生视频拉到 <b>30 秒、4K 画质</b>；轻量版 Flash 主打出片速度——"控制力"成为卖点：指定镜头运动、参考动作、背景音乐皆可精确操控。</p></div>
+        <div class="card gold-top" style="flex:1;"><h3 style="font-size:1.78vh">群雄并起</h3><p style="font-size:1.7vh;line-height:1.36"><b>Vidu Q4</b>（生数科技）：15 张参考图＋3 段参考音频、4K 直出；<b>通义万相</b>（阿里）接入电商生态；OpenAI <b>Sora 2</b> 以神经物理引擎模拟流体与碰撞——各家 API 形态趋同：提交任务→拿 task_id→轮询结果，<b>工程接入已标准化</b>。</p></div>
+        <div class="card gold-top" style="flex:1;"><h3 style="font-size:1.78vh">行业拐点：拼"导演思维"</h3><p style="font-size:1.7vh;line-height:1.36">价格从"元"降到"分"后，下半场拼的不是"会不会生成"，而是<b>叙事控制力</b>：长叙事、分镜调度、音画同步——<b>会用 AI 导演的人，比会用 AI 生成的人稀缺</b>；下一站 Seedance 3.0 目标 10 分钟长叙事。</p></div>
+      </div>
+      <div class="pcol">
+        <div class="pcol-head"><span class="bdg">3D 生成</span>从计算空间到管理资产</div>
+        <div class="card navy-top" style="flex:1;"><h3 style="font-size:1.78vh">三代技术演进</h3><p style="font-size:1.7vh;line-height:1.36">①<b>多边形光栅化</b>（经典 Mesh）：GPU 投影硬几何——快、可交互，但难表达毛发烟雾，照片级还原成本极高；②<b>NeRF</b>隐式神经场：不存几何只存网络权重，光线步进采样——照片级还原、处理透明折射，但算力黑洞难上手机；③<b>3D 高斯泼溅（3DGS）</b>：数百万"智能椭球"瞬时泼溅到屏幕——移动端实时渲染、易编辑，能模拟玻璃烟雾毛发。</p></div>
+        <div class="card navy-top" style="flex:1;"><h3 style="font-size:1.78vh">世界级玩家</h3><p style="font-size:1.7vh;line-height:1.36">李飞飞创办的 <b>World Labs</b>（"3D as Code"直接生成可导出的强几何一致性 3D 场景）、Google DeepMind 的 <b>Genie 3</b>（可交互世界模型）、英伟达 <b>Cosmos</b>（工业级世界基础模型）——3D 生成正与"世界模型"合流。</p></div>
+        <div class="card navy-top" style="flex:1;"><h3 style="font-size:1.78vh">落地场景</h3><p style="font-size:1.7vh;line-height:1.36">电商 3D 展示、文旅数字孪生、影视虚拟制片、<b>机器人仿真训练场</b>——生成场景可直接导出到 Omniverse 等引擎，成为具身智能的"驾校"（第七页呼应）。</p></div>
+        <div class="card blue-top" style="flex:1;"><h3 style="font-size:1.78vh">一句话总括</h3><p style="font-size:1.7vh;line-height:1.36">三线并进的共同终点：<b>从"生成内容"到"理解并重建物理世界"</b>——图像给你眼睛看到的，视频给你世界里发生的，3D 给你可以在其中行动的空间。</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>来源：字节跳动/快手/生数科技/OpenAI 官方发布（2026）· 腾讯云开发者社区横评 · 3DGS 学术论文公开综述</span><span class="must">共同点：AI 正在学会"物理世界的语法"</span></div>
+</section>
+
+<!-- P3-4 AI Agent：从工具到数字员工 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">第一篇章 · 看清它</div><div class="sub">决策大脑 · AI Agent 从概念到规模化落地</div><div class="time">2 min</div></div>
+  <h1 class="title">AI Agent：<em>从"回答问题"到"完成工作"的关键跃迁</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">2026 是 Agent 规模化落地元年——<b>Gartner：2026 年底全球企业级智能体市场突破 1800 亿美元（中国占 35%），40% 企业应用将内置任务型 Agent</b>（2025 年尚不足 5%）；信通院：中国企业级 Agent 市场 212 亿→449 亿元一年翻倍。</div>
+  <div class="content">
+    <div class="duo">
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card blue-top" style="flex:0 0 auto;">
+          <h3><span class="icon-dot"></span>一个对比看懂本质（航班案例）</h3>
+          <p style="font-size:1.72vh;line-height:1.48"><b>普通模型</b>：告诉你有哪些航班——但不保证现在还有票；<b>智能体</b>：登录官网 → 发现没票 → 自动搜索候补 → 刷出余票 → 推送到邮箱。差别不在"聪明"而在<b>闭环行动能力</b>——外面一问一答，里面跑了三圈（读文件→查日历→资料够了才输出）。这就是从"自动化工具"到<b>"数字员工"</b>的跃迁。</p>
+        </div>
+        <div class="card navy-top" style="flex:1;">
+          <h3><span class="icon-dot d"></span>四层架构（工程视角，计算机专业记这条）</h3>
+          <p style="font-size:1.72vh;line-height:1.48">① <b>大脑</b>：大模型负责理解/推理/生成（GPT-5.5、Claude 4.6、DeepSeek V4、Qwen 等）；<br>② <b>规划器 Planner</b>：把复杂目标拆解为可独立验证的原子任务序列，预判风险；<br>③ <b>记忆 Memory</b>：向量库＋图数据库沉淀长期业务知识与历史经验，长短期记忆隔离；<br>④ <b>工具层 Tool Use</b>：通过 <b>MCP 协议</b>（JSON-RPC 标准化）调用外部系统——Host 管人机上下文、Client 管协议调用、Server 管能力数据，搜索/文件/数据库/API 即插即用。<br>四层合成一个循环：<b>规划 Plan（拒绝拍脑袋）→ 执行 Act（拒绝空谈）→ 观察 Observe（拒绝闭目）→ 反思 Reflect（拒绝固执）</b>——错了会回头改方案再试。</p>
+        </div>
+        <div class="card blue-top" style="flex:0 0 auto;">
+          <h3><span class="icon-dot"></span>Agent ≠ 工作流（分清楚这两个词）</h3>
+          <p style="font-size:1.72vh;line-height:1.6"><b>工作流 Workflow</b>：代码控流程、模型做节点——确定、可审计、成本可控，适合标准化 SOP；<b>Agent</b>：模型自己决定下一步——灵活、能处理长尾任务，但要防失控。工程实践是<b>混合式</b>：主干用工作流锁确定性，叶子节点放 Agent 处理开放性。</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="grid" style="grid-template-columns:1fr 1fr;flex:0 0 auto;">
+          <div class="card gold-top" style="text-align:center;padding:1.2vh .8vw;"><div class="bignum-inline" style="font-size:4vh">1800亿$</div><p style="margin-top:.4vh;font-size:1.7vh;line-height:1.45">2026 全球企业级<br>Agent 市场（Gartner）<br><b>中国占比 35%</b></p></div>
+          <div class="card gold-top" style="text-align:center;padding:1.2vh .8vw;"><div class="bignum-inline" style="font-size:4vh">449亿元</div><p style="margin-top:.4vh;font-size:1.7vh;line-height:1.45">2026 中国企业级 Agent<br>市场（信通院）<br>2025 年 212 亿→翻倍</p></div>
+          <div class="card gold-top" style="text-align:center;padding:1.2vh .8vw;"><div class="bignum-inline" style="font-size:4vh">3.5亿个</div><p style="margin-top:.4vh;font-size:1.7vh;line-height:1.45">2031 中国活跃智能体<br>数量（IDC）<br>2026-27 增速最快</p></div>
+          <div class="card gold-top" style="text-align:center;padding:1.2vh .8vw;"><div class="bignum-inline" style="font-size:4vh">40%</div><p style="margin-top:.4vh;font-size:1.7vh;line-height:1.45">2026 底内置任务型 Agent<br>的企业应用占比<br>（2025 不足 5%）</p></div>
+        </div>
+        <div class="card blue-top" style="flex:1;">
+          <h3><span class="icon-dot"></span>价值从哪来：垂直落地 + 现象级样本</h3>
+          <p style="font-size:1.72vh;line-height:1.48"><b>麦肯锡判断：未来 AI 七成以上产业价值来自垂直行业的实景落地，而非通用对话。</b>现象级样本 <b>OpenClaw</b>：黄仁勋称"史上最重要的软件发布"；狂热玩家日烧 10 亿 Tokens 盯运行日志；几个月前不会写代码的 PhD 用 Agent 搭出实验室管理系统；甚至出现"给智能体用的婚恋软件"——Agent 出现"社会化"特征：主动提问获取上下文、Agent 之间互相协作慰藉。<b>你的机会窗口：会用 Agent 编排的人正在接管不会用的人的工作流</b>——今天的 TeleAgent 演示，跑的就是同一套"大脑+工具+循环"架构。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>数据来源：Gartner / 中国信通院 / IDC / 麦肯锡（2026 公开口径）· OpenClaw 公开报道</span><span class="must">四循环记住：规划→执行→观察→反思——第二篇章每个演示都在跑它</span></div>
+</section>
+
+<!-- P3-5 具身智能：走进物理世界 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">第一篇章 · 看清它</div><div class="sub">物理执行 · 具身智能的量产元年</div><div class="time">2 min</div></div>
+  <h1 class="title">具身智能：<em>2026 量产元年，AI 长出身体</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">核心转变：Internet AI 学"关于世界的知识"（文本与像素），Embodied AI 通过<b>"与世界的交互"学习</b>（力、触觉与空间感知）——"真正的智慧不是读出来的，而是'摸'出来的"；运行链路：感知 Perception → 规划 Planning → 动作 Action → 物理反馈 Feedback。</div>
+  <div class="content">
+    <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:1vh .8vw;flex:0 0 auto;">
+      <div class="card navy-top" style="text-align:center;padding:1.2vh .8vw;"><div class="bignum-inline" style="font-size:4vh">2.3万台</div><p style="margin-top:.4vh;font-size:1.7vh;line-height:1.45">2026 上半年全球人形机器人出货（量产超 3 万台）</p></div>
+      <div class="card navy-top" style="text-align:center;padding:1.2vh .8vw;"><div class="bignum-inline" style="font-size:4vh">80%</div><p style="margin-top:.4vh;font-size:1.7vh;line-height:1.45">2025 全球装机约 1.6 万台中<br>中国市场占比（Counterpoint）</p></div>
+      <div class="card navy-top" style="text-align:center;padding:1.2vh .8vw;"><div class="bignum-inline" style="font-size:4vh">140家</div><p style="margin-top:.4vh;font-size:1.7vh;line-height:1.45">中国整机企业数·产品超 330 款<br>——量产元年即淘汰赛</p></div>
+      <div class="card navy-top" style="text-align:center;padding:1.2vh .8vw;"><div class="bignum-inline" style="font-size:4vh">+508%</div><p style="margin-top:.4vh;font-size:1.7vh;line-height:1.45">2025 全球人形机器人<br>营收同比增速（IDC）</p></div>
+    </div>
+    <div class="duo" style="margin-top:1.2vh;flex:1;min-height:0;">
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card blue-top" style="flex:0 0 auto;">
+          <h3 style="font-size:1.9vh"><span class="icon-dot"></span>头部玩家格局（2026 口径）</h3>
+          <p style="font-size:1.72vh;line-height:1.6">- <b>宇树科技</b>：电机/减速器/控制器核心零部件全自研自产；四足机器狗已在电力巡检、矿山勘察、应急搜救<b>大规模交付</b>；2025 年人形机器人终端发货<b>超 5500 台</b>；2026 年 8 月 19 日以"人形机器人第一股"登陆科创板，市值一度 4449 亿元<br>- <b>波士顿动力 Atlas</b>：CES 2026 亮相量产版——全电动、身高 1.88 米、负载 50 公斤<br>- <b>特斯拉 Optimus</b>：2025 Q3 试产不足 1000 台；<b>Figure</b> 全年出货约 150 台——<b>中国厂商出货量级已反超海外</b></p>
+        </div>
+        <div class="card gold-top" style="flex:1;">
+          <h3 style="font-size:1.9vh"><span class="icon-dot g"></span>为什么是"元年"：政策与产业双轮</h3>
+          <p style="font-size:1.72vh;line-height:1.6">工信部明确：<b>未来两三年是人形机器人从试点走向小规模批量落地的关键阶段</b>。与 Agent 元年形成呼应——<b>数字员工进办公室（Agent），物理员工进车间（机器人），两条线同时展开</b>；对计算机专业的信号：机器人算法、仿真工程、数据闭环岗位正在放量，"计算机＋机械/电子"复合背景溢价最高。</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card navy-top" style="flex:1;">
+          <h3 style="font-size:1.9vh"><span class="icon-dot d"></span>怎么学会干活：数据采集三方式</h3>
+          <p style="font-size:1.72vh;line-height:1.48">① <b>远程遥操作</b>：操作员戴 VR 或动力反馈手柄（如 ALOHA 系统）远程控制机械臂，同步记录全部传感器数据——质量高（直接获取专家级操作逻辑）但人力成本极高、无法大规模并行；② <b>视觉观察</b>：从海量视频/动作捕捉还原三维动作序列——数据量大（视频无穷无尽）但缺力反馈，存在"视角偏差"；③ <b>自主探索</b>：机器人像婴儿一样随机尝试——全自动、覆盖长尾场景但效率低、易损坏硬件。<b>产业界主流＝协同采集（Co-robotics）</b>：多台低成本机械臂（Mobile ALOHA）众包并行，快速积累千万级轨迹数据，兼顾质量与规模。</p>
+        </div>
+        <div class="card navy-top" style="flex:1;">
+          <h3 style="font-size:1.9vh"><span class="icon-dot d"></span>学习范式 + Sim-to-Real：两道关键工序</h3>
+          <p style="font-size:1.72vh;line-height:1.48"><b>学习范式合力</b>：模仿学习打底（行为克隆"照猫画虎"→ <b>Diffusion Policy</b> 用生成式扩散解决动作多峰分布——面对同一个杯子，从左抓还是从右抓不再纠结，动作更丝滑）；强化学习精进（<b>IQL 离线 RL</b>：从离线数据直接学最优策略，不用在线试错、保护昂贵硬件；流程＝模仿预训练→离线 RL 精调→少量在线微调→部署）。<b>Sim-to-Real 跨"死亡大峡谷"</b>：仿真与现实的摩擦力/材质/光影总有细微偏差——领域随机化（疯狂改变纹理质量参数让模型"见多识广"）＋ <b>NVIDIA Isaac Lab</b> GPU 并行仿真（数千环境同时训练，"仿真一小时、现实一万年"）。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>数据来源：Counterpoint / IDC / Omdia / 工信部公开表述 · 宇树科技招股书及公开报道（2025-2026）</span><span class="must">具身智能三件事：采数据、学范式、过峡谷</span></div>
+</section>
+
+<!-- P3-6 世界模型与AI for Science -->
+<section class="slide">
+  <div class="kicker"><div class="tag">第一篇章 · 看清它</div><div class="sub">科学加速 · 世界模型与 AI for Science</div><div class="time">2 min</div></div>
+  <h1 class="title">科学加速：<em>从"复读机"到"世界模拟器"</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">当前 AI 能写论文、写代码、生成顶级画面，但缺乏<b>理解、预测世界并在推演中行动</b>的能力——OpenAI、Google、微软与 Yann LeCun、李飞飞等顶尖学者都在抢答同一道题：世界模型，让 AI 从"生成像素"进化到"理解因果"。</div>
+  <div class="content">
+    <div class="duo">
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card blue-top" style="flex:0 0 auto;">
+          <h3><span class="icon-dot"></span>定义与直观类比（记住这组对比）</h3>
+          <p style="font-size:1.72vh;line-height:1.6">世界模型＝<b>学习物理世界规律的内部表征系统</b>：不只预测下一个像素（Next Pixel），而是通过<b>因果律（Causality）</b>在潜空间预演"未来会发生什么"。<br><b>传统 AI</b>：看照片识人——静态感知，无时序推理；<b>世界模型</b>：接球前大脑预判球的飞行轨迹——动态模拟，因果推演。架构上 <b>V-M-C 三组件闭环</b>：V 视觉感知（压缩环境信息）→ M 预测记忆（在潜空间推演未来）→ C 行动控制（基于预演做决策），反馈回流。<br><b>演进四步</b>：经典控制与 MBRL（查找表，仅处理低维输入）→ 潜空间想象觉醒（VAE＋RNN，智能体在"梦境"中进化）→ 大规模生成式模拟（Sora/Gen-2 证明视频生成即隐式物理建模）→ 空间智能与物理对齐（从"视觉像不像"转向"几何是否一致"）。<b>与 LLM 的关系</b>：LLM 帮你处理信息，世界模型帮你预演现实——未来将融合为"语言＋物理直觉"的统一底座。</p>
+        </div>
+        <table class="nice" style="flex:1;">
+          <tr><th style="width:23%">当前四大学派</th><th>代表 · 原理与优势</th></tr>
+          <tr><td><b>潜空间动力学派</b></td><td>DreamerV3、Genie 3——RSSM 结合确定性（历史记忆）与随机性（未来不确定），支持 24fps+ 实时交互</td></tr>
+          <tr><td><b>联合嵌入预测派</b></td><td>V-JEPA（LeCun 路线）——放弃生成像素、预测抽象特征，计算效率极高，通往 AGI 的推理路径</td></tr>
+          <tr><td><b>空间智能几何派</b></td><td>World Labs（李飞飞）——"3D as Code"生成可导出场景，是理想仿真底座</td></tr>
+          <tr><td><b>通用生成式物理派</b></td><td>NVIDIA Cosmos、Sora 迭代版——视频自监督自发产生重力/碰撞/质量感知，服务自动驾驶极端案例模拟</td></tr>
+        </table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card gold-top" style="flex:0 0 auto;">
+          <h3><span class="icon-dot g"></span>AI for Science：科研范式被改写（三条实证）</h3>
+          <p style="font-size:1.72vh;line-height:1.6"><b>里程碑：2024 年诺贝尔奖双授 AI</b>——物理学奖授予 Hopfield 与 Hinton（神经网络奠基），化学奖授予 DeepMind 的 Hassabis 与 Jumper（<b>AlphaFold 蛋白质结构预测</b>，此前 AlphaFold2 已被《Nature》《Science》评为 2021 年度科学突破之首，预测结果开源惠及全球）。<b>方法论跃迁</b>：① <b>多模态科学知识融合</b>——PDE 方程、异构实验数据、科技文献统一语义编码，打破学科孤岛；② <b>PINNs 物理告知神经算子</b>——超越传统数值模拟，流体/电磁/应力瞬时演化推演；③ <b>生成式逆向设计</b>——按目标性能反向催生新材料分子拓扑。<b>产业实证</b>：英矽智能依托 Pharma.AI 从立项到候选化合物提名<b>仅需 12-18 个月（传统制药 2.5-4 年）</b>；材料筛选、气候预测、分子动力学模拟全面进入科研流程。</p>
+        </div>
+        <div class="card blue-top" style="flex:0 0 auto;">
+          <h3><span class="icon-dot"></span>冷静的一面：AI4S 的"下半场"</h3>
+          <p style="font-size:1.72vh;line-height:1.6">近年主线是证明模型"能做"——能预测结构、筛出成千上万候选材料、自动规划合成路线；<b>但生成候选的速度提升了几个数量级，实验验证的速度没有跟上</b>——"预测很快、验证太慢"正在成为决定成果含金量的关键变量。CCF 等学界共识：AI4S 下半场要解决<b>数据质量、湿实验闭环、可信验证</b>三个问题——这恰恰是计算机专业能发力的地方：把"验证流水线"做成工程，就是新的岗位机会。</p>
+        </div>
+        <div class="card navy-top" style="flex:1;">
+          <h3><span class="icon-dot d"></span>对你的专业意味着什么（三句话收束第一篇章）</h3>
+          <p style="font-size:1.72vh;line-height:1.48">① <b>认知底座</b>（大模型/多模态/慢思考）＝你们已经在用的工具；② <b>决策大脑</b>（Agent）＝今天下午实操的主角；③ <b>物理执行＋科学加速</b>＝未来十年新增的岗位富矿——机器人算法、仿真工程、AI4S 研究工程。<b>从"看清它"到"用上它"，只差动手——下一篇章开始实操。</b></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>来源：诺贝尔奖委员会（2024）·《Nature》《Science》（2021）· DeepMind/World Labs/NVIDIA 官方技术报告 · CCF HPC2026 观点综述</span><span class="must">第一篇章收官：底座→大脑→身体→加速器，AI 全景一张图</span></div>
+</section>
+<!-- P4 篇章一：大模型 -->
+<section class="slide">
+  <div class="subtitle">一个被关在服务器里的超级大脑，按概率"接话"——聪明是真聪明；但<b>断网、没手、出不去、会幻觉</b>，"惨"也是真惨。<b>每一"惨"都有对应解药</b>：这一页把成因和解法一次讲透，落到 RAG 与私有化。</div>  <div class="content">    <div class="duo">      <div style="display:flex;flex-direction:column;gap:.85vh;">        <div class="grid" style="grid-template-columns:1fr 1fr 1fr;flex:0 0 auto;">          <div class="card navy-top" style="padding:.78vh .9vw"><h3 style="font-size:1.78vh;margin-bottom:.3vh"><span class="icon-dot d"></span>断网</h3><p style="font-size:1.66vh;line-height:1.38"><b>训练数据有截止日期</b>，时事不知道——靠联网检索补。</p></div>          <div class="card navy-top" style="padding:.78vh .9vw"><h3 style="font-size:1.78vh;margin-bottom:.3vh"><span class="icon-dot d"></span>没手</h3><p style="font-size:1.66vh;line-height:1.38"><b>只会"说"不会"做"</b>——文件操作靠智能体工具调用。</p></div>          <div class="card navy-top" style="padding:.78vh .9vw"><h3 style="font-size:1.78vh;margin-bottom:.3vh"><span class="icon-dot d"></span>出不去</h3><p style="font-size:1.66vh;line-height:1.38"><b>不能发邮件、交表单</b>——行动能力是智能体第二生命。</p></div>        </div>        <div class="card red-top" style="flex:0 0 auto;">          <h3><span class="icon-dot" style="background:var(--red)"></span>最痛的"惨"：幻觉——怎么来的？</h3>          <p style="font-size:1.7vh;line-height:1.42">逐词"接龙"的副产品：<b style="color:var(--red)">只预测最可能的词，不验证事实</b>——训练语料没有的，它就按概率"编"一个像的：文献、函数、API 编得有模有样。加上<b>知识截止、张冠李戴、上下文污染</b>三条放大器，幻觉无法根除，只能工程化压制。</p>        </div>        <div class="card blue-top" style="flex:1;">          <h3><span class="icon-dot"></span>压制幻觉的两层武器（计算机专业必须会）</h3>          <p style="font-size:1.7vh;line-height:1.44"><b>第一层 · 提示词纪律</b>（今天就能用）：①交叉验证——同题问两家或联网核对；②要求出处——"给出处，找不到就直说"；③抽样复核——引用、数据、代码逐条抽查。<br><b>第二层 · 架构级方案 RAG</b>（右侧整块）：<b style="color:var(--blue)">让模型"开卷考试"——答案必须来自你的资料，检索在先、生成在后</b>。这正是"大模型＋你的知识库"的互补关系：大模型懂语言、会推理；RAG 管事实、管出处。</p>        </div>      </div>      <div style="display:flex;flex-direction:column;gap:.85vh;">        <div class="card gold-top" style="flex:0 0 auto;">          <h3><span class="icon-dot g"></span>RAG（检索增强生成）：一条流水线看懂</h3>          <div class="ragflow">            <div class="rf-row">              <div class="rf-node"><b>你的文档</b><span>课件/论文/规章</span></div><div class="rf-a">→</div>              <div class="rf-node"><b>分块向量化</b><span>语义切块入索引</span></div><div class="rf-a">→</div>              <div class="rf-node"><b>提问检索</b><span>召回最相关片段</span></div>            </div>            <div class="rf-row">              <div class="rf-node gold"><b>喂给大模型</b><span>只准基于片段答</span></div><div class="rf-a">→</div>              <div class="rf-node gold"><b>答案＋出处</b><span>带页码可反查</span></div><div class="rf-a">→</div>              <div class="rf-node gold"><b>无依据拒答</b><span>"资料里没有"</span></div>            </div>          </div>          <p style="font-size:1.68vh;line-height:1.38;margin-top:.5vh"><b>知识图谱补一刀</b>：RAG 管"找到原文"，知识图谱管"关联推理"（实体-关系网络，跨章节/跨文档问答）——两者结合是当前企业知识库的标配架构，也是毕设/竞赛的高频选题。</p>        </div>        <div class="card blue-top" style="flex:0 0 auto;">          <h3><span class="icon-dot"></span>开源应用即拿即用（都支持私有化部署）</h3>          <p style="font-size:1.68vh;line-height:1.42">- <b>WeKnora（腾讯开源 · 13.7K Star）</b>：ima 的技术内核开源版——多模态文档解析＋混合检索＋受限生成一条龙，Docker 一键起，企业级知识库开箱即用<br>          - <b>腾讯知识图谱 / LLM Wiki 类知识库</b>：把分散文档沉淀为可查询、可推理的知识资产；<b>TeleAgent 知识库能力</b>同理：丢进课件即建库，问答带出处<br>          - <b>LangChain / LlamaIndex</b>：自己搭 RAG 的两大框架——课程项目与毕设的主流选择</p>        </div>        <div class="demo-tip">          <div class="dt gold">结论</div>          <p>大模型<b>通用但不知你的私事</b>，RAG/知识库<b>私有但不会说话</b>——两者互补才是落地正解；<b>数据不出域的私有化部署（本地/信创）随之成为政企与科研的刚性底线</b>，这正是 TeleAgent 私有化版的逻辑。</p>        </div>      </div>    </div>  </div>  <div class="footer"><span>第一篇章 · 大模型 = 大脑；RAG = 给大脑外挂你的知识库</span><span class="must">开卷考试 + 出处可查 = 压制幻觉的工程正解</span></div>
+</section>
+
+<!-- P5 篇章一：智能体 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">第一篇章 · 看清它</div><div class="sub">基础认知 · 智能体</div><div class="time">5 min</div></div>
+  <h1 class="title">再说智能体：<em>三步，让大脑动起来</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">光有脑子不够，得给它装上手脚。智能体（Agent）＝ <b>大模型 ＋ 工具 ＋ 循环调度</b>：接到任务先拆解，再调工具，拿结果，再想下一步。</div>
+  <div class="content">
+    <div class="duo">
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="checklist">
+          <div class="item"><div class="no">01</div><div><h4>你当它的手和眼</h4><p>它说查啥你查啥，查完贴回去——最原始的人机协作：查一次贴一次，人在中间当"传话筒"，累但能动。</p></div></div>
+          <div class="item"><div class="no">02</div><div><h4>把跑腿的活换成程序</h4><p>搜索、读文件、执行代码、查日历、发邮件全套配上——工具调用（Tool Use），模型学会"按需伸手"。</p></div></div>
+          <div class="item"><div class="no">03</div><div><h4>定好格式，自己跑圈</h4><p>想 → 调工具 → 拿结果 → 再想——循环调度直到任务完成；中途报错会自己换路子，这就是 Agent 与聊天机器人的分水岭。</p></div></div>
+        </div>
+        <div class="card navy-top" style="flex:1;">
+          <h3><span class="icon-dot d"></span>智能体的四件套</h3>
+          <p><b>大脑</b>（大模型：理解/推理/决策——GPT-5.5、DeepSeek V4、Qwen 都能当大脑）＋ <b>手脚</b>（工具调用：读写文件、执行代码、联网搜索——通过 MCP 标准协议即插即用）＋ <b>记忆</b>（记住你的专业、偏好、正在做的项目——短期记忆管当前任务，长期记忆管"你是谁"）＋ <b>闭环</b>（观察→行动→反思→再行动，干完活回头验收，错了自己纠偏）。<br><b>工程意义</b>：这四件套就是 Agent 开发的 checklist——缺哪件，能力就瘸哪条腿。</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card blue-top" style="flex:0 0 auto;">
+          <h3><span class="icon-dot"></span>亲眼看一次它的"内心戏"：外面一问一答，里面跑了三圈</h3>
+          <p>你说：<b>"根据这个项目文件夹的文档，总结下周要做什么；再查查日历有没有冲突。"</b></p>
+        </div>
+        <div class="code-box" style="flex:1;">
+          <span class="cc">// 你只看到：问一次，答一次</span><br>
+          <span class="ck">01 调用[读文件工具]</span> → 拿到项目文档全文<br>
+          <span class="ck">02 调用[日历工具]</span> → 拿到下周日程安排<br>
+          <span class="ck">03 自检</span> → 发现漏了实验室安排 → <span class="cv">再调一次[日历]</span><br>
+          <span class="ck">04 对照日程</span> → 标出 2 处时间冲突<br>
+          <span class="ck">05 资料够了</span> → <span class="cg">输出最终答案＋复习安排表</span><br>
+          <span class="cc">// 外面一问一答 5 秒，里面跑了 5 圈——这就是智能体</span>
+        </div>
+        <div class="demo-tip">
+          <div class="dt">真机演示</div>
+          <p>现场跑一个立等可取的任务：<b>"总结这个文件夹里的课程资料，生成下周复习安排"</b>——投屏看它内部一步步调工具的全过程。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>智能体 = 大脑 + 手脚 + 记忆 + 闭环</span><span class="must">提需求的能力，正在成为新的"编程能力"</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker"><div class="tag">第一篇章 · 看清它</div><div class="sub">工具介绍 · 全场唯一一次</div><div class="time">2 min</div></div>
+  <h1 class="title">今天所有演示，用的是同一个工具：<em>TeleAgent 智能体</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">中国电信自研的星辰超级智能体。今天它有三种身份：<b>高效助手（干杂活）、专属老师（随时问）、万能工具（都能干）</b>——先看真实界面，再拆它的架构。</div>
+  <div class="content">
+    <div class="duo">
+      <div style="display:flex;flex-direction:column;gap:.85vh;flex:1.08;">
+        <div class="ta-shot">
+          <img src="media/ui_ta_desktop.png" alt="TeleAgent桌面端界面">
+          <span class="cap">▲ TeleAgent v2.7.0 桌面端真实界面：你说我做，随时待命——左侧历史任务，右侧做调研 / 做表格 / 搭应用 / 写文档 / 替我办，下方对话区选"本地知识库"即建即答</span>
+        </div>
+        <div class="grid" style="grid-template-columns:1fr 1fr 1fr;flex:0 0 auto;gap:.7vw;">
+          <div class="card navy-top" style="padding:.68vh .8vw"><h3 style="font-size:1.76vh;margin-bottom:.26vh"><span class="icon-dot d"></span>学生免费</h3><p style="font-size:1.66vh;line-height:1.36">免费注册即用；技能广场一键装。</p></div>
+          <div class="card navy-top" style="padding:.68vh .8vw"><h3 style="font-size:1.76vh;margin-bottom:.26vh"><span class="icon-dot d"></span>本地团队</h3><p style="font-size:1.66vh;line-height:1.36">福建属地服务；FDE 分区辅导。</p></div>
+          <div class="card navy-top" style="padding:.68vh .8vw"><h3 style="font-size:1.76vh;margin-bottom:.26vh"><span class="icon-dot d"></span>数据安全</h3><p style="font-size:1.66vh;line-height:1.36">信通院评测认证；本地处理。</p></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.85vh;flex:1;">
+        <div class="card blue-top" style="flex:1.15;display:flex;flex-direction:column;">
+          <h3><span class="icon-dot"></span>官方架构图：Agent Core ＋ 技能/MCP ＋ 三外延</h3>
+          <div style="height:min(32vh,300px);flex:0 0 auto;display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:8px;padding:.3vh;overflow:hidden;">
+            <img src="media/ta_arch_official.png" alt="TeleAgent官方安全架构图" style="flex:1;min-height:0;width:100%;object-fit:contain;object-position:top left;">
+          </div>
+          <p style="font-size:1.6vh;line-height:1.36;margin-top:.4vh"><b>核心框架</b>＝Agent Core（规划与执行框架＋记忆系统）＋ 技能 / 脚本与工具 / <b>MCP 客户端</b>；三个外延＝<b>通信软件</b>（微信/企微/飞书/钉钉，经消息渠道，<b>量子加密</b>保障）、<b>基础大模型</b>（电信星辰/其他，经模型网关）、<b>互联网工具服务</b>（技能社区/网站 API/MCP 服务端）。</p>
+        </div>
+        <div class="card gold-top" style="flex:0 0 auto;padding:.8vh 1vw;">
+          <h3 style="font-size:1.78vh;margin-bottom:.3vh"><span class="icon-dot g"></span>两个关键词，现在就能讲清楚</h3>
+          <p style="font-size:1.66vh;line-height:1.42"><b>MCP</b>：模型上下文协议——工具接入的"USB 口"，写一段 JSON 就能给智能体接上新工具（企业 API/数据库/SaaS）；<b>SKILL</b>：可复用的"技能包"——官方广场一键安装，也能把你的流程沉淀成自定义技能（今天演示的 xlsx/pptx 都是技能）；<b>量子加密</b>：通信软件层资产与通信安全保障（官方架构标注）。</p>
+        </div>
+      </div>
+    </div>
+    <div class="res-bar" style="margin-top:1vh;">
+      <div class="rb-ico">⬇</div>
+      <div class="rb-txt" style="font-size:1.7vh"><b>扫码立即下载</b>：agent.teleai.com.cn（手机/电脑均可装）——今天现场装，实操环节立刻用上。</div>
+      <img class="qr" src="media/qr_teleagent.png" alt="下载二维码">
+    </div>
+  </div>
+  <div class="footer"><span>星辰超级智能体 TeleAgent · 中国电信自研 · 界面截图取自真实大屏演示版</span><span class="must">用什么不重要——方法带得走，工具随时换</span></div>
+</section>
+
+<!-- P7 五场景总览 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">第二篇章 · 用上它</div><div class="sub">五大场景 · 现场真操，不空谈</div><div class="time">1 min</div></div>
+  <h1 class="title">五个场景练手，一套工具上场：<em>学习侧＋参赛侧一次讲清</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">上半场<b>学习侧</b>：海报五大主题逐个现场真操（丢任务→老办法→真操→算账）；下半场<b>参赛侧</b>：用同一套工具打创意大赛——工具索引见页面底部。</div>
+  <div class="content">
+    <div class="scene-grid">
+      <div class="scene-card"><div class="sn">01</div>
+        <h4>精读文献</h4>
+        <div class="sd">论文 PDF、技术文档、开源项目 README——提炼要点、生成综述框架。<br><b style="color:var(--blue)">▶ 丢给TA：</b>"这篇论文四段式拆解＋创新点3条带页码"</div>
+        <div class="stools"><span>结构化拆解</span><span>综述框架</span><span>引用可反查</span></div>
+        <div class="sv">2小时 → 8分钟</div>
+      </div>
+      <div class="scene-card"><div class="sn">02</div>
+        <h4>随堂补学</h4>
+        <div class="sd">课件、录播一键变知识库，随时问答复习，秒出课堂总结＋复习题。<br><b style="color:var(--blue)">▶ 丢给TA：</b>"今天的课件建库，出5道自测题"</div>
+        <div class="stools"><span>课件转知识库</span><span>难点追问</span><span>自测出题</span></div>
+        <div class="sv">一节课45分钟 → 13秒总结</div>
+      </div>
+      <div class="scene-card" style="border-color:var(--hi);background:linear-gradient(160deg,#fff,var(--tip-bg));"><div class="sn" style="color:rgba(22,133,255,.3)">03</div>
+        <h4>计算机考试</h4>
+        <div class="sd">期末专业课 · 等级考试 · 软考——考点归纳、错题整理、模拟自测。<br><b style="color:var(--blue)">▶ 丢给TA：</b>"这批错题做根因分析＋复习计划"</div>
+        <div class="stools"><span>错题根因</span><span>复习计划</span><span>每日抽问</span></div>
+        <div class="sv">一晚上 → 当场出表</div>
+      </div>
+      <div class="scene-card"><div class="sn">04</div>
+        <h4>数据处理</h4>
+        <div class="sd">实验数据、问卷数据杂乱？表格自动清洗分析，一句话出图表。<br><b style="color:var(--blue)">▶ 丢给TA：</b>"12个CSV合并出对比图＋结论"</div>
+        <div class="stools"><span>多表合并</span><span>清洗透视</span><span>图表直出</span></div>
+        <div class="sv">两天 → 10分钟</div>
+      </div>
+      <div class="scene-card"><div class="sn">05</div>
+        <h4>毕业答辩</h4>
+        <div class="sd">毕设文档 → 答辩 PPT 一键生成，模拟提问陪练，预设评委问题。<br><b style="color:var(--blue)">▶ 丢给TA：</b>"按10分钟结构生成答辩PPT＋8个预设提问"</div>
+        <div class="stools"><span>PPT生成</span><span>模拟提问</span><span>演示彩排</span></div>
+        <div class="sv">2小时 → 10分钟</div>
+      </div>
+    </div>
+    <div class="tool-idx" style="margin-top:1.2vh">
+      <div class="ti-head"><span class="bdg2">参赛工具索引</span>主力工具＝TA（上半场 5 个场景逐个真操），参赛侧按场景搭配同一套工具链——花卷聆记/DramaFlow 都是配角，随用随装</div>
+      <div class="ti-row">
+        <div class="ti-cell"><b>TeleAgent（TA）</b><span>一句话做 Demo、写方案、出 PPT</span></div>
+        <div class="ti-cell"><b>花卷聆记</b><span>组会录音→转写→纪要＋分工表</span></div>
+        <div class="ti-cell"><b>DramaFlow</b><span>天翼云文生视频，宣传片分钟级</span></div>
+        <div class="ti-cell"><b>AI STORE 技能广场</b><span>海量技能一键安装复用</span></div>
+        <div class="ti-cell"><b>头脑风暴·花苞刺法</b><span>选题发散与痛点追问方法</span></div>
+        <div class="ti-cell"><b>代码三件套</b><span>生成·审查·调试（下下页）</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>第二篇章 · 五场景 · 演示素材全部为脱敏虚构数据</span><span class="must">演示四步法：丢任务 → 老办法 → 现场真操 → 算账</span></div>
+</section>
+
+<!-- P8 场景①精读文献 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">场景 · ①</div><div class="sub">精读文献</div><div class="time">3 min</div></div>
+  <h1 class="title">场景① 精读文献：<em>论文读不动？让 AI 先啃一遍给你划重点</em></h1>
+  <div class="gradbar"></div>
+  <div class="fourstep">
+    <div class="fs"><b>01 丢任务</b><small>研读一篇论文</small></div><div class="fa">→</div>
+    <div class="fs"><b>02 老办法</b><small>精读2小时起步</small></div><div class="fa">→</div>
+    <div class="fs"><b>03 现场真操</b><small>30秒结构化拆解</small></div><div class="fa">→</div>
+    <div class="fs"><b>04 算账</b><small>2小时 → 8分钟</small></div>
+  </div>
+  <div class="content">
+    <div class="duo">
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card blue-top" style="flex:0 0 auto;">
+          <h3><span class="icon-dot"></span>真实任务（计算机专业版）</h3>
+          <p>啃一篇技术论文 / 一份长技术文档 / 一个开源项目的 README：筛选、摘录、梳理框架挤占大量时间，关键证据还容易漏。综述写到一半发现漏读了三篇核心文献。</p>
+        </div>
+        <div class="checklist">
+          <div class="item"><div class="no">1</div><div><h4>论文 PDF 拖进对话 → 30 秒结构化拆解</h4><p>输出背景 / 方法 / 结果 / 局限四段摘要——<b>原文没有的字段老实标 Not specified，不添油加醋</b>。</p></div></div>
+          <div class="item"><div class="no">2</div><div><h4>批量文献 → 综述框架</h4><p>几十篇文献建库，提炼研究脉络与争议点，生成带真实出处的综述框架——署名与拍板是你的。</p></div></div>
+          <div class="item"><div class="no">3</div><div><h4>开源项目文档 → 快速上手指南</h4><p>README + 接口文档丢进去，生成"这个项目怎么跑、核心模块在哪、我要改哪里"的速读卡。</p></div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="prompt-box" style="flex:0 0 auto;">
+          <span class="pk">▸ 提示词（可直接抄）：</span><br>
+          <span class="ph">"这是 Transformer 奠基论文《Attention Is All You Need》（arXiv 1706.03762）。请输出：①四段式结构化摘要（背景/方法/结果/局限）；②自注意力三条核心创新——缩放点积 Q·K·V、多头并行、正弦位置编码，每条注明原文页码；③图1/图2/表1分别说明什么；④3.2.2 节 Multi-Head 头数 h=8 的原文依据。原文没有的信息标 Not specified，禁止编造。"</span>
+        </div>
+        <div class="account">
+          <div class="lab">算账</div>
+          <div class="old"><b>2 小时</b><small>人工精读一遍＋摘录</small></div>
+          <div class="fa">→</div>
+          <div class="new"><b>8 分钟</b><small>结构化解读＋引用线索</small></div>
+        </div>
+        <div class="res-bar">
+          <div class="rb-ico">📄</div>
+          <div class="rb-txt"><b>现场演示用真论文：《Attention Is All You Need》</b>（Transformer 缎基论文，arXiv 1706.03762）——今天 PPT 里每一个"Transformer"都出自它；PDF 已备好，也可扫码取电子版。</div>
+          <a class="dl-btn" href="media/paper_attention.pdf" target="_blank">点击打开</a>
+          <img class="qr" src="media/qr_paper.png" alt="论文二维码">
+        </div>
+        <div class="demo-tip" style="flex:1;">
+          <div class="dt">真机演示</div>
+          <p>现场投屏：把这篇论文交给它拆解，<b>再现场核对一处引用是否真实</b>——AI 给的每条文献都要能反查。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>场景① · 精读文献｜实测口径：福建电信高校AI宣讲 2小时→8分钟</span><span class="must">把翻页交给 AI，把思考留给自己</span></div>
+</section>
+
+<!-- P9 场景②随堂补学 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">场景 · ②</div><div class="sub">随堂补学</div><div class="time">3 min</div></div>
+  <h1 class="title">场景② 随堂补学：<em>课件一键变知识库，课没听懂的地方随时问</em></h1>
+  <div class="gradbar"></div>
+  <div class="fourstep">
+    <div class="fs"><b>01 丢任务</b><small>45分钟录播课</small></div><div class="fa">→</div>
+    <div class="fs"><b>02 老办法</b><small>再刷一遍视频</small></div><div class="fa">→</div>
+    <div class="fs"><b>03 现场真操</b><small>13秒出总结</small></div><div class="fa">→</div>
+    <div class="fs"><b>04 算账</b><small>45分钟 → 13秒</small></div>
+  </div>
+  <div class="content">
+    <div class="duo">
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card blue-top" style="flex:0 0 auto;">
+          <h3><span class="icon-dot"></span>真实任务（计算机专业版）</h3>
+          <p>《数据结构》的平衡树没听懂？《操作系统》的页面置换算法没跟上？录播课不能下载、二倍速也嫌慢；想问问题，下课了找不到人。</p>
+        </div>
+        <div class="checklist">
+          <div class="item"><div class="no">1</div><div><h4>课件/讲义丢进去 → 秒变结构化笔记</h4><p>一节课的内容提炼成知识框架＋重点清单＋3 道自测题——<b>13 秒 = 一节课的课堂总结</b>。</p></div></div>
+          <div class="item"><div class="no">2</div><div><h4>课程资料建知识库 → 随时问答复习</h4><p>把整门课的课件、笔记、代码存进知识库；考试周问它"进程与线程的区别，期末怎么考"，它按你的资料回答。</p></div></div>
+          <div class="item"><div class="no">3</div><div><h4>难概念换个讲法</h4><p>"用三种说法讲红黑树，讲到我懂"——第一遍类比、第二遍图示、第三遍代码视角。</p></div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="prompt-box" style="flex:0 0 auto;">
+          <span class="pk">▸ 提示词（可直接抄）：</span><br>
+          <span class="ph">"这是我《数据结构》第9章的课件。请输出：①本章知识框架图；②5个必考知识点，每个配1道自测题；③我上次的错题是'AVL树旋转'，请针对它出3道递进练习。"</span>
+        </div>
+        <div class="account">
+          <div class="lab">算账</div>
+          <div class="old"><b>45 分钟</b><small>录播课二倍速刷一遍</small></div>
+          <div class="fa">→</div>
+          <div class="new"><b>13 秒</b><small>课堂总结＋3 道复习题</small></div>
+        </div>
+        <div class="res-bar">
+          <div class="rb-ico">📖</div>
+          <div class="rb-txt"><b>演示素材：李开复《AI·未来》电子书</b>（10.6MB）——现场整个丢给 TeleAgent："总结本书核心观点＋对计算机专业的启示"，看它几分钟拆完一本书。</div>
+          <a class="dl-btn" href="media/book_ai_future.pdf" target="_blank">点击打开</a>
+        </div>
+        <div class="video-frame">
+          <video controls preload="metadata" src="media/media2.mp4"></video>
+          <div class="v-cap"><span class="vtag">现场实录</span>录播课转写 → 智能体萃取知识点 → 生成复习题全程：13 秒 = 12 分钟课堂总结＋3 道复习题</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>场景② · 随堂补学｜录播课经录音转写→萃取知识点（课程不能下载时）</span><span class="must">课件在，老师就在——复习不用等下课</span></div>
+</section>
+
+<!-- P10 场景③计算机考试 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">场景 · ③</div><div class="sub">计算机考试（本期新增定制）</div><div class="time">3 min</div></div>
+  <h1 class="title">场景③ 计算机考试：<em>考点归纳、错题整理、模拟自测</em></h1>
+  <div class="gradbar"></div>
+  <div class="fourstep">
+    <div class="fs"><b>01 丢任务</b><small>真题+错题一堆</small></div><div class="fa">→</div>
+    <div class="fs"><b>02 老办法</b><small>整理一晚上</small></div><div class="fa">→</div>
+    <div class="fs"><b>03 现场真操</b><small>当场出表</small></div><div class="fa">→</div>
+    <div class="fs"><b>04 算账</b><small>一晚上 → 当场出表</small></div>
+  </div>
+  <div class="content">
+    <div class="duo" style="gap:1vh;">
+      <div style="display:flex;flex-direction:column;gap:.9vh;">
+        <div class="card blue-top" style="flex:0 0 auto;padding:1.1vh 1.1vw;">
+          <h3><span class="icon-dot"></span>真实任务（信工学院三线考场）</h3>
+          <p style="font-size:1.78vh">期末专业课（数据结构/操作系统/计算机网络）、<b>全国计算机等级考试 NCRE</b>（二级 C / Python）、<b>软考</b>（程序员 / 软件设计师）——真题刷了一堆，错在哪、考什么、怎么复习，全靠感觉。<br><b style="color:var(--blue)">第四条赛道：工信部教育与考试中心《人工智能应用工程师》职业证书</b>（初/中/高级，全国通用、官网可查）——AI 时代的"软考"，题库覆盖机器学习、深度学习、大模型应用，今天的错题根因法同样适用。</p>
+        </div>
+        <div class="checklist" style="gap:.85vh;flex:1;">
+          <div class="item" style="padding:.85vh 1vw;"><div class="no">1</div><div><h4>错题拍照/导入 → 根因诊断</h4><p style="font-size:1.72vh">不止给答案：按知识点归因（概念不清？边界漏判？复杂度算错？），统计 Top5 薄弱类型。</p></div></div>
+          <div class="item" style="padding:.85vh 1vw;"><div class="no">2</div><div><h4>考纲 → 考点归纳 + 30 天复习计划</h4><p style="font-size:1.72vh">逐章拆考点权重→阶段任务＋每日安排；考前一周自动切换高频考点速记卡。</p></div></div>
+          <div class="item" style="padding:.85vh 1vw;"><div class="no">3</div><div><h4>每日模拟自测 → 抽问打卡</h4><p style="font-size:1.72vh">每天 5 题打卡抽问，答错自动回归错题本；模拟卷带难度梯度与解析。</p></div></div>
+          <div class="demo-tip" style="margin-top:auto;padding:.8vh 1vw;">
+            <div class="dt gold">实操任务A</div>
+            <p style="font-size:1.7vh">今天实操环节选这个任务：<b>自己的真实错题丢给它，当场出根因表</b>——学完就用。</p>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.9vh;">
+        <div class="prompt-box" style="flex:0 0 auto;padding:.85vh 1vw;">
+          <span class="pk">▸ 提示词（可直接抄）：</span>
+          <span class="ph">"我在备考 NCRE 二级 Python，这是 20 道错题（拍照导入）。请输出：①根因分析表（题号/考点/错误类型/订正要点）；②按考纲生成 30 天复习计划；③每周日出 5 道模拟题抽问我。"</span>
+        </div>
+        <div class="account" style="padding:.7vh .8vw;">
+          <div class="lab">算账</div>
+          <div class="old"><b>一晚上</b><small>手工整理＋凭感觉计划</small></div>
+          <div class="fa">→</div>
+          <div class="new"><b>当场出表</b><small>根因＋30天计划＋抽问卡</small></div>
+        </div>
+        <div class="video-frame">
+          <video controls preload="metadata" src="media/media3.mp4"></video>
+          <div class="v-cap"><span class="vtag">现场实录</span>错题导入 → 根因分析 → 30 天复习计划当场出表（原版演示为考研复习场景，方法与计算机考试完全通用）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>场景③ · 计算机考试｜期末/等级考试/软考通用方法</span><span class="must">AI 出题你来做——帮你复习，不帮你考试</span></div>
+</section>
+
+<!-- P11 场景④数据处理 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">场景 · ④</div><div class="sub">数据处理</div><div class="time">3 min</div></div>
+  <h1 class="title">场景④ 数据处理：<em>表格自动清洗分析，一句话出图表</em></h1>
+  <div class="gradbar"></div>
+  <div class="fourstep">
+    <div class="fs"><b>01 丢任务</b><small>杂乱实验数据</small></div><div class="fa">→</div>
+    <div class="fs"><b>02 老办法</b><small>整整两天</small></div><div class="fa">→</div>
+    <div class="fs"><b>03 现场真操</b><small>一句话清洗+出图</small></div><div class="fa">→</div>
+    <div class="fs"><b>04 算账</b><small>两天 → 10分钟</small></div>
+  </div>
+  <div class="content">
+    <div class="duo">
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card blue-top" style="flex:0 0 auto;">
+          <h3><span class="icon-dot"></span>真实任务（计算机专业版）</h3>
+          <p>课程实验的原始数据散在十几个 CSV；问卷调研几百条记录带空值带重复；要出一张能放进实验报告的图表，先学半天 pandas 语法还是先拖 Excel 公式？</p>
+        </div>
+        <div class="checklist">
+          <div class="item"><div class="no">1</div><div><h4>一句话清洗规范</h4><p>"去掉重复行、补空值、统一时间格式"——杂乱数据自动清洗，<b>格式无损、零函数门槛</b>。</p></div></div>
+          <div class="item"><div class="no">2</div><div><h4>多表合并 → 汇总透视</h4><p>十几个分表一键合并、分组透视、交叉统计，直接生成处理好的数据表。</p></div></div>
+          <div class="item"><div class="no">3</div><div><h4>图表直出 → 自动解读</h4><p>柱状/折线/热力图随口指定，配一段"这张图说明什么"的分析文字，可直接放实验报告。</p></div></div>
+        <div class="item"><div class="no">4</div><div><h4>从 Power BI 到 TA：门槛归零</h4><p>老路＝学 Power Query/DAX 建模＋拖拽可视化（半天起步）；新路＝<b>自然语言一步到位</b>：合并→透视→出图→结论。配飞书智能表格更顺：TA 的 IM 渠道一键打通飞书，<b>"把飞书多维表格按季度透视出图"一句话完成</b>，结果回写表格。</p></div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="prompt-box" style="flex:0 0 auto;padding:.8vh 1vw;">
+          <span class="pk">▸ 提示词（可直接抄）：</span>
+          <span class="ph">"这个文件夹有12个实验数据CSV。请：①合并成一张总表，按实验组统计均值/标准差；②清洗重复与空值并说明规则；③按'响应时间对比'出一张柱状图，附50字结论。"（飞书版：把提示词里的文件夹换成"飞书多维表格《__》"，TA 直接读取回写）</span>
+        </div>
+        <div class="ta-shot" style="flex:1;min-height:0;max-height:38vh;">
+          <img src="media/bi_chart_ta.png" alt="TA生成的BI风格看板">
+          <span class="cap">▲ TA 一句话生成的 BI 风格看板（示例渲染）：合并12表→清洗→柱状图＋KPI卡＋阈值预警＋自动结论——传统 Power BI 半天的活</span>
+        </div>
+        <div class="account" style="flex:0 0 auto;">
+          <div class="lab">算账</div>
+          <div class="old"><b>整整两天</b><small>学语法＋逐表清洗制图</small></div>
+          <div class="fa">→</div>
+          <div class="new"><b>10 分钟</b><small>合并清洗出图＋自动解读</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>场景④ · 数据处理｜xlsx 技能装机量 17.5 万（WorkBuddy 技能中心公开数据）</span><span class="must">零函数门槛——会说话就会做表</span></div>
+</section>
+
+<!-- P12 场景⑤毕业答辩 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">场景 · ⑤</div><div class="sub">毕业答辩</div><div class="time">3 min</div></div>
+  <h1 class="title">场景⑤ 毕业答辩：<em>答辩 PPT 一键生成，模拟提问陪练</em></h1>
+  <div class="gradbar"></div>
+  <div class="fourstep">
+    <div class="fs"><b>01 丢任务</b><small>毕设文档+系统</small></div><div class="fa">→</div>
+    <div class="fs"><b>02 老办法</b><small>各熬2小时</small></div><div class="fa">→</div>
+    <div class="fs"><b>03 现场真操</b><small>PPT+陪练一次出</small></div><div class="fa">→</div>
+    <div class="fs"><b>04 算账</b><small>2小时 → 10分钟</small></div>
+  </div>
+  <div class="content">
+    <div class="duo">
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card blue-top" style="flex:0 0 auto;">
+          <h3><span class="icon-dot"></span>真实任务（计算机专业版）</h3>
+          <p>毕设论文改到第七版，答辩 PPT 还没开始做；更慌的是评委提问——"你的系统并发瓶颈在哪？""为什么选这个框架？"没人陪练，全靠自己脑补。</p>
+        </div>
+        <div class="checklist">
+          <div class="item"><div class="no">1</div><div><h4>毕设文档 → 答辩 PPT ＋ 讲稿</h4><p>按答辩时长（10分钟版）生成结构化 PPT 与逐页讲稿——<b>技术路线图、系统架构图直接成页</b>。</p></div></div>
+          <div class="item"><div class="no">2</div><div><h4>模拟提问陪练</h4><p>生成评委最可能问的 8 个问题＋参考回答要点；再开"追问模式"——答完一问追问一问，专治只会背稿。</p></div></div>
+          <div class="item"><div class="no">3</div><div><h4>系统演示彩排</h4><p>生成演示动线脚本：先演示哪个功能、准备哪个兜底录屏、3 分钟怎么分配——计算机毕设答辩，<b>系统演示环节同样值得彩排</b>。</p></div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="prompt-box" style="flex:0 0 auto;">
+          <span class="pk">▸ 提示词（可直接抄）：</span><br>
+          <span class="ph">"基于我的毕设论文（配套示例《课答答》见下方下载），生成：①10分钟答辩PPT大纲与逐页讲稿（风格参照红白风模板）；②评委最可能提的8个问题（技术选型/创新点/不足各2个以上），每题给回答要点；③系统演示环节的3分钟动线脚本与兜底方案。"</span>
+        </div>
+        <div class="account">
+          <div class="lab">算账</div>
+          <div class="old"><b>各 2 小时</b><small>PPT 一通宵＋提问靠脑补</small></div>
+          <div class="fa">→</div>
+          <div class="new"><b>各 10 分钟</b><small>PPT＋讲稿＋8 题陪练</small></div>
+        </div>
+        <div class="res-bar">
+          <div class="rb-ico">🎓</div>
+          <div class="rb-txt"><b>配套资料即存即用：</b>①毕设示例《课答答——基于RAG的校园课程问答系统》；②红白风 PPT 模板；③<b>按示例真实生成的答辩 PPT 成品（10页：背景→架构→测试→QA）</b>——点开即演示。</div>
+          <a class="dl-btn" href="media/example_bishe.html" target="_blank">毕设示例</a>
+          <a class="dl-btn" href="media/template_hongbaifeng.md" target="_blank">PPT模板</a>
+          <a class="dl-btn" href="media/answer_ppt_keda.html" target="_blank">答辩PPT成品</a>
+        </div>
+        <div class="demo-tip" style="flex:1;">
+          <div class="dt">真机演示</div>
+          <p>现场投屏：一份毕设摘要 → PPT 大纲＋8 个预设提问一次成型；<b>请一位同学现场回答一个问题，AI 追问点评</b>。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>场景⑤ · 毕业答辩｜pptx 技能装机量 15.2 万（WorkBuddy 技能中心公开数据）</span><span class="must">评委问什么，提前练什么——陪练比背稿有用</span></div>
+</section>
+
+<!-- P13 计算机加餐：代码场景 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">场景 · 加餐</div><div class="sub">计算机专属 · AI 编程三件套</div><div class="time">2 min</div></div>
+  <h1 class="title">计算机加餐：<em>代码，才是你们的主场</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">前五个场景人人适用，这一页只讲给写代码的人：<b>生成、审查、调试</b>三件事，AI 已经能端到端参与——但每一件的最后一道关，必须是你。</div>
+  <div class="content">
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);flex:0 0 auto;">
+      <div class="card blue-top">
+        <h3><span class="num">①</span>代码生成</h3>
+        <p><b>一句话 → 可运行的程序</b><br>需求描述给清楚：输入什么、输出什么、跑在哪——AI 写初版，你改到能用。小到算法题模板，大到课程项目骨架。</p>
+      </div>
+      <div class="card blue-top">
+        <h3><span class="num">②</span>代码审查</h3>
+        <p><b>贴代码 → 出审查报告</b><br>架构合理性、边界条件、命名规范、性能隐患逐项过——技能广场"代码审查·架构规划"技能（GitHub 开源 892★ 改造）。</p>
+      </div>
+      <div class="card blue-top">
+        <h3><span class="num">③</span>代码调试</h3>
+        <p><b>贴报错 → 定位修复</b><br>整段堆栈丢进去，定位根因、给出修复建议、解释为什么错——从"面向搜索引擎编程"升级为"面向报错对话"。</p>
+      </div>
+    </div>
+    <div class="duo" style="margin-top:1.4vh;flex:1;">
+      <div class="prompt-box" style="flex:1;">
+        <span class="pk">▸ 代码审查提示词（可直接抄）：</span><br>
+        <span class="ph">"审查这段 Java 代码：①按'架构/安全/性能/可读性'四维逐项检查；②每条发现标注严重度（阻断/严重/建议）与所在行号；③给出修复后的代码。"</span><br>
+        <span class="pk">▸ 调试提示词：</span><br>
+        <span class="ph">"这是报错堆栈（粘贴）。请：①定位根因并解释为什么错；②给出最小修复方案；③举一反三：同类错误在我的代码里还可能藏在哪。"</span><br>
+        <span class="cc">// 现场演示：贴一段待审代码 → 出报告 → 讲师点评一条真实发现</span>
+      </div>
+      <div class="warn-card" style="display:flex;flex-direction:column;justify-content:center;">
+        <h3>⚠ 但先埋个伏笔</h3>
+        <p>AI 生成的代码，能直接交作业、直接上线、直接提交参赛吗？<br>一段能跑的代码 ≠ 安全的代码——<b>SQL 注入、弱口令、反序列化……这些漏洞 AI 帮你写进去的时候，一声不吭。</b></p>
+        <p style="margin-top:.8vh"><b>这正是今天第四篇章要解决的问题，也是别的讲座不讲、你们最该带走的一课：</b></p>
+        <p style="margin-top:.5vh">- 为什么 AI 编码时代漏洞风险反而上升<br>- 一份真实审计报告逐条拆解（17 漏洞）<br>- 参赛作品的源代码安全自查三步</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>技能来源：技能广场 + GitHub 开源技能包（laolaoshiren/claude-code-skills-zh，实测892★）</span><span class="must">能跑 ≠ 能交——代码安全的答案在第四篇章</span></div>
+</section>
+
+<!-- P14 创意大赛全景 -->
+<section class="slide">
+  <div class="kicker"><div class="tag gold">第三篇章 · 赢比赛</div><div class="sub">2026 海峡大学生人工智能创意大赛 · 规则篇</div><div class="time">3 min</div></div>
+  <h1 class="title">大赛全景：<em>省级白名单赛事</em>，规则一页看懂</h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">福建省教育厅 / 福州大学主办，获奖证书省教育厅发文公布——综测加分、保研材料、简历硬通货。2026 届报名与提交已收官、<b>决赛 11 月初在福州大学路演</b>；今天讲的方法，下一届开跑你抢跑半年。</div>
+  <div class="content">
+    <div class="duo">
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <table class="nice">
+          <tr><th style="width:30%">要素</th><th>规则要点</th></tr>
+          <tr><td>参赛对象</td><td>福建省高校全日制在籍<b>本科生、高职生</b>，分本科组/高职组；研究生可入本科组</td></tr>
+          <tr><td>组队规则</td><td>每队 <b>≤7 人</b>，每人限报一队，<b>不可跨校</b>，1-2 名指导教师</td></tr>
+          <tr><td>赛程赛制</td><td>初赛<b>匿名网络评审</b> → 决赛<b>现场路演答辩</b>（福州大学旗山校区）</td></tr>
+          <tr><td>奖项设置</td><td>一等奖 ≤5% · 二等奖 ≤10% · 三等奖 ≤20%</td></tr>
+          <tr><td>提交材料</td><td>介绍PPT + <b>源代码/设计文档</b>（架构、接口、数据结构）+ Demo视频（可选）</td></tr>
+          <tr><td>官方平台</td><td>福建智算 AI STORE：赛事信息、AI 工具、往届案例（aistore.zzw.tegical.cloud）</td></tr>
+        </table>
+        <div class="poster-frame" style="flex:1;">
+          <img src="media/poster_dasai.jpg" alt="大赛官方海报" style="height:16.5vh">
+          <div class="pf-txt"><b>官方宣传海报 · 福建智算 AI STORE</b>
+            <p>平台一站看全：赛事通知、AI 工具、往届获奖案例——<b>aistore.zzw.tegical.cloud</b>；决赛前上去研究两届获奖作品，是性价比最高的备赛动作（海报取自官方宣传物料）。</p>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.2vh;">
+        <div class="grid" style="grid-template-columns:repeat(5,1fr);flex:0 0 auto;">
+          <div class="card navy-top"><h3 style="font-size:1.9vh"><span class="num">创新</span></h3><p style="font-size:1.72vh"><b>技术创新性</b><br>方案新颖有原创性。<br><b style="color:var(--blue)">→ 找没人做的切入点</b></p></div>
+          <div class="card navy-top"><h3 style="font-size:1.9vh"><span class="num">优势</span></h3><p style="font-size:1.72vh"><b>技术优势</b><br>国产软硬件/开源大模型工具链。<br><b style="color:var(--blue)">→ 写清技术栈</b></p></div>
+          <div class="card blue-top"><h3 style="font-size:1.9vh"><span class="num">完整</span></h3><p style="font-size:1.72vh"><b>方案完整性</b><br>可视化、可交互 Demo。<br><b style="color:var(--blue)">→ 一定要能点开跑</b></p></div>
+          <div class="card blue-top"><h3 style="font-size:1.9vh"><span class="num">价值</span></h3><p style="font-size:1.72vh"><b>方案价值</b><br>明确用户与市场需求。<br><b style="color:var(--blue)">→ 说清谁痛、多痛</b></p></div>
+          <div class="card gold-top"><h3 style="font-size:1.9vh"><span class="num">社会</span></h3><p style="font-size:1.72vh"><b>社会价值</b><br>公益、教育、环保等。<br><b style="color:var(--gold-dark)">→ 立意往公共利益靠</b></p></div>
+        </div>
+        <div class="card gold-top" style="flex:1;">
+          <h3><span class="icon-dot g"></span>2026 届时间轴（当前口径）</h3>
+          <p>- <b>10月15日</b>：报名截止——已收官<br>
+          - <b>10月20日</b>：作品 zip 提交截止（≤600M）——已收官<br>
+          - <b>11月初</b>：决赛现场路演答辩——<b style="color:var(--gold-dark)">在即</b><br>
+          <b>对本场同学意味着什么：</b>① 方法今天全教给你，下一届开跑即抢跑；② 计算机竞赛日历上还有更多"现在开始"的比赛（下页）；③ 决赛作品可以关注学习。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>来源：大赛通知（闽教高〔2026〕7号）及竞赛规程 · 赛事信息以组委会正式通知为准</span><span class="must">必记：≤7人 · 不跨校 · 匿名评审 · 源代码是必交材料</span></div>
+</section>
+
+<!-- P20A 创意公式与方法论 -->
+<section class="slide">
+  <div class="kicker"><div class="tag gold">第三篇章 · 赢比赛</div><div class="sub">选题篇 · 创意怎么来＋怎么定</div><div class="time">3 min</div></div>
+  <h1 class="title">创意公式：<em>真痛点 × AI 真能力 × 可演示 = 好选题</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">创意不是拍脑袋，是"场景里的真痛点"乘"AI 的真能力"。这一页给你<b>选题漏斗（完整产品方法论）＋全流程工具链</b>——下一页看真实需求与创业样本。</div>
+  <div class="content">
+    <div class="duo">
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card blue-top" style="flex:1;">
+          <h3><span class="icon-dot"></span>AI 能力清单（选题时对着勾）</h3>
+          <p style="font-size:1.72vh">① <b>看得懂</b>：图像识别、OCR、视频理解　② <b>听得懂</b>：语音转写、会议纪要成稿<br>
+          ③ <b>读得快</b>：长文档速读、知识图谱　④ <b>写得出</b>：报告、文案、<b>代码自动生成</b><br>
+          ⑤ <b>找得到</b>：联网检索、多源交叉验证　⑥ <b>会执行</b>：操作电脑完成任务（智能体核心能力）<br>
+          ⑦ <b>能创作</b>：文生图、文生视频、互动页面生成</p>
+        </div>
+        <div class="card navy-top" style="flex:1;">
+          <h3><span class="icon-dot d"></span>选题五步漏斗 × 规程方向（每步：做什么＋用什么＋方向示例）</h3>
+          <p style="font-size:1.66vh;line-height:1.5">① <b>用户调研</b>｜工具：TA 生成访谈提纲＋问卷星｜示例：<b>智慧海洋</b>→渔排养殖户访谈 30 份<br>
+          ② <b>痛点排序</b>｜频率×强度只取 Top3｜示例：<b>医疗健康</b>→老人慢病用药依从性差<br>
+          ③ <b>能力匹配</b>｜对照左栏清单勾≥2 条｜示例：<b>文化旅游</b>→方言语音导览（听得懂＋能创作）<br>
+          ④ <b>可行性三问</b>｜数据可得？两周 Demo？｜示例：<b>现代农业</b>→大棚传感器数据可得<br>
+          ⑤ <b>MVP 定义</b>｜一页面＋一条主流程｜示例：<b>工业制造</b>→设备告警"一眼看板"</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card blue-top" style="flex:1;">
+          <h3><span class="icon-dot"></span>全流程工具链（把杂活丢给 AI）</h3>
+          <p style="font-size:1.72vh"><b>调研期</b>：TA 联网检索行业现状＋问卷星收数据<br>
+          <b>选题期</b>：头脑风暴 / 花苞刺法发散→评分五维打分收敛<br>
+          <b>方案期</b>：TA 按"痛点→方案→价值"生成报告初稿，逐章单独审<br>
+          <b>原型期</b>：TA 一句话生成可交互网页 Demo，迭代三板斧：改结构→改文案→改视觉<br>
+          <b>视频期</b>：DramaFlow 文生视频或录屏＋旁白<br>
+          <b>文档期</b>：TA 排版导出 PPT/文档，命名打包一次成型</p>
+        </div>
+        <div class="card navy-top" style="flex:1;">
+          <h3><span class="icon-dot d"></span>跨学科富矿：计算机 × 行业（规程明文鼓励交叉）</h3>
+          <p style="font-size:1.66vh;line-height:1.5">×<b>农业</b>：病虫害图像识别与计数　×<b>文旅</b>：方言导览＋AR 打卡<br>
+          ×<b>海洋</b>：渔情预测与安全预警　×<b>医疗</b>：影像预筛＋随访提醒<br>
+          ×<b>教育</b>：错题根因＋自适应练习　×<b>制造</b>：缺陷检测＋预测性维护<br>
+          <b>选题公式：室友的专业痛点 × 你的计算机能力</b>——对照评分五维打分即出课题</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>来源：竞赛规程 · 赛题方向 · 选题方法论为产品经理通用实践</span><span class="must">跨学科交叉是明文鼓励项——计算机 + 任何一个行业都是选题富矿</span></div>
+</section>
+
+<!-- P20B 需求与创业样本 -->
+<section class="slide">
+  <div class="kicker"><div class="tag gold">第三篇章 · 赢比赛</div><div class="sub">选题篇 · 真实需求与市场空间</div><div class="time">2 min</div></div>
+  <h1 class="title">从选题到落地：<em>真实需求、产业机会与创业样本</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">评委最想看的不是技术多炫，而是<b>需求有多真、市场有多大</b>——照着这三栏的"需求描述＋市场空间"格式写，方案价值维度先赢一半。</div>
+  <div class="content">
+    <div class="grid" style="grid-template-columns:1.05fr 1fr .95fr;gap:.9vw;flex:1;align-items:stretch;">
+      <div class="card gold-top" style="display:flex;flex-direction:column;">
+        <h3 style="font-size:1.86vh"><span class="icon-dot g"></span>校园场景选题（照格式写）</h3>
+        <p style="font-size:1.68vh;line-height:1.44;flex:1">- <b>宿舍报修智能分派</b>：拍照识别→分类派单→进度追踪｜需求：报修靠电话、无闭环｜空间：全国高校 3000+ 所、在校生约 4700 万<br>
+        - <b>校园二手交易</b>：图文审核＋智能定价｜需求：毕业季闲置海量、信任缺失｜空间：闲置交易规模数十亿级<br>
+        - <b>实验室设备管理</b>：借用冲突检测＋到期提醒｜需求：台账乱、超期无人管｜空间：高校设备资产千亿级、安全检查常态化<br>
+        - <b>课表冲突助教</b>：选课冲突＋学分规划｜需求：信息分散难比对｜空间：数千万在校生选课季刚需<br>
+        - <b>毕设智能辅导</b>：选题查重＋框架＋打卡｜需求：指导师生比约 1:10｜空间：每年百万级毕业生<br>- <b>AI 伴学自习室</b>：错题拍照→讲题→变式训练｜需求：晚间自习无人可问｜空间：考研人群数百万、K12 智能辅导已验证付费模式</p>
+      </div>
+      <div class="card blue-top" style="display:flex;flex-direction:column;">
+        <h3 style="font-size:1.86vh"><span class="icon-dot"></span>产业方向选题（政企真需求）</h3>
+        <p style="font-size:1.68vh;line-height:1.44;flex:1">- <b>校园网智能运维</b>：日志＋告警→根因定位（智能运维岗）<br>
+        - <b>钓鱼邮件检测</b>：正文＋附件特征＋一键告警（安全岗刚需）<br>
+        - <b>宿舍弱覆盖分析</b>：投诉＋话务→覆盖优化（网优方向）<br>
+        - <b>GPU 算力调度</b>：排队预测＋优先级分配（算力网关）<br>
+        - <b>AI＋政务服务</b>：材料预审＋政策问答（信创对口）<br>
+        - <b>智慧校园安防</b>：行为识别＋预警联动<br>
+        <b style="color:var(--blue)">为什么选产业题：数据可得（脱敏）、评委熟悉、答辩有话讲——且与本地就业直接对口。</b><br><b>价值段写法模板（三行即成）</b>：痛点一句话（谁在痛）＋ AI 能力两条（对应能力清单）＋数据来源（公开统计/调研 N 份）——照抄结构，评委一眼看懂。</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.9vh;">
+        <div class="card navy-top" style="flex:1;display:flex;flex-direction:column;">
+          <h3 style="font-size:1.86vh"><span class="icon-dot d"></span>校园创业真实样本</h3>
+          <p style="font-size:1.68vh;line-height:1.44;flex:1"><b>饿了么</b>：2008 上海交大张旭豪，从"宿舍订餐难"起步，校园验证后推向全国并入阿里。<b>美团</b>：王兴清华创业，校内网（人人网前身）从校园社交起步。<br><b style="color:var(--blue)">共同规律三步法：</b>身边痛点 → 校园小范围验证 → 放大复制——与创意大赛选题逻辑一模一样。</p>
+        </div>
+        <div class="card gold-top" style="flex:0 0 auto;padding:.9vh 1vw;">
+          <h3 style="font-size:1.8vh;margin-bottom:.3vh"><span class="icon-dot g"></span>需求调研怎么做（30分钟版）</h3>
+          <p style="font-size:1.68vh;line-height:1.42">TA 出访谈提纲 → 问卷星收 30 份 → TA 汇总痛点频次表 → 频率×强度打分排序 → Top3 进漏斗——<b>今天实操环节可直接跑一遍</b>。</p>
+        </div>
+      </div>
+    </div>
+    <div class="bigcallout">★ 组队后全程可获得专业老师辅导：学院指导教师＋福建电信 AI 团队工程师——选题打磨 / 技术选型 / 路演彩排全程陪跑（活动群里登记即可预约）</div>
+  </div>
+  <div class="footer"><span>案例：饿了么、美团公开创业史 · 高校数据：教育部公开统计口径（约数）</span><span class="must">先校园验证，再放大——选题的"最小可行"思维</span></div>
+</section>
+
+<!-- P16 计算机竞赛地图 -->
+<section class="slide">
+  <div class="kicker"><div class="tag gold">第三篇章 · 赢比赛</div><div class="sub">竞赛地图 · 计算机专业全景</div><div class="time">2 min</div></div>
+  <h1 class="title">竞赛地图：<em>创意大赛之外，你的日历上还有这些比赛</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">不用都参加——按方向挑一两场深耕。每一场，今天讲的五步方法和 AI 工具都直接复用：<b>以赛促学，一场比赛顶一门实训课</b>。</div>
+  <div class="content">
+    <div class="map-row">
+      <div class="card gold-top"><h3><span class="icon-dot g"></span>海峡 AI 创意大赛</h3><p><b>方向：</b>AI 应用解决方案（省级白名单）<br><b>节奏：</b>秋季报名 · 11月初决赛<br><b>本课方法：</b>评分五维 + 五步实战全适配<br><b>平台：</b><a href="https://aistore.zzw.tegical.cloud" target="_blank">aistore.zzw.tegical.cloud</a></p></div>
+      <div class="card blue-top"><h3><span class="icon-dot"></span>蓝桥杯</h3><p><b>方向：</b>软件类（Java/C/C++/Python/Web）<br><b>节奏：</b>省赛一般每年 4 月<br><b>AI 备赛：</b>错题根因分析 + 刷题计划 + 每日抽问<br><b>报名：</b><a href="https://dasai.lanqiao.cn" target="_blank">dasai.lanqiao.cn</a></p></div>
+      <div class="card blue-top"><h3><span class="icon-dot"></span>ICPC / CCPC</h3><p><b>方向：</b>程序设计竞赛，算法巅峰<br><b>节奏：</b>区域赛 9—11 月<br><b>AI 备赛：</b>算法讲解陪练、代码审查、复杂度复盘<br><b>报名：</b><a href="https://icpc.global" target="_blank">icpc.global</a> / <a href="https://ccpc.io" target="_blank">ccpc.io</a></p></div>
+      <div class="card blue-top"><h3><span class="icon-dot"></span>中国大学生计算机设计大赛</h3><p><b>方向：</b>含人工智能、软件应用等赛道<br><b>节奏：</b>校赛—省赛—国赛，春季启动<br><b>AI 备赛：</b>作品 Demo 一句话生成 + 材料打磨<br><b>报名：</b><a href="https://jsjds.blcu.edu.cn" target="_blank">jsjds.blcu.edu.cn</a></p></div>
+      <div class="card navy-top"><h3><span class="icon-dot d"></span>中国高校计算机大赛（C4）</h3><p><b>方向：</b>团体程序设计天梯赛、大数据挑战赛<br><b>节奏：</b>天梯赛一般每年 4 月<br><b>AI 备赛：</b>团队刷题统计 + 薄弱点诊断<br><b>报名：</b><a href="https://gplt.patest.cn" target="_blank">gplt.patest.cn</a>（<a href="https://www.c4best.cn" target="_blank">c4best.cn</a>）</p></div>
+      <div class="card navy-top"><h3><span class="icon-dot d"></span>全国大学生数学建模竞赛</h3><p><b>方向：</b>建模 + 论文，计算机学生主力常客<br><b>节奏：</b>每年 9 月开学初<br><b>AI 备赛：</b>数据清洗出图 + 文献综述 + 论文排版<br><b>报名：</b><a href="https://cumcm.com.cn" target="_blank">cumcm.com.cn</a></p></div>
+    </div>
+    <div class="tool-idx" style="margin-top:1.1vh">
+      <div class="ti-head"><span class="bdg2">AI 认证双轨</span>竞赛之外的硬通货——证书全国通用、官网可查；人社部等级证书多地有培训补贴</div>
+      <div class="ti-row" style="grid-template-columns:repeat(4,1fr)">
+        <div class="ti-cell"><b>工信部教考中心</b><span>人工智能应用工程师（初/中/高级）</span></div>
+        <div class="ti-cell"><b>工信部教考中心</b><span>AIGC 应用工程师 · AI 智能体应用工程师</span></div>
+        <div class="ti-cell"><b>人社部</b><span>人工智能训练师（国家职业技能等级证书）</span></div>
+        <div class="ti-cell"><b>备考复用本课</b><span>错题根因＋复习计划＋每日抽问同款方法</span></div>
+      </div>
+    </div>
+    <div class="demo-tip" style="margin-top:1vh">
+      <div class="dt gold">为什么值得</div>
+      <p>省级竞赛证书＋职业认证 = <b>综测加分 / 保研材料 / 简历硬通货</b>；一场比赛把<b>调研、表达、原型、协作、路演</b>全链路练一遍——这正是 AI 时代的工作全流程。</p>
+    </div>
+  </div>
+  <div class="footer"><span>各赛事具体时间以主办方当年正式通知为准</span><span class="must">选一两场深耕——全都要，等于全没有</span></div>
+</section>
+
+<!-- P17 五步实战 -->
+<section class="slide">
+  <div class="kicker"><div class="tag gold">第三篇章 · 赢比赛</div><div class="sub">参赛五步实战</div><div class="time">4 min</div></div>
+  <h1 class="title">五步实战：<em>从组队到提交，每一步 AI 怎么用</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">记住五个词：<b>组队 → 创意 → 方案 → Demo → 提交</b>。每一步都配真机演示——这五步走完，你就完成了 80% 的参赛工作。</div>
+  <div class="content">
+    <div class="stepbar">
+      <div class="s active">①组队分工<small>本页起</small></div><div class="s">②定创意</div><div class="s">③写方案</div><div class="s">④做Demo</div><div class="s">⑤视频+提交</div>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(5,1fr);flex:1;align-items:stretch;">
+      <div class="card navy-top">
+        <h3><span class="num">①</span>组队分工</h3>
+        <img class="card-img" src="media/anime_1team.jpg" alt="组队分工">
+        <p>第一次讨论会开始<b>录音</b>（花卷聆记）→ 转写交给 AI：<b>会议纪要＋任务分工表＋时间倒排表</b>一次成型。<br><span style="color:var(--grey);font-size:1.72vh">角色参考：队长/产品创意/技术实现/文案设计，≤7 人正好。</span></p>
+      </div>
+      <div class="card navy-top">
+        <h3><span class="num">②</span>定创意</h3>
+        <img class="card-img" src="media/anime_2idea.jpg" alt="定创意">
+        <p>让 AI 做<b>信息收集与需求分析</b>：场景痛点扫描 → 选题对照评分五维打分 → 团队拍板。<br><span style="color:var(--grey);font-size:1.72vh">四问：谁在痛？多痛？现有方案为何不够？AI 能力清单哪几条用得上？</span></p>
+      </div>
+      <div class="card blue-top">
+        <h3><span class="num">③</span>写方案</h3>
+        <img class="card-img" src="media/anime_3doc.jpg" alt="写方案">
+        <p>按<b>"痛点→方案→价值"</b>结构生成研究报告初稿；每章单独生成、单独审。<br><span style="color:var(--grey);font-size:1.72vh">纪律：所有数据注明出处，来源不明一律删——评委最反感编造数据。</span></p>
+      </div>
+      <div class="card blue-top">
+        <h3><span class="num">④</span>做 Demo</h3>
+        <img class="card-img" src="media/anime_4demo.jpg" alt="做Demo">
+        <p><b>一句话生成可交互网页</b>：说清给谁用、有哪些模块、演示点什么出什么——迭代三板斧：改结构→改文案→改视觉。<br><span style="color:var(--grey);font-size:1.72vh">导出单文件 HTML，评委点开即用——"方案完整"维度的硬通货。</span></p>
+      </div>
+      <div class="card gold-top">
+        <h3><span class="num">⑤</span>视频+提交</h3>
+        <img class="card-img" src="media/anime_5video.jpg" alt="视频提交">
+        <p>最稳做法：<b>录屏走一遍核心交互</b>，配旁白讲"痛点→操作→效果"；或用天翼云 DramaFlow 文生视频。<br><span style="color:var(--grey);font-size:1.72vh">打包：zip ≤600M · 命名"学校－作品－队长姓名－队长手机号" · 全文件匿名。</span></p>
+      </div>
+    </div>
+    <div class="demo-tip" style="margin-top:1.4vh">
+      <div class="dt">真机演示</div>
+      <p>现场走一遍<b>①组队</b>：模拟 2 分钟小组讨论录音 → 转写 → 纪要/分工表/倒排表当场成型。<b>今天实操环节，这一步你会亲手再做一次。</b></p>
+    </div>
+  </div>
+  <div class="footer"><span>五步实战 · 每步配真机演示 · 屏上步骤可拍照</span><span class="must">记住五步：组队 → 创意 → 方案 → Demo → 提交</span></div>
+</section>
+
+<!-- P18 代码安全·新命题 -->
+<section class="slide dark">
+  <div class="kicker"><div class="tag" style="background:var(--gold-deep);color:var(--navy)">第四篇章 · 守住它</div><div class="sub" style="color:rgba(255,255,255,.55)">AI 时代的代码安全 · 别的讲座不讲的一课</div><div class="time" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:var(--gold)">3 min</div></div>
+  <h1 class="title" style="color:#fff">AI 让你写代码快了十倍，<em style="color:var(--gold)">也把漏洞写快了十倍</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle" style="color:rgba(255,255,255,.72)">软件风险正在前移：漏洞从"上线后的问题"变成"研发期的风险"——AI 辅助编码让代码产出激增，而<b style="color:var(--gold)">安全审视的节奏没有跟上</b>。</div>
+  <div class="content">
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);flex:0 0 auto;">
+      <div class="card"><h3 style="color:var(--gold)"><span class="icon-dot g"></span>需求快速迭代</h3><p>业务上线更快 → <b style="color:#fff">代码产出激增</b>，AI 一天写的代码比过去一周多。</p></div>
+      <div class="card"><h3 style="color:var(--gold)"><span class="icon-dot g"></span>开源依赖叠加</h3><p>组件链路复杂 → 你引入的每个开源包，都可能带着<b style="color:#fff">已知 CVE 漏洞</b>。</p></div>
+      <div class="card"><h3 style="color:var(--gold)"><span class="icon-dot g"></span>人工审计滞后</h3><p>覆盖与效率不足 → <b style="color:#fff">漏洞进入生产</b>，修复成本放大，攻击窗口缩短。</p></div>
+    </div>
+    <div class="grid" style="grid-template-columns:1.2fr 1fr;margin-top:1.4vh;flex:1;">
+      <div class="card">
+        <h3 style="color:#fff"><span class="icon-dot" style="background:var(--gold)"></span>参赛视角：源代码是必交材料，评委是懂行人</h3>
+        <p style="color:rgba(255,255,255,.85)">竞赛规程要求提交<b style="color:var(--gold)">源代码/设计文档</b>。评委不只看功能跑没跑，更看工程质量——<b style="color:var(--gold)">一处 SQL 注入、一个弱口令，足以让一等奖候选出局</b>；反过来，一份干净的审计结论与安全设计说明，是大多数队伍没有的"人无我有"加分项。</p>
+        <p style="color:rgba(255,255,255,.85);margin-top:.8vh"><b style="color:var(--gold)">评委工程三看：</b>代码规范（命名/结构/注释）· 安全设计（输入校验/鉴权/依赖版本）· 文档完整（架构图/接口定义/数据结构）</p>
+        <p style="color:rgba(255,255,255,.85);margin-top:.8vh"><b style="color:var(--gold)">数据锚点：</b>OWASP Top 10 2025 社区调研将软件供应链失败列为首要风险（50%）；Verizon《2026 数据泄露调查报告》、IBM《2025 数据泄露成本报告》均指向同一趋势。</p>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;justify-content:center;text-align:center;border-color:rgba(255,229,110,.5);">
+        <div style="font-family:'DIN Alternate','Arial',sans-serif;font-size:7vh;font-weight:900;line-height:1;background:linear-gradient(95deg,#FFE56E,#D0F078);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">17 个</div>
+        <p style="color:rgba(255,255,255,.85);margin-top:1vh">某开源管理系统一次 AI 审计<br>即发现 <b style="color:var(--gold)">17 个常规漏洞 + 3 条组合攻击链</b><br>——<b style="color:#fff">下一页，逐个拆给你看</b></p>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span style="color:rgba(255,255,255,.45)">数据参考：OWASP Top 10 2025 · Verizon DBIR 2026 · IBM 2025</span><span style="color:var(--gold);font-size:1.72vh;font-weight:700">代码写得快，更要守得住——安全是被忽视的胜负手</span></div>
+</section>
+
+<!-- P19 代码检测实操 -->
+<section class="slide">
+  <div class="kicker"><div class="tag" style="background:var(--gold-deep);color:var(--navy)">第四篇章 · 守住它</div><div class="sub">代码检测实操 · AI 代码审计</div><div class="time">3 min</div></div>
+  <h1 class="title">代码检测实操：<em>AI 审计平台跑一份真实报告给你看</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">天翼安全 AI 代码审计平台：静态全链路分析定位风险 ＋ 动态沙箱自动复现验证 ＋ AI 白盒审计，输出<b>攻击链、PoC、修复建议</b>——把代码审计从"扫描报告"升级为"验证真实漏洞与修复闭环"。</div>
+  <div class="content">
+    <div class="duo">
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="grid" style="grid-template-columns:1fr 1fr;flex:0 0 auto;">
+          <div class="card navy-top"><h3><span class="num">A</span>全栈审计</h3><p style="font-size:1.78vh">Java / PHP / Python / Go / JS，覆盖源码＋二进制＋固件。</p></div>
+          <div class="card navy-top"><h3><span class="num">B</span>动静结合</h3><p style="font-size:1.78vh">静态定位风险，动态沙箱验证漏洞真实存在，显著降低误报。</p></div>
+          <div class="card blue-top"><h3><span class="num">C</span>AI 白盒</h3><p style="font-size:1.78vh">辅助反编译、危险逻辑识别、漏洞根因推理。</p></div>
+          <div class="card blue-top"><h3><span class="num">D</span>闭环输出</h3><p style="font-size:1.78vh">自动生成攻击链 + 可复现 PoC + 修复建议 + 风险报告。</p></div>
+        </div>
+        <div class="card gold-top" style="flex:1;">
+          <h3><span class="icon-dot g"></span>真实审计样本：某开源管理系统（RuoYi v4.7.1，Java）</h3>
+          <p style="font-size:1.78vh">审计概览：常规漏洞 <b>17</b>（高危 8 · 中危 8 · 低危 1）＋ 组合漏洞 3 条。高危样本逐条三件套：<b>位置（文件:行）＋ PoC ＋ 修复建议</b>——</p>
+          <p style="font-size:1.72vh;margin-top:.6vh;line-height:1.72">
+          - <b>认证绕过</b>：Shiro 1.8.0 存在 CVE-2022-40664（CVSS 9.8）→ 升级 1.10.0+<br>
+          - <b>反序列化 RCE</b>：Fastjson 1.2.78 存在 CVE-2022-25845 → 升级或开 SafeMode<br>
+          - <b>SQL 注入</b>：建表语句经 MyBatis ${} 动态拼接 → 改预编译＋白名单校验<br>
+          - <b>弱口令</b>：Druid 监控台 ruoyi/123456 且无 IP 白名单 → 强口令＋白名单＋按需关闭<br>
+          - 其余高危：XXE、SSRF、反射执行 RCE、路径穿越（详见审计报告）</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="code-box" style="flex:0 0 auto;">
+          <span class="cc">// 审计报告样例：每条发现 = 位置 + 证据 + 严重度 + 建议</span><br>
+          <span class="ck">[高危] SQL Injection — CWE-89</span><br>
+          <span class="cv">位置:</span> GenController.java:194（create 方法）<br>
+          <span class="cv">根因:</span> 用户输入 SQL 经 <span class="ck">${}</span> 拼接执行，非预编译<br>
+          <span class="cv">PoC:</span> CREATE TABLE t (name VARCHAR(100) <span class="ck">DEFAULT (SELECT ...)</span>)<br>
+          <span class="cg">修复:</span> 预编译语句 + 白名单校验 + 独立低权限数据库账户
+        </div>
+        <div class="demo-tip" style="flex:1;">
+          <div class="dt gold">真机演示</div>
+          <p>现场投屏：<b>上传一段开源代码 → 1 分钟出审计报告</b>——高危项逐条过：漏洞是什么、怎么利用、怎么修。<br><b>你带走的动作：参赛作品提交前，把源码交给 AI 审一遍；每条发现按"位置＋证据＋严重度＋建议"四要素写进设计文档的安全设计章节。</b><br>实操环节任务 B：拿你自己的一段课程项目代码，现场跑一遍四维审查。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>样本来源：AI 代码审计平台真实输出（脱敏）· 天翼安全科技有限公司</span><span class="must">看懂一条漏洞的生命周期：位置 → 利用 → 修复</span></div>
+</section>
+
+<!-- P20 工程纪律+避坑 -->
+<section class="slide">
+  <div class="kicker"><div class="tag" style="background:var(--gold-deep);color:var(--navy)">第四篇章 · 守住它</div><div class="sub">人机协同工程纪律 + 参赛避坑</div><div class="time">2 min</div></div>
+  <h1 class="title">最后一道关是人：<em>工程纪律 BGHKM 与五个出局点</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">来自《人机协同软件工程实践手册》的四处四防线——AI 干活，人在四处把关。核心纪律一句话：<b>无证据 ＝ 未核对</b>，每项必须附"命令＋输出摘要 / 文件:行号 / 测试名"。</div>
+  <div class="content">
+    <div class="grid" style="grid-template-columns:repeat(4,1fr);flex:0 0 auto;">
+      <div class="card navy-top"><h3><span class="num">B</span>任务工单 · 定义时</h3><p style="font-size:1.72vh">人定义、机器执行——<b>目标、范围、验收标准</b>写清楚再动手；验收标准写不成可核对形式，任务就不该开始。</p></div>
+      <div class="card navy-top"><h3><span class="num">G</span>计划评审 · 计划前</h3><p style="font-size:1.72vh">回述核对：AI 复述与你的意图一致吗？范围、路线、拆分、缺口逐项过——<b>任何一项不过，退回改计划</b>。</p></div>
+      <div class="card blue-top"><h3><span class="num">H</span>完成清单 · 交接前</h3><p style="font-size:1.72vh">AI 证据式自查：验收逐条附证据、diff 范围核对、无遗留调试代码、<b>禁止"是/已完成/没问题"式回答</b>。</p></div>
+      <div class="card blue-top"><h3><span class="num">K</span>评审流水线 · 评审时</h3><p style="font-size:1.72vh">验收核对员、不变量哨兵、测试质量审计员、汇总员——<b>评审者必须是全新会话</b>，绝不让写代码的会话审自己。</p></div>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(5,1fr);margin-top:1.4vh;flex:1;align-items:stretch;">
+      <div class="warn-card"><h3>① 匿名破功</h3><p>PPT、代码注释、文档页眉出现校名/姓名 → 直接违规。<b>提交前全文件搜索一遍。</b></p></div>
+      <div class="warn-card"><h3>② 数据编造</h3><p>规程要求数据真实、引用注明出处。<b>来源不明全删——宁可少一个数字，不能多一个假数。</b></p></div>
+      <div class="warn-card"><h3>③ 没有 Demo</h3><p>只有 PPT 没有可交互演示 → "方案完整"直接失分。<b>最简单的网页也比纯图文强。</b></p></div>
+      <div class="warn-card"><h3>④ 超时超容</h3><p>zip 超 600M、截止后才发 → 系统性淘汰。<b>提前 2 天提交，留足返工余地。</b></p></div>
+      <div class="warn-card"><h3>⑤ AI 全代写</h3><p>方案思路、数据把关、现场答辩必须是你自己的。<b>评委一问便知——AI 做工具，不做作者。</b></p></div>
+    </div>
+    <div class="demo-tip" style="margin-top:1.4vh">
+      <div class="dt gold">第四篇章一句话</div>
+      <p><b>AI 写代码，你管四关：定义关、计划关、验收关、评审关；参赛过五检：匿名、数据、Demo、容量、原创。</b>守得住，才赢得了。</p>
+    </div>
+  </div>
+  <div class="footer"><span>BGHKM 摘自《人机协同软件工程实践手册 v6.0》附录 B/G/H/K/M · 参赛五坑来自竞赛规程与历届评审反馈</span><span class="must">无证据 = 未核对——这是 AI 时代工程师的第一素养</span></div>
+</section>
+
+<!-- P21 四次跃迁 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">第五篇章 · 望远方</div><div class="sub">未来之路 · 四次跃迁</div><div class="time">4 min</div></div>
+  <h1 class="title">四次跃迁：<em>这个行业在往哪走，你的位置在哪</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">大模型 → 智能体 → 多智能体协同 → 具身智能。这不只是技术史，是<b>未来十年岗位需求的变化曲线</b>——每一次跃迁，AI 接管一类工作，也新开一批岗位。</div>
+  <div class="content">
+    <div class="evo">
+      <div class="node on"><h4>大模型</h4><p>会说话的"百科大脑"<br>语言能力</p></div>
+      <div class="arrow">→</div>
+      <div class="node on"><h4>智能体</h4><p>会干活的"数字员工"<br>行动能力</p></div>
+      <div class="arrow">→</div>
+      <div class="node"><h4>多智能体协同</h4><p>会协作的"AI 团队"<br>编排能力</p></div>
+      <div class="arrow">→</div>
+      <div class="node"><h4>具身智能</h4><p>长出身体的"AI 工人"<br>物理世界交互</p></div>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr);flex:1;align-items:stretch;">
+      <div class="card blue-top">
+        <h3><span class="num" style="color:var(--hi)">①</span>大模型</h3>
+        <img class="ui-img" src="media/ui_doubao.jpg" alt="豆包界面">
+        <p style="font-size:1.66vh;line-height:1.42"><b>你已在用。</b>语言任务全面超越平均，但它只会"说"。岗位：提示词工程、模型评测。</p>
+      </div>
+      <div class="card blue-top">
+        <h3><span class="num" style="color:var(--hi)">②</span>智能体</h3>
+        <img class="ui-img" src="media/ui_openclaw.jpg" alt="OpenClaw界面">
+        <p style="font-size:1.66vh;line-height:1.42"><b>现象级样本 OpenClaw。</b>大脑＋工具＋记忆＋闭环。岗位：AI 应用工程师——<b>计算机学生的主线</b>。</p>
+      </div>
+      <div class="card navy-top">
+        <h3><span class="num">③</span>多智能体</h3>
+        <img class="ui-img" src="media/ui_teleagent.jpg" alt="TeleAgent界面">
+        <p style="font-size:1.66vh;line-height:1.42"><b>参赛小组＝人＋多智能体混合团队</b>：人管拍板，AI 管检索初稿。岗位：智能体编排、工作流设计。</p>
+      </div>
+      <div class="card gold-top">
+        <h3><span class="num">④</span>具身智能</h3>
+        <div class="bili-frame"><iframe src="https://player.bilibili.com/player.html?bvid=BV1kzJQ6KECy&page=1&autoplay=0&danmaku=0&high_quality=1" scrolling="no" allowfullscreen="true"></iframe></div>
+        <p style="font-size:1.66vh;line-height:1.42">大模型装进机器人、无人车——数字劳动力到物理劳动力。<b>计算机＋机械/电子复合背景，溢价最高的一档。</b><span class="uicap">▲ 点击画面中央播放键，本页直接播放（需联网）</span></p>
+      </div>
+    </div>
+    <div class="demo-tip" style="margin-top:.9vh;padding:.8vh 1vw">
+      <div class="dt">串起来</div>
+      <p style="font-size:1.68vh"><b>大脑 → 手脚 → 团队 → 身体</b>——参赛做 Demo 练的"任务拆解与工具编排"，正是每次跃迁后都稀缺的能力。</p>
+    </div>
+  </div>
+  <div class="footer"><span>第五篇章 · 未来之路 · 四站各看 1 分钟</span><span class="must">先看清路，再赶路——下一页讲怎么落到你的课表和简历上</span></div>
+</section>
+
+<!-- P22 怎么学怎么选 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">第五篇章 · 望远方</div><div class="sub">落地 · 怎么学 · 路怎么选</div><div class="time">3 min</div></div>
+  <h1 class="title">看懂了路线，<em>怎么学、怎么选</em>？</h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">AI 时代最大的学习变化：知识不再稀缺，<b>"提出问题和验收结果"的能力才是</b>。用 AI 四式练成肌肉记忆，再按四条就业线对号入座。</div>
+  <div class="content">
+    <div class="duo">
+      <div>
+        <table class="nice">
+          <tr><th style="width:26%">学习动作</th><th>具体做法（今天就能用 TeleAgent 练）</th></tr>
+          <tr><td>用 AI 学</td><td>难概念让它"三种说法讲到我懂"；每章读完出 5 题自测；错题导入做薄弱点诊断</td></tr>
+          <tr><td>用 AI 做</td><td>小组作业、项目、复习计划全走<b>"AI 初稿 → 人工改造"</b>流程，练提需求与验收</td></tr>
+          <tr><td>用 AI 查</td><td>写任何作业前先让它检索最新进展，养成<b>多源交叉验证</b>习惯</td></tr>
+          <tr><td>用 AI 辨</td><td>故意让它写一段含错代码，自己找错——<b>训练"防幻觉"的批判性思维，未来最贵的素养</b></td></tr>
+        </table>
+        <div class="demo-tip" style="margin-top:1.3vh">
+          <div class="dt">作品集思维</div>
+          <p>把每学期课程作业升级成"可展示的作品"：四年攒 <b>8 个作品 + 2 个竞赛奖 + 1 个 AI 工作流</b>——简历"项目经历"栏就赢了，比绩点更容易被记住。</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1vh;">
+        <div class="card blue-top" style="border-width:2px;">
+          <h3><span class="num" style="color:var(--hi)">①</span>智能体开发线（计算机专业主线）</h3>
+          <p style="font-size:1.78vh"><b>方向：</b>AI 应用工程师、Agent 开发、工作流设计<br><b>底子：</b>计算机、软件、数学<br><b>切入点：</b>从做 Demo 开始——今天讲的五步实战就是每日练习。</p>
+        </div>
+        <div class="card blue-top">
+          <h3><span class="num" style="color:var(--hi)">②</span>AI 运营线</h3>
+          <p style="font-size:1.78vh"><b>方向：</b>AI 产品运营、智能体训练师、AI 内容创作<br><b>底子：</b>文传、新闻、设计、市营——<b>会用 AI 量产内容的人正被疯抢</b>。</p>
+        </div>
+        <div class="card navy-top">
+          <h3><span class="num">③</span>AI + X 复合线</h3>
+          <p style="font-size:1.78vh"><b>方向：</b>行业 AI 解决方案（教育/农业/文旅/海洋…）<br><b>切入点：</b>你本专业的痛点就是你的赛道——创意大赛六场景就是这么设计的。</p>
+        </div>
+        <div class="card gold-top">
+          <h3><span class="num">④</span>具身硬件线</h3>
+          <p style="font-size:1.78vh"><b>方向：</b>机器人算法、智能制造、自动驾驶<br><b>切入点：</b>计算机＋机械/电子复合背景——<b>当前市场溢价最高的一档</b>。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>第五篇章 · 落地</span><span class="must">真正决定你位置的，是"专业 × AI"的交叉点</span></div>
+</section>
+
+<!-- P23 学术伦理 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">第五篇章 · 望远方</div><div class="sub">底线 · 学术伦理</div><div class="time">2 min</div></div>
+  <h1 class="title">重要提醒：<em>智能体是辅助学习的利器，不是作弊工具</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle">工具越强，底线越要清楚。这三条不是限制你用 AI——恰恰相反，<b>守住底线的人，才敢放心大胆地把杂活全丢给 AI</b>。</div>
+  <div class="content">
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);flex:1;align-items:stretch;">
+      <div class="card navy-top">
+        <h3><span class="num">不代写</span></h3>
+        <p style="font-size:1.82vh;line-height:1.7">智能体帮你整理思路、搭框架、跑腿；<b>论文核心内容、代码核心逻辑必须自己写</b>。<br><br>评审看"学生独立完成"——决赛路演，评委一问便知。</p>
+      </div>
+      <div class="card navy-top">
+        <h3><span class="num">不代考</span></h3>
+        <p style="font-size:1.82vh;line-height:1.7">帮你复习、归纳考点、模拟自测——<b>考试必须自己完成</b>。<br><br>等级考试与软考的机考环境，本来也没有 AI——<b>平时练出来的，才是考场上带得走的</b>。</p>
+      </div>
+      <div class="card navy-top">
+        <h3><span class="num">不伪造数据</span></h3>
+        <p style="font-size:1.82vh;line-height:1.7">帮你分析和处理数据——<b>数据必须真实</b>。<br><br>补一句代码版：AI 生成的代码要过目再交；<b>署你的名字，就要你负责</b>。</p>
+      </div>
+    </div>
+    <div class="demo-tip" style="margin-top:1.4vh">
+      <div class="dt">底线一句话</div>
+      <p><b>把搬运交给 AI，把判断留给自己——独立思考永远是底线。</b>和计算器没有消灭数学是同一个道理：工具拿走的是机械劳动，留下的是思考与责任。</p>
+    </div>
+  </div>
+  <div class="footer"><span>学术伦理 · 三不原则</span><span class="must">AI 做工具，不做作者</span></div>
+</section>
+
+<!-- P24 收尾+现场任务 -->
+<section class="slide dark">
+  <div class="kicker"><div class="tag" style="background:linear-gradient(90deg,var(--gold),var(--lime));color:var(--navy)">收官 · 动手</div><div class="sub" style="color:rgba(255,255,255,.6)">现在，做出你的第一件 AI 作品</div><div class="time" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:var(--gold)">15 min</div></div>
+  <h1 class="title" style="color:#fff">把杂活丢给 AI，<em style="color:var(--gold)">把时间还给思考</em></h1>
+  <div class="gradbar"></div>
+  <div class="subtitle" style="color:rgba(255,255,255,.72)">愿你们把省下来的时间，花在机器替代不了的地方——问得更准，想得更深。接下来 15 分钟：注册领权益 → 选一个任务 → 现场做出成果。做完发到群里，课后点评。</div>
+  <div class="content">
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);flex:1;align-items:stretch;">
+      <div class="card edit-zone" style="border-color:rgba(255,229,110,.4);">
+        <h3 style="color:var(--gold)">第一步 · 下载注册（5 min）</h3>
+        <p style="color:rgba(255,255,255,.85);line-height:1.7">① 手机扫座位区立牌二维码，下载 TeleAgent，手机号验证码注册；<br>② 登录后到技能广场装三件套：<b style="color:var(--gold)">docx / xlsx / pptx</b>；<br>③ <b style="color:var(--gold)">现场扫码领取校园专属权益包</b>（AI 服务限时体验）；<br>④ 注册卡壳别死磕——举手，本区 FDE 老师 30 秒到身边；<br>⑤ 已注册过的直接登录；电脑端任务能力最完整，手机可先完成注册。</p>
+      </div>
+      <div class="card edit-zone" style="border-color:rgba(255,229,110,.4);">
+        <h3 style="color:var(--gold)">第二步 · 任务三选一（8 min）</h3>
+        <p style="color:rgba(255,255,255,.85);line-height:1.48">
+        <b style="color:#fff">A · 计算机考试复习包：</b>最近错题发给它 → 根因分析＋复习计划＋3 张速记卡<br>
+        <b style="color:#fff">B · 代码审查实测：</b>贴一段自己的课程项目代码 → 按四维出审查报告<br>
+        <b style="color:#fff">C · 参赛方案初稿：</b>现场讨论一个选题 2 分钟并录音 → 转写 → 按痛点、方案、价值三段出初稿＋分工表<br>
+        <span style="color:rgba(255,255,255,.6);font-size:1.72vh">做不完的别慌：任务思路拍照带走，宿舍用电脑继续做，做完发群里照常点评。</span></p>
+      </div>
+      <div class="card edit-zone" style="border-color:rgba(255,229,110,.4);">
+        <h3 style="color:var(--gold)">第三步 · 完成四件事</h3>
+        <p style="color:rgba(255,255,255,.85);line-height:1.7">① <b style="color:var(--gold)">截图发群</b>——群二维码在大屏，课后讲师点评优秀作品；<br>② <b style="color:var(--gold)">现场组队</b>——找竞赛搭子，报队伍名单；<br>③ <b style="color:var(--gold)">加入活动群</b>——使用教程与答疑持续更新；<br>④ <b style="color:var(--gold)">带走方法</b>——今天每一个提示词都可以直接抄走复用。</p>
+      </div>
+    </div>
+    <div class="demo-tip edit-zone" style="margin-top:1.4vh;background:rgba(255,255,255,.07);border-color:var(--gold)">
+      <div class="dt" style="background:var(--gold);color:var(--navy)">实操纪律</div>
+      <p style="color:#fff">用自己的真实材料（错题、代码、选题都行），成果你带得走；卡壳就举手；完成后发群。<b style="color:var(--gold)">今天结束时，你的第一件 AI 作品就该存在了。</b></p>
+    </div>
+  </div>
+  <div class="footer"><span style="color:rgba(255,255,255,.45)">信息工程学院 × 中国电信 联合开讲 · 群内：组队报名 · 使用教程 · 参赛答疑 · 案例分享</span><span style="color:var(--gold);font-size:1.72vh;font-weight:700">先看清，再用上，去赢比赛，守住底线，望向远方</span></div>
+</section>
+
+
+</div>
+<script>
+const TOTAL=30;
+const deck=document.getElementById('deck');
+const nav=document.getElementById('nav');
+const pg=document.getElementById('pageno');
+const prog=document.getElementById('progress');
+let cur=0;
+function buildNav(){
+  for(let i=0;i<TOTAL;i++){
+    const d=document.createElement('button');
+    d.className='dot';d.title='第'+(i+1)+'页';
+    d.onclick=()=>go(i);
+    nav.appendChild(d);
+  }
+}
+function go(n){
+  if(n<0||n>=TOTAL)return;
+  cur=n;
+  deck.style.transform='translateX(-'+(n*100)+'vw)';
+  document.querySelectorAll('#nav .dot').forEach((d,i)=>d.classList.toggle('on',i===n));
+  pg.textContent=(n+1)+' / '+TOTAL;
+  prog.style.width=((n+1)/TOTAL*100)+'%';
+  location.hash='p'+(n+1);
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')go(cur+1);
+  else if(e.key==='ArrowLeft'||e.key==='PageUp')go(cur-1);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+let wheelAcc=0;
+document.addEventListener('wheel',e=>{
+  wheelAcc+=e.deltaY;
+  if(Math.abs(wheelAcc)>60){go(cur+(wheelAcc>0?1:-1));wheelAcc=0;}
+},{passive:true});
+let tX=0;
+document.addEventListener('touchstart',e=>tX=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tX;
+  if(Math.abs(dx)>50)go(cur+(dx<0?1:-1));
+},{passive:true});
+const fsBtn=document.getElementById('fsBtn');
+fsBtn.addEventListener('click',async()=>{
+  try{
+    if(!document.fullscreenElement){
+      await document.documentElement.requestFullscreen();
+      fsBtn.innerHTML='<span class="fs-ico">⛶</span>退出全屏';
+    }else{
+      await document.exitFullscreen();
+      fsBtn.innerHTML='<span class="fs-ico">⛶</span>全屏播放';
+    }
+  }catch(e){
+    fsBtn.title='全屏不可用：'+e.message;
+  }
+});
+document.addEventListener('fullscreenchange',()=>{
+  fsBtn.innerHTML=document.fullscreenElement?'<span class="fs-ico">⛶</span>退出全屏':'<span class="fs-ico">⛶</span>全屏播放';
+});
+const editBtn=document.getElementById('editBtn');
+let editing=false;
+const zones=()=>document.querySelectorAll('.slide:last-child .edit-zone');
+editBtn.addEventListener('click',()=>{
+  editing=!editing;
+  document.body.classList.toggle('editable-on',editing);
+  zones().forEach(z=>z.setAttribute('contenteditable',editing?'true':'false'));
+  editBtn.innerHTML=editing?'<span class="fs-ico">✓</span>完成编辑':'<span class="fs-ico">✎</span>编辑任务';
+  if(editing && cur!==TOTAL-1) go(TOTAL-1);
+});
+zones().forEach((z,i)=>{
+  const k='sm-edit-'+i;
+  try{const s=localStorage.getItem(k); if(s!==null) z.innerHTML=s;}catch(e){}
+  z.addEventListener('input',()=>{try{localStorage.setItem(k,z.innerHTML);}catch(e){}});
+});
+buildNav();
+const h=location.hash.match(/p(\d+)/);
+go(h?Math.min(parseInt(h[1])-1,TOTAL-1):0);
+</script>
+</body>
+</html>

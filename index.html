@@ -1,60 +1,103 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+<script src="gate.js?v=20261030" data-gate></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的工具箱 · 总导航</title>
+<title>cecilia workbench · 我的页面大全</title>
 <style>
-:root{--bg:#0f1420;--card:#171d2b;--line:#2a3448;--text:#e8edf7;--muted:#8b98b3;--accent:#4f8ef7;--orange:#f2b63d;--green:#2ebd85;}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--txt);font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;padding:18px 16px 60px}
-h1{font-size:21px;letter-spacing:1px}h1 b{color:var(--orange)}
-.sub{color:var(--muted);font-size:12px;margin:6px 0 18px;line-height:1.7}
-.sec{color:var(--accent);font-size:14px;font-weight:700;margin:18px 0 8px}
-.g{display:grid;gap:10px}.g2{grid-template-columns:1fr 1fr}
-@media(max-width:700px){.g2{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-.card:active{background:#1e2638}
-.ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
-.t{flex:1}.t .n{font-size:15px;font-weight:700}.t .d{font-size:11.5px;color:var(--muted);margin-top:2px}
-.arrow{color:var(--accent);font-size:16px}
-.tag{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:10px;border:1px solid var(--line);color:var(--muted);margin-left:5px}
+body{font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:linear-gradient(160deg,#0e1a2b 0%,#132743 55%,#1d3a5f 100%);min-height:100vh;color:#e8eef5;padding:34px 20px 60px}
+.wrap{max-width:1080px;margin:0 auto}
+header{text-align:center;margin-bottom:30px}
+header h1{font-size:30px;letter-spacing:2px;color:#fff}
+header h1 .dot{color:#f2b63d}
+header p.sub{margin-top:10px;color:#9db3c8;font-size:14px}
+.badge{display:inline-block;margin-top:14px;background:rgba(242,182,61,.12);border:1px solid rgba(242,182,61,.45);color:#f2b63d;border-radius:999px;padding:4px 16px;font-size:12.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;margin-top:8px}
+.cat{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px 20px 16px;backdrop-filter:blur(4px);transition:.2s}
+.cat:hover{border-color:rgba(242,182,61,.5);transform:translateY(-2px)}
+.cat h2{font-size:16.5px;color:#fff;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.cat h2 .no{background:rgba(242,182,61,.2);border:1px solid rgba(242,182,61,.45);color:#f2b63d;font-size:11.5px;border-radius:4px;padding:1px 7px;font-weight:700}
+.cat p.desc{font-size:12.5px;color:#8fa6bc;margin-bottom:12px;line-height:1.5;min-height:34px}
+.cat .icon{font-size:20px}
+.subhead{font-size:12px;color:#f2b63d;font-weight:700;letter-spacing:1px;margin:12px 0 2px;padding-top:10px;border-top:1px dashed rgba(255,255,255,.14)}
+.subhead:first-of-type{border-top:none;padding-top:0;margin-top:2px}
+.item{display:block;padding:9px 12px;margin:7px 0;border-radius:9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);text-decoration:none;color:#dbe7f3;font-size:13.5px;transition:.15s;justify-content:space-between;align-items:center}
+.item{display:flex}
+.item:hover{background:rgba(242,182,61,.14);border-color:rgba(242,182,61,.5);color:#ffe9b8}
+.item .tag{font-size:11px;color:#9db3c8;white-space:nowrap;margin-left:10px}
+.item .hot{color:#f2b63d;font-size:11px;font-weight:700}
+.cat.primary{border-color:rgba(242,182,61,.45);background:rgba(242,182,61,.07)}
+footer{margin-top:36px;text-align:center;color:#6c86a0;font-size:12px;line-height:1.8}
+footer a{color:#7fa6c9;text-decoration:none}
+@media(max-width:640px){header h1{font-size:23px}.cat p.desc{min-height:auto}}
 </style>
 </head>
 <body>
-<h1>🗂 我的<b>工具箱</b></h1>
-<div class="sub">GitHub Pages 统一入口 · 按主题分类，各工具集中在对应目录<br>📡 股票类工具含实时行情 · 健身/小奕手机随时可看</div>
+<div class="wrap">
+<header>
+  <h1>cecilia workbench<span class="dot">.</span></h1>
+  <p class="sub">工作台 · 高校 TA 展示 · 小奕学习 · 健身 · 投资</p>
+  <span class="badge">GitHub Pages 发布 · 2026-10-29 调整顺序</span>
+</header>
 
-<div class="sec">📈 投资理财 · stock/</div>
-<div class="g">
-<a class="card" href="stock/投资总控台.html"><span class="ico">📊</span><span class="t"><span class="n">投资总控台</span><span class="d">指数/ETF双模型/盯盘清单/模拟台账/抖音情报 · 总览入口</span></span><span class="arrow">›</span></a>
-<a class="card" href="stock/盯盘作战台.html"><span class="ico">🎯</span><span class="t"><span class="n">盯盘作战台</span><span class="d">盘前竞价/盘中窗口/执行卡/纪律</span></span><span class="arrow">›</span></a>
-<a class="card" href="stock/股票助手工作台.html"><span class="ico">📈</span><span class="t"><span class="n">股票助手工作台</span><span class="d">股票池/规则/防狼/持仓/复盘</span></span><span class="arrow">›</span></a>
-<a class="card" href="stock/抖音情报看板.html"><span class="ico">📱</span><span class="t"><span class="n">抖音情报看板</span><span class="d">博主观点/方法论库/完整转写</span></span><span class="arrow">›</span></a>
+<div class="grid">
+
+  <div class="cat primary">
+    <h2><span class="no">01</span><span class="icon">💼</span>cecilia workbench</h2>
+    <p class="desc">项目驾驶舱 · 任务日志 · 周报归档（周报链接可在线点开）</p>
+    <a class="item" href="work/workbench.html">进入工作台 <span class="tag">项目 · 待办 · 周报</span></a>
+  </div>
+
+  <div class="cat">
+    <h2><span class="no">02</span><span class="icon">🎓</span>高校 TA 展示</h2>
+    <p class="desc">TeleAgent 教育版生成的单文件交互课件与演示成品，双击即开、可离线</p>
+    <div class="subhead">TA 高校演示物库</div>
+    <a class="item" href="ta/00_客户场景对应总表.html">客户×场景对应总表 <span class="hot">入口</span></a>
+    <a class="item" href="ta/学科演示物/01_医学_心脏解剖结构交互演示.html">01 心脏解剖交互演示</a>
+    <a class="item" href="ta/学科演示物/02_物理_单摆测重力加速度互动实验.html">02 单摆测重力加速度</a>
+    <a class="item" href="ta/学科演示物/03_化学_酸碱中和滴定互动实验.html">03 酸碱中和滴定</a>
+    <a class="item" href="ta/学科演示物/04_农林_作物病虫害智能识别问答.html">04 病虫害智能识别问答</a>
+    <a class="item" href="ta/学科演示物/05_经管法_模拟法庭情境推演.html">05 模拟法庭情境推演</a>
+    <a class="item" href="ta/学科演示物/06_工科_五轴数控加工数字孪生演示.html">06 五轴数控数字孪生</a>
+    <a class="item" href="ta/学科演示物/07_海洋_潮汐原理与潮汐能交互演示.html">07 潮汐原理与潮汐能</a>
+    <a class="item" href="ta/校级运营/08_校级_TOKEN与技能运营治理看板.html">08 校级 Token 运营看板</a>
+    <div class="subhead">Demo 展示</div>
+    <a class="item" href="demo/scara-robot-light.html">SCARA 机械臂 3D 实训 <span class="tag">浅色</span></a>
+    <a class="item" href="demo/scara-robot-dark.html">SCARA 机械臂 3D 实训 <span class="tag">深色</span></a>
+    <a class="item" href="demo/浮力实验互动课件.html">浮力实验互动课件</a>
+    <a class="item" href="demo/今生簪花.html">今生簪花 · 学生参赛作品</a>
+  </div>
+
+  <div class="cat">
+    <h2><span class="no">03</span><span class="icon">✍️</span>小奕学习</h2>
+    <p class="desc">中考写作训练 · 素材管理</p>
+    <a class="item" href="xiaoyi/写作作战室.html">写作作战室 <span class="tag">2027 中考</span></a>
+  </div>
+
+  <div class="cat">
+    <h2><span class="no">04</span><span class="icon">💪</span>健身</h2>
+    <p class="desc">训练模块 · 课表生成 · 打卡记录（本地保存）</p>
+    <a class="item" href="fitness/健身小助手.html">健身小助手 <span class="tag">每日 11:30 微信提醒</span></a>
+  </div>
+
+  <div class="cat">
+    <h2><span class="no">05</span><span class="icon">📈</span>投资</h2>
+    <p class="desc">信号引擎 · 模拟台账 · 指数/ETF 双模型 · 抖音情报（每交易日 15:30 后更新）</p>
+    <a class="item" href="stock/投资总控台.html">投资总控台 <span class="tag">指数 · ETF · 信号 · 台账</span></a>
+    <a class="item" href="stock/盯盘作战台.html">盯盘作战台 <span class="tag">每日信号执行卡</span></a>
+    <a class="item" href="stock/股票助手工作台.html">股票助手工作台 <span class="tag">全景决策</span></a>
+    <a class="item" href="stock/抖音情报看板.html">抖音情报看板 <span class="tag">博主观点 · 方法论</span></a>
+  </div>
+
 </div>
 
-<div class="sec">🏋️ 健身</div>
-<div class="g g2">
-<a class="card" href="fitness/健身小助手.html"><span class="ico">💪</span><span class="t"><span class="n">健身小助手</span><span class="d">训练计划/打卡/今日推荐</span></span><span class="arrow">›</span></a>
+<footer>
+  个人工具站 · 数据仅供个人使用，不构成投资建议<br>
+  <span>2026-10-29 调整：工作台更名 cecilia workbench 并置首；高校 TA 展示合并演示物库与 Demo</span><br>
+  <a href="https://github.com/cecilia319/my-tools">github.com/cecilia319/my-tools</a>
+</footer>
 </div>
-
-<div class="sec">📚 小奕·语文</div>
-<div class="g g2">
-<a class="card" href="xiaoyi/写作作战室.html"><span class="ico">✏️</span><span class="t"><span class="n">写作作战室</span><span class="d">作文素材/学习工具 · 给小奕</span></span><span class="arrow">›</span></a>
-</div>
-
-<div class="sec">💼 工作</div>
-<div class="g g2">
-<a class="card" href="work/workbench.html"><span class="ico">🖥️</span><span class="t"><span class="n">工作台</span><span class="d">项目工作台/待办/成果</span></span><span class="arrow">›</span></a>
-</div>
-
-<div class="sec">🎨 教育/AI Demo</div>
-<div class="g g2">
-<a class="card" href="demo/scara-robot-light.html"><span class="ico">🤖</span><span class="t"><span class="n">SCARA 机器人 demo</span><span class="d">制造实训演示</span></span><span class="arrow">›</span></a>
-<a class="card" href="demo/浮力实验互动课件.html"><span class="ico">🔬</span><span class="t"><span class="n">浮力实验课件</span><span class="d">物理互动教学</span></span><span class="arrow">›</span></a>
-<a class="card" href="demo/今生簪花.html"><span class="ico">🌸</span><span class="t"><span class="n">今生簪花</span><span class="d">iCAN 参赛示范</span></span><span class="arrow">›</span></a>
-</div>
-
-<div class="sub" style="margin-top:22px">分类规则：根目录仅放导航 index.html；各主题集中在对应子目录（stock/fitness/xiaoyi/work/demo）。仅供个人使用参考</div>
 </body>
 </html>

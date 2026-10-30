@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《视频侦查技术》第5章 · 信息研判：搜索·追踪·关联 —— AI互动课</title>
+<style>
+  :root{
+    --ink:#1a2430; --paper:#f2f4f7; --card:#ffffff; --line:#d9dfe7;
+    --navy:#0f3057; --navy-2:#1c4d80; --steel:#48627e; --faint:#8b9aa9;
+    --gold:#b8862d; --red:#a63c2a; --green:#2c7a52; --amber-bg:#fdf7ec;
+    --shadow:0 1px 2px rgba(12,28,48,.07),0 10px 28px -14px rgba(12,28,48,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);
+    font:16px/1.8 "Source Han Sans SC","Noto Sans SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;padding-bottom:90px}
+  header{background:linear-gradient(160deg,#0f3057,#153f6e);color:#fff;
+    padding:24px 28px 18px;position:relative}
+  .hwrap{max-width:1080px;margin:0 auto}
+  header .kick{font-size:12px;letter-spacing:.3em;color:#9db6cf;font-weight:600}
+  header h1{font-size:24px;margin-top:6px;font-weight:800}
+  header .sub{color:#b9cbdd;font-size:13px;margin-top:4px}
+  .mode-tags{position:absolute;top:24px;right:28px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:420px}
+  .mtag{font-size:11px;color:#d9c48a;border:1px solid #3a5a80;border-radius:999px;padding:2px 10px;background:rgba(255,255,255,.05)}
+  .prog{position:sticky;top:0;z-index:50;background:rgba(15,48,87,.97);backdrop-filter:blur(4px);
+    box-shadow:0 2px 10px rgba(10,25,45,.25)}
+  .prog-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:3px;padding:9px 24px}
+  .pnode{flex:1;display:flex;align-items:center;gap:5px;cursor:pointer;color:#7f9cbd;font-size:12px;font-weight:600;
+    padding:5px 3px;border-radius:8px;white-space:nowrap;overflow:hidden}
+  .pnode .n{width:20px;height:20px;border-radius:50%;border:1.5px solid #48688c;display:flex;
+    align-items:center;justify-content:center;font-size:11px;flex:none}
+  .pnode.on{color:#fff}.pnode.on .n{background:var(--gold);border-color:var(--gold)}
+  .pnode.ok .n{background:#2c7a52;border-color:#2c7a52;color:#fff}
+  .pnode .t{overflow:hidden;text-overflow:ellipsis}
+  main{max-width:1080px;margin:24px auto 0;padding:0 28px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:28px 32px;margin-bottom:24px;scroll-margin-top:64px}
+  .sec-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;
+    letter-spacing:.15em;color:var(--gold);border:1px solid #e6d9bd;background:var(--amber-bg);
+    border-radius:999px;padding:3px 12px}
+  section h2{font-size:21px;color:var(--navy);margin:12px 0 4px}
+  section .lede{color:var(--steel);font-size:14.5px;margin-bottom:14px}
+  .brief-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .brief{border:1px solid var(--line);border-radius:11px;padding:14px 18px;background:#fafbfc;font-size:14.5px}
+  .brief b{display:block;font-size:12px;letter-spacing:.15em;color:var(--faint);margin-bottom:6px}
+  .brief.gold{border-left:4px solid var(--gold)}
+  .brief.red{border-left:4px solid var(--red)}
+  .brief.green{border-left:4px solid var(--green)}
+  .brief.navy{border-left:4px solid var(--navy)}
+  .keypoints{list-style:none;margin-top:8px}
+  .keypoints li{position:relative;padding:9px 0 9px 30px;border-bottom:1px dashed #e8ecf1;font-size:15.5px}
+  .keypoints li:last-child{border:none}
+  .keypoints li::before{content:"";position:absolute;left:6px;top:19px;width:9px;height:9px;
+    background:var(--navy-2);transform:rotate(45deg)}
+  .story{background:#f6f8fa;border:1px solid var(--line);border-radius:11px;padding:16px 20px;
+    font-size:15px;color:#33465c;margin-top:14px;line-height:1.9}
+  .story b{color:var(--navy)}
+  .src{font-size:12px;color:var(--faint);margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;line-height:1.8}
+  .btn{display:inline-block;border:none;border-radius:10px;background:var(--navy);color:#fff;
+    font-size:15.5px;font-weight:700;padding:12px 30px;cursor:pointer;transition:.2s;font-family:inherit}
+  .btn:hover{filter:brightness(1.12)}
+  .btn.gold{background:var(--gold)}
+  .btn.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .fb{background:#f6f8fa;border:1px dashed var(--steel);border-radius:10px;padding:14px 18px;
+    font-size:14.5px;color:#33465c;display:none;margin-top:12px;line-height:1.8}
+  .fb.good{background:#eff7f1;border-color:#2c7a52}
+  .fb.bad{background:#faeeec;border-color:#a63c2a}
+  .fb b{color:var(--navy)}
+  .okmsg{display:none;margin-top:12px;background:#eff7f1;border:1px solid #cfe3d6;border-radius:10px;
+    padding:10px 16px;color:var(--green);font-weight:700;font-size:14px}
+  /* 选项 */
+  .opts{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+  .opt{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;
+    padding:12px 16px;font-size:14.5px;cursor:pointer;background:#fafbfc;transition:.12s;text-align:left;width:100%;font-family:inherit;line-height:1.65}
+  .opt:hover{border-color:var(--navy-2)}
+  .opt .k{width:26px;height:26px;border-radius:50%;background:#eef3f8;color:var(--navy-2);font-weight:800;
+    display:flex;align-items:center;justify-content:center;font-size:13px;flex:none;margin-top:2px}
+  .opt.picked{border-color:var(--navy-2);background:#eef3f8}
+  .opt.best{border-color:#2c7a52;background:#eff7f1}
+  .opt.mid{border-color:var(--gold);background:var(--amber-bg)}
+  .opt.worst{border-color:var(--red);background:#faeeec}
+  .opt b{color:var(--navy)}
+  .chkline{font-size:12px;color:var(--faint);margin-top:8px}
+  /* 地图 */
+  .mapwrap{background:#0b1c30;border-radius:12px;padding:14px;margin:14px 0;position:relative}
+  .mapwrap svg{width:100%;display:block;border-radius:8px;background:#0e2440}
+  .mapcap{color:#8ba6c1;font-size:12px;margin-top:8px;letter-spacing:.06em;text-align:center}
+  .maplegend{position:absolute;left:24px;top:24px;background:rgba(10,25,45,.72);border:1px solid #294a70;
+    border-radius:9px;padding:9px 13px;font-size:11.5px;color:#a9c3dc;line-height:1.9;pointer-events:none}
+  .maplegend .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:1px}
+  /* 卡口查看 */
+  .camview{background:#f6f8fa;border:1px solid var(--line);border-radius:10px;padding:13px 16px;
+    margin-top:12px;font-size:13.5px;color:#33465c;line-height:1.8;min-height:74px}
+  .camview b{color:var(--navy);font-size:12.5px;letter-spacing:.1em}
+  .camview .off{color:var(--red);font-weight:700}
+  /* 决策链 */
+  .duo{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;margin-top:14px;align-items:start}
+  @media (max-width:920px){.duo{grid-template-columns:1fr}}
+  .chain{background:#0e2440;border:1px solid #294a70;border-radius:12px;padding:14px 16px;position:sticky;top:64px}
+  .chain h4{color:#d9c48a;font-size:12.5px;letter-spacing:.24em;margin-bottom:10px;font-weight:700}
+  .chain ol{list-style:none;max-height:420px;overflow:auto}
+  .chain li{color:#cfdcec;font-size:12.5px;line-height:1.7;padding:7px 0 7px 16px;border-left:2px solid #3a5a80;
+    margin-left:4px;position:relative}
+  .chain li::before{content:"";position:absolute;left:-5px;top:14px;width:8px;height:8px;border-radius:50%;
+    background:var(--gold)}
+  .chain li .tm{color:#7f9cbd;font-family:Consolas,monospace;margin-right:6px;font-size:11.5px}
+  .chain .empty{color:#5f7d9c;font-size:12.5px}
+  /* 碰撞 */
+  .layers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+  @media (max-width:920px){.layers{grid-template-columns:repeat(2,1fr)}}
+  .lyr{border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;cursor:pointer;background:#fafbfc;transition:.12s}
+  .lyr:hover{border-color:var(--navy-2)}
+  .lyr.on{border-color:var(--navy-2);background:#eef3f8}
+  .lyr .lt{font-weight:800;font-size:14px;color:var(--navy)}
+  .lyr .ld{font-size:12px;color:var(--faint);margin-top:3px;line-height:1.55}
+  .lyr.on .lt::after{content:" ✓";color:var(--green)}
+  .hits{display:none;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+  .hits.show{display:grid}
+  @media (max-width:920px){.hits.show{grid-template-columns:1fr}}
+  .hit{border:1.5px dashed var(--gold);border-radius:10px;background:var(--amber-bg);padding:12px 14px;
+    font-size:13px;cursor:pointer;line-height:1.65;color:#5c4a15}
+  .hit.found{border-style:solid;border-color:var(--green);background:#eff7f1;color:#274f38}
+  .hit.found::after{content:" ✓ 已确认";color:var(--green);font-weight:700}
+  /* 判定/复盘 */
+  .gsbox{border:1.5px solid var(--line);border-radius:12px;padding:18px 20px;margin-top:14px;background:#fafbfc}
+  .rubric{width:100%;border-collapse:collapse;margin-top:14px;font-size:13.5px}
+  .rubric th{background:var(--navy);color:#fff;padding:9px 12px;text-align:left;font-size:13px;letter-spacing:.06em}
+  .rubric td{border:1px solid var(--line);padding:9px 12px;background:#fff}
+  .rubric td.sc{font-family:Consolas,monospace;font-weight:800;color:var(--navy);white-space:nowrap}
+  .total{margin-top:12px;background:var(--amber-bg);border:1px solid #e6d9bd;border-radius:10px;
+    padding:12px 18px;font-size:15px;color:#6b5518;line-height:1.8}
+  .total b{color:var(--red);font-size:17px}
+  /* 费曼/完成 */
+  .chk{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:14.5px;cursor:pointer}
+  .chk input{margin-top:6px;accent-color:var(--navy-2);flex:none}
+  textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:13px 16px;font:inherit;
+    font-size:14.5px;min-height:130px;background:#fafbfc;margin-top:10px}
+  textarea:focus{outline:2px solid var(--navy-2);border-color:var(--navy-2)}
+  .fitem{display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:1px dashed #e8ecf1;font-size:14.5px}
+  .fitem .st{flex:none;font-size:11.5px;font-weight:800;border-radius:999px;padding:3px 12px;letter-spacing:.1em}
+  .fitem .st.pass{background:#eff7f1;color:var(--green);border:1px solid #cfe3d6}
+  .fitem .st.wait{background:#f2f0ea;color:var(--faint);border:1px solid var(--line)}
+  .gobanner{display:none;margin-top:14px;background:#eff7f1;border:1.5px solid var(--green);border-radius:12px;
+    padding:16px 20px;font-size:13.5px;line-height:2;color:#274f38;white-space:pre-wrap}
+  /* 教师看板 */
+  .dashbtn{position:fixed;right:18px;bottom:18px;z-index:60;border:none;border-radius:999px;
+    background:var(--navy);color:#fff;font-size:13px;font-weight:700;padding:11px 20px;cursor:pointer;
+    box-shadow:0 6px 18px rgba(10,25,45,.35);font-family:inherit}
+  .dash{display:none;position:fixed;inset:0;z-index:70;background:rgba(12,28,48,.45);
+    align-items:center;justify-content:center;padding:20px}
+  .dash-in{background:#fff;border-radius:14px;padding:22px 26px;max-width:640px;width:100%;max-height:82vh;overflow:auto;position:relative}
+  .dash-in h3{color:var(--navy);font-size:17px;margin-bottom:10px}
+  .dash-in table{width:100%;border-collapse:collapse;font-size:13px}
+  .dash-in th{background:#eef3f8;color:var(--navy);padding:8px 10px;text-align:left}
+  .dash-in td{border:1px solid var(--line);padding:8px 10px}
+  .dash-x{position:absolute;right:14px;top:10px;border:none;background:none;font-size:20px;cursor:pointer;color:var(--faint)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <p class="kick">《视频侦查技术》第5章 · 信息研判：搜索 · 追踪 · 关联</p>
+    <h1>视频追踪推演：从一段监控，到一个人</h1>
+    <p class="sub">AI 互动课 · 教学虚拟案件 · 依据：全国公安高等教育（本科）规划教材《视频侦查技术》（杨洪臣 李苑 主编）</p>
+  </div>
+  <div class="mode-tags">
+    <span class="mtag">任务驱动</span><span class="mtag">情景推演</span><span class="mtag">决策留痕</span><span class="mtag">费曼复述</span>
+  </div>
+</header>
+
+<div class="prog"><div class="prog-in" id="prog"></div></div>
+
+<main>
+
+<!-- ============ ① 案情简报 ============ -->
+<section id="s1">
+  <span class="sec-tag">① 案情简报</span>
+  <h2>接警：金铺凌晨被撬，损失约 30 万元</h2>
+  <p class="lede">先读案情，再认地图。这一章练的是：怎么让"一段监控"变成"一个名字"。</p>
+
+  <div class="brief-grid">
+    <div class="brief navy"><b>案件</b>
+      10月16日 02:17，清源县城区"金玖银楼"（中山路—建设街交叉口西北角）卷帘门被撬，柜台金饰被盗，损失约30万元。店主 02:25 报警。
+    </div>
+    <div class="brief gold"><b>现场初步情况</b>
+      卷帘门锁芯被专业工具撬开，用时短、动作熟；店内监控主机被带走，现场周边视频由图侦中队调取。
+    </div>
+    <div class="brief red"><b>你的任务</b>
+      你是图侦中队研判员。指挥员只给你一句话：<b>"天亮前，把'他'从视频里找出来。"</b>
+    </div>
+    <div class="brief green"><b>你手上的资源</b>
+      县城卡口监控网（右侧地图，共9处卡口）、电动车登记数据、暂住登记数据、依法调取的话单/支付信息通道（需审批）。
+    </div>
+  </div>
+
+  <div class="mapwrap">
+    <div class="maplegend">
+      <span class="dot" style="background:#7fb0e0"></span>卡口（点击查看画面）<br>
+      <span class="dot" style="background:#5f7d9c"></span>未接入/离线<br>
+      <span class="dot" style="background:#e8b64c"></span>嫌疑人轨迹（点亮后）<br>
+      <span class="dot" style="background:#e07f6e"></span>金玖银楼（现场）
+    </div>
+    <svg id="map" viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg"></svg>
+    <p class="mapcap">清源县城关区域 · 卡口分布示意图（教学合成，不代表真实地理）</p>
+  </div>
+  <div class="camview" id="camview"><b>卡口画面</b>｜点击地图上的卡口圆点，查看该点位的监控画面描述。先熟悉地形，再开始任务。</div>
+
+  <div class="promptbox" style="background:#f6f4ec;border:1px dashed var(--gold);border-radius:10px;padding:12px 16px;font-size:13.5px;color:#6b5518;line-height:1.8;margin:14px 0 0">
+    <b>研判纪律（本章全程适用）</b>：画面看到什么记什么——"看到"与"推断"分开；调取视频依法出具文书；支付、话单等信息须审批后调取；证据不足时，宁可报"存疑"，不报"锁定"。
+  </div>
+</section>
+
+<!-- ============ ② 方法讲授 ============ -->
+<section id="s2">
+  <span class="sec-tag">② 方法讲授 · 5分钟</span>
+  <h2>三步法：视频侦查的主线</h2>
+  <p class="lede">记住这条主线，后面每一轮决策都是在走其中一步。</p>
+
+  <div class="story">
+    <b>视频侦查"三步法"</b>——<b>第一步，发现和甄别犯罪嫌疑人</b>：从海量视频中筛出"值得追的目标"；<b>第二步，追踪犯罪嫌疑人</b>：沿时空轨迹接力追踪，画出来去路线；<b>第三步，确定犯罪嫌疑人身份</b>：视频轨迹与实名数据、社会信息碰撞，把"一个人影"变成"一个名字"。
+  </div>
+
+  <ul class="keypoints">
+    <li><b>视频搜索三要素</b>：时空（什么时候、哪些点位）、目标（体貌/衣着/交通工具/携带物）、行为（动作特征）。三者构成"搜索情景模式"，要素设得越准，筛得越快。</li>
+    <li><b>追踪四要点</b>：接力（卡口之间首尾相接）、校时（监控时间≠北京时间，必须校准）、扩展（画面消失→扩时空圈、查同类体貌）、存证（每段轨迹记录时间、点位、特征）。</li>
+    <li><b>关联研判</b>：视频轨迹终点 × 实名数据 × 社会关系，多点重合才有指向性——单点重合只是巧合候选。</li>
+    <li><b>程序在先</b>：调取视频出具《调取证据通知书》；支付、话单等信息依法审批调取；视频证据注意原始性保全。程序不合规，轨迹再清楚也用不了。</li>
+  </ul>
+
+  <button class="btn" onclick="jump('s3')">方法清楚了，进入任务一 →</button>
+</section>
+
+<!-- ============ ③ 任务一 · 搜索 ============ -->
+<section id="s3">
+  <span class="sec-tag">③ 任务一 · 视频搜索</span>
+  <h2>第一步：把"搜索情景模式"设出来</h2>
+  <p class="lede">02:25 接警，指挥员要你先出<b>调取方案</b>。下面四项设定，哪些该进你的《调取方案》？（多选）</p>
+
+  <div class="opts" id="d1opts"></div>
+  <p class="chkline">提示：回顾"搜索三要素"——时空、目标、行为。选项里混着"看起来省事"的错误做法。</p>
+  <div style="margin-top:14px"><button class="btn" id="d1btn" onclick="submitD1()">提交调取方案</button></div>
+  <div class="fb" id="d1fb"></div>
+
+  <div id="d1cam" style="display:none">
+    <div class="camview" style="margin-top:14px"><b>K1 中山路—建设街（现场门口）</b>｜02:17:40，一名穿深色连帽外套、戴头盔的男子用工具撬卷帘门，背部斜挎小包，撬门用时约40秒；02:31:12，同一体貌者骑一辆<b>黑色无牌电动车</b>（车头有蓝色置物箱）沿建设街向东南驶离。画面时间<b>比北京时间快1分10秒</b>（已校准）。</div>
+    <div class="camview"><b>K2 建设街东巷口</b>｜02:09:05，同一骑行者自东向西进入画面，方向指向现场。头盔为哑光黑，电动车同款（黑色、蓝色置物箱、无牌）。</div>
+    <div class="camview"><b>K3 中山路北口</b>｜02:08:22，一辆红色出租车经过，司机体貌清晰——<b>与嫌疑人特征不符</b>，排除。</div>
+    <div class="camview"><b>K4 建设街西段</b>｜<span class="off">设备离线（10月12日线路故障报修中）</span>——调取前未核对设备状态，白跑一趟。这是《视频分布图》要标的第一件事。</div>
+    <div style="margin-top:14px"><button class="btn gold" onclick="jump('s4')">画面到手，开始追踪 →</button></div>
+  </div>
+</section>
+
+<!-- ============ ④ 任务二 · 追踪推演 ============ -->
+<section id="s4">
+  <span class="sec-tag">④ 任务二 · 追踪推演（三轮决策）</span>
+  <h2>第二步：接力追踪，把轨迹走通</h2>
+  <p class="lede">每轮你做一个决策，指挥员会当场追问理由。决策与依据全部进入右侧<b>研判记录</b>——复盘时一条也藏不住。</p>
+
+  <div class="duo">
+    <div>
+      <div class="mapwrap">
+        <div class="maplegend">
+          <span class="dot" style="background:#7fb0e0"></span>卡口（点击查看画面）<br>
+          <span class="dot" style="background:#e8b64c"></span>已确认轨迹<br>
+          <span class="dot" style="background:#5f7d9c"></span>未接入/离线
+        </div>
+        <svg id="map2" viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg"></svg>
+        <p class="mapcap">追踪态势图 · 随决策逐轮点亮</p>
+      </div>
+      <div class="camview" id="camview2"><b>卡口画面</b>｜点击地图上的卡口圆点查看。</div>
+
+      <div id="rounds"></div>
+    </div>
+    <aside class="chain">
+      <h4>研判记录（决策留痕）</h4>
+      <ol id="chain"></ol>
+      <p class="empty" id="chainEmpty">尚无记录——每一次选择都会写进这里。</p>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ ⑤ 任务三 · 多源碰撞 ============ -->
+<section id="s5">
+  <span class="sec-tag">⑤ 任务三 · 多源碰撞</span>
+  <h2>第三步：让"人影"变成"名字"</h2>
+  <p class="lede">轨迹追到城中村出口的加油站后出现突破：02:47，嫌疑电动车在站内充电桩停车，骑车人<b>摘盔扫码</b>。现在打开依法调取的数据层，找重合点。</p>
+
+  <div class="layers" id="layers"></div>
+  <div class="fb" id="lyrfb"></div>
+
+  <div class="hits" id="hits"></div>
+
+  <div id="mergeQ" style="display:none">
+    <div class="story" style="margin-top:16px">
+      <b>并案线索</b>：碰撞过程中，电动车登记数据里出现一条匹配——10月14日晚，邻镇"顺达通讯"撬盗案周边卡口，拍到<b>同款黑色电动车（车头蓝色置物箱、无牌）</b>；两案现场撬痕均呈同类专业工具特征。刑技部门初步意见：两案撬痕工具轨迹同类。
+    </div>
+    <p style="margin-top:12px;font-weight:700;color:var(--navy)">问题：对 10·14 顺达通讯案，正确处置是？</p>
+    <div class="opts" id="mergeopts"></div>
+    <div style="margin-top:14px"><button class="btn" id="mergebtn" onclick="submitMerge()" disabled>提交并案意见</button></div>
+    <div class="fb" id="mergefb"></div>
+  </div>
+</section>
+
+<!-- ============ ⑥ GO/STOP 判定 ============ -->
+<section id="s6">
+  <span class="sec-tag">⑥ 研判判定</span>
+  <h2>天亮前，指挥员要结论</h2>
+  <p class="lede">证据摆在桌上：视频轨迹全程接力、加油站扫码实名、暂住登记重合、销赃通话、跨案并案。现在——怎么报？</p>
+
+  <div class="gsbox">
+    <div class="opts" id="gsopts"></div>
+    <div class="fb" id="gsfb"></div>
+  </div>
+</section>
+
+<!-- ============ ⑦ 复盘 ============ -->
+<section id="s7">
+  <span class="sec-tag">⑦ 复盘 · 指挥员讲评</span>
+  <h2>你的研判，得了多少分</h2>
+  <p class="lede">分数不是目的——每一维的讲评，对应教材里的一个方法要点。</p>
+  <div id="rubricBox"></div>
+</section>
+
+<!-- ============ ⑧ 费曼复述 ============ -->
+<section id="s8">
+  <span class="sec-tag">⑧ 费曼复述</span>
+  <h2>把这次追踪，讲给新警听</h2>
+  <p class="lede">用你自己的话，讲清"三步法怎么落地"。讲不顺的地方，就是你没吃透的地方。</p>
+  <div id="feynChecks"></div>
+  <textarea id="feynText" placeholder="例：第一步不是拉视频，是先把搜索要素设准……我们这次先圈了现场周边环形卡口，把损坏的K4先排掉……"></textarea>
+  <div style="margin-top:12px"><button class="btn" id="feynSubmit">生成学习记录</button></div>
+  <div class="gobanner" id="feynRecord" style="white-space:pre-wrap"></div>
+</section>
+
+<!-- ============ ⑨ 完成标准 ============ -->
+<section id="s9">
+  <span class="sec-tag">⑨ 完成标准</span>
+  <h2>七项全达标，本课结业</h2>
+  <p class="lede">对照清单自查——对应教学目标逐项验收。</p>
+  <div id="finishList"></div>
+  <div style="margin-top:16px"><button class="btn gold" id="goBtn">核对完成情况</button></div>
+  <div class="gobanner" id="goBanner"></div>
+  <div style="margin-top:16px"><button class="btn ghost" id="copyGo" style="display:none">复制研判意见</button></div>
+  <div class="src">课程依据：全国公安高等教育（本科）规划教材《视频侦查技术》（杨洪臣 李苑 主编）第5章；视频侦查"三步法"公开实务资料。本页所有案件、人物、数据均为教学虚拟合成，不指向任何真实案件；程序要求以现行法律规范为准。</div>
+</section>
+
+</main>
+
+<button class="dashbtn" onclick="openDash()">教师看板</button>
+<div class="dash" id="dash">
+  <div class="dash-in">
+    <button class="dash-x" onclick="closeDash()">×</button>
+    <h3>教师看板 · 学习数据</h3>
+    <table id="dashTable"></table>
+  </div>
+</div>
+
+<script>
+/* ================= 基础 ================= */
+const LSKEY = "vtrace-v1";
+const state = Object.assign({
+  d1:null, d2:null, d3:null, d4:null, merge:null, gs:null,
+  cam:new Array(9).fill(false), roundsDone:[],
+  lyr:[], hits:[], feynChecks:[false,false,false,false], feynText:"",
+  chainLog:[]
+}, JSON.parse(localStorage.getItem(LSKEY)||"{}"));
+if(typeof state.cam==="object"&&!Array.isArray(state.cam)) state.cam=new Array(9).fill(false);
+const save = () => localStorage.setItem(LSKEY, JSON.stringify(state));
+const jump = id => document.getElementById(id).scrollIntoView({behavior:"smooth",block:"start"});
+
+/* ================= 卡口数据 ================= */
+const CAMS = [
+  {id:"K1", name:"K1 中山路—建设街（现场门口）", x:300, y:190,
+   view:"02:17:40 撬门过程（用时约40秒，专业工具）；02:31:12 同体貌者骑黑色无牌电动车（车头蓝色置物箱）向东南驶离。画面时间快1分10秒，已校准。", online:true},
+  {id:"K2", name:"K2 建设街东巷口（来向）", x:428, y:150,
+   view:"02:09:05 骑行者自东向西进入：哑光黑头盔、深色连帽外套、小包。同款电动车。", online:true},
+  {id:"K3", name:"K3 中山路北口", x:300, y:76,
+   view:"02:08:22 红色出租车经过，司机特征与嫌疑人不符——时段吻合≠目标，排除。", online:true},
+  {id:"K4", name:"K4 建设街西段", x:172, y:190,
+   view:"设备离线（10月12日线路故障报修中）。调取前未核设备状态=白跑一趟。", online:false},
+  {id:"K5", name:"K5 环城路大桥（东）", x:672, y:118,
+   view:"（第2轮点亮）02:33 同体貌骑行者过桥向东——一度似要出城。", online:true},
+  {id:"K6", name:"K6 城中村南口", x:508, y:252,
+   view:"（第2轮点亮）02:35 骑行者驶入城中村巷道，画面消失——村内无监控。", online:true},
+  {id:"K7", name:"K7 城中村北口", x:584, y:392,
+   view:"（第3轮点亮）02:41 前后15分钟内无同体貌/同款车出现——未穿村，支持'藏匿村内'假设。", online:true},
+  {id:"K8", name:"K8 城南加油站", x:430, y:330,
+   view:"（第3轮点亮）02:47 同款电动车进站，骑车人摘盔扫码充电——人脸较清晰，支付实名。", online:true},
+  {id:"K9", name:"K9 省道清源口", x:190, y:414,
+   view:"（碰撞后点亮）02:52 同款电动车沿省道向东出城方向——建议此处布控。", online:true}
+];
+const CAM_HIDE = {5:["s4"],6:["s4"],7:["s4"],8:["s4"],9:["s5"]}; // K5..K9 初始隐藏：K5/K6 第2轮后，K7/K8 第3轮后，K9 碰撞后
+
+/* ================= SVG 地图 ================= */
+function roadD(){return `
+  <g stroke="#22456e" stroke-width="26" stroke-linecap="round" fill="none">
+    <path d="M40 190 H720"/><path d="M300 30 V190"/><path d="M300 190 C420 210 470 210 508 252"/>
+    <path d="M508 252 C560 300 584 340 584 392"/><path d="M508 252 C480 290 450 310 430 330"/>
+    <path d="M430 330 C360 380 260 400 190 414"/><path d="M560 60 C660 70 700 90 672 118"/>
+  </g>
+  <g stroke="#2d5480" stroke-width="2.5" stroke-dasharray="10 12" fill="none">
+    <path d="M40 190 H720"/><path d="M300 30 V190"/>
+  </g>
+  <rect x="478" y="278" width="132" height="98" rx="10" fill="#16345a" stroke="#2d5480"/>
+  <text x="544" y="333" fill="#4f739c" font-size="13" text-anchor="middle">城中村</text>
+  <rect x="262" y="128" width="52" height="34" rx="5" fill="#3c2f20" stroke="#8a6b34"/>
+  <text x="288" y="122" fill="#e0b45c" font-size="12" text-anchor="middle">金玖银楼</text>`;}
+
+function camNodes(visibleFn, clickId){
+  return CAMS.map((c,i)=>{
+    const vis = visibleFn(i);
+    const col = c.online ? "#7fb0e0" : "#5f7d9c";
+    const on = state.cam[i];
+    return `<g id="${clickId}-${i}" style="cursor:${vis&&c.online?'pointer':'default'};opacity:${vis?1:0}" onclick="${vis&&c.online?`showCam('${clickId}',${i})`:''}">
+      <circle cx="${c.x}" cy="${c.y}" r="13" fill="${on?'#e8b64c':col}" stroke="#0b1c30" stroke-width="2.5"/>
+      <text x="${c.x}" y="${c.y-22}" fill="${on?'#e8b64c':'#9db6cf'}" font-size="13" font-weight="700" text-anchor="middle" font-family="Consolas,monospace">${c.id}</text>
+    </g>`;
+  }).join("");
+}
+function trailPath(){
+  return `<g id="trail" style="opacity:0">
+    <path d="M428 150 L300 190" stroke="#e8b64c" stroke-width="3.5" stroke-dasharray="7 7" fill="none"/>
+    <path d="M300 190 C420 210 470 210 508 252" stroke="#e8b64c" stroke-width="3.5" stroke-dasharray="7 7" fill="none" style="opacity:0" id="tr2"/>
+    <path d="M508 252 C480 290 450 310 430 330" stroke="#e8b64c" stroke-width="3.5" stroke-dasharray="7 7" fill="none" style="opacity:0" id="tr3"/>
+    <path d="M430 330 C360 380 260 400 190 414" stroke="#e8b64c" stroke-width="3.5" stroke-dasharray="7 7" fill="none" style="opacity:0" id="tr4"/>
+  </g>`;
+}
+function mapVisible(i){
+  if(i<=3) return true;
+  if(i<=5) return state.roundsDone.includes(2);
+  if(i<=7) return state.roundsDone.includes(3);
+  return state.roundsDone.includes(4);
+}
+function drawMap(id, withTrail){
+  const el=document.getElementById(id);
+  el.innerHTML = roadD() + camNodes(mapVisible, id) + (withTrail?trailPath():"");
+  if(withTrail){
+    const tr=document.getElementById(id+"-trail")||el.querySelector("#trail");
+    if(tr){
+      tr.style.opacity=1;
+      const segs=[["tr2",2],["tr3",3],["tr4",4]];
+      segs.forEach(([sid,n])=>{const s=tr.querySelector("#"+sid); if(s&&state.roundsDone.includes(n)) s.style.opacity=1;});
+    }
+  }
+}
+function showCam(mapId, i){
+  state.cam[i]=true; save();
+  const c=CAMS[i];
+  const box=document.getElementById(mapId==="map"?"camview":"camview2");
+  box.innerHTML=`<b>${c.name}</b>｜${c.online?c.view:'<span class="off">'+c.view+'</span>'}`;
+  drawMap(mapId, mapId==="map2");
+}
+
+/* ================= 进度 ================= */
+const SECS=[["s1","简报"],["s2","方法"],["s3","搜索"],["s4","追踪"],["s5","碰撞"],["s6","判定"],["s7","复盘"],["s8","复述"],["s9","结业"]];
+const prog=document.getElementById("prog");
+SECS.forEach(([id,t],i)=>{
+  const d=document.createElement("div");
+  d.className="pnode"; d.id="pn_"+id; d.dataset.s=id;
+  d.innerHTML=`<span class="n">${i+1}</span><span class="t">${t}</span>`;
+  d.onclick=()=>jump(id); prog.appendChild(d);
+});
+function refreshProg(){
+  const done={"s1":true,"s2":true,"s3":!!state.d1,"s4":state.roundsDone.length>=3,
+    "s5":!!(state.merge&&state.merge.done),"s6":!!state.gs,"s7":!!state.sim,
+    "s8":!!state.feynDone,"s9":renderFinish()};
+  SECS.forEach(([id])=>{const n=document.getElementById("pn_"+id);
+    n.classList.toggle("ok",!!done[id]); n.classList.toggle("on",!!done[id]);});
+}
+const io=new IntersectionObserver(es=>{es.forEach(e=>{
+  if(e.isIntersecting){document.querySelectorAll(".pnode").forEach(p=>p.classList.remove("on"));
+    const pn=document.getElementById("pn_"+e.target.id); if(pn)pn.classList.add("on");}
+}),{threshold:.25}},{rootMargin:"-30% 0px -55% 0px"});
+document.querySelectorAll("section").forEach(s=>io.observe(s));
+
+/* ================= 研判记录 ================= */
+function addChain(time,text){
+  state.chainLog.push({time,text}); save();
+  renderChain();
+}
+function renderChain(){
+  const ol=document.getElementById("chain");
+  ol.innerHTML=state.chainLog.map(l=>`<li><span class="tm">${l.time}</span>${l.text}</li>`).join("");
+  document.getElementById("chainEmpty").style.display=state.chainLog.length?"none":"block";
+}
+
+/* ================= 任务一 D1 ================= */
+const D1_OPTS=[
+  {k:"A",t:"时空：案发时段前后各15分钟（02:02—02:47），现场周边环形卡口全部调取",ok:true,why:"时空要素设准：以案发点为圆心的环形覆盖+合理时段窗，是第一轮调取的标准动作。"},
+  {k:"B",t:"目标：深色外套、头盔、双肩包/小包，重点核电动车特征",ok:true,why:"目标要素明确：体貌+交通工具特征是接力追踪的识别锚点。"},
+  {k:"C",t:"行为：调取案发前3天该区域全部行人画面逐一致排查踩点",ok:false,why:"案发前排查有价值，但'全部行人逐一致对'无范围意识，首轮任务应聚焦本案轨迹；踩点排查列入后续扩展。"},
+  {k:"D",t:"只调现场正门口 K1 一个点，看到人再说",ok:false,why:"单点调取=只知其然：没有来向和去向，轨迹无从接力。"},
+  {k:"E",t:"全城 300 余处卡口同时拉网排查",ok:false,why:"无范围拉网是新手典型错误：人力不可行，且时效全无。范围由案件时空要素推出。"}
+];
+function renderD1(){
+  document.getElementById("d1opts").innerHTML=D1_OPTS.map((o,i)=>`
+    <button class="opt ${state.d1&&state.d1.sel.includes(i)?'picked':''}" id="d1o${i}" onclick="toggleD1(${i})">
+      <span class="k">${o.k}</span><span>${o.t}</span></button>`).join("");
+}
+function toggleD1(i){
+  if(state.d1&&state.d1.done)return;
+  state.d1=state.d1||{sel:[],done:false,score:0};
+  const s=new Set(state.d1.sel);
+  s.has(i)?s.delete(i):s.add(i);
+  state.d1.sel=[...s].sort(); save(); renderD1();
+}
+function submitD1(){
+  if(!state.d1||state.d1.sel.length===0){alert("至少勾选一项");return;}
+  const s=state.d1;
+  const good=s.sel.filter(i=>D1_OPTS[i].ok), bad=s.sel.filter(i=>!D1_OPTS[i].ok);
+  const miss=[0,1].filter(i=>!s.sel.includes(i));
+  let sc;
+  if(good.length===2&&bad.length===0){sc=15}
+  else{sc=Math.max(0, good.length*5 - bad.length*3 - (miss.length?2:0))}
+  s.score=sc; s.done=true; save();
+  const fb=document.getElementById("d1fb");
+  fb.className="fb "+(sc>=13?"good":sc>=8?"":"bad");
+  const lines=[];
+  lines.push(sc>=13?"方案没毛病：时空环形覆盖＋目标要素清晰，第一轮调取就该这么下。":sc>=8?"方向对但要素有缺漏/冗余，再对一遍三要素。":"调取方案没章法，回去重读搜索三要素。");
+  bad.forEach(i=>lines.push("✗ "+D1_OPTS[i].k+"："+D1_OPTS[i].why));
+  miss.forEach(i=>lines.push("△ 漏选 "+D1_OPTS[i].k+"："+D1_OPTS[i].why));
+  fb.innerHTML="<b>指挥员点评（得 "+sc+"/15）</b><br>"+lines.join("<br>");
+  fb.style.display="block";
+  document.getElementById("d1btn").disabled=true;
+  document.getElementById("d1cam").style.display="block";
+  addChain("02:25",`搜索情景设定：周边环形卡口 02:02—02:47 时段窗；目标=深色外套+头盔+同款电动车`);
+  addChain("02:26",`K1 拍到撬门及离开（02:17/02:31，黑色无牌电动车、蓝色置物箱）；K2 拍到来向（02:09）；K3 出租车排除；K4 离线`);
+  drawMap("map",false);
+  refreshProg();
+  jump("d1cam");
+}
+renderD1();
+
+/* ================= 任务二 三轮决策 ================= */
+const ROUNDS=[
+  {id:2, time:"02:31", title:"第1轮 · 逃离方向",
+   lead:"K1 显示 02:31 嫌疑人骑电动车向东南驶离。下一个动作？",
+   opts:[
+    {k:"A",t:"立即发布协查、设卡抓人",cls:"worst",sc:0,why:"只见到人和车，轨迹未成形、身份未知就布网——既抓不到，也打草惊蛇。"},
+    {k:"B",t:"沿东南方向接力排查（环城路大桥 K5、城中村南口 K6），同时把时段窗前后各扩15分钟",cls:"best",sc:2,why:"接力+扩展：卡口首尾相接才有连续轨迹，时段外扩防钟差和绕行。"},
+    {k:"C",t:"反复回看 K1 高清帧，做人像增强到可辨认",cls:"mid",sc:1,why:"增强有价值（留给检验环节），但当下增量信息在'下一个点位'，不在同一帧里。"},
+    {k:"D",t:"先调 K4 补齐西侧画面",cls:"mid",sc:1,why:"方向错了：嫌疑人是向东南离开；且调取前应先核设备状态——K4 离线，这趟注定白跑。"}
+   ],
+   done:"roundsDone", reveal:2, chain:"沿东南方向接力：排查 K5/K6，时段窗扩为 02:02—02:47"},
+  {id:3, time:"02:41", title:"第2轮 · 画面消失",
+   lead:"K5：02:33 同体貌者过桥向东（一度像出城）；K6：02:35 驶入城中村巷道后画面消失；村内无监控。追还是不追，怎么追？",
+   opts:[
+    {k:"A",t:"轨迹断了，等天亮走访城中村",cls:"worst",sc:0,why:"被动等待丢掉黄金4小时；视频手段还没穷尽。"},
+    {k:"B",t:"以消失点为圆心扩展：时空圈再扩（02:20—03:05），把城中村各出口卡口逐点过——重点查他会不会从另一侧出来",cls:"best",sc:2,why:"追踪范围确定的教科书动作：时空外扩+出口闭环。注意 K7 北口 15 分钟内无出现——'未穿村'本身就是信息。"},
+    {k:"C",t:"直接申请技术侦查措施定位手机",cls:"worst",sc:0,why:"程序在先：视频手段尚未穷尽，且技侦有严格适用条件与审批；顺序颠倒。"}
+   ],
+   done:"roundsDone", reveal:3, chain:"K7 北口 15 分钟无出现（未穿村）；扩展排查至 K8 方向"},
+  {id:4, time:"02:47", title:"第3轮 · 身份突破口",
+   lead:"K8 加油站：02:47 同款电动车进站，骑车人摘盔扫码充电，人脸较清晰，扫码支付实名。怎么把'车'落到'人'？",
+   opts:[
+    {k:"A",t:"按支付实名信息直接上门抓捕",cls:"worst",sc:0,why:"实名≠本人：可能是借用、冒用支付账户；抓错了，整个研判就崩了。"},
+    {k:"B",t:"依法调证核实支付账户实名与使用关联；K9 省道口布控同款车；同步调城中村暂住登记比对",cls:"best",sc:2,why:'三线并进：实名核实、轨迹布控、社会信息比对——"程序在先、证据闭环"。'},
+    {k:"C",t:"把人脸截图发工作群让民警辨认",cls:"mid",sc:1,why:"可用手段但非最优：辨认效率低且有泄露风险；实名核实的指向性远强于肉眼辨认。"}
+   ],
+   done:"roundsDone", reveal:4, chain:"K8 扫码实名；调证核实＋K9 布控＋暂住比对（依法审批）"}
+];
+function roundFb(r){
+  const v=state["d"+r.id];
+  if(!v)return `<div class="fb" id="rfb${r.id}"></div>`;
+  const o=r.opts[v.pick];
+  const cls=o.sc===2?"good":o.sc===1?"":"bad";
+  const tag=o.sc===2?"√ 最优":o.sc===1?"△ 部分可行":"✗ 不可取";
+  return `<div class="fb ${cls}" style="display:block"><b>指挥员追问＋点评（${tag}）</b><br>${o.why}</div>`;
+}
+function renderRounds(){
+  document.getElementById("rounds").innerHTML=ROUNDS.map((r,ri)=>`
+    <div style="margin-top:18px;border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fafbfc">
+      <p style="font-family:SimHei,serif;font-weight:800;color:var(--navy);font-size:15.5px">${r.title}</p>
+      <p style="font-size:14px;color:var(--ink);margin:6px 0 2px;line-height:1.75">${r.lead}</p>
+      <div class="opts">${r.opts.map((o,i)=>`
+        <button class="opt ${pickCls(r,i)}" onclick="pickRound(${ri},${i})">
+          <span class="k">${o.k}</span><span>${o.t}</span></button>`).join("")}</div>
+      ${roundFb(r)}
+    </div>`).join("");
+}
+function pickCls(r,i){
+  const v=state["d"+r.id];
+  if(!v||v.pick!==i)return "";
+  return r.opts[i].cls;
+}
+function pickRound(ri,i){
+  const r=ROUNDS[ri];
+  if(state.roundsDone.includes(r.id))return;
+  const o=r.opts[i];
+  state["d"+r.id]={pick:i,sc:o.sc};
+  state[r.done].push(r.id); save();
+  addChain(r.time, r.chain);
+  drawMap("map2",true); drawMap("map",false);
+  renderRounds(); refreshProg();
+  if(state.roundsDone.length>=3){
+    setTimeout(()=>jump("s5"),350);
+  }
+}
+
+/* ================= 任务三 碰撞 ================= */
+const LAYERS=[
+  {t:"视频轨迹层",d:"02:09 K2→02:17 K1→02:31 K1→02:35 K6→02:47 K8",pts:["02:35 轨迹终点=城中村南口","02:47 加油站停留2分半"]},
+  {t:"电动车轨迹层",d:"同款黑色电动车（蓝色置物箱/无牌）：10·14 邻镇顺达通讯案同款",pts:["跨案同车——串并线索"]},
+  {t:"实名信息层",d:"K8 扫码支付户名：周某（29岁）；城中村暂住登记：周某，登记地址在 K6—K8 围合区域内（10月2日走访登记）",pts:["支付实名×暂住地址×轨迹终点 三点重合"]},
+  {t:"话单层",d:"案发后 02:55，周某手机与城区二手手机店店主通话 3分12秒",pts:["销赃渠道线索（依法调取，需审批）"]}
+];
+const HITPTS=[
+  "碰撞点①：视频轨迹终点（K6—K8 区域）× 周某暂住登记地址重合",
+  "碰撞点②：K8 扫码支付实名 = 周某（人脸较清晰可佐证）",
+  "碰撞点③：02:55 周某与二手手机店主通话——销赃方向线索"
+];
+const MERGE_OPTS=[
+  {k:"A",t:"不并案：邻镇案在不同辖区，等对方移送线索",cls:"worst",why:"并案不分辖区远近——同款车+同类撬痕已构成并案条件，坐等=丢战机。"},
+  {k:"B",t:"提出并案侦查意见：同款车辆+同类工具撬痕，报刑技复核后并案，两案视频统一研判",cls:"best",why:"并案三看：作案手法、工具痕迹、交通/体貌特征——本案两条都已命中，并案扩大线索面。"},
+  {k:"C",t:"直接对外发布两案同一嫌疑人的通报",cls:"worst",why:"并案意见未经刑技复核、嫌疑人身份未核实就对外发布——程序与纪律双重红线。"}
+];
+function renderLayers(){
+  document.getElementById("layers").innerHTML=LAYERS.map((l,i)=>`
+    <div class="lyr ${state.lyr.includes(i)?'on':''}" onclick="toggleLyr(${i})">
+      <p class="lt">${l.t}</p><p class="ld">${l.d}</p></div>`).join("");
+  const all=state.lyr.length===4;
+  document.getElementById("lyrfb").style.display=state.lyr.length?"block":"none";
+  document.getElementById("lyrfb").innerHTML=state.lyr.length?`已调取 ${state.lyr.length}/4 层（均需依法审批）。${all?"四层齐了——<b>找重合点</b>：点击下方你确认的碰撞结论。":"数据层开全，重合点才会浮出来。"}`:"";
+  const hb=document.getElementById("hits");
+  hb.classList.toggle("show",all);
+  if(all) hb.innerHTML=HITPTS.map((h,i)=>`
+    <div class="hit ${state.hits.includes(i)?'found':''}" onclick="hitPick(${i})">${h}</div>`).join("")
+    +`<p style="grid-column:1/-1;font-size:12px;color:#8a8f98">点击确认你依据数据层得出的碰撞结论（${state.hits.length}/3）</p>`;
+  if(all&&state.hits.length===3){
+    document.getElementById("mergeQ").style.display="block";
+    document.getElementById("mergebtn").disabled=!!(state.merge&&state.merge.done);
+  }
+}
+function toggleLyr(i){
+  if(state.lyr.includes(i))return;
+  if(state.lyr.length>=4)return;
+  state.lyr.push(i); save();
+  if(state.lyr.length===1) addChain("03:05","依法审批调取数据层：电动车登记/暂住/话单/支付");
+  renderLayers();
+}
+function hitPick(i){
+  if(state.hits.includes(i))return;
+  state.hits.push(i); save(); renderLayers();
+  if(state.hits.length===3) addChain("03:12","碰撞结论：周某（轨迹终点×暂住×支付实名 三点重合；销赃通话佐证）");
+}
+function renderMerge(){
+  document.getElementById("mergeopts").innerHTML=MERGE_OPTS.map((o,i)=>`
+    <button class="opt ${state.merge&&state.merge.pick===i?o.cls:''}" onclick="pickMerge(${i})">
+      <span class="k">${o.k}</span><span>${o.t}</span></button>`).join("");
+}
+function pickMerge(i){
+  if(state.merge&&state.merge.done)return;
+  const o=MERGE_OPTS[i];
+  state.merge={pick:i,done:true,score:o.cls==="best"?15:o.cls==="mid"?8:0}; save();
+  const fb=document.getElementById("mergefb");
+  fb.className="fb "+(o.cls==="best"?"good":o.cls==="mid"?"":"bad");
+  fb.innerHTML=`<b>点评</b><br>${o.why}`;
+  fb.style.display="block";
+  addChain("03:15","并案意见：10·14 顺达通讯案（同款车+同类撬痕）报刑技复核后并案");
+  renderMerge(); refreshProg();
+}
+renderLayers(); renderMerge();
+
+/* ================= GO/STOP ================= */
+const GS_OPTS=[
+  {k:"A",t:"报「锁定嫌疑人周某」，建议立即抓捕",cls:"worst",why:"实名与本人关联未经核实、人脸画面未做检验认定——把'高度疑似'说成'锁定'，是研判大忌。"},
+  {k:"B",t:"报「周某重大嫌疑，置信度中—高」：视频轨迹全程接力+支付实名+暂住重合+销赃通话+跨案并案；缺口=支付账户与本人关联核实、人脸检验认定；建议依法调证+K9布控",cls:"best",why:"结论有分层、依据有清单、缺口有去向——研判意见就该这么写。"},
+  {k:"C",t:"报「仅轨迹清楚，身份无法确定」，建议中止",cls:"worst",why:"低估了多点重合的指向性：三点重合+销赃佐证已是中—高置信度，'中止'是浪费战机。"}
+];
+function renderGS(){
+  document.getElementById("gsopts").innerHTML=GS_OPTS.map((o,i)=>`
+    <button class="opt ${state.gs&&state.gs.pick===i?o.cls:''}" onclick="pickGS(${i})">
+      <span class="k">${o.k}</span><span>${o.t}</span></button>`).join("");
+}
+function pickGS(i){
+  if(state.gs&&state.gs.done)return;
+  const o=GS_OPTS[i];
+  state.gs={pick:i,done:true,score:o.cls==="best"?15:0}; save();
+  const fb=document.getElementById("gsfb");
+  fb.className="fb "+(o.cls==="best"?"good":"bad");
+  fb.innerHTML=`<b>指挥员批复</b><br>${o.why}`;
+  fb.style.display="block";
+  addChain("03:30","研判上报：周某重大嫌疑（置信度中—高）+缺口与采集建议");
+  renderGS(); refreshProg();
+}
+renderGS();
+
+/* ================= 复盘 rubric ================= */
+document.getElementById("rubricBox").innerHTML=`
+  <button class="btn" id="simbtn" onclick="genRubric()">生成指挥员讲评</button>
+  <div id="rubricOut"></div>`;
+function fb(sc,max,ok){return `<td class="sc">${sc}/${max}</td>`}
+function genRubric(){
+  const need=[state.d1,state.d2,state.d3,state.d4,state.merge,state.gs];
+  if(need.some(x=>!x||(x.done===false))||state.roundsDone.length<3){alert("先把前面的任务做完（搜索→三轮追踪→碰撞→并案→判定），再来复盘。");return;}
+  const s1=state.d1.score;                          /* /15 搜索 */
+  const s2=(state.d2.sc===2?20:state.d2.sc===1?11:0)+(state.d3.sc===2?20:state.d3.sc===1?11:0); /* /40 追踪 */
+  const s3=(state.d4.sc===2?15:state.d4.sc===1?8:0)+state.merge.score;  /* /30 关联 */
+  const s4=state.gs.score;                          /* /15 判定 */
+  const total=s1+s2+s3+s4;
+  state.sim={done:true,total}; save();
+  const p=[state.d1.score>=13?0:state.d1.score>=8?1:2,
+           (state.d2.sc+state.d3.sc)===4?0:(state.d2.sc+state.d3.sc)>=2?1:2,
+           (state.d4.sc===2&&state.merge.score>=15)?0:((state.d4.sc+state.merge.score)>=15?1:2),
+           state.gs.score===15?0:1];
+  const cm=[
+    ["搜索要素设定","15%",fb(s1,15),p[0]===0?"时空窗+环形覆盖+目标要素，一个不缺。":p[0]===1?"要素有但欠准：范围或目标项有杂漏。":"调取方案没章法，回去重读搜索三要素。"],
+    ["追踪决策逻辑","40%",fb(s2,40),p[0]===0&&p[1]===0?"接力、校时、扩展、闭环——四要点全程在线。":"追踪有断点：接力/扩展至少一处没走对。"],
+    ["关联与串并","30%",fb(s3,30),p[2]===0?"四层碰撞+三点重合+并案意见，关联研判满分示范。":"碰撞点找不全或并案判断犹豫，单点重合不叫锁定。"],
+    ["程序与判定","15%",fb(s4,15),p[3]===0?"'重大嫌疑+置信度+缺口'的口径很专业。":"判定口径要么冒进要么保守，置信度分层没掌握。"]
+  ];
+  document.getElementById("rubricOut").innerHTML=`
+    <div class="total"><b>指挥员总评：${total} 分</b> ${total>=85?"—— 可以带班了。全程决策留痕，复盘有据。":total>=70?"—— 过关。薄弱维回教材对应章节再过一遍。":"—— 未达标。按讲评逐维回炉，重跑一遍推演。"}
+    </div>
+    <table class="rubric"><tr><th>评分维度</th><th>权重</th><th>得分</th><th>指挥员讲评</th></tr>
+    ${cm.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td>${r[2]}<td>${r[3]}</td></tr>`).join("")}</table>`;
+  refreshProg(); jump("rubricBox");
+}
+
+/* ================= 费曼 ================= */
+const FEYN_CHK=[
+  "能不看材料说出三步法：发现甄别 → 追踪 → 确定身份",
+  "能说清第一轮调取方案的三要素（时空/目标/行为）",
+  "能举出本次推演里'画面消失后怎么扩展'的具体做法",
+  "能说明为什么'实名≠本人'——程序与证据闭环的要求",
+  "能说出研判上报的规范口径（结论分层+依据清单+缺口去向）"
+];
+document.getElementById("feynChecks").innerHTML=FEYN_CHK.map((c,i)=>`
+  <label class="chk"><input type="checkbox" onchange="feynChk(${i},this.checked)" ${state.feynChecks[i]?"checked":""}>
+  <span>${c}</span></label>`).join("");
+document.getElementById("feynText").value=state.feynText||"";
+function feynChk(i,v){ state.feynChecks[i]=v; save(); }
+document.getElementById("feynSubmit").onclick=()=>{
+  const txt=document.getElementById("feynText").value.trim();
+  if(txt.length<40){alert("先写一段复述（至少 40 字），再生成学习记录。");return;}
+  state.feynText=txt;
+  const n=state.feynChecks.filter(Boolean).length;
+  state.feynDone=n>=3; save();
+  const rec=[
+    "《费曼学习记录 · 视频侦查信息研判》",
+    "一、我现在的解释：",
+    txt,
+    "",
+    `二、自查：${n}/5 项通过${state.feynChecks.map((v,i)=>v?"\n  ✓ "+FEYN_CHK[i]:"\n  ✗ "+FEYN_CHK[i]).join("")}`,
+    "",
+    "三、下一轮目标：" + (n>=5?"跟一次实际接处警的视频调取，把三步法用在真实流程里（在合规前提下）。"
+      :n>=3?"补齐未通过项：用本案把对应步骤再讲一遍，讲到不打磕巴。"
+      :"重读第②页方法讲授，先背熟三步法与三要素，再回来复述。")
+  ].join("\n");
+  const box=document.getElementById("feynRecord");
+  box.style.display="block"; box.textContent=rec;
+  refreshProg();
+};
+
+/* ================= 完成标准 ================= */
+const FIN=[
+  ["搜索方案：时空/目标要素设定无错项（得分 ≥13/15）",()=>state.d1&&state.d1.score>=13],
+  ["追踪三轮全部完成且至少两轮选中最优策略",()=>{const s=[state.d2,state.d3,state.d4];return s.every(x=>x)&&(s.filter(x=>x.sc===2).length>=2)}],
+  ["四层数据全部调取并确认 3 个碰撞点",()=>state.lyr.length===4&&state.hits.length===3],
+  ["并案意见正确（同款车+同类撬痕→报刑技复核后并案）",()=>state.merge&&state.merge.pick===1],
+  ["研判口径正确：重大嫌疑+置信度+缺口+采集建议",()=>state.gs&&state.gs.pick===1],
+  ["指挥员总评 ≥70 分",()=>state.sim&&state.sim.done&&state.sim.total>=70],
+  ["费曼复述完成且自查 ≥4/5",()=>state.feynDone&&state.feynChecks.filter(Boolean).length>=4]
+];
+function renderFinish(){
+  const all=FIN.every(f=>f[1]());
+  document.getElementById("finishList").innerHTML=FIN.map(f=>{
+    const ok=f[1]();
+    return `<div class="fitem"><span class="st ${ok?"pass":"wait"}">${ok?"达标":"待完成"}</span><span>${f[0]}</span></div>`;
+  }).join("");
+  return all;
+}
+document.getElementById("goBtn").onclick=()=>{
+  const all=renderFinish();
+  const b=document.getElementById("goBanner");
+  if(all){
+    b.textContent=
+`【研判意见 · 要点框架】（教学演练产出）
+一、轨迹：02:09 自东巷口进入（K2）→ 02:17 现场撬门（K1）→ 02:31 骑黑色无牌电动车向东南离开（K1）→ 02:35 驶入城中村（K6，画面消失）→ 02:47 城南加油站摘盔扫码（K8）→ 02:52 向省道方向驶离（K9，建议布控）。
+二、身份指向：周某（29岁）——轨迹终点 × 暂住登记地址 × 支付实名 三点重合；案发后与二手手机店主通话（销赃方向佐证）。
+三、并案：与 10·14 邻镇顺达通讯撬盗案同款车辆、同类工具撬痕，建议报刑技复核后并案侦查。
+四、结论与置信度：周某重大嫌疑，置信度中—高。
+五、缺口（转采集/核实计划）：① 支付账户与本人使用关联核实；② 人像检验认定（K8 摘盔画面）；③ 销赃通话内容依法调取。
+六、下一步：K9 省道口布控同款车；调证审批流转；核实到人后按程序办理。`;
+    b.style.display="block";
+    document.getElementById("copyGo").style.display="inline-block";
+    jump("s9");
+  }else{
+    b.style.display="none";
+    alert("还有未达标项（见上方清单）。回对应环节补齐后再来核对。");
+    document.getElementById("finishList").scrollIntoView({behavior:"smooth",block:"center"});
+  }
+};
+document.getElementById("copyGo").onclick=()=>{
+  navigator.clipboard.writeText(document.getElementById("goBanner").textContent)
+    .then(()=>{document.getElementById("copyGo").textContent="已复制 ✓";
+      setTimeout(()=>document.getElementById("copyGo").textContent="复制研判意见",1600);});
+};
+
+/* ================= 教师看板 ================= */
+function openDash(){
+  const rows=[
+    ["搜索方案", state.d1?`完成（${state.d1.score}/15）`:"未完成"],
+    ["追踪三轮", state.roundsDone.length?`已决 ${state.roundsDone.length}/3（最优 ${[state.d2,state.d3,state.d4].filter(x=>x&&x.sc===2).length} 轮）`:"未开始"],
+    ["多源碰撞", `数据层 ${state.lyr.length}/4 · 碰撞点 ${state.hits.length}/3`],
+    ["并案意见", state.merge?(state.merge.pick===1?"正确（并案）":"需复核"):"未作答"],
+    ["研判判定", state.gs?(state.gs.pick===1?"口径正确":"需复核"):"未作答"],
+    ["指挥员总评", state.sim&&state.sim.done?state.sim.total+" 分":"—"],
+    ["费曼复述", state.feynDone?`完成（自查 ${state.feynChecks.filter(Boolean).length}/5）`:"未完成"],
+    ["研判记录", state.chainLog.length+" 条决策留痕"]
+  ];
+  document.getElementById("dashTable").innerHTML=
+    `<tr><th>环节</th><th>状态 / 产出</th></tr>`+
+    rows.map(r=>`<tr><td>${r[0]}</td><td>${String(r[1]).replace(/</g,"&lt;")}</td></tr>`).join("");
+  document.getElementById("dash").style.display="flex";
+}
+function closeDash(){document.getElementById("dash").style.display="none";}
+document.getElementById("dash").addEventListener("click",e=>{if(e.target.id==="dash")closeDash();});
+
+/* ================= 启动 ================= */
+drawMap("map",false);
+drawMap("map2",true);
+renderRounds();
+renderChain();
+renderFinish();
+refreshProg();
+</script>
+</body>
+</html>

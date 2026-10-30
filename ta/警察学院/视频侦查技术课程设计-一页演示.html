@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《视频侦查技术》课程整体设计 · AI互动课堂融入方案</title>
+<style>
+  :root{
+    --paper:#f7f6f2;      /* 卷宗白 */
+    --navy:#16294d;       /* 藏青 */
+    --navy-soft:#e8ecf3;  /* 淡藏青 */
+    --gold:#c9a227;       /* 警徽金 */
+    --seal:#a33327;       /* 印章红 */
+    --ink:#3a3f47;        /* 墨灰 */
+    --line:#d5d2c8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+    line-height:1.55;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .page{max-width:1280px;margin:0 auto;padding:34px 42px 26px}
+
+  /* ===== 顶栏 ===== */
+  .masthead{position:relative;border-bottom:4px solid var(--navy);padding-bottom:20px}
+  .eyebrow{
+    font-family:"SimHei","Microsoft YaHei",sans-serif;
+    letter-spacing:.42em;font-size:13px;color:var(--seal);font-weight:700;margin-bottom:10px;
+  }
+  .masthead h1{
+    font-family:"SimHei","Microsoft YaHei",sans-serif;
+    font-size:46px;color:var(--navy);letter-spacing:.06em;line-height:1.2;
+  }
+  .masthead h1 .jintou{color:var(--gold)}
+  .subtitle{
+    font-size:19px;color:var(--navy);font-weight:700;letter-spacing:.14em;margin-top:6px;
+  }
+  .basis{
+    margin-top:12px;font-family:"SimSun","NSimSun",serif;font-size:13px;color:#6b7280;line-height:1.7;
+  }
+  .basis b{color:var(--navy)}
+  .seal{
+    position:absolute;right:6px;top:2px;width:96px;height:96px;border:3px solid var(--seal);
+    border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:var(--seal);transform:rotate(12deg);opacity:.85;
+    font-family:"SimHei",sans-serif;font-weight:700;
+  }
+  .seal .seal-star{font-size:18px;line-height:1}
+  .seal .seal-txt{font-size:15px;letter-spacing:.18em;margin-top:2px}
+  .seal .seal-sub{font-size:8px;letter-spacing:.1em;font-family:Consolas,monospace;margin-top:2px}
+
+  /* ===== 定位条 ===== */
+  .meta{display:grid;grid-template-columns:1.35fr 1.25fr .95fr 1fr;gap:0;margin:18px 0 0;border:1px solid var(--line);background:#fff}
+  .meta>div{padding:12px 16px;border-right:1px solid var(--line)}
+  .meta>div:last-child{border-right:none}
+  .meta .k{font-size:11.5px;color:#8a8f98;letter-spacing:.2em;margin-bottom:3px}
+  .meta .v{font-size:14.5px;font-weight:700;color:var(--navy);line-height:1.45}
+  .meta .v small{display:block;font-weight:400;font-size:12px;color:#6b7280;margin-top:2px}
+
+  /* ===== 七会 ===== */
+  .abilities{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+  .abilities .lab{
+    font-family:"SimHei",sans-serif;font-size:14px;color:#fff;background:var(--navy);
+    padding:5px 14px;letter-spacing:.2em;font-weight:700;
+  }
+  .abilities .chip{
+    border:1px solid var(--navy);color:var(--navy);font-size:14px;font-weight:700;
+    padding:4px 13px;background:#fff;letter-spacing:.04em;
+  }
+  .abilities .chip b{color:var(--seal)}
+
+  /* ===== 章节标题 ===== */
+  .sec-h{display:flex;align-items:baseline;gap:14px;margin:30px 0 12px}
+  .sec-h .no{font-family:Consolas,monospace;font-size:15px;color:var(--gold);font-weight:700}
+  .sec-h h2{font-family:"SimHei",sans-serif;font-size:21px;color:var(--navy);letter-spacing:.1em}
+  .sec-h .hint{font-size:12px;color:#8a8f98}
+
+  /* ===== 8章流程卷宗轴 ===== */
+  .grid8{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .ch{
+    background:#fff;border:1px solid var(--line);border-top:4px solid var(--navy);
+    padding:13px 14px 12px;position:relative;min-height:172px;
+    box-shadow:0 1px 3px rgba(22,41,77,.07);transition:transform .15s ease,box-shadow .15s ease;
+  }
+  .ch:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(22,41,77,.13)}
+  .ch .no{font-family:Consolas,monospace;font-size:26px;font-weight:700;color:var(--navy);line-height:1}
+  .ch .no small{font-size:11px;color:#8a8f98;font-family:"Microsoft YaHei",sans-serif;margin-left:6px}
+  .ch h3{font-family:"SimHei",sans-serif;font-size:16.5px;color:var(--navy);margin:7px 0 3px;line-height:1.35;letter-spacing:.02em}
+  .ch .hr{font-size:12px;color:var(--gold);font-weight:700;letter-spacing:.08em}
+  .ch .ai{
+    margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);
+    font-size:12.5px;color:var(--ink);line-height:1.5;
+  }
+  .ch .ai b{color:var(--navy)}
+  .ch .flow{position:absolute;right:-13px;top:44%;color:var(--gold);font-size:17px;font-weight:700;z-index:2}
+  .ch:nth-child(4) .flow{display:none}
+  .ch:nth-child(8) .flow{display:none}
+
+  /* 第5章 枢纽 */
+  .ch.hub{border:2px solid var(--seal);border-top:5px solid var(--seal);background:#fdf9f8}
+  .ch.hub .no,.ch.hub h3{color:var(--seal)}
+  .stamp{
+    position:absolute;top:8px;right:8px;width:62px;height:62px;border:2.5px solid var(--seal);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:var(--seal);transform:rotate(-11deg);font-family:"SimHei",sans-serif;
+    background:rgba(253,249,248,.6);
+  }
+  .stamp b{font-size:15px;letter-spacing:.2em;line-height:1}
+  .stamp span{font-size:8px;font-family:Consolas,monospace;letter-spacing:.06em;margin-top:3px}
+  .demo-tag{
+    display:inline-block;margin-top:8px;background:var(--seal);color:#fff;font-size:11.5px;
+    padding:2px 9px;letter-spacing:.14em;font-weight:700;
+  }
+  .bend{
+    grid-column:1/-1;display:flex;align-items:center;gap:12px;color:#8a8f98;
+    font-size:12px;letter-spacing:.24em;margin:-2px 0;
+  }
+  .bend::before,.bend::after{content:"";flex:1;border-top:1px solid var(--line)}
+
+  /* 三步法 */
+  .threestep{
+    margin-top:14px;border:1px solid var(--line);border-left:5px solid var(--gold);background:#fff;
+    padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  }
+  .threestep .t{font-family:"SimHei",sans-serif;font-weight:700;color:var(--navy);font-size:14.5px;letter-spacing:.08em}
+  .threestep .s{
+    font-size:14px;font-weight:700;color:var(--navy);background:var(--navy-soft);padding:4px 14px;
+  }
+  .threestep .arr{color:var(--gold);font-weight:700}
+  .threestep .note{font-size:12px;color:#8a8f98}
+
+  /* ===== 痛点对位 ===== */
+  .versus{border:1px solid var(--line);background:#fff}
+  .versus .row{display:grid;grid-template-columns:1fr 44px 1fr;align-items:stretch;border-top:1px solid var(--line)}
+  .versus .row:first-child{border-top:none}
+  .versus .pain{background:#f2f0ea;padding:11px 16px;font-size:13.5px;display:flex;align-items:center}
+  .versus .pain b{color:var(--ink);margin-right:8px;font-family:Consolas,monospace;font-size:12px;color:#8a8f98}
+  .versus .mid{display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:700;font-size:18px}
+  .versus .fix{background:var(--navy);color:#fff;padding:11px 16px;font-size:13.5px;display:flex;align-items:center;line-height:1.5}
+  .versus .fix b{color:var(--gold)}
+  .versus .head{display:grid;grid-template-columns:1fr 44px 1fr;background:var(--navy);color:#fff}
+  .versus .head div{padding:8px 16px;font-family:"SimHei",sans-serif;font-size:13.5px;letter-spacing:.28em;text-align:center}
+  .versus .head .mid{background:#0f1d38}
+
+  /* ===== 底栏 ===== */
+  .tail{margin-top:26px;border-top:3px solid var(--navy);padding-top:14px;display:grid;grid-template-columns:1.25fr 1fr;gap:20px}
+  .tail .demo h4{
+    font-family:"SimHei",sans-serif;font-size:15px;color:var(--seal);letter-spacing:.06em;margin-bottom:6px;
+  }
+  .tail .demo p{font-size:13px;line-height:1.65}
+  .tail .demo p b{color:var(--navy)}
+  .tail .fine{font-family:"SimSun",serif;font-size:11.5px;color:#8a8f98;line-height:1.8;text-align:right;align-self:end}
+  .tail .fine b{color:var(--seal);font-family:"Microsoft YaHei",sans-serif}
+
+  /* ===== 打印 ===== */
+  @page{size:A4 landscape;margin:9mm}
+  @media print{
+    body{background:#fff}
+    .page{padding:0;max-width:none}
+    .ch{box-shadow:none;break-inside:avoid}
+    .ch:hover{transform:none}
+  }
+  @media (max-width:900px){
+    .page{padding:22px 18px}
+    .masthead h1{font-size:32px}
+    .grid8{grid-template-columns:repeat(2,1fr)}
+    .ch .flow{display:none}
+    .meta{grid-template-columns:1fr 1fr}
+    .meta>div{border-bottom:1px solid var(--line)}
+    .tail{grid-template-columns:1fr}
+    .tail .fine{text-align:left}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">公安实战化教学 · AI互动课堂演示</p>
+    <h1>《视频侦查技术》<span class="jintou">课程整体设计</span></h1>
+    <p class="subtitle">—— 一门课的 AI 互动课堂融入方案 ——</p>
+    <p class="basis">依据：全国公安高等教育（本科）规划教材《视频侦查技术》（<b>公安部政治部组编 · 杨洪臣 李苑 主编 · 中国人民公安大学出版社</b>）｜中国刑事警察学院《视频侦查技术》考试大纲（2020.12）｜中国刑事警察学院《视频侦查实战应用》在线课程</p>
+    <div class="seal"><span class="seal-star">★</span><span class="seal-txt">课程设计</span><span class="seal-sub">CURRICULUM</span></div>
+  </header>
+
+  <section class="meta">
+    <div><p class="k">课程性质</p><p class="v">公安视听技术 / 刑事科学技术 专业核心课<small>侦查学方向专业主干课</small></p></div>
+    <div><p class="k">授课对象</p><p class="v">公安类本科三年级<small>先修：刑事侦查学 · 刑事图像技术 · 刑事诉讼法学</small></p></div>
+    <div><p class="k">学时安排</p><p class="v">48 学时 = 理论30 + 实训18<small>每周3学时 · 共16周</small></p></div>
+    <div><p class="k">能力主线</p><p class="v">对标办案全流程"七会"<small>教学练战一体化 · 案例教学 · 情景推演</small></p></div>
+  </section>
+
+  <div class="abilities">
+    <span class="lab">七会目标</span>
+    <span class="chip">会勘查规划</span>
+    <span class="chip">会调取采集<small>（含时间校准）</small></span>
+    <span class="chip">会处理增强</span>
+    <span class="chip">会判读测量</span>
+    <span class="chip">会追踪研判</span>
+    <span class="chip">会检验鉴定</span>
+    <span class="chip">会综合战法</span>
+    <span class="chip" style="border-style:dashed;color:#6b7280">课程思政：证据意识 · 程序正义 · 科技强警</span>
+  </div>
+
+  <section>
+    <div class="sec-h"><span class="no">01</span><h2>课程结构即办案流程</h2><span class="hint">八章沿真实办案链排列 · 每章配一个 AI 互动设计</span></div>
+    <div class="grid8">
+
+      <div class="ch"><span class="flow">▸</span>
+        <p class="no">01<small>第1章</small></p>
+        <h3>导论：视频侦查技术总览</h3>
+        <p class="hr">4 学时 · 理论</p>
+        <p class="ai"><b>AI互动</b>｜破案线索竞速：四类证据信息贡献度判别，直观建立视频证据价值认知</p>
+      </div>
+
+      <div class="ch"><span class="flow">▸</span>
+        <p class="no">02<small>第2章</small></p>
+        <h3>视频现场勘查与涉案视频采集</h3>
+        <p class="hr">8 学时 · 理论6＋实训2</p>
+        <p class="ai"><b>AI互动</b>｜虚拟勘查沙盘：规划点位路线，按覆盖度/效率/程序合法性实时评分；时间校准实操（考纲论述真题场景）</p>
+      </div>
+
+      <div class="ch"><span class="flow">▸</span>
+        <p class="no">03<small>第3章</small></p>
+        <h3>视频影像处理</h3>
+        <p class="hr">6 学时 · 理论4＋实训2</p>
+        <p class="ai"><b>AI互动</b>｜在线处理实验台：模糊车牌/人脸参数试炼，同步标注技术依据与证据边界</p>
+      </div>
+
+      <div class="ch">
+        <p class="no">04<small>第4章</small></p>
+        <h3>内容分析：判读与测量</h3>
+        <p class="hr">6 学时 · 理论4＋实训2</p>
+        <p class="ai"><b>AI互动</b>｜人像比对训练场：特征点标注对照专家判读；参照物测身高、帧差法测车速</p>
+      </div>
+
+      <p class="bend">沿办案流程推进 · 全课程枢纽在第五章</p>
+
+      <div class="ch hub">
+        <div class="stamp"><b>枢纽</b><span>HUB · DEMO</span></div>
+        <p class="no">05<small>第5章</small></p>
+        <h3>信息研判：搜索 · 追踪 · 关联</h3>
+        <p class="hr">8 学时 · 理论6＋实训2</p>
+        <p class="ai"><b>AI互动</b>｜视频追踪推演：逐轮决策"调哪个点、圈多大、何时扩"，AI扮演指挥员追问依据；多源信息碰撞沙盘</p>
+        <span class="demo-tag">★ 本堂课 DEMO 落点</span>
+      </div>
+
+      <div class="ch"><span class="flow">▸</span>
+        <p class="no">06<small>第6章</small></p>
+        <h3>视频检验</h3>
+        <p class="hr">6 学时 · 理论4＋实训2</p>
+        <p class="ai"><b>AI互动</b>｜真伪判别实验室：时钟跳变/帧率异常/光影矛盾找疑点，逐项揭示检验方法</p>
+      </div>
+
+      <div class="ch"><span class="flow">▸</span>
+        <p class="no">07<small>第7章</small></p>
+        <h3>视频中的语音检验</h3>
+        <p class="hr">4 学时 · 理论</p>
+        <p class="ai"><b>AI互动</b>｜声纹图谱判读：共振峰/基频特征标注，语音提取→鉴别全流程演示</p>
+      </div>
+
+      <div class="ch">
+        <p class="no">08<small>第8章</small></p>
+        <h3>综合战法与全流程案件推演</h3>
+        <p class="hr">6 学时 · 理论2＋实训4</p>
+        <p class="ai"><b>AI互动</b>｜PBL结课大作业：四岗位小组推演完整虚拟案件，AI分饰群众/关联人/指挥，报告即期末实战考核</p>
+      </div>
+    </div>
+
+    <div class="threestep">
+      <span class="t">实战方法锚点</span>
+      <span class="s">发现和甄别犯罪嫌疑人</span><span class="arr">→</span>
+      <span class="s">追踪犯罪嫌疑人</span><span class="arr">→</span>
+      <span class="s">确定犯罪嫌疑人身份</span>
+      <span class="note">—— 视频侦查"三步法"，浓缩于第5章；串并案逻辑贯穿第2/5/8章</span>
+    </div>
+  </section>
+
+  <div class="sec-h"><span class="no">02</span><h2>实战化教学痛点 → AI 互动课堂解法</h2><span class="hint">依据公开教学研究归纳</span></div>
+  <section class="versus">
+    <div class="head"><div>实战教学现实痛点</div><div class="mid"></div><div>AI 互动课堂解法</div></div>
+    <div class="row">
+      <div class="pain"><b>a</b>真实案件视频涉密、海量冗余，教学素材脱敏加工成本高</div>
+      <div class="mid">→</div>
+      <div class="fix"><span>AI生成<b>虚拟案件与合成画面</b>，案情可无限变式，零涉密风险</span></div>
+    </div>
+    <div class="row">
+      <div class="pain"><b>b</b>案件推演需多角色、多点位联动，传统课堂难以组织</div>
+      <div class="mid">→</div>
+      <div class="fix"><span>AI<b>分饰指挥员、群众、关联人</b>，随时分组推演，决策链全程留痕</span></div>
+    </div>
+    <div class="row">
+      <div class="pain"><b>c</b>判读类训练标准答案制作难，评价主观化</div>
+      <div class="mid">→</div>
+      <div class="fix"><span>专家判读规则内置，<b>即时对照评分、弱项自动归因</b></span></div>
+    </div>
+    <div class="row">
+      <div class="pain"><b>d</b>学情差异大，统一进度难以兼顾</div>
+      <div class="mid">→</div>
+      <div class="fix"><span>课前自测数据分层，课后<b>一人一策变式训练</b></span></div>
+    </div>
+  </section>
+
+  <footer class="tail">
+    <div class="demo">
+      <h4>下一步 · 一堂课的 DEMO 建议</h4>
+      <p>以<b>第5章《信息研判：搜索·追踪·关联》</b>制作AI互动课：① 全课程枢纽，"三步法"浓缩于此；② 交互最深——追踪推演＋卡口地图＋时间线＋多源碰撞；③ 与《情报分析》方法论同源，可在既有互动任务引擎上升级，开发最快。</p>
+    </div>
+    <div class="fine">
+      <p><b>说明</b>：涉案内容均为教学虚拟案例，画面与数据由AI合成；办案实务以真实数据和法定程序为准。</p>
+      <p>考核：过程性60%（决策留痕30＋实训20＋研讨10）＋期末40%（推演报告＋答辩）</p>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

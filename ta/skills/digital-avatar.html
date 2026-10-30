@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TA技能现场演示 · 教师数字分身</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#F4F6FA;color:#1F2937;line-height:1.7}
+.container{max-width:1080px;margin:0 auto;padding:22px 18px 70px}
+header.hero{background:linear-gradient(135deg,#0A2E5C,#0B57A4 60%,#1273D1);color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:18px}
+header.hero h1{font-size:24px}
+header.hero .sub{font-size:13.5px;opacity:.92;margin-top:6px}
+.badges{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 13px;font-size:12.5px}
+.badge b{color:#FFD54F}
+.warn{background:#FFF8E1;border-left:4px solid #F9A825;border-radius:6px;padding:9px 13px;font-size:12.5px;margin-bottom:16px}
+.mode{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.modebtn{background:#fff;border:1px solid #C9D8EA;border-radius:9px;padding:9px 16px;font-size:13.5px;font-weight:600;color:#0A2E5C;cursor:pointer}
+.modebtn.on{background:#0B57A4;color:#fff;border-color:#0B57A4}
+.wrap{display:none;background:#fff;border-radius:14px;padding:22px 26px;box-shadow:0 2px 12px rgba(15,40,80,.07)}
+.wrap.on{display:block}
+.wrap h2{font-size:17px;color:#0A2E5C;border-left:5px solid #1273D1;padding-left:11px;margin-bottom:12px}
+.chat{max-width:720px;margin:0 auto;border:1px solid #D7DEE8;border-radius:12px;background:#FCFDFE;padding:16px;height:430px;overflow-y:auto}
+.msg{max-width:82%;margin:9px 0;padding:10px 14px;border-radius:12px;font-size:13.5px;white-space:pre-wrap}
+.msg.stu{background:#EAF3FC;border:1px solid #C9D8EA;border-bottom-left-radius:3px}
+.msg.tea{background:#E8F5E9;border:1px solid #A5D6A7;border-bottom-right-radius:3px;margin-left:auto}
+.msg.sys{background:#FFF8E1;border:1px dashed #F9A825;text-align:center;max-width:100%;font-size:12px;color:#795548}
+.quick{max-width:720px;margin:12px auto 0;display:flex;flex-wrap:wrap;gap:8px}
+.qbtn{background:#fff;border:1px solid #C9D8EA;border-radius:999px;padding:6px 14px;font-size:12.5px;cursor:pointer;color:#0B57A4}
+.qbtn:hover{background:#EAF3FC}
+.avatar{font-size:12px;color:#90A4AE;margin-bottom:2px}
+.note{font-size:12px;color:#6B7280;margin-top:12px}
+footer{text-align:center;font-size:12px;color:#6B7280;padding:16px 0 8px}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="hero">
+  <h1>教师数字分身 · 现场演示</h1>
+  <div class="sub">试点任务 9「智能体分身」样板 ｜ 模拟学生陪练 + 7×24 答疑 ｜ A 级技能 · 装好即用</div>
+  <div class="badges"><span class="badge">给师范生：<b>分身扮"刁钻学生"练试讲</b></span><span class="badge">给在职教师：<b>课后答疑分身，晚上11点也在岗</b></span></div>
+</header>
+<div class="warn"><b>口径：</b>真实分身以本校课程资料库为知识边界（资料不出校），回答附依据来源；本页为效果演示。分身不替代教师批改与评价，只做陪练与答疑。</div>
+
+<div class="mode">
+  <div class="modebtn on" data-w="w1">🎭 模式一：模拟学生陪练（师范生微格训练）</div>
+  <div class="modebtn" data-w="w2">💬 模式二：7×24 课后答疑（教师分身）</div>
+</div>
+
+<div class="wrap on" id="w1">
+  <h2>模拟学生陪练 · 它会"装不会"，逼你把概念讲透</h2>
+  <div style="max-width:720px;margin:0 auto">
+    <div class="chat" id="chat1">
+      <div class="msg sys">分身已就位：它扮演高二学生"小陈"——有点基础、爱钻牛角尖、遇到模糊表述会追问。请开始你的试讲片段（讲"生态系统的能量流动"），点下方情境按钮推进。</div>
+    </div>
+    <div class="quick">
+      <button class="qbtn" onclick="stu(this,'开始上课。同学们，今天我们学习生态系统的能量流动。大家想一想，一亩田为什么养不活50个人？')">开场提问</button>
+      <button class="qbtn" onclick="stu(this,'能量流动的特点是单向流动、逐级递减。大家记一下这个结论。')">只给结论不讲理</button>
+      <button class="qbtn" onclick="stu(this,'相邻两个营养级之间传递效率是10%到20%。')">概念讲一半</button>
+      <button class="qbtn" onclick="stu(this,'谁还有问题？没有的话我们继续往下讲。')">课堂收口</button>
+    </div>
+  </div>
+  <div class="note">训练价值：分身的三种"学生反应"对应师范生试讲最常见失分点——提问无人应、只给结论、概念不闭合。结束后 TA 出具《试讲诊断单》。</div>
+</div>
+
+<div class="wrap" id="w2">
+  <h2>7×24 课后答疑 · 以你的课件和讲义为知识边界</h2>
+  <div style="max-width:720px;margin:0 auto">
+    <div class="chat" id="chat2">
+      <div class="msg sys">分身已就位：已装入《能量流动》课件+讲义+作业题库。晚上11点学生提问，它也在岗——回答只依据课程资料，超出范围会说"这个我建议问老师"。</div>
+    </div>
+    <div class="quick">
+      <button class="qbtn" onclick="ask(this,'老师，传递效率为什么是10%到20%，剩下的能量去哪了？')">课后提问1</button>
+      <button class="qbtn" onclick="ask(this,'第三营养级获得的能量怎么算？作业第3题我不会。')">作业求助</button>
+      <button class="qbtn" onclick="ask(this,'老师，这次月考考不考生态系统的信息传递？')">超纲试探</button>
+    </div>
+  </div>
+  <div class="note">家长/学生常见顾虑：答错了怎么办？——分身回答附"依据：课件P12"出处，且不评作业分数，只做启发式引导，最终以教师批改为准。</div>
+</div>
+
+<footer>TA教育版 · 教师数字分身现场演示页 ｜ 对应试点任务9「智能体分身」｜ 部署后以本校资料库建分身 ｜ 内部销售支持材料，请勿外发客户</footer>
+</div>
+
+<script>
+var STU = {
+'开场提问': ['老师，养不活吧？我爷爷说一亩地打的粮够一家人吃……到底能养几个？'],
+'只给结论不讲理': ['老师，为什么是单向的？动物死了被微生物分解，能量不是又回到植物了吗？这不是循环吗？'],
+'概念讲一半': ['老师，是10%到20%之间的哪个数啊？如果我知道是15%，那第二营养级到底有多少能量，是不是拿第一级的量乘以15%？'],
+'课堂收口': ['老师我有问题！你刚才说效率10%~20%，那食物链第四级能量不是特别少了吗？那为什么还有老虎这种顶级捕食者？']
+};
+var ANS = {
+'老师，传递效率为什么是10%到20%，剩下的能量去哪了？': ['问得好！课本《能量流动》一节讲过：每级同化的能量有三个去向——①自身呼吸作用以热能散失（这是大头）②流向分解者③暂存未被利用。真正流到下一级的只有10%~20%。\n依据：课件P12 + 讲义§3.2'],
+'第三营养级获得的能量怎么算？作业第3题我不会。': ['第3题我先不给答案，给你搭个梯子：\n①先确认题目给的是"第一营养级同化量"还是"摄入量"（这两个不一样哦）\n②按效率15%算，第二级=第一级×15%，第三级=第二级×15%\n③你自己算一遍，把过程发我，我帮你看哪步错了。'],
+'老师，这次月考考不考生态系统的信息传递？': ['这个我说不准哦——考试范围以老师课上宣布为准。不过按讲义进度，信息传递在下一单元，这周先把能量流动的计算吃透。建议明天当面问一下老师。']
+};
+function push(id, who, text){
+  var c = document.getElementById(id);
+  var d = document.createElement('div');
+  d.className = 'msg ' + who;
+  var a = document.createElement('div'); a.className='avatar'; a.textContent = who==='stu' ? '小陈（模拟学生）' : who==='tea' ? '学生提问' : '分身';
+  var b = document.createElement('div'); b.textContent = '';
+  d.appendChild(a); d.appendChild(b); c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+  var i = 0, step = 3;
+  var t = setInterval(function(){
+    i += step;
+    if(i >= text.length){ b.textContent = text; clearInterval(t); c.scrollTop = c.scrollHeight; return; }
+    b.textContent = text.slice(0, i);
+    c.scrollTop = c.scrollHeight;
+  }, 18);
+}
+function stu(btn, teacherSays){
+  push('chat1', 'tea', teacherSays);
+  var q = STU[btn.textContent];
+  btn.disabled = true; btn.style.opacity = .45;
+  setTimeout(function(){ q.forEach(function(s){ push('chat1', 'stu', s); }); }, 700);
+}
+function ask(btn, question){
+  push('chat2', 'tea', question);
+  var a = ANS[question];
+  btn.disabled = true; btn.style.opacity = .45;
+  setTimeout(function(){ a.forEach(function(s){ push('chat2', 'stu', s); }); }, 800);
+}
+document.querySelectorAll('.modebtn').forEach(function(m){
+  m.onclick = function(){
+    document.querySelectorAll('.modebtn').forEach(function(x){x.classList.remove('on')});
+    document.querySelectorAll('.wrap').forEach(function(x){x.classList.remove('on')});
+    m.classList.add('on');
+    document.getElementById(m.dataset.w).classList.add('on');
+  };
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>答辩PPT示例｜课答答——基于RAG的校园课程智能问答系统</title>
+<style>
+:root{--navy:#072A75;--blue:#0E4FB3;--hi:#1685FF;--red:#C8102E;--red2:#E23A4E;--gold:#C9A227;--gold2:#E8C547;--ink:#1a2b4a;--soft:#5a6478;--bg:#F5F7FB;--line:#E3E9F2;--tip:#EDF4FF}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei",sans-serif;background:#0d1526;overflow:hidden}
+.deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.slide{position:absolute;inset:0;background:#fff;display:none;flex-direction:column;padding:2.2vh 2.6vw;overflow:hidden}
+.slide.on{display:flex}
+/* 封面 */
+.cover{background:linear-gradient(135deg,#072A75 0%,#0E4FB3 55%,#1685FF 100%);color:#fff}
+.cover .ctag{font-size:1.7vh;letter-spacing:6px;color:var(--gold2);font-weight:700}
+.cover h1{font-size:5.6vh;margin-top:2vh;font-weight:900;line-height:1.25}
+.cover h1 em{color:var(--gold2);font-style:normal}
+.cover .sub{font-size:2.6vh;margin-top:1vh;color:rgba(255,255,255,.85)}
+.cover .meta{margin-top:auto;display:flex;gap:3vw;font-size:1.9vh;color:rgba(255,255,255,.9)}
+.cover .meta b{color:var(--gold2)}
+.cover .foot{margin-top:2vh;font-size:1.6vh;color:rgba(255,255,255,.5)}
+/* 通用 */
+.kicker{display:flex;align-items:center;gap:1vw;margin-bottom:1.2vh}
+.tag{background:var(--red);color:#fff;font-size:1.55vh;font-weight:800;padding:.35vh 1vw;border-radius:3px;letter-spacing:2px}
+.tag.b{background:var(--blue)}
+.sub-t{font-size:1.65vh;color:var(--soft)}
+.pgno{margin-left:auto;font-size:1.5vh;color:#aab;font-weight:700}
+h1.title{font-size:3.3vh;color:var(--ink);font-weight:900}
+h1.title em{color:var(--blue);font-style:normal}
+.gradbar{height:.7vh;width:9vw;background:linear-gradient(90deg,var(--red),var(--red2));border-radius:4px;margin:.9vh 0 1vh}
+.content{flex:1;display:flex;gap:1.2vw;min-height:0}
+.col{display:flex;flex-direction:column;gap:1.1vh;flex:1;min-width:0}
+.card{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:1.3vh 1.1vw;box-shadow:0 2px 10px rgba(18,35,68,.06)}
+.card.blue-top{border-top:4px solid var(--blue)}
+.card.gold-top{border-top:4px solid var(--gold)}
+.card.navy-top{border-top:4px solid var(--navy)}
+.card.red-top{border-top:4px solid var(--red)}
+.card h3{font-size:1.95vh;color:var(--ink);margin-bottom:.6vh}
+.card p{font-size:1.68vh;color:var(--soft);line-height:1.6}
+.card p b{color:var(--blue)}
+.card p b.r{color:var(--red)}
+table.nice{width:100%;border-collapse:collapse}
+table.nice th{background:var(--blue);color:#fff;font-size:1.7vh;font-weight:700;padding:.7vh .8vw;text-align:left}
+table.nice td{font-size:1.62vh;color:var(--ink);padding:.55vh .8vw;border-bottom:1px solid #EFEFEF;line-height:1.5}
+table.nice tr td:first-child{font-weight:700;color:var(--navy)}
+table.nice tr:nth-child(even) td{background:#F7FAFE}
+table.nice td b{color:var(--blue)}
+.footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:.8vh;margin-top:1vh;font-size:1.5vh;color:#8a94a6}
+.footer .must{color:var(--red);font-weight:700}
+/* RAG架构图 */
+.ragflow{display:flex;flex-direction:column;gap:.9vh}
+.rf-row{display:flex;gap:.8vw;align-items:stretch}
+.rf-node{flex:1;background:var(--tip);border:1.5px solid var(--hi);border-radius:8px;padding:.8vh .7vw;text-align:center}
+.rf-node b{display:block;font-size:1.7vh;color:var(--blue)}
+.rf-node span{font-size:1.45vh;color:var(--soft)}
+.rf-node.gold{background:#FFF9E3;border-color:var(--gold)}
+.rf-node.gold b{color:var(--gold)}
+.rf-arrow{text-align:center;font-size:1.8vh;color:var(--blue);line-height:1;margin:.1vh 0}
+/* 两列数字卡 */
+.stat{display:flex;gap:.8vw}
+.stat .s{flex:1;background:linear-gradient(150deg,var(--navy),var(--blue));color:#fff;border-radius:10px;padding:1vh .8vw;text-align:center}
+.stat .s .v{font-size:3vh;font-weight:900;font-family:"DIN Alternate",Arial}
+.stat .s .l{font-size:1.5vh;color:rgba(255,255,255,.8)}
+.hint{background:#FFF9E3;border:1.5px solid var(--gold);border-radius:8px;padding:1vh 1vw;font-size:1.62vh;color:var(--ink)}
+.hint b{color:var(--gold)}
+/* 演示条 */
+.demo{display:flex;align-items:center;gap:1vw;background:linear-gradient(90deg,var(--tip),#fff 70%);border:1.5px dashed var(--hi);border-radius:10px;padding:1vh 1vw;margin-top:1vh}
+.demo .db{background:var(--blue);color:#fff;font-size:1.6vh;font-weight:800;padding:.4vh 1vw;border-radius:4px;flex-shrink:0}
+.demo p{font-size:1.7vh;color:var(--ink);line-height:1.5}
+.demo p b{color:var(--red)}
+/* 提示 */
+.ph{background:#0A1F4E;color:#DCE6F5;border-radius:8px;padding:1.1vh 1vw;font-size:1.6vh;line-height:1.65}
+.ph b{color:#8BE28B}
+ul.pts{list-style:none;display:flex;flex-direction:column;gap:.7vh}
+ul.pts li{font-size:1.68vh;color:var(--soft);line-height:1.55;padding-left:1.4vw;position:relative}
+ul.pts li::before{content:"▸";color:var(--red);position:absolute;left:0;font-weight:900}
+ul.pts li b{color:var(--navy)}
+/* 导航 */
+.navctl{position:fixed;bottom:2vh;right:2vw;display:flex;gap:8px;z-index:50}
+.navctl button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:6px;padding:8px 16px;font-size:14px;cursor:pointer;font-family:inherit}
+.navctl button:hover{background:rgba(255,255,255,.3)}
+.pageno-fixed{position:fixed;bottom:2.6vh;left:2vw;color:rgba(255,255,255,.7);font-size:13px;font-weight:700;z-index:50}
+</style></head><body>
+<div class="deck" id="deck">
+
+<!-- 1 封面 -->
+<section class="slide cover on">
+  <div class="ctag">本科毕业设计（论文）答辩 · 示例</div>
+  <h1>课答答：<em>基于 RAG 的校园课程智能问答系统</em><br>设计与实现</h1>
+  <div class="sub">—— 让每一份课件，都成为可对话的知识库</div>
+  <div style="margin-top:3vh;height:1px;background:linear-gradient(90deg,var(--gold2),transparent);width:60%"></div>
+  <div class="meta">
+    <span>答辩人：<b>（学生姓名）</b></span><span>学号：<b>（学号）</b></span>
+    <span>专业：计算机科学与技术</span><span>指导教师：<b>（教师姓名）</b></span>
+  </div>
+  <div class="foot">三明学院 信息工程学院 · 2026 届 · 本PPT由 TeleAgent 按答辩模板一键生成（示例）</div>
+</section>
+
+<!-- 2 提纲 -->
+<section class="slide">
+  <div class="kicker"><div class="tag b">汇报提纲</div><div class="sub-t">CONTENTS · 六个部分共10分钟</div><div class="pgno">02/10</div></div>
+  <h1 class="title">汇报提纲：<em>按"痛点 → 方案 → 证据"组织</em></h1>
+  <div class="gradbar"></div>
+  <div class="content">
+    <div class="col" style="flex:1.4">
+      <div class="ragflow">
+        <div class="rf-row">
+          <div class="rf-node"><b>① 选题背景</b><span>为什么做 · 3分钟</span></div>
+          <div class="rf-node"><b>② 需求分析</b><span>给谁用 · 1分钟</span></div>
+          <div class="rf-node"><b>③ 系统设计</b><span>怎么搭 · 3分钟</span></div>
+        </div>
+        <div class="rf-row">
+          <div class="rf-node gold"><b>④ 功能实现</b><span>做出来什么 · 1.5分钟</span></div>
+          <div class="rf-node gold"><b>⑤ 系统测试</b><span>效果证据 · 1分钟</span></div>
+          <div class="rf-node gold"><b>⑥ 总结展望</b><span>不足与计划 · 0.5分钟</span></div>
+        </div>
+      </div>
+      <div class="hint"><b>答辩主线（本页先亮结论）：</b>痛点真实（复习低效）→ 方案可行（RAG 精准问答+出处可溯）→ 证据扎实（检索命中率 89.2%、答不准直说率 100%）——<b>评委最想看的三件事，第一页就给方向。</b></div>
+    </div>
+    <div class="col">
+      <div class="card red-top">
+        <h3>⏱ 时间分配（10分钟版）</h3>
+        <p>背景 3min · 需求 1min · 设计 3min · 实现 1.5min · 测试 1min · 总结 0.5min；<b class="r">演示动线 3 分钟另计</b>（在"功能实现"段插入）。<br>讲稿逐页配好，练习时按秒卡点。</p>
+      </div>
+      <div class="card blue-top">
+        <h3>本 PPT 的生成方式（说明）</h3>
+        <p>输入：毕设示例文档《课答答》一份（选题/技术栈/进度全套）；提示词：<b>"按10分钟答辩结构生成PPT大纲与逐页讲稿"</b>——AI 出初稿，学生改到能讲。现场同款演示见讲堂场景⑤。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 选题背景 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">① 选题背景</div><div class="sub-t">为什么做 · 痛点与意义</div><div class="pgno">03/10</div></div>
+  <h1 class="title">选题背景：<em>期末复习的三大痛点，真实存在</em></h1>
+  <div class="gradbar"></div>
+  <div class="content">
+    <div class="col">
+      <div class="card navy-top"><h3>痛点一 · 课件分散</h3><p>一门课 <b>10+ 个 PDF/PPT</b>，复习时反复翻找、检索困难；"记得讲过，就是找不到在哪页"。</p></div>
+      <div class="card navy-top"><h3>痛点二 · 答疑窗口有限</h3><p>课后疑问积压，教师答疑时间稀缺；<b>高峰期一个问题平均等 2 天</b>（课堂问卷，N=86）。</p></div>
+      <div class="card navy-top"><h3>痛点三 · 学长经验不沉淀</h3><p>往届复习重点、易错点随毕业流失，<b>每年重复踩同样的坑</b>。</p></div>
+    </div>
+    <div class="col">
+      <div class="card blue-top">
+        <h3>为什么通用大模型直接答不行？</h3>
+        <p>① <b>幻觉</b>：通用模型没有你的课件，答案"看着对"实则编造；② <b>不贴课本</b>：术语体系、章节顺序与本校课件不一致；③ <b>无出处</b>：无法定位到页码，难以核对。<br><b class="r">→ 需要"只基于你的课件"回答的专用系统。</b></p>
+      </div>
+      <div class="card gold-top">
+        <h3>选题意义</h3>
+        <p><b>实用价值</b>：复习效率工具，从"翻课件"变"问课件"；<b>技术价值</b>：完整落地 RAG 工程链路（解析→向量化→检索→生成→溯源），与就业岗位直接对口（AI应用工程师）；<b>推广价值</b>：架构可平移至企业知识库、政务问答等场景。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 需求分析 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">② 需求分析</div><div class="sub-t">给谁用 · 核心目标</div><div class="pgno">04/10</div></div>
+  <h1 class="title">需求分析：<em>一个原则——答案必须来自课件</em></h1>
+  <div class="gradbar"></div>
+  <div class="content">
+    <div class="col" style="flex:1.3">
+      <div class="card red-top">
+        <h3>核心目标（一句话）</h3>
+        <p>构建一个<b class="r">"只答你的课件"</b>的问答系统：答案必须来自上传的课程资料，<b class="r">标注出处页码</b>；课件里没有就直说"课件里没有"——<b>用 RAG 的确定性，对冲大模型的幻觉</b>。</p>
+      </div>
+      <div class="card blue-top">
+        <h3>目标用户与场景</h3>
+        <p><b>学生（主）</b>：期末复习问答、考点自测、错题沉淀；<b>教师（辅）</b>：查看高频提问与薄弱知识点分布，反哺教学。使用场景集中在<b>考前两周</b>，日均提问 15-30 次。</p>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card navy-top">
+        <h3>功能需求（MVP 五件套）</h3>
+        <p>① 多课件上传建库（PDF/PPT）<br>② 语义问答（附出处·可点击溯源）<br>③ 自测出题模式（按章节抽题）<br>④ 复习计划生成（按错题分布）<br>⑤ 答题数据看板（教师端可选）</p>
+      </div>
+      <div class="card gold-top">
+        <h3>非功能需求</h3>
+        <p>检索响应 <b>P95 ≤ 2s</b>；单课件建库 ≤ 1 分钟；答案<b>必须带出处</b>；本地部署可替换（合规）。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 系统设计：架构 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">③ 系统设计</div><div class="sub-t">RAG 技术路线 · 一图讲清</div><div class="pgno">05/10</div></div>
+  <h1 class="title">系统架构：<em>两级流水线——建库离线跑，问答在线答</em></h1>
+  <div class="gradbar"></div>
+  <div class="content">
+    <div class="col" style="flex:1.5">
+      <div class="ragflow">
+        <div class="rf-row">
+          <div class="rf-node"><b>① 文档解析</b><span>PDF/PPT 解析<br>按章节语义分块<br>300-500 token/块</span></div>
+          <div class="rf-node"><b>② 向量化</b><span>BGE-M3 中文语义向量<br>本地可跑<br>建离线索引</span></div>
+          <div class="rf-node"><b>③ 混合检索</b><span>向量检索＋关键词检索<br>Milvus Lite / FAISS<br>RRF 融合排序</span></div>
+        </div>
+        <div class="rf-arrow">↓ 用户提问（在线链路）</div>
+        <div class="rf-row">
+          <div class="rf-node gold"><b>④ 重排取 Top-K</b><span>召回片段精排<br>取最相关 3-5 块</span></div>
+          <div class="rf-node gold"><b>⑤ 受限生成</b><span>DeepSeek API 仅基于<br>检索片段回答<br>强制引用出处</span></div>
+          <div class="rf-node gold"><b>⑥ 溯源输出</b><span>答案+文件名+页码<br>出处高亮可点<br>无依据→直说</span></div>
+        </div>
+      </div>
+      <div class="demo"><div class="db">设计要点</div><p><b>检索在前、生成在后</b>——大模型只做"读后答"，不做"凭记忆答"：这是整个系统<b>抑制幻觉的架构级方案</b>。</p></div>
+    </div>
+    <div class="col">
+      <div class="card blue-top">
+        <h3>技术选型（全部可本地化）</h3>
+        <table class="nice">
+          <tr><th>层</th><th>选型</th><th>理由</th></tr>
+          <tr><td>解析分块</td><td>PyMuPDF + 章节切分</td><td>保页码溯源</td></tr>
+          <tr><td>向量化</td><td>BGE-M3</td><td>中文语义强、本地可跑</td></tr>
+          <tr><td>检索</td><td>Milvus Lite + BM25</td><td>混合召回稳</td></tr>
+          <tr><td>生成</td><td>DeepSeek API（可换 Qwen 本地）</td><td>成本低、可私有化</td></tr>
+          <tr><td>前端</td><td>Vue3 + FastAPI</td><td>轻量、溯源高亮易做</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 功能实现 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">④ 功能实现</div><div class="sub-t">MVP 五件套 · 演示动线</div><div class="pgno">06/10</div></div>
+  <h1 class="title">功能实现：<em>五个功能全落地，演示一条线走完</em></h1>
+  <div class="gradbar"></div>
+  <div class="content">
+    <div class="col">
+      <div class="card navy-top"><h3>F1 · 多课件建库</h3><p>拖入 12 个课件 PDF → 解析分块向量化 → <b>1 分钟内建库完成</b>，目录树按章节自动生成。</p></div>
+      <div class="card navy-top"><h3>F2 · 语义问答（核心）</h3><p>提问"红黑树的旋转什么时候触发"→ 答案+<b>出处：数据结构课件 P47</b>，出处高亮点击直达原文。</p></div>
+      <div class="card navy-top"><h3>F3 · 自测出题</h3><p>按章节抽题+解析（答案同样带出处），错题一键入库。</p></div>
+    </div>
+    <div class="col">
+      <div class="card blue-top"><h3>F4 · 复习计划</h3><p>错题分布 → 薄弱章节诊断 → 生成考前 7 天倒排计划（每天练什么、练多久）。</p></div>
+      <div class="card blue-top"><h3>F5 · 答题看板（教师端）</h3><p>高频问题 Top10、章节正确率热力图——教学侧反哺。</p></div>
+      <div class="demo"><div class="db">演示动线（3分钟）</div><p><b>建库（30s）→ 提问溯源（60s）→ 出题自测（45s）→ 课件外问题看"直说没有"（45s）</b>——最后一步是防幻觉的杀手锏演示。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 创新点 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">④ 功能实现</div><div class="sub-t">三个创新点 · 逐条可验证</div><div class="pgno">07/10</div></div>
+  <h1 class="title">创新点：<em>条条对着"幻觉"打</em></h1>
+  <div class="gradbar"></div>
+  <div class="content">
+    <div class="col">
+      <div class="card red-top"><h3>① 出处强制标注 + 无依据不回答</h3><p>生成层提示词硬约束：每个论点必须挂"文件+页码"；检索相似度低于阈值时<b class="r">拒答并提示"课件中没有"</b>——把幻觉率从源头压住。</p></div>
+    </div>
+    <div class="col">
+      <div class="card blue-top"><h3>② 混合检索（向量+关键词，RRF 融合）</h3><p>纯向量检索对<b>表格、术语缩写类问题命中率低</b>；引入 BM25 关键词通道融合排序后，课件表格类问题命中率从 71% 提升到 89%。</p></div>
+    </div>
+    <div class="col">
+      <div class="card gold-top"><h3>③ 错题自动入库 + 间隔复习提醒</h3><p>错题按艾宾浩斯间隔（1/2/4/7天）自动推送复测——<b>问答系统闭环成复习系统</b>，这是与通用问答工具的本质差异。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 系统测试 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">⑤ 系统测试</div><div class="sub-t">效果证据 · 数据说话</div><div class="pgno">08/10</div></div>
+  <h1 class="title">系统测试：<em>三组关键指标，全部可复现</em></h1>
+  <div class="gradbar"></div>
+  <div class="content">
+    <div class="col" style="flex:1.2">
+      <div class="stat">
+        <div class="s"><div class="v">89.2%</div><div class="l">检索命中率 Top5</div></div>
+        <div class="s"><div class="v">100%</div><div class="l">答不准直说率</div></div>
+        <div class="s"><div class="v">1.8s</div><div class="l">P95 端到端响应</div></div>
+      </div>
+      <div class="card blue-top" style="margin-top:1.1vh">
+        <h3>对照组实验（30 道课件题 × 3 配置）</h3>
+        <table class="nice">
+          <tr><th>配置</th><th>答对率</th><th>幻觉率</th><th>可溯源率</th></tr>
+          <tr><td>通用大模型直答</td><td>63%</td><td>27%</td><td>0%</td></tr>
+          <tr><td>纯向量 RAG</td><td>81%</td><td>9%</td><td>100%</td></tr>
+          <tr><td><b>本系统（混合检索）</b></td><td><b>90%</b></td><td><b>3%</b></td><td><b>100%</b></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card navy-top">
+        <h3>测试方法</h3>
+        <p>① 题库：3 门课 30 道标准题（10 道概念/10 道表格/10 道跨章节）；② 评分：三名同学独立盲评，分歧题仲裁；③ 复现：测试脚本与题库随论文附录提交。<br><b>口径注：幻觉率=答案含课件外错误信息占比；数据为课程实验环境实测。</b></p>
+      </div>
+      <div class="card gold-top">
+        <h3>性能与资源</h3>
+        <p>建库：12 课件（约 800 页）全程 58 秒；检索 P95 320ms；生成 P95 1.5s；单机 8G 内存可跑（BGE-M3 CPU 推理）。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 总结展望 -->
+<section class="slide">
+  <div class="kicker"><div class="tag">⑥ 总结展望</div><div class="sub-t">做了什么 · 不足 · 下一步</div><div class="pgno">09/10</div></div>
+  <h1 class="title">总结与展望：<em>完成度、不足，都摆在台面上</em></h1>
+  <div class="gradbar"></div>
+  <div class="content">
+    <div class="col">
+      <div class="card blue-top"><h3>完成的工作</h3>
+        <ul class="pts">
+          <li>完成 RAG 全链路工程实现：<b>解析→向量化→混合检索→受限生成→溯源</b></li>
+          <li>MVP 五功能全部落地并通过对照实验验证（幻觉率 3%）</li>
+          <li>沉淀可复用工程资产：建库脚本、测试题库、评测脚本</li>
+        </ul>
+      </div>
+      <div class="card gold-top"><h3>不足（主动交代）</h3>
+        <ul class="pts">
+          <li>数学公式类问题解析仍靠截图+OCR，准确率有限</li>
+          <li>跨课件推理（需联合多个文件作答）尚未优化</li>
+          <li>样本规模：3 门课 30 题，覆盖面待扩大</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card navy-top"><h3>下一步计划</h3>
+        <ul class="pts">
+          <li>接入<b>知识图谱</b>：章节知识点关联，支持跨章节推理</li>
+          <li>公式专用解析通道（LaTeX 识别）</li>
+          <li>扩展教师端：薄弱点预警→自动推送针对性练习</li>
+          <li>参赛转化：本系统将报名<b>2027 海峡 AI 创意大赛</b>（创意应用赛道）</li>
+        </ul>
+      </div>
+      <div class="hint"><b>一句话收尾：</b>把"复习时翻课件"变成"复习时问课件"——用 RAG 的确定性，换来 AI 时代学习工具的可信。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 致谢 -->
+<section class="slide cover">
+  <div class="ctag">答辩结束 · 请各位老师批评指正</div>
+  <h1 style="margin-top:4vh">谢谢聆听 <em>Q&A</em></h1>
+  <div class="sub">已备演示环境：建库 30 秒 · 溯源问答 60 秒 · 课件外拒答演示 45 秒</div>
+  <div style="margin-top:3vh;height:1px;background:linear-gradient(90deg,var(--gold2),transparent);width:60%"></div>
+  <div class="meta">
+    <span>答辩人：（学生姓名）</span><span>指导教师：（教师姓名）</span><span>三明学院 · 信息工程学院</span>
+  </div>
+  <div class="foot">本 PPT 为 AI 讲堂配套示例：由 TeleAgent 基于毕设示例文档一键生成的真实结构 · 可替换为任意课题复用</div>
+</section>
+</div>
+<div class="pageno-fixed" id="pno">1 / 10</div>
+<div class="navctl">
+  <button onclick="go(-1)">‹ 上一页</button><button onclick="go(1)">下一页 ›</button>
+  <button onclick="document.documentElement.requestFullscreen()">全屏</button>
+</div>
+<script>
+const S=[...document.querySelectorAll('.slide')];let cur=0;
+function show(){S.forEach((s,i)=>s.classList.toggle('on',i===cur));document.getElementById('pno').textContent=(cur+1)+' / '+S.length;}
+function go(d){cur=Math.min(S.length-1,Math.max(0,cur+d));show();}
+document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))go(1);if(['ArrowLeft','PageUp'].includes(e.key))go(-1);});
+document.addEventListener('click',e=>{if(!e.target.closest('.navctl')&&!e.target.closest('a'))go(1);});
+show();
+</script>
+</body></html>

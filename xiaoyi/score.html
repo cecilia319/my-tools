@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>小奕积分作战台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#0a0f1e;color:#e2e8f0;min-height:100vh;padding-bottom:40px}
+.wrap{max-width:520px;margin:0 auto;padding:18px 16px}
+header{display:flex;align-items:center;justify-content:space-between;padding:6px 2px 14px}
+.logo{font-size:21px;font-weight:900;letter-spacing:1px;background:linear-gradient(90deg,#00e5ff,#ffd166);-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo small{font-size:11px;letter-spacing:2px;color:#5b6b8c;-webkit-text-fill-color:#5b6b8c;display:block;font-weight:600}
+.hdate{text-align:right;font-size:12px;color:#5b6b8c}
+.topstats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.stat{background:linear-gradient(160deg,#131a30,#0d1326);border:1px solid #1e2a4a;border-radius:14px;padding:12px 10px;text-align:center;position:relative;overflow:hidden}
+.stat::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% -20%,rgba(0,229,255,.12),transparent 60%);pointer-events:none}
+.stat .n{font-size:30px;font-weight:900;color:#ffd166;font-family:"DIN Alternate","Bahnschrift",monospace;text-shadow:0 0 18px rgba(255,209,102,.35)}
+.stat.fire .n{color:#ff6b35;text-shadow:0 0 18px rgba(255,107,53,.4)}
+.stat.cy .n{color:#00e5ff;text-shadow:0 0 18px rgba(0,229,255,.35)}
+.stat .l{font-size:11px;color:#7b8db3;margin-top:2px;letter-spacing:1px}
+.sec{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 10px}
+.sec h2{font-size:15px;color:#aab8d8;letter-spacing:1px}
+.editbtn{font-size:12px;color:#00e5ff;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.3);border-radius:8px;padding:5px 12px;cursor:pointer}
+.task{background:#101830;border:1px solid #1e2a4a;border-radius:14px;padding:14px 14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.18s;position:relative;overflow:hidden}
+.task:active{transform:scale(.98)}
+.task.done{border-color:#00e5ff;background:linear-gradient(120deg,#0d1f2e,#0a1a26);box-shadow:0 0 18px rgba(0,229,255,.15)}
+.task .ck{width:26px;height:26px;border-radius:8px;border:2px solid #2a3a5f;flex:none;display:flex;align-items:center;justify-content:center;font-size:16px;color:transparent;transition:.15s}
+.task.done .ck{border-color:#00e5ff;background:#00e5ff;color:#04121e}
+.task .nm{flex:1;font-size:15.5px;font-weight:600}
+.task.done .nm{color:#7b8db3;text-decoration:line-through;text-decoration-color:rgba(0,229,255,.5)}
+.task .pt{font-size:14px;font-weight:800;color:#5b6b8c}
+.task.done .pt{color:#ffd166}
+.task .del{position:absolute;right:10px;top:8px;font-size:13px;color:rgba(255,107,107,.6);display:none;cursor:pointer;padding:2px 6px}
+.editmode .task .del{display:block}
+.editmode .task{cursor:default}
+.addrow{display:none;gap:8px;margin-bottom:10px}
+.editmode .addrow{display:flex}
+.addrow input{flex:1;background:#0d1326;border:1px solid #1e2a4a;border-radius:10px;color:#e2e8f0;padding:10px 12px;font-size:14px}
+.addrow input.small{flex:0 0 70px;text-align:center}
+.addrow button{background:#ffd166;color:#0a0f1e;border:none;border-radius:10px;font-weight:800;padding:0 16px;cursor:pointer}
+.chart{display:flex;align-items:flex-end;gap:6px;height:86px;background:#101830;border:1px solid #1e2a4a;border-radius:14px;padding:12px 10px 8px;margin-bottom:14px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.bar .b{width:100%;max-width:30px;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,#00e5ff,#0a6a8a);min-height:3px;transition:.3s}
+.bar .b.zero{background:#1a2440}
+.bar .v{font-size:9.5px;color:#5b6b8c}
+.bar .d{font-size:9.5px;color:#3d4a68}
+.reward{background:linear-gradient(120deg,#1a1508,#101830);border:1px solid #3d3417;border-radius:14px;padding:14px;margin-bottom:16px}
+.reward .rt{font-size:13px;color:rgba(255,209,102,.6);margin-bottom:8px;display:flex;justify-content:space-between}
+.reward .rt b{color:#ffd166}
+.rbar{height:10px;background:#1a2440;border-radius:6px;overflow:hidden}
+.rfill{height:100%;background:linear-gradient(90deg,#ffd166,#ff9f1c);border-radius:6px;transition:.4s}
+.rgoal{font-size:12px;color:#7b8db3;margin-top:7px;display:flex;justify-content:space-between}
+.syncbar{display:flex;gap:8px;align-items:stretch;margin-bottom:10px}
+.syncbtn{flex:1;background:linear-gradient(90deg,#00b4d8,#0077b6);border:none;border-radius:12px;padding:12px;font-size:15px;font-weight:800;color:#fff;cursor:pointer;letter-spacing:1px}
+.syncbtn:active{transform:scale(.98)}
+.restore{background:#131a30;border:1px solid #1e2a4a;border-radius:12px;padding:8px 16px;font-size:13px;color:#aab8d8;cursor:pointer}
+.msg{text-align:center;font-size:12px;color:#5b6b8c;min-height:16px;margin:6px 0}
+.msg.ok{color:#2dd4bf}
+.msg.err{color:#ff6b6b}
+.lock{position:fixed;inset:0;background:rgba(4,8,18,.92);z-index:50;display:none;align-items:center;justify-content:center;padding:20px}
+.lock.on{display:flex}
+.lbox{background:#101830;border:1px solid #1e2a4a;border-radius:16px;padding:22px;max-width:340px;width:100%}
+.lbox h3{font-size:16px;color:#ffd166;margin-bottom:8px}
+.lbox p{font-size:12.5px;color:#7b8db3;line-height:1.7;margin-bottom:12px}
+.lbox input{width:100%;background:#0a0f1e;border:1px solid #2a3a5f;border-radius:10px;color:#e2e8f0;padding:11px 12px;font-size:13px;margin-bottom:10px}
+.lbox button{width:100%;background:#00e5ff;color:#04121e;border:none;border-radius:10px;padding:11px;font-weight:800;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%) translateY(20px);background:#132030;border:1px solid rgba(0,229,255,.4);color:#fff;padding:10px 20px;border-radius:12px;font-size:13px;opacity:0;transition:.3s;z-index:99;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@keyframes fly{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-60px) scale(1.4);opacity:0}}
+.fly{position:fixed;font-size:20px;font-weight:900;color:#ffd166;z-index:98;pointer-events:none;animation:fly .7s ease-out forwards;text-shadow:0 0 12px rgba(255,209,102,.6)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="logo">小奕积分作战台<small>SCORE COMMAND</small></div>
+  <div class="hdate" id="hdate"></div>
+</header>
+
+<div class="topstats">
+  <div class="stat"><div class="n" id="todayScore">0</div><div class="l">今日得分</div></div>
+  <div class="stat fire"><div class="n" id="streak">0</div><div class="l">连续天数🔥</div></div>
+  <div class="stat cy"><div class="n" id="totalScore">0</div><div class="l">累计积分</div></div>
+</div>
+
+<div class="sec"><h2>▸ 今日任务</h2><button class="editbtn" onclick="toggleEdit()">编辑</button></div>
+<div id="taskList"></div>
+<div class="addrow"><input id="newName" placeholder="新任务名（如：练字15分钟）"><input id="newPts" class="small" placeholder="分值" type="number" value="5"><button onclick="addTask()">添加</button></div>
+
+<div class="sec"><h2>▸ 近7日战况</h2></div>
+<div class="chart" id="chart"></div>
+
+<div class="reward">
+  <div class="rt"><span>🎯 积分目标</span><b id="rname"></b></div>
+  <div class="rbar"><div class="rfill" id="rfill" style="width:0%"></div></div>
+  <div class="rgoal"><span id="rprog"></span><button style="background:none;border:none;color:rgba(0,229,255,.5);font-size:12px;cursor:pointer" onclick="editReward()">改目标</button></div>
+</div>
+
+<div class="syncbar">
+  <button class="syncbtn" onclick="syncCloud()">☁️ 同步云端</button>
+  <button class="restore" onclick="restoreCloud()">📥 换机恢复</button>
+</div>
+<div class="msg" id="msg"></div>
+</div>
+
+<div class="lock" id="lock"><div class="lbox">
+  <h3 id="lockTitle">输入同步码</h3>
+  <p id="lockDesc">同步码由家长提供（只需要输入一次，保存在本机）。用于把打卡数据存到云端私有库，换手机也能恢复。</p>
+  <input id="lockInput" placeholder="粘贴同步码" type="password">
+  <button onclick="lockOk()">确定</button>
+  <p style="margin:8px 0 0;font-size:11px;text-align:center"><a href="javascript:void(0)" onclick="document.getElementById('lock').classList.remove('on')" style="color:#3d4a68">取消</a></p>
+</div></div>
+
+<script>
+var LS='xy_score_v1', REPO='cecilia319/data';
+var DEF={
+  tasks:[
+    {id:'t1',name:'完成学校作业',pts:10},
+    {id:'t2',name:'课外阅读30分钟',pts:5},
+    {id:'t3',name:'背单词/古诗',pts:5},
+    {id:'t4',name:'运动锻炼30分钟',pts:5},
+    {id:'t5',name:'家务劳动',pts:5},
+    {id:'t6',name:'22:30前上床',pts:5},
+    {id:'t7',name:'自主预习/复习',pts:5},
+    {id:'t8',name:'手机未超时',pts:5}
+  ],
+  days:{}, reward:{goal:800,name:'周末电影票'}
+};
+var D=load();
+function load(){try{var s=localStorage.getItem(LS);if(s)return JSON.parse(s)}catch(e){}return JSON.parse(JSON.stringify(DEF))}
+function save(){localStorage.setItem(LS,JSON.stringify(D))}
+function today(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function day(t){if(!D.days[t])D.days[t]={done:[],ts:0};return D.days[t]}
+function dayScore(t){var d=D.days[t];if(!d)return 0;return d.done.reduce(function(s,id){var k=D.tasks.find(function(x){return x.id===id});return s+(k?k.pts:0)},0)}
+function calc(){
+  var t=today();document.getElementById('todayScore').textContent=dayScore(t);
+  var tot=0,ts=[];for(var k in D.days){var v=dayScore(k);if(v>0){tot+=v;ts.push(k)}}
+  document.getElementById('totalScore').textContent=tot;
+  ts.sort();var st=0;var cur=t;
+  while(ts.indexOf(cur)>=0){st++;var d2=new Date(cur);d2.setDate(d2.getDate()-1);cur=d2.getFullYear()+'-'+String(d2.getMonth()+1).padStart(2,'0')+'-'+String(d2.getDate()).padStart(2,'0')}
+  document.getElementById('streak').textContent=st;
+  document.getElementById('rname').textContent=D.reward.name;
+  var p=Math.min(100,Math.round(tot/D.reward.goal*100));
+  document.getElementById('rfill').style.width=p+'%';
+  document.getElementById('rprog').textContent=tot+' / '+D.reward.goal+' 分';
+  var wd='日一二三四五六'[new Date().getDay()];
+  document.getElementById('hdate').textContent=today().slice(5).replace('-','/')+' 星期'+wd;
+}
+function renderTasks(){
+  var box=document.getElementById('taskList');box.innerHTML='';
+  var d=day(today());
+  D.tasks.forEach(function(t){
+    var el=document.createElement('div');
+    var on=d.done.indexOf(t.id)>=0;
+    el.className='task'+(on?' done':'');
+    el.innerHTML='<div class="ck">✓</div><div class="nm">'+t.name+'</div><div class="pt">+'+t.pts+'</div><div class="del" onclick="event.stopPropagation();delTask(\''+t.id+'\')">✕</div>';
+    el.onclick=function(){if(document.body.classList.contains('editmode'))return;toggle(t.id,el)};
+    box.appendChild(el);
+  });
+}
+function toggle(id,el){
+  var d=day(today());var i=d.done.indexOf(id);
+  var t=D.tasks.find(function(x){return x.id===id});
+  if(i>=0){d.done.splice(i,1)}else{d.done.push(id);flyScore('+'+t.pts,el)}
+  d.ts=Date.now();save();calc();renderTasks();
+}
+function flyScore(txt,el){
+  var r=el.getBoundingClientRect();var f=document.createElement('div');f.className='fly';f.textContent=txt;
+  f.style.left=(r.left+r.width/2)+'px';f.style.top=(r.top-4)+'px';
+  document.body.appendChild(f);setTimeout(function(){f.remove()},700);
+}
+function toggleEdit(){document.body.classList.toggle('editmode');
+  var b=document.querySelector('.editbtn');b.textContent=document.body.classList.contains('editmode')?'完成':'编辑';}
+function addTask(){var n=document.getElementById('newName').value.trim(),p=parseInt(document.getElementById('newPts').value)||5;
+  if(!n)return toast('先填任务名');
+  D.tasks.push({id:'t'+Date.now(),name:n,pts:p});save();renderTasks();document.getElementById('newName').value='';toast('已添加');}
+function delTask(id){if(!confirm('删除这个任务？历史记录不受影响'))return;
+  D.tasks=D.tasks.filter(function(x){return x.id!==id});save();renderTasks()}
+function editReward(){var n=prompt('目标名称（如：周末电影票 / 新球鞋）',D.reward.name);if(n===null)return;
+  var g=parseInt(prompt('目标积分',D.reward.goal));if(!g)return;
+  D.reward={name:n,goal:g};save();calc()}
+function renderChart(){
+  var box=document.getElementById('chart');box.innerHTML='';
+  var days=[];for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);
+    days.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'))}
+  var max=Math.max.apply(null,days.map(dayScore).concat([1]));
+  days.forEach(function(t){var v=dayScore(t);
+    var el=document.createElement('div');el.className='bar';
+    el.innerHTML='<div class="v">'+(v||'')+'</div><div class="b'+(v?'':' zero')+'" style="height:'+Math.max(3,v/max*55)+'px"></div><div class="d">'+t.slice(8)+'</div>';
+    box.appendChild(el);});
+}
+function toast(s){var t=document.createElement('div');t.className='toast';t.textContent=s;document.body.appendChild(t);
+  requestAnimationFrame(function(){t.classList.add('on')});setTimeout(function(){t.classList.remove('on');setTimeout(function(){t.remove()},350)},1800)}
+function say(s,cls){var m=document.getElementById('msg');m.textContent=s;m.className='msg '+(cls||'')}
+
+// ---------- 云端同步 ----------
+function getToken(){return localStorage.getItem('xy_sync_token')||''}
+function lockTitle(t,d){document.getElementById('lockTitle').textContent=t;document.getElementById('lockDesc').textContent=d;document.getElementById('lock').classList.add('on');document.getElementById('lockInput').value='';document.getElementById('lockInput').focus()}
+function askToken(cb){window._lockCb=cb;lockTitle('输入同步码','同步码由家长提供（只需输入一次，保存在本机）。')}
+function lockOk(){var v=document.getElementById('lockInput').value.trim();
+  if(!v)return;localStorage.setItem('xy_sync_token',v);
+  document.getElementById('lock').classList.remove('on');
+  if(window._lockCb){var cb=window._lockCb;window._lockCb=null;cb()}}
+function gh(method,path,body){
+  var tk=getToken();
+  return fetch('https://api.github.com/repos/'+REPO+'/'+path,{method:method,
+    headers:{'Authorization':'Bearer '+tk,'Content-Type':'application/json','Accept':'application/vnd.github+json'},
+    body:body?JSON.stringify(body):undefined});
+}
+function syncCloud(){
+  var tk=getToken();if(!tk){askToken(syncCloud);return}
+  say('同步中…');
+  var t=today(),d=day(today());
+  var path='contents/xiaoyi/score/'+t+'.json';
+  var payload={date:t,done:d.done,score:dayScore(t),ts:new Date().toISOString(),tasks:D.tasks,reward:D.reward};
+  gh('GET',path).then(function(r){return r.status===200?r.json():null}).then(function(meta){
+    var body={message:'score '+t,content:btoa(unescape(encodeURIComponent(JSON.stringify(payload))))};
+    if(meta&&meta.sha)body.sha=meta.sha;
+    return gh('PUT',path,body);
+  }).then(function(r){
+    if(r.status===200||r.status===201){say('✅ 已同步云端 '+t,'ok');toast('同步成功')}
+    else if(r.status===401||r.status===403){say('同步失败：同步码无效或无权限','err');localStorage.removeItem('xy_sync_token')}
+    else say('同步失败 HTTP '+r.status,'err');
+  }).catch(function(e){say('网络异常：'+e.message,'err')});
+}
+function restoreCloud(){
+  var tk=getToken();if(!tk){askToken(restoreCloud);return}
+  say('从云端恢复中…');
+  gh('GET','contents/xiaoyi/score').then(function(r){
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    return r.json();
+  }).then(function(files){
+    if(!files||!files.length){say('云端暂无历史记录','err');return}
+    var pend=files.length;
+    files.forEach(function(f){
+      gh('GET','contents/'+f.path).then(function(r2){
+        return r2.json();
+      }).then(function(j){
+        try{
+          var obj=JSON.parse(decodeURIComponent(escape(atob(j.content))));
+          if(obj.date){D.days[obj.date]={done:obj.done||[],ts:obj.ts?new Date(obj.ts).getTime():0};
+            if(obj.tasks)D.tasks=obj.tasks;if(obj.reward)D.reward=obj.reward;}
+        }catch(e){}
+        if(--pend===0){save();calc();renderTasks();renderChart();say('✅ 已恢复 '+files.length+' 天记录','ok');toast('恢复完成')}
+      });
+    });
+  }).catch(function(e){say('恢复失败：'+e.message+'（同步码无效或无权限）','err');localStorage.removeItem('xy_sync_token')});
+}
+// 初始
+calc();renderTasks();renderChart();
+</script>
+</body>
+</html>

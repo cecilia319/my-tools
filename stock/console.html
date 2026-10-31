@@ -46,13 +46,26 @@ td{padding:6px 7px;border-bottom:1px solid var(--border)}
 .p.up{color:var(--up)}.p.down{color:var(--down)}
 .buy{border-left:3px solid var(--border2);}
 .buy.go{border-left-color:var(--down)}.buy.pre{border-left-color:var(--accent)}.buy.wait{border-left-color:var(--border2)}
+.tabbar{display:flex;gap:8px;margin:0 0 12px;flex-wrap:wrap}
+.navtab{background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:9px;cursor:pointer;font-size:13px}
+.navtab.on{color:var(--accent);border-color:var(--accent);background:rgba(242,182,61,.08)}
+.navtab:hover{border-color:var(--accent)}
+.pane{display:none;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--panel);margin-bottom:12px}
+.pane iframe{width:100%;height:calc(100vh - 150px);border:none;display:block}
 </style>
 </head>
 <body>
 <h1>📊 投资<b>总控台</b> <span style="font-size:13px;color:var(--muted);font-weight:400" id="todaySpan"></span></h1>
 <div class="live" id="livebar"><span class="idx"><span class="nm">📡 实时行情连接中…</span></span></div>
-<div class="sub">每日作战入口：总体情况 → ETF买点 → 今日盯盘 → 模拟台账 → 抖音要点</div>
+<div class="sub">一站四视图：总览（指数/ETF买点/盯盘/台账/抖音要点）｜盯盘作战｜股池台账｜抖音情报 —— 用顶部标签切换</div>
+<div class="tabbar">
+ <button class="navtab on" data-tab="main" onclick="showTab('main')">📊 总览</button>
+ <button class="navtab" data-tab="battle" onclick="showTab('battle')">⚔️ 盯盘作战</button>
+ <button class="navtab" data-tab="assistant" onclick="showTab('assistant')">📋 股池台账</button>
+ <button class="navtab" data-tab="intel" onclick="showTab('intel')">📱 抖音情报</button>
+</div>
 
+<div id="tabMain">
 <div id="warnBox"></div>
 <div class="info" id="jzInfo"></div>
 
@@ -301,6 +314,36 @@ function applyLive(got){
 }
 fetchLive();
 setInterval(fetchLive,60*1000);
+</script>
+</div><!-- /tabMain -->
+<div class="pane" id="pane_battle"><iframe title="盯盘作战台"></iframe></div>
+<div class="pane" id="pane_assistant"><iframe title="股票助手工作台"></iframe></div>
+<div class="pane" id="pane_intel"><iframe title="抖音情报看板"></iframe></div>
+<script>
+(function(){
+  var ONLINE = location.protocol.indexOf('http') === 0;
+  var SRC = {
+    battle: ONLINE ? 'battle.html' : '股票助手/盯盘作战台.html',
+    assistant: ONLINE ? 'assistant.html' : '股票助手/股票助手工作台.html',
+    intel: ONLINE ? 'intel.html' : '股票助手/抖音情报/抖音情报看板.html'
+  };
+  window.showTab = function(name){
+    document.querySelectorAll('.navtab').forEach(function(b){ b.classList.toggle('on', b.dataset.tab === name); });
+    var main = document.getElementById('tabMain');
+    if (main) main.style.display = (name === 'main') ? '' : 'none';
+    ['battle','assistant','intel'].forEach(function(k){
+      var pane = document.getElementById('pane_' + k);
+      if (!pane) return;
+      pane.style.display = (k === name) ? 'block' : 'none';
+      if (k === name) {
+        var ifr = pane.querySelector('iframe');
+        if (ifr && !ifr.getAttribute('src')) ifr.src = SRC[k];
+      }
+    });
+    try { localStorage.setItem('conTab', name); } catch(e) {}
+  };
+  try { var saved = localStorage.getItem('conTab'); if (saved && saved !== 'main') showTab(saved); } catch(e) {}
+})();
 </script>
 </body>
 </html>

@@ -590,5 +590,87 @@ function saveMeal(){
 
 renderStatus();rLogType();renderHis();renderLogList();rMeal();
 </script>
+
+<!-- ===== 云端同步模块（TeleAgent 2026-10-31 加装）===== -->
+<div style="max-width:640px;margin:14px auto 26px;padding:0 14px">
+  <div style="display:flex;gap:8px;align-items:stretch">
+    <button id="fitSyncBtn" onclick="fitSyncCloud()" style="flex:1;background:linear-gradient(90deg,#00b4d8,#0077b6);border:none;border-radius:12px;padding:12px;font-size:15px;font-weight:800;color:#fff;cursor:pointer;letter-spacing:1px">☁️ 同步云端</button>
+    <button onclick="fitRestoreCloud()" style="background:#f5f0e8;border:1px solid #d9c9a8;border-radius:12px;padding:8px 16px;font-size:13px;color:#8a6d2f;cursor:pointer">📥 换机恢复</button>
+  </div>
+  <div id="fitMsg" style="text-align:center;font-size:12px;color:#999;min-height:16px;margin-top:6px">打卡/饮食记录同步到云端私有库（换手机/换电脑不丢，TeleAgent 可自动汇总周报）</div>
+</div>
+<div id="fitLock" style="position:fixed;inset:0;background:rgba(20,12,4,.92);z-index:50;display:none;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fffdf6;border:1px solid #d9c9a8;border-radius:16px;padding:22px;max-width:340px;width:100%">
+    <h3 style="font-size:16px;color:#8a6d2f;margin-bottom:8px">输入同步码</h3>
+    <p style="font-size:12.5px;color:#8a7a5a;line-height:1.7;margin-bottom:12px">同步码由助手提供（只需输入一次，保存在本机），用于云端备份打卡数据。</p>
+    <input id="fitLockInput" placeholder="粘贴同步码" type="password" style="width:100%;box-sizing:border-box;background:#fff;border:1px solid #d9c9a8;border-radius:10px;color:#333;padding:11px 12px;font-size:13px;margin-bottom:10px">
+    <button onclick="fitLockOk()" style="width:100%;background:#b45309;color:#fff;border:none;border-radius:10px;padding:11px;font-weight:800;cursor:pointer">确定</button>
+    <p style="margin:8px 0 0;font-size:11px;text-align:center"><a href="javascript:void(0)" onclick="document.getElementById('fitLock').style.display='none'" style="color:#bbb">取消</a></p>
+  </div>
+</div>
+<script>
+var FIT_REPO='cecilia319/data';
+function fitGetToken(){return localStorage.getItem('fit_sync_token')||''}
+function fitAsk(cb){window._fitCb=cb;var l=document.getElementById('fitLock');l.style.display='flex';document.getElementById('fitLockInput').value='';document.getElementById('fitLockInput').focus()}
+function fitLockOk(){var v=document.getElementById('fitLockInput').value.trim();if(!v)return;localStorage.setItem('fit_sync_token',v);document.getElementById('fitLock').style.display='none';if(window._fitCb){var cb=window._fitCb;window._fitCb=null;cb()}}
+function fitSay(s,cls){var m=document.getElementById('fitMsg');m.textContent=s;m.style.color=cls==='ok'?'#2a9d8f':(cls==='err'?'#c0392b':'#999')}
+function fitGh(method,path,body){
+  return fetch('https://api.github.com/repos/'+FIT_REPO+'/'+path,{method:method,
+    headers:{'Authorization':'Bearer '+fitGetToken(),'Content-Type':'application/json','Accept':'application/vnd.github+json'},
+    body:body?JSON.stringify(body):undefined});
+}
+function fitToday(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function fitSyncCloud(){
+  if(!fitGetToken()){fitAsk(fitSyncCloud);return}
+  fitSay('同步中…');
+  var all=localStorage.getItem(LS_KEY)||'{}';
+  var t=fitToday();
+  var path='contents/fitness/'+t+'.json';
+  var payload={date:t,ts:new Date().toISOString(),data:JSON.parse(all)};
+  fitGh('GET',path).then(function(r){return r.status===200?r.json():null}).then(function(meta){
+    var body={message:'fitness '+t,content:btoa(unescape(encodeURIComponent(JSON.stringify(payload))))};
+    if(meta&&meta.sha)body.sha=meta.sha;
+    return fitGh('PUT',path,body);
+  }).then(function(r){
+    if(r.status===200||r.status===201){fitSay('✅ 已同步云端 '+t,'ok')}
+    else if(r.status===401||r.status===403){fitSay('同步失败：同步码无效或无权限','err');localStorage.removeItem('fit_sync_token')}
+    else fitSay('同步失败 HTTP '+r.status,'err');
+  }).catch(function(e){fitSay('网络异常：'+e.message,'err')});
+}
+function fitRestoreCloud(){
+  if(!fitGetToken()){fitAsk(fitRestoreCloud);return}
+  fitSay('从云端恢复中…');
+  fitGh('GET','contents/fitness').then(function(r){
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    return r.json();
+  }).then(function(files){
+    if(!files||!files.length){fitSay('云端暂无历史记录','err');return}
+    var pend=files.length;
+    files.forEach(function(f){
+      fitGh('GET','contents/'+f.path).then(function(r2){return r2.json()}).then(function(j){
+        try{
+          var obj=JSON.parse(decodeURIComponent(escape(atob(j.content))));
+          if(obj&&obj.data){
+            // 合并records（按 时间+类型 去重）
+            var cur=JSON.parse(localStorage.getItem(LS_KEY)||'{}');
+            var merged=Object.assign({},cur);
+            if(obj.data.records&&obj.data.records.length){
+              merged.records=(merged.records||[]).concat(obj.data.records);
+              var seen={},ded=[];
+              merged.records.forEach(function(r3){
+                var k=(r3.date||'')+'|'+(r3.time||'')+'|'+(r3.type||'')+'|'+(r3.minutes||'');
+                if(!seen[k]){seen[k]=1;ded.push(r3)}
+              });
+              merged.records=ded;
+            }
+            localStorage.setItem(LS_KEY,JSON.stringify(merged));
+          }
+        }catch(e){}
+        if(--pend===0){fitSay('✅ 已恢复 '+files.length+' 天，页面即将刷新','ok');setTimeout(function(){location.reload()},900)}
+      });
+    });
+  }).catch(function(e){fitSay('恢复失败：'+e.message,'err');localStorage.removeItem('fit_sync_token')});
+}
+</script>
 </body>
 </html>

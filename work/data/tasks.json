@@ -590,7 +590,8 @@
      "completed": false
     }
    ],
-   "board": "customer:s-tuanshengwei"
+   "board": "customer:s-tuanshengwei",
+   "progress": "福富方案已回复修改意见稿（问题：报价偏高/功能边界不清/缺漏项）；私有云服务器报价完成"
   },
   {
    "id": "tsw-ai-club",
@@ -909,7 +910,9 @@
      "completed": false
     }
    ],
-   "board": "customer:s-minjiang"
+   "board": "customer:s-minjiang",
+   "next": "TA私有化POC已可启动：筹备POC测试（模型选型/算力/首场景）；遗留问题清单（16项）随POC推进闭环；跟进先进制造学院预算与牵头人",
+   "progress": "方案获客户同意采用（校内通算+千卡池token）；POC已可启动"
   },
   {
    "id": "wb-cust-shida",
@@ -966,7 +969,7 @@
     }
    ],
    "reminded": false,
-   "name": "AI STORE Token包孵化（与知途好课一体化包装）",
+   "name": "AI STORE Token包一体化（福建省内大学）",
    "completedAt": "",
    "status": "in_progress",
    "duration": "long",
@@ -996,7 +999,9 @@
      "desc": "方案初稿（建议月底前）",
      "completed": false
     }
-   ]
+   ],
+   "next": "下周：①协调云中台、数研院出大模型方案（我司大模型缺失）②完成福建省内大学Token包一体化售前评审三件套【初稿】定稿",
+   "progress": "AI创课与合作伙伴达成Token包合作目标；因我司大模型缺失，需协调云中台与数研院补齐"
   },
   {
    "id": "wb-weekly-report",
@@ -1183,7 +1188,9 @@
      "completed": false
     }
    ],
-   "board": "customer:s-tuanshengwei"
+   "board": "customer:s-tuanshengwei",
+   "next": "下周：方案再讨论与谈判跟踪（主要问题：报价太高、功能不清、缺漏）",
+   "progress": "本周根据福富输出方案讨论研究，回复修改意见稿；完成私有云服务器报价"
   },
   {
    "id": "wb-ksy-yanshou",
@@ -1283,7 +1290,7 @@
   {
    "id": "jc-course1106",
    "category": "customer",
-   "name": "警察学院课程建设和数字人方案跟踪",
+   "name": "警察学院人工智能试点方案输出",
    "content": "视频侦查技术课程建设(AI互动课堂方案已交付)持续跟踪 + 数字人方案输出落地，下周五前完成",
    "lead": "陈思然",
    "status": "in_progress",
@@ -1293,7 +1300,7 @@
    "completedAt": "",
    "createdAt": "2026-10-29T07:45:00+08:00",
    "updatedAt": "2026-10-29T07:45:00+08:00",
-   "deadline": "2026-11-06",
+   "deadline": "2026-11-03",
    "progressNote": "数字人方案为新增内容",
    "history": [
     {
@@ -1310,7 +1317,8 @@
      "completed": false
     }
    ],
-   "board": "customer:s-police"
+   "board": "customer:s-police",
+   "next": "方案已输出，下周二（11/3）标记完成；同步跟进警察学院TA私有化部署对接"
   },
   {
    "id": "hy-report1030",
@@ -1353,7 +1361,7 @@
   {
    "id": "hy-jinan1030",
    "category": "customer",
-   "name": "海洋职校：与晋安局、客户确认项目和预算",
+   "name": "海洋职校：TA私有化+试点经费三方确认",
    "content": "海洋职业技术学校AI赋能教育试点（3000万项目中给客户报价50万，专项用于人工智能赋能教育试点）：昨日新增工作项——与晋安局及客户确认项目范围与预算，落实试点经费落地。",
    "lead": "陈思然",
    "status": "in_progress",
@@ -1380,12 +1388,13 @@
      "completed": false
     }
    ],
-   "board": "customer:s-haiyang"
+   "board": "customer:s-haiyang",
+   "next": "与晋安局、学校三方确认项目范围与预算；以试点申报（已10/30上报）牵引TA私有化部署与创课+TA商机"
   },
   {
    "id": "nl-ta-private1030",
    "category": "customer",
-   "name": "福建农林大学：TA私有化部署（客户同意优化部署方案）",
+   "name": "福建农林大学：TA私有化部署推进",
    "content": "农大新增TA私有化部署任务：客户已同意采用优化部署方案（本地化部署、数据不出校），待我方支撑跟踪落地；与信创包3（306万）形成组合推进。",
    "lead": "陈思然",
    "status": "in_progress",
@@ -1412,7 +1421,36 @@
      "completed": false
     }
    ],
-   "board": "customer:s-nongda"
+   "board": "customer:s-nongda",
+   "next": "TA私有化部署方案沟通推进；信创包答疑（本周已答疑2个以上合作伙伴，持续沟通进展）",
+   "done_note": "",
+   "progress": "本周信创包答疑2个以上合作伙伴，沟通进展中（不涉信创包3组合）"
+  },
+  {
+   "id": "wb-campsol-1106",
+   "project": [
+    "产品线"
+   ],
+   "name": "省校园解决方案面向客户的售前优化",
+   "status": "in_progress",
+   "priority": "high",
+   "deadline": "2026-11-06",
+   "next": "基于TA高校演示物库（9件学科/校级交互演示物）优化省校园解决方案的面向客户售前版本",
+   "created": "2026-10-31",
+   "source": "weekly_fix"
+  },
+  {
+   "id": "wb-fzmu-1106",
+   "project": [
+    "客户线"
+   ],
+   "name": "福州医科大学：AI场景对接推进",
+   "status": "in_progress",
+   "priority": "medium",
+   "deadline": "2026-11-13",
+   "next": "以医学学科AI演示物（心脏解剖等）为切入对接福州医大场景化需求，支撑售前拜访",
+   "created": "2026-10-31",
+   "source": "monthly_key3"
   }
  ],
  "logs": [

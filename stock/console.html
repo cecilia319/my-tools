@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <script src="../gate.js?v=20261030" data-gate></script>
@@ -176,7 +176,7 @@ if(wl.events){document.getElementById('wlEvent').innerHTML='<div style="margin-b
 // 信号一句话+跳转
 var sum=D.signal_summary||{};
 var isGit=(location.protocol==='https:');
-var wbHref=isGit?'assistant.html':'file:///D:/投资理财资料/股票助手/assistant.html';
+var wbHref=isGit?'assistant.html':'file:///D:/投资/股票助手/股票助手工作台.html';
 document.getElementById('sigLine').innerHTML='🎯 今日信号：高置信 '+(sum.high||0)+' 条 ｜ 中置信 '+(sum.mid||0)+' 条 ｜ 观察 '+(sum.watch||0)+' 条（模拟台账只收高/中置信）—— <a href="'+wbHref+'" style="color:var(--blue)">明细在股票助手工作台 →</a>';
 // ⑤ 模拟台账
 var pp=D.paper||{};
@@ -262,12 +262,12 @@ var links=isGit?[
 ['battle.html','🎯 盯盘作战台','盘中执行卡 · 9:00-15:00专用'],
  ['assistant.html','📈 股票助手工作台','个股池研究 · 101股/防狼/解禁/持仓'],
  ['intel.html','📱 抖音情报看板','博主观点/方法论库/完整转写'],
- ['我的页面大全.html','🗂 我的页面大全','健身/小奕/工作/Demo 全站导航']
+ ['../index.html','🗂 我的页面大全','健身/小奕/工作/Demo 全站导航']
 ]:[
- ['file:///D:/投资理财资料/股票助手/battle.html','🎯 盯盘作战台','盘中执行卡 · 9:00-15:00专用'],
- ['file:///D:/投资理财资料/股票助手/assistant.html','📈 股票助手工作台','个股池研究 · 101股/防狼/解禁/持仓'],
- ['file:///D:/投资理财资料/股票助手/抖音情报/intel.html','📱 抖音情报看板','博主观点/方法论库/完整转写'],
- ['file:///D:/投资理财资料/知识库索引.html','📚 知识库索引','回测报告/速查等一次性产物（已归档）']
+ ['file:///D:/投资/股票助手/盯盘作战台.html','🎯 盯盘作战台','盘中执行卡 · 9:00-15:00专用'],
+ ['file:///D:/投资/股票助手/股票助手工作台.html','📈 股票助手工作台','个股池研究 · 101股/防狼/解禁/持仓'],
+ ['file:///D:/投资/股票助手/抖音情报/抖音情报看板.html','📱 抖音情报看板','博主观点/方法论库/完整转写'],
+ ['file:///D:/投资/知识库索引.html','📚 知识库索引','回测报告/速查等一次性产物（已归档）']
 ];
 nav.innerHTML=links.map(function(l){return '<a href="'+l[0]+'">'+l[1]+' <small>'+l[2]+'</small></a>';}).join('');
 // ===== 实时行情：JSONP直连腾讯（指数+ETF+模拟持仓 60秒）=====

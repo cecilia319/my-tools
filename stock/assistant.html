@@ -606,11 +606,19 @@ function renderPool() {
 /* ================= 学习与进化 ================= */
 function renderBrain() {
   const b = D.brain;
-  const ruleRows = Object.entries(b.rules || {}).map(([k, r]) => {
+  const bRules = Object.entries(b.rules || {});
+  const ruleRows = bRules.map(([k, r]) => {
     const ps = Object.entries(r.params || {}).map(([pk, pv]) => `${esc(pk)}=${esc(pv)}`).join(' · ');
+    const prior = r.prior_wr != null ? r.prior_wr : (r.init_winrate || 0);
+    const pn = r.prior_n != null ? r.prior_n : 0;
+    const en = r.emp_n || 0;
+    const emp = en > 0 ? `${((r.emp_winrate||0)*100).toFixed(1)}% <span style="color:var(--faint);font-size:11px">(n${en})</span>` : '<span style="color:var(--faint)">未验</span>';
+    const post = (r.prior_wr != null && r.emp_winrate != null) ? `<b class="p-up">${((r.emp_winrate)*100).toFixed(1)}%</b>` : '<span style="color:var(--faint)">=先验</span>';
     return `<tr><td style="font-weight:600">${esc(r.desc)}<div style="color:var(--faint);font-size:11px">${esc(k)}</div></td>
       <td style="color:var(--muted)">${ps}</td><td class="num">${(r.init_weight||1).toFixed(1)}</td>
-      <td class="num p-up">${((r.init_winrate||0)*100).toFixed(1)}%</td></tr>`;
+      <td class="num">${(prior*100).toFixed(1)}%<div style="color:var(--faint);font-size:11px">n=${pn}${r.prior_note?' <span title="'+esc(r.prior_note)+'" style="cursor:help">ⓘ</span>':''}</div></td>
+      <td class="num" style="font-size:12px">${emp}</td>
+      <td class="num">${post}</td></tr>`;
   }).join('');
   const seeds = Object.entries(b.seeds || {}).sort((a, c) => c[1] - a[1]);
   const logChips = Object.entries(b.log_stats.rules || {}).map(([k, v]) =>
@@ -621,7 +629,7 @@ function renderBrain() {
     <td><span class="chip">${esc(e.status)}</span></td></tr>`).join('');
   $('#page-brain').innerHTML = `
     <div class="page-head"><h2>学习与进化</h2><span class="en">Learning Loop</span></div>
-    <div class="page-sub">初始权重来自《A股龙头回测报告》(${esc(D.meta.date)}部署) · 每周五收盘后统计信号真实胜率并自动调整权重 · 你的每次买卖反馈都是训练数据</div>
+    <div class="page-sub">种子更新=伪计数收缩: 后验=(先验×先验n+实测win)/(先验n+实测n) 2026-11-01上线, 替代旧0.4/0.6固定系数(先验4周衰减至2.6%, n=5实测标准误±0.44不可信) · 先验n锚定回测样本量, 实测按真实n累加, 小样本动不了种子</div>
     <div class="grid g4">
       <div class="stat"><div class="lb">累计信号</div><div class="val amber">${b.log_stats.total}</div><div class="sub">条(含观察区)</div></div>
       <div class="stat"><div class="lb">待验证(open)</div><div class="val">${b.log_stats.open}</div><div class="sub">5日/20日后自动回看结果</div></div>
@@ -629,13 +637,21 @@ function renderBrain() {
       <div class="stat"><div class="lb">防狼过滤</div><div class="val ${b.filters.macd_below_zero_block ? 'up' : ''}">${b.filters.macd_below_zero_block ? '开启' : '关闭'}</div><div class="sub">MACD零轴下方一律禁买并扣25分</div></div>
     </div>
     <div class="grid g2 mt14">
-      <div class="card"><h3><span class="dot"></span>四大规则当前参数</h3>
-        <table><tr><th>规则</th><th>参数</th><th class="num">权重</th><th class="num">种子胜率</th></tr>${ruleRows}</table>
+      <div class="card"><h3><span class="dot"></span>${bRules.length}条规则 · 先验伪计数</h3>
+        <table><tr><th>规则</th><th>参数</th><th class="num">权重</th><th class="num">先验胜率(n)</th><th class="num">实盘验证</th><th class="num">后验种子</th></tr>${ruleRows}</table>
         <div class="hint">三种风格: 短线(止损-3%/止盈+8%/持5天) · 波段(-5%/+8%/20天) · ETF(-4%/+10%/30天)。到期或破位即关闭信号。</div>
       </div>
-      <div class="card"><h3><span class="dot" style="background:var(--accent)"></span>行业胜率种子(回测)</h3>
-        ${seeds.map(([g, v]) => `<div class="seed-row"><span>${esc(g)}</span><div class="seed-bar"><i style="width:${v*100*2}%"></i></div><span class="p-up">${(v*100).toFixed(1)}%</span></div>`).join('')}
-        <div class="hint">个股评分时按所属组加成(seed×40分)。周五复盘后用真实数据覆盖种子值。</div>
+      <div class="card"><h3><span class="dot" style="background:var(--accent)"></span>行业种子 · 先验→伪计数后验</h3>
+        ${seeds.map(([g, v]) => {
+          const pv = (b.seeds_prior||{})[g], pnn = (b.seeds_prior_n||{})[g];
+          const moved = pv != null && Math.abs(v - pv) >= 0.0005;
+          return `<div class="seed-row"><span>${esc(g)}</span><div class="seed-bar"><i style="width:${v*100*2}%"></i></div>` +
+            (moved
+              ? `<span style="font-size:11px;color:var(--faint)">${(pv*100).toFixed(1)}%<span style="color:var(--accent)">→</span></span><span class="p-up"><b>${(v*100).toFixed(1)}%</b></span>`
+              : `<span class="p-up">${(v*100).toFixed(1)}%</span>`) +
+            `<span style="font-size:10.5px;color:var(--faint)">n${pnn!=null?pnn:'?'}</span></div>`;
+        }).join('')}
+        <div class="hint">先验=10-20回测分组校准(信号数×0.3轮动折扣), 后验=伪计数收缩, 周五复盘按实测n缓慢修正。个股评分时按所属组加成(seed×40分)。</div>
       </div>
     </div>
     <div class="grid g2 mt14">

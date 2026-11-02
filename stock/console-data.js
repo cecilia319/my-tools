@@ -2200,31 +2200,51 @@ var TOTAL_DATA={
     "entry_price": 2.872,
     "stop_price": 2.793,
     "target_price": 3.214,
-    "latest_price": 2.862,
-    "latest_date": "2026-10-30",
-    "pct_day": -0.31,
-    "pnl_pct": -0.35,
-    "days_held": 1,
+    "latest_price": 2.871,
+    "latest_date": "2026-11-02",
+    "pct_day": 0.31,
+    "pnl_pct": -0.03,
+    "days_held": 2,
     "note": "T+1开盘成交(开盘2.872·10-29人工核实)",
     "status": "open",
     "buy_date": "2026-10-29",
     "style": "zhongxian"
    },
    {
-    "id": "2026-10-30-sh600828",
+    "id": "2026-11-02-sz301291",
     "type": "个股",
-    "symbol": "sh600828",
-    "name": "茂业商业",
-    "rule": "pullback_ma20",
-    "style": "boduan",
-    "signal_date": "2026-10-30",
+    "symbol": "sz301291",
+    "name": "明阳电气",
+    "rule": "macd_golden_cross",
+    "style": "duanxian",
+    "signal_date": "2026-11-02",
     "status": "pending",
     "buy_date": null,
-    "entry_price": 4.28,
-    "stop_price": 4.07,
-    "target_price": 4.62,
-    "latest_price": 4.28,
-    "latest_date": "2026-10-30",
+    "entry_price": 37.26,
+    "stop_price": 35.77,
+    "target_price": 40.99,
+    "latest_price": 37.26,
+    "latest_date": "2026-11-02",
+    "pct_day": 0.0,
+    "pnl_pct": 0.0,
+    "days_held": 0,
+    "note": "T+1按条件触发成交(平铺试错)"
+   },
+   {
+    "id": "2026-11-02-sh601083",
+    "type": "个股",
+    "symbol": "sh601083",
+    "name": "锦江航运",
+    "rule": "macd_golden_cross",
+    "style": "duanxian",
+    "signal_date": "2026-11-02",
+    "status": "pending",
+    "buy_date": null,
+    "entry_price": 14.08,
+    "stop_price": 13.52,
+    "target_price": 15.49,
+    "latest_price": 14.08,
+    "latest_date": "2026-11-02",
     "pct_day": 0.0,
     "pnl_pct": 0.0,
     "days_held": 0,
@@ -2313,7 +2333,7 @@ var TOTAL_DATA={
   "stats": {
    "total_closed": 3,
    "open": 1,
-   "pending": 1,
+   "pending": 2,
    "wins": 0,
    "losses": 3,
    "winrate": 0.0,
@@ -2321,7 +2341,7 @@ var TOTAL_DATA={
    "avg_win": null,
    "avg_loss": -5.56,
    "profit_factor": 0.0,
-   "updated": "2026-10-30"
+   "updated": "2026-11-02"
   },
   "expired": [
    {
@@ -2343,21 +2363,52 @@ var TOTAL_DATA={
     "days_held": 1,
     "note": "T+1最低12.700已破止损，信号失效",
     "style": "boduan"
+   },
+   {
+    "id": "2026-10-30-sh600828",
+    "type": "个股",
+    "symbol": "sh600828",
+    "name": "茂业商业",
+    "rule": "pullback_ma20",
+    "style": "boduan",
+    "signal_date": "2026-10-30",
+    "status": "expired",
+    "buy_date": null,
+    "entry_price": 4.28,
+    "stop_price": 4.07,
+    "target_price": 4.62,
+    "latest_price": 4.28,
+    "latest_date": "2026-10-30",
+    "pct_day": 0.0,
+    "pnl_pct": 0.0,
+    "days_held": 0,
+    "note": "T+1最低4.040已破止损，信号失效"
    }
   ]
  },
  "hold_pnl": {
-  "date": "2026-10-30",
-  "items": [
+  "date": "2026-11-02",
+  "hold_count": 1,
+  "day_avg_pct": 0.31,
+  "total_unreal_pct": -0.03,
+  "holdings": [
    {
-    "symbol": "sh510050",
     "name": "上证50ETF",
+    "type": "ETF",
     "entry": 2.872,
-    "latest": 2.862,
-    "pnl_pct": -0.35,
-    "style": "zhongxian"
+    "price": 2.871,
+    "pct_day": 0.31,
+    "pnl_pct": -0.03,
+    "days_held": 2,
+    "alert": ""
    }
-  ]
+  ],
+  "closed_today": [],
+  "stats": {
+   "pending": 2,
+   "total_closed": 3,
+   "winrate": 0.0
+  }
  },
  "dy_intel": {
   "date": "2026-10-31",

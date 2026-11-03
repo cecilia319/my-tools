@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../../gate.js?v=20261030" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>心脏的结构与血液循环——解剖交互课件</title>
+<style>
+  :root{
+    --blue:#1565C0; --blue-dark:#0D47A1; --blue-light:#E3F2FD;
+    --red:#C62828; --red-light:#FFEBEE;
+    --ink:#263238; --gray:#607D8B; --bg:#F2F7FC;
+    --amber:#FF8F00; --line:#D7E3F0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"Microsoft YaHei","微软雅黑",sans-serif;
+    background:var(--bg); color:var(--ink); padding-bottom:72px;
+    font-size:14px; line-height:1.6;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 14px;}
+  /* ============ 页头 ============ */
+  header.banner{
+    background:linear-gradient(100deg,var(--blue-dark) 0%,var(--blue) 70%);
+    color:#fff; border-radius:0 0 14px 14px; box-shadow:0 3px 12px rgba(13,71,161,.25);
+  }
+  .banner-in{max-width:1180px;margin:0 auto;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  header.banner h1{font-size:26px;font-weight:700;letter-spacing:1px;}
+  header.banner .sub{font-size:13px;opacity:.92;margin-top:4px;}
+  .badge-time{
+    background:var(--amber);color:#fff;font-weight:700;font-size:13px;
+    padding:8px 16px;border-radius:20px;white-space:nowrap;box-shadow:0 2px 8px rgba(255,143,0,.4);
+  }
+  /* ============ 教学目标 ============ */
+  .goals{max-width:1180px;margin:16px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 14px;}
+  .goal-card{
+    background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(21,101,192,.10);
+    padding:14px 16px;display:flex;align-items:center;gap:12px;
+    border-left:5px solid var(--blue);
+  }
+  .goal-num{
+    flex:0 0 32px;height:32px;border-radius:50%;background:var(--blue-light);color:var(--blue-dark);
+    font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;
+  }
+  .goal-card p{font-size:13.5px;font-weight:600;}
+  /* ============ 主区 ============ */
+  main.stage{max-width:1180px;margin:14px auto 0;padding:0 14px;display:flex;gap:14px;align-items:stretch;flex-wrap:wrap;}
+  .diagram-card{
+    flex:1 1 640px;min-width:560px;background:#fff;border-radius:14px;
+    box-shadow:0 3px 14px rgba(21,101,192,.12);padding:12px 14px 10px;
+  }
+  .kb-panel{
+    flex:0 0 330px;background:#fff;border-radius:14px;
+    box-shadow:0 3px 14px rgba(21,101,192,.12);padding:14px;display:flex;flex-direction:column;
+  }
+  .kb-panel h2{font-size:16px;color:var(--blue-dark);border-bottom:2px solid var(--blue-light);padding-bottom:8px;margin-bottom:10px;}
+  .kb-hint{color:var(--gray);font-size:13px;margin-top:24px;text-align:center;}
+  .kb-hint b{color:var(--blue);}
+  .kb-card{display:flex;flex-direction:column;gap:10px;flex:1;}
+  .kb-head{display:flex;align-items:center;gap:10px;}
+  .kb-type{background:var(--blue);color:#fff;font-size:12px;padding:3px 10px;border-radius:12px;flex:0 0 auto;}
+  .kb-name{font-size:20px;font-weight:800;color:var(--blue-dark);flex:1;}
+  .kb-latin{font-family:Cambria,Georgia,"Times New Roman",serif;font-style:italic;color:var(--gray);font-size:14px;}
+  .kb-sec h4{font-size:13px;color:var(--blue-dark);margin-bottom:3px;}
+  .kb-sec p{font-size:13.5px;text-align:justify;}
+  .kb-clin{background:var(--red-light);border-left:4px solid var(--red);border-radius:0 8px 8px 0;padding:8px 10px;}
+  .kb-clin h4{color:var(--red) !important;}
+  /* ============ 工具栏 / 状态条 ============ */
+  .toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+  .toolbar .tlabel{font-size:13px;color:var(--gray);font-weight:600;}
+  .tsep{color:var(--line);margin:0 2px;}
+  button.ctl{
+    font-family:inherit;font-size:13px;cursor:pointer;border:1.5px solid var(--blue);
+    background:#fff;color:var(--blue-dark);border-radius:18px;padding:6px 14px;font-weight:600;
+    transition:all .15s;
+  }
+  button.ctl:hover{background:var(--blue-light);}
+  button.ctl.active{background:var(--blue);color:#fff;}
+  button.ctl.spd{padding:4px 10px;border-radius:12px;font-size:12.5px;}
+  button#btnAnim{background:var(--blue-dark);color:#fff;border-color:var(--blue-dark);}
+  button#btnAnim.on{background:var(--red);border-color:var(--red);}
+  .statusbar{
+    margin-top:6px;background:var(--blue-light);border-radius:10px;padding:8px 14px;
+    font-size:13px;color:var(--blue-dark);display:flex;gap:14px;flex-wrap:wrap;align-items:center;
+  }
+  .statusbar b{color:var(--red);}
+  .statusbar .sv{font-weight:700;}
+  /* ============ SVG ============ */
+  svg#heartSvg{width:100%;height:auto;display:block;user-select:none;}
+  svg text{font-family:"Microsoft YaHei",sans-serif;}
+  .lbl{font-size:13px;font-weight:700;fill:#37474F;}
+  .lbl-sm{font-size:11px;font-weight:600;fill:#B71C1C;}
+  .lbl-tiny{font-size:10.5px;font-weight:600;fill:#546E7A;}
+  .lbl-note{font-size:10.5px;fill:#78909C;}
+  .flow-arrow{font-size:10.5px;font-weight:600;fill:#546E7A;}
+  g.struct{cursor:pointer;}
+  g.struct:hover{filter:drop-shadow(0 0 4px rgba(21,101,192,.6));}
+  g.struct.active{filter:drop-shadow(0 0 7px rgba(255,143,0,.95));}
+  g.struct.active .main{stroke:#E65100;stroke-width:2.6;}
+  g.struct.active .wall{stroke:#E65100;}
+  .hot{fill:#fff;fill-opacity:0;}
+  /* ============ 速查表 ============ */
+  .table-card,.quiz-card,.talk-card{max-width:1180px;margin:14px auto 0;padding:0 14px;}
+  .table-card .inner,.quiz-card .inner,.talk-card .inner,.table-inner{background:#fff;border-radius:14px;box-shadow:0 3px 14px rgba(21,101,192,.12);padding:16px 18px;}
+  h2.sec{font-size:17px;color:var(--blue-dark);margin-bottom:10px;padding-left:10px;border-left:5px solid var(--blue);}
+  table#structTable{width:100%;border-collapse:collapse;font-size:13px;}
+  table#structTable th{
+    background:var(--blue-dark);color:#fff;padding:7px 10px;text-align:left;font-weight:600;font-size:12.5px;
+  }
+  table#structTable td{padding:6px 10px;border-bottom:1px solid var(--line);}
+  table#structTable tbody tr{cursor:pointer;transition:background .12s;}
+  table#structTable tbody tr:hover{background:var(--blue-light);}
+  table#structTable tbody tr.active{background:#FFF3E0;}
+  table#structTable tbody tr.active td:first-child{color:var(--red);font-weight:700;}
+  td.latin{font-family:Cambria,Georgia,serif;font-style:italic;color:var(--gray);}
+  td.typ{font-size:12px;color:var(--blue);font-weight:600;}
+  /* ============ 小测 ============ */
+  .quiz-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
+  .quiz-score{background:var(--red-light);color:var(--red);font-weight:800;font-size:15px;padding:5px 16px;border-radius:16px;border:1.5px solid var(--red);}
+  .quiz-item{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
+  .quiz-item h3{font-size:14.5px;margin-bottom:10px;}
+  .quiz-item h3 em{font-style:normal;color:var(--red);font-weight:800;margin-right:6px;}
+  .quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  button.opt{
+    font-family:inherit;font-size:13.5px;text-align:left;cursor:pointer;padding:8px 12px;
+    border:1.5px solid var(--line);border-radius:9px;background:#fff;transition:all .15s;color:var(--ink);
+  }
+  button.opt:hover{border-color:var(--blue);background:var(--blue-light);}
+  button.opt.right{background:#43A047;border-color:#43A047;color:#fff;font-weight:700;}
+  button.opt.wrong{background:var(--red);border-color:var(--red);color:#fff;font-weight:700;}
+  button.opt.dim{opacity:.55;cursor:default;}
+  .quiz-exp{margin-top:10px;font-size:13px;border-radius:9px;padding:9px 12px;display:none;}
+  .quiz-exp.show{display:block;}
+  .quiz-exp.ok{background:#E8F5E9;color:#1B5E20;border:1px solid #A5D6A7;}
+  .quiz-exp.no{background:var(--red-light);color:var(--red);border:1px solid #EF9A9A;}
+  button#quizReset{margin-top:4px;font-size:13px;}
+  /* ============ 话术卡 ============ */
+  details.talk-card summary{
+    list-style:none;cursor:pointer;font-size:15px;font-weight:700;color:var(--blue-dark);
+    padding:14px 18px;background:#fff;border-radius:14px;box-shadow:0 3px 14px rgba(21,101,192,.12);
+    display:flex;align-items:center;gap:10px;
+  }
+  details.talk-card summary::-webkit-details-marker{display:none;}
+  details.talk-card summary::before{content:"+";width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex:0 0 26px;}
+  details.talk-card[open] summary::before{content:"-";}
+  .talk-body{background:#fff;border-radius:0 0 14px 14px;box-shadow:0 3px 14px rgba(21,101,192,.12);padding:14px 20px;margin-top:-8px;padding-top:22px;}
+  .talk-body ol{margin-left:20px;}
+  .talk-body li{margin-bottom:10px;font-size:13.5px;}
+  .talk-body li b{color:var(--red);}
+  .talk-tag{display:inline-block;background:var(--red-light);color:var(--red);font-size:12px;border-radius:10px;padding:1px 10px;margin-right:6px;font-weight:700;}
+  /* ============ 页脚 ============ */
+  footer.pagefoot{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    background:rgba(13,71,161,.96);color:#fff;text-align:center;
+    padding:11px 10px;font-size:13px;letter-spacing:.5px;
+    box-shadow:0 -2px 10px rgba(13,71,161,.35);
+  }
+  footer.pagefoot b{color:#FFD54F;}
+  @media (max-width:900px){
+    .goals{grid-template-columns:1fr;}
+    .kb-panel{flex:1 1 100%;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= 页头 ================= -->
+<header class="banner">
+  <div class="banner-in">
+    <div>
+      <h1>心脏的结构与血液循环——解剖交互课件</h1>
+      <p class="sub">医用解剖学 · 系统解剖学（脉管系统） · 适用于临床 / 护理 / 影像专业</p>
+    </div>
+    <span class="badge-time">建议课堂演示：5 分钟</span>
+  </div>
+</header>
+
+<!-- ================= 教学目标 ================= -->
+<section class="goals">
+  <div class="goal-card"><span class="goal-num">1</span><p>掌握心脏四腔（左 / 右心房、左 / 右心室）的结构与位置关系</p></div>
+  <div class="goal-card"><span class="goal-num">2</span><p>理解体循环 / 肺循环血流路径与动、静脉血的转换</p></div>
+  <div class="goal-card"><span class="goal-num">3</span><p>认识二尖瓣、三尖瓣、主动脉瓣、肺动脉瓣的名称与功能</p></div>
+</section>
+
+<!-- ================= 核心交互区 ================= -->
+<main class="stage">
+  <div class="diagram-card">
+    <div class="toolbar">
+      <button class="ctl" id="btnAnim">播放血液循环动画</button>
+      <span class="tsep">|</span>
+      <span class="tlabel">倍速</span>
+      <button class="ctl spd" data-s="0.5">0.5x</button>
+      <button class="ctl spd active" data-s="1">1x</button>
+      <button class="ctl spd" data-s="2">2x</button>
+      <span class="tsep">|</span>
+      <span class="tlabel">心动周期</span>
+      <button class="ctl ph" data-ph="atrial">心房收缩期</button>
+      <button class="ctl ph" data-ph="ventricular">心室收缩期</button>
+      <button class="ctl ph active" data-ph="diastole">舒张期</button>
+    </div>
+
+    <svg id="heartSvg" viewBox="0 0 760 620" role="img" aria-label="心脏正面解剖剖面示意图">
+      <defs>
+        <radialGradient id="gBg" cx="50%" cy="38%" r="75%">
+          <stop offset="0%" stop-color="#FDFEFF"/>
+          <stop offset="100%" stop-color="#F0F6FC"/>
+        </radialGradient>
+      </defs>
+      <rect x="0" y="0" width="760" height="620" fill="url(#gBg)" rx="12"/>
+
+      <!-- 体循环回流 / 去向注释 -->
+      <text class="lbl-note" x="118" y="42">体循环回流（头颈 · 上肢）</text>
+      <text class="lbl-note" x="128" y="394">来自下肢 · 腹腔</text>
+      <text class="flow-arrow" x="60" y="166">至肺 · 气体交换</text>
+      <text class="flow-arrow" x="556" y="186">至全身各器官</text>
+
+      <!-- 心外膜（心肌壁外轮廓） -->
+      <path id="pericard" fill="#FBD5E0" stroke="#E8A0AE" stroke-width="1.6"
+        d="M 172,168 C 158,215 163,262 190,296 C 172,352 168,430 205,498 C 240,542 320,552 400,548 C 430,556 448,558 462,548 C 520,520 570,450 598,335 C 625,282 620,218 592,168 C 556,118 495,102 442,110 C 396,118 348,120 300,128 C 256,134 198,142 172,168 Z"/>
+
+      <!-- ===== 血管层（管壁 + 管腔双层描边） ===== -->
+      <!-- 肺静脉（动脉血，红系） -->
+      <g id="struct-pv" class="struct" data-id="pv">
+        <path class="wall" d="M 350,126 C 376,136 402,146 430,158" fill="none" stroke="#C62828" stroke-width="15" stroke-linecap="round"/>
+        <path class="blood" d="M 350,126 C 376,136 402,146 430,158" fill="none" stroke="#EF9A9A" stroke-width="9" stroke-linecap="round"/>
+        <path class="wall" d="M 366,152 C 390,160 414,168 438,178" fill="none" stroke="#C62828" stroke-width="15" stroke-linecap="round"/>
+        <path class="blood" d="M 366,152 C 390,160 414,168 438,178" fill="none" stroke="#EF9A9A" stroke-width="9" stroke-linecap="round"/>
+        <path class="wall" d="M 662,170 C 638,176 618,182 602,188" fill="none" stroke="#C62828" stroke-width="15" stroke-linecap="round"/>
+        <path class="blood" d="M 662,170 C 638,176 618,182 602,188" fill="none" stroke="#EF9A9A" stroke-width="9" stroke-linecap="round"/>
+        <path class="wall" d="M 666,214 C 640,218 620,220 602,222" fill="none" stroke="#C62828" stroke-width="15" stroke-linecap="round"/>
+        <path class="blood" d="M 666,214 C 640,218 620,220 602,222" fill="none" stroke="#EF9A9A" stroke-width="9" stroke-linecap="round"/>
+      </g>
+
+      <!-- 肺动脉干与左右肺动脉（静脉血，蓝系） -->
+      <g id="struct-pa" class="struct" data-id="pa">
+        <path class="wall" d="M 424,142 C 480,134 552,136 622,152" fill="none" stroke="#1976D2" stroke-width="20" stroke-linecap="round"/>
+        <path class="blood" d="M 424,142 C 480,134 552,136 622,152" fill="none" stroke="#90CAF9" stroke-width="13" stroke-linecap="round"/>
+        <path class="wall" d="M 418,140 C 340,130 240,132 152,146" fill="none" stroke="#1976D2" stroke-width="20" stroke-linecap="round"/>
+        <path class="blood" d="M 418,140 C 340,130 240,132 152,146" fill="none" stroke="#90CAF9" stroke-width="13" stroke-linecap="round"/>
+        <path class="wall" d="M 322,314 C 330,262 350,204 384,168 C 398,154 410,148 420,142" fill="none" stroke="#1976D2" stroke-width="26" stroke-linecap="round"/>
+        <path class="blood" d="M 322,314 C 330,262 350,204 384,168 C 398,154 410,148 420,142" fill="none" stroke="#90CAF9" stroke-width="18" stroke-linecap="round"/>
+      </g>
+
+      <!-- 上腔静脉 -->
+      <g id="struct-svc" class="struct" data-id="svc">
+        <path class="wall" d="M 222,48 L 226,174" fill="none" stroke="#1976D2" stroke-width="24" stroke-linecap="round"/>
+        <path class="blood" d="M 222,48 L 226,174" fill="none" stroke="#90CAF9" stroke-width="16" stroke-linecap="round"/>
+      </g>
+
+      <!-- 下腔静脉 -->
+      <g id="struct-ivc" class="struct" data-id="ivc">
+        <path class="wall" d="M 230,298 L 234,372" fill="none" stroke="#1976D2" stroke-width="24" stroke-linecap="round"/>
+        <path class="blood" d="M 230,298 L 234,372" fill="none" stroke="#90CAF9" stroke-width="16" stroke-linecap="round"/>
+      </g>
+
+      <!-- 主动脉（升主动脉 + 弓 + 分支，动脉血） -->
+      <g id="struct-aorta" class="struct" data-id="aorta">
+        <path class="wall" d="M 450,384 C 448,320 450,252 458,192 C 464,150 490,108 524,96 C 550,87 570,98 578,116 L 584,156" fill="none" stroke="#C62828" stroke-width="30" stroke-linecap="round"/>
+        <path class="blood" d="M 450,384 C 448,320 450,252 458,192 C 464,150 490,108 524,96 C 550,87 570,98 578,116 L 584,156" fill="none" stroke="#EF9A9A" stroke-width="21" stroke-linecap="round"/>
+        <path class="wall" d="M 486,102 C 480,82 474,60 470,42" fill="none" stroke="#C62828" stroke-width="12" stroke-linecap="round"/>
+        <path class="blood" d="M 486,102 C 480,82 474,60 470,42" fill="none" stroke="#EF9A9A" stroke-width="7" stroke-linecap="round"/>
+        <path class="wall" d="M 512,94 C 510,72 508,52 506,34" fill="none" stroke="#C62828" stroke-width="12" stroke-linecap="round"/>
+        <path class="blood" d="M 512,94 C 510,72 508,52 506,34" fill="none" stroke="#EF9A9A" stroke-width="7" stroke-linecap="round"/>
+        <path class="wall" d="M 534,92 C 540,72 546,54 550,38" fill="none" stroke="#C62828" stroke-width="12" stroke-linecap="round"/>
+        <path class="blood" d="M 534,92 C 540,72 546,54 550,38" fill="none" stroke="#EF9A9A" stroke-width="7" stroke-linecap="round"/>
+      </g>
+
+      <!-- ===== 心腔层 ===== -->
+      <g id="struct-ra" class="struct" data-id="ra">
+        <path class="main" data-cx="255" data-cy="215" fill="#BBDEFB" stroke="#3949AB" stroke-width="1.4"
+          d="M 196,158 C 180,200 184,252 208,286 C 236,304 290,304 318,290 C 332,258 330,212 320,176 C 296,140 232,132 196,158 Z"/>
+      </g>
+      <g id="struct-rv" class="struct" data-id="rv">
+        <path class="main" data-cx="282" data-cy="400" fill="#BBDEFB" stroke="#3949AB" stroke-width="1.4"
+          d="M 214,296 C 190,338 194,420 224,490 C 256,528 330,536 398,512 C 424,498 434,468 430,430 C 420,352 386,300 334,292 C 290,284 246,282 214,296 Z"/>
+      </g>
+      <g id="struct-la" class="struct" data-id="la">
+        <path class="main" data-cx="520" data-cy="210" fill="#FFCDD2" stroke="#C62828" stroke-width="1.4"
+          d="M 456,162 C 442,204 446,252 464,282 C 490,298 545,297 572,282 C 592,252 594,205 586,168 C 556,124 498,122 456,162 Z"/>
+      </g>
+      <g id="struct-lv" class="struct" data-id="lv">
+        <path class="main" data-cx="500" data-cy="398" fill="#FFCDD2" stroke="#C62828" stroke-width="1.4"
+          d="M 450,290 C 432,332 436,420 452,530 C 468,544 505,538 532,505 C 552,470 562,395 558,322 C 554,294 528,284 508,288 C 490,281 468,281 450,290 Z"/>
+      </g>
+
+      <!-- ===== 间隔层 ===== -->
+      <g id="struct-ias" class="struct" data-id="ias">
+        <path class="main" fill="#F4A7B9" stroke="#E57373" stroke-width="0.9"
+          d="M 334,166 C 350,158 366,156 378,160 L 414,254 C 404,264 394,268 386,268 C 370,230 352,198 334,166 Z"/>
+        <path d="M 346,206 C 360,212 372,220 378,236" fill="none" stroke="#C2185B" stroke-width="1.4" stroke-dasharray="3 3"/>
+      </g>
+      <g id="struct-ivs" class="struct" data-id="ivs">
+        <path class="main" fill="#F4A7B9" stroke="#E57373" stroke-width="0.9"
+          d="M 366,296 C 384,300 398,326 408,380 C 420,446 434,496 446,518 C 438,528 428,526 420,516 C 402,462 388,408 380,352 C 376,326 372,306 362,298 Z"/>
+      </g>
+
+      <!-- ===== 瓣膜层（瓣环 + 双瓣叶 + 热区） ===== -->
+      <g id="struct-tv" class="struct" data-id="tv">
+        <path class="ring" d="M 218,296 C 250,288 292,286 328,292" fill="none" stroke="#B71C1C" stroke-width="2"/>
+        <line class="leaf" x1="222" y1="295" x2="272" y2="300" stroke="#8D6E63" stroke-width="4.5" stroke-linecap="round"/>
+        <line class="leaf" x1="324" y1="292" x2="280" y2="298" stroke="#8D6E63" stroke-width="4.5" stroke-linecap="round"/>
+        <rect class="hot" x="212" y="272" width="124" height="70" style="pointer-events:all"/>
+      </g>
+      <g id="struct-mv" class="struct" data-id="mv">
+        <path class="ring" d="M 452,292 C 470,284 490,282 508,286" fill="none" stroke="#B71C1C" stroke-width="2"/>
+        <line class="leaf" x1="456" y1="290" x2="478" y2="296" stroke="#8D6E63" stroke-width="4.5" stroke-linecap="round"/>
+        <line class="leaf" x1="504" y1="286" x2="486" y2="294" stroke="#8D6E63" stroke-width="4.5" stroke-linecap="round"/>
+        <rect class="hot" x="442" y="266" width="92" height="66" style="pointer-events:all"/>
+      </g>
+      <g id="struct-pvv" class="struct" data-id="pvv">
+        <path class="ring" d="M 306,310 C 314,300 330,296 340,306" fill="none" stroke="#B71C1C" stroke-width="2"/>
+        <line class="leaf" x1="308" y1="308" x2="324" y2="302" stroke="#8D6E63" stroke-width="4.5" stroke-linecap="round"/>
+        <line class="leaf" x1="338" y1="306" x2="323" y2="302" stroke="#8D6E63" stroke-width="4.5" stroke-linecap="round"/>
+        <rect class="hot" x="294" y="274" width="64" height="50" style="pointer-events:all"/>
+      </g>
+      <g id="struct-av" class="struct" data-id="av">
+        <path class="ring" d="M 432,378 C 442,368 462,364 474,372" fill="none" stroke="#B71C1C" stroke-width="2"/>
+        <line class="leaf" x1="434" y1="377" x2="453" y2="370" stroke="#8D6E63" stroke-width="4.5" stroke-linecap="round"/>
+        <line class="leaf" x1="472" y1="371" x2="455" y2="370" stroke="#8D6E63" stroke-width="4.5" stroke-linecap="round"/>
+        <rect class="hot" x="418" y="346" width="74" height="56" style="pointer-events:all"/>
+      </g>
+
+      <!-- ===== 标签层 ===== -->
+      <text class="lbl" x="252" y="228" text-anchor="middle">右心房</text>
+      <text class="lbl" x="268" y="404" text-anchor="middle">右心室</text>
+      <text class="lbl" x="518" y="216" text-anchor="middle">左心房</text>
+      <text class="lbl" x="502" y="408" text-anchor="middle">左心室</text>
+      <text class="lbl-tiny" x="240" y="96">上腔静脉</text>
+      <text class="lbl-tiny" x="248" y="352">下腔静脉</text>
+      <text class="lbl-tiny" x="446" y="126">主动脉</text>
+      <text class="lbl-tiny" x="358" y="254">肺动脉干</text>
+      <text class="lbl-tiny" x="618" y="248">肺静脉</text>
+      <text class="lbl-sm" x="268" y="322" text-anchor="middle">三尖瓣</text>
+      <text class="lbl-sm" x="477" y="316" text-anchor="middle">二尖瓣</text>
+      <text class="lbl-sm" x="356" y="292" text-anchor="middle">肺动脉瓣</text>
+      <text class="lbl-sm" x="492" y="374" text-anchor="middle">主动脉瓣</text>
+      <text class="lbl" x="374" y="218" text-anchor="middle" transform="rotate(-90 374 218)" font-size="11" fill="#AD1457">房间隔</text>
+      <text class="lbl" x="388" y="416" font-size="11" fill="#AD1457">室间隔</text>
+      <text class="lbl-tiny" x="424" y="92" text-anchor="middle" fill="#90A4AE">左肺动脉（后方）</text>
+
+      <!-- ===== 血流动画层 ===== -->
+      <path id="flowV" visibility="hidden" fill="none"
+        d="M 222,54 L 226,176 C 232,220 242,258 260,280 C 272,288 284,292 296,296 C 302,340 300,400 312,442 C 320,472 330,458 338,420 C 348,368 332,320 322,312 C 330,262 350,204 384,168 C 398,154 410,148 420,142 C 340,130 240,132 156,147"/>
+      <path id="flowA" visibility="hidden" fill="none"
+        d="M 662,172 C 636,178 614,184 596,192 C 558,206 524,218 502,244 C 488,260 482,274 480,288 C 482,324 486,368 494,410 C 500,458 500,498 476,526 C 464,504 456,470 454,430 C 452,408 450,394 450,384 C 448,320 450,252 458,192 C 464,150 490,108 524,96 C 550,87 570,98 578,116 L 584,156"/>
+      <g id="dotLayer" style="display:none">
+        <circle class="dot v" r="6" fill="#1565C0" stroke="#fff" stroke-width="1.6"/>
+        <circle class="dot v" r="6" fill="#1565C0" stroke="#fff" stroke-width="1.6"/>
+        <circle class="dot v" r="6" fill="#1565C0" stroke="#fff" stroke-width="1.6"/>
+        <circle class="dot v" r="6" fill="#1565C0" stroke="#fff" stroke-width="1.6"/>
+        <circle class="dot a" r="6" fill="#C62828" stroke="#fff" stroke-width="1.6"/>
+        <circle class="dot a" r="6" fill="#C62828" stroke="#fff" stroke-width="1.6"/>
+        <circle class="dot a" r="6" fill="#C62828" stroke="#fff" stroke-width="1.6"/>
+        <circle class="dot a" r="6" fill="#C62828" stroke="#fff" stroke-width="1.6"/>
+      </g>
+    </svg>
+
+    <div class="statusbar" id="statusbar">
+      <span>当前阶段：<span class="sv" id="stPhase">舒张期（充盈期）</span></span>
+      <span>房室瓣（二尖瓣 / 三尖瓣）：<b id="stAv">开放</b></span>
+      <span>半月瓣（主动脉瓣 / 肺动脉瓣）：<b id="stSl">关闭</b></span>
+      <span id="stNote">静脉血回流充盈心腔，半月瓣关闭（S2）防止动脉血逆流</span>
+    </div>
+  </div>
+
+  <!-- 知识卡面板 -->
+  <aside class="kb-panel">
+    <h2>结构知识卡</h2>
+    <div id="kbBody"><div class="kb-hint">将鼠标移到左图任意结构上可预览高亮，<b>点击结构</b>即在此显示知识卡片（名称、拉丁名、功能、临床意义）。</div></div>
+  </aside>
+</main>
+
+<!-- ================= 交互5：结构速查表 ================= -->
+<section class="table-card">
+  <div class="table-inner">
+    <h2 class="sec">结构速查表（点击行可在图中定位高亮）</h2>
+    <table id="structTable">
+      <thead>
+        <tr><th style="width:52px">序号</th><th>结构名称</th><th>拉丁名</th><th style="width:110px">类别</th></tr>
+      </thead>
+      <tbody id="structTbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= 随堂小测 ================= -->
+<section class="quiz-card">
+  <div class="table-inner">
+    <div class="quiz-head">
+      <h2 class="sec" style="margin-bottom:0">随堂小测（单选）</h2>
+      <span class="quiz-score" id="quizScore">得分：0 / 3</span>
+    </div>
+    <div id="quizBox" style="margin-top:12px"></div>
+    <button class="ctl" id="quizReset">重做一遍</button>
+  </div>
+</section>
+
+<!-- ================= 演示者话术 ================= -->
+<details class="talk-card" style="max-width:1180px;margin:14px auto 0;padding:0 14px;">
+  <summary>给演示者的 3 个话术点（点击展开）</summary>
+  <div class="talk-body">
+    <ol>
+      <li><span class="talk-tag">能力证明</span>这页课件从解剖结构、知识卡片到血流动画，<b>全部由 TA（TeleAgent）生成</b>，不是购买的现成资源库——同样一句话需求，可以按贵校教材与教案快速复刻。</li>
+      <li><span class="talk-tag">教学价值</span><b>点击任何一个结构就能弹出知识点</b>：名称、拉丁名、功能与临床意义一应俱全；教师还可以把它一键改编成课堂考核页（如本页的随堂小测）。</li>
+      <li><span class="talk-tag">定制空间</span><b>类似的解剖交互演示可按教研室需求定制</b>——呼吸系统、神经系统、消化系统、局部解剖等学科均可批量生成，支持校本化教学。</li>
+    </ol>
+  </div>
+</details>
+
+<footer class="pagefoot">本课件由 TeleAgent（TA）教育版生成 · 本地单文件运行、数据不出校 · 校本内容可定制</footer>
+
+<script>
+(function(){
+'use strict';
+
+/* ============ 知识库 ============ */
+var KB = {
+  svc:{name:'上腔静脉',latin:'vena cava superior',type:'静脉（体循环回流）',
+    func:'收集头、颈、上肢和胸壁的静脉血，沿升主动脉右侧下行，注入右心房上部。',
+    clin:'纵隔肿瘤或肿大淋巴结压迫可致上腔静脉综合征：面颈部肿胀、上肢静脉压升高。'},
+  ra:{name:'右心房',latin:'atrium dextrum',type:'心腔',
+    func:'接收上腔静脉、下腔静脉与冠状窦回流的静脉血；其上部的心外膜下有窦房结，是心脏的正常起搏点。',
+    clin:'右心衰竭时体循环淤血，表现为颈静脉怒张、肝大和下肢水肿。'},
+  tv:{name:'三尖瓣',latin:'valva tricuspidalis',type:'瓣膜（房室瓣）',
+    func:'位于右房室口，右心室舒张时开放、允许血液自右心房流入右心室，收缩期关闭、防止血液逆流回右心房。',
+    clin:'三尖瓣关闭不全时收缩期血液逆流入右心房，可见颈静脉搏动与肝颈静脉回流征。'},
+  rv:{name:'右心室',latin:'ventriculus dexter',type:'心腔',
+    func:'收缩时将静脉血经肺动脉瓣泵入肺动脉、送至肺进行气体交换（肺循环的起点）；室壁较薄，约为左心室的 1/3。',
+    clin:'长期肺动脉高压可致右心室肥厚，最终发展为右心衰竭（肺源性心脏病）。'},
+  pvv:{name:'肺动脉瓣',latin:'valva trunci pulmonalis',type:'瓣膜（半月瓣）',
+    func:'位于右心室出口（肺动脉口），右心室收缩时开放射血入肺动脉，舒张期关闭、防止肺动脉血逆流回右心室。',
+    clin:'肺动脉瓣狭窄是法洛四联症的组成部分，也是新生儿发绀型先心病的常见病变。'},
+  pa:{name:'肺动脉干',latin:'truncus pulmonalis',type:'动脉（肺循环）',
+    func:'起自右心室肺动脉口，运送静脉血至左、右肺，在主动脉弓下方分为左、右肺动脉；是唯一运送静脉血的动脉。',
+    clin:'血栓阻塞肺动脉可致急性肺栓塞：突发呼吸困难、胸痛，大面积栓塞可数分钟内猝死。'},
+  pv:{name:'肺静脉',latin:'venae pulmonales',type:'静脉（肺循环回流）',
+    func:'左、右各两条（共 4 条），将肺内氧合后的动脉血送回左心房，是唯一运送动脉血的静脉；图中右侧 2 条来自左肺，左侧 2 条来自右肺（走行于心脏后方）。',
+    clin:'肺静脉异位引流属先天性畸形，可导致发绀；肺静脉也是心房颤动射频消融的重要靶点。'},
+  la:{name:'左心房',latin:'atrium sinistrum',type:'心腔',
+    func:'接收 4 条肺静脉回流的动脉血，经二尖瓣将血液送入左心室，位于心脏四个腔室的最后方。',
+    clin:'二尖瓣狭窄时左心房压力升高、代偿性扩大，易并发心房颤动与附壁血栓形成。'},
+  mv:{name:'二尖瓣',latin:'valva mitralis',type:'瓣膜（房室瓣）',
+    func:'又称僧帽瓣，位于左房室口：左心室舒张时开放充盈，收缩期关闭、防止血液逆流回左心房。',
+    clin:'风湿性心脏病最常累及二尖瓣，造成狭窄和（或）关闭不全，晚期需行瓣膜置换。'},
+  lv:{name:'左心室',latin:'ventriculus sinister',type:'心腔',
+    func:'体循环的动力泵：收缩压可达 120 mmHg 以上，将动脉血经主动脉瓣射入主动脉；室壁最厚（8~12 mm），约占心肌重量的 2/3。',
+    clin:'长期高血压导致左心室向心性肥厚，失代偿后发展为心力衰竭；急性心梗好发于左室前壁。'},
+  av:{name:'主动脉瓣',latin:'valva aortae',type:'瓣膜（半月瓣）',
+    func:'位于左心室出口（主动脉口）：左心室收缩时开放射血入主动脉，舒张初期关闭、防止动脉血逆流回左心室。',
+    clin:'重度主动脉瓣狭窄可致晕厥、心绞痛甚至猝死；关闭不全则出现水冲脉等周围血管征。'},
+  aorta:{name:'主动脉',latin:'aorta',type:'动脉（体循环主干）',
+    func:'体循环动脉主干，起自左心室主动脉口，自左后方分为升主动脉、主动脉弓（发出头臂干、左颈总动脉、左锁骨下动脉）与降主动脉，将动脉血输送至全身。',
+    clin:'主动脉夹层是致命性急症，表现为突发"撕裂样"胸背部剧痛，发病 48 小时内每小时死亡率递增 1%~2%。'},
+  ivc:{name:'下腔静脉',latin:'vena cava inferior',type:'静脉（体循环回流）',
+    func:'收集下肢、盆部和腹腔脏器的静脉血，为人体最粗大的静脉干，经膈的腔静脉孔注入右心房。',
+    clin:'下肢深静脉血栓可沿此路径脱落，引发致命性肺栓塞；必要时置入下腔静脉滤器预防。'},
+  ias:{name:'房间隔',latin:'septum interatriale',type:'间隔',
+    func:'分隔左、右心房，其右侧面中下部的卵圆窝是胎儿期卵圆孔闭合后的遗迹，是房间隔最薄弱处。',
+    clin:'房间隔缺损（ASD）造成血液左向右分流，是常见先天性心脏病，可行介入封堵治疗。'},
+  ivs:{name:'室间隔',latin:'septum interventriculare',type:'间隔',
+    func:'分隔左、右心室：大部分为肌部（厚 1~2 cm），上方邻近主动脉瓣的小区域为膜部，是室间隔缺损的好发部位。',
+    clin:'室间隔缺损（VSD）是最常见的先天性心脏畸形之一，胸骨左缘可闻及粗糙的全收缩期杂音。'}
+};
+var ORDER = ['svc','ra','tv','rv','pvv','pa','pv','la','mv','lv','av','aorta','ivc','ias','ivs'];
+
+/* ============ 交互1：点击结构 -> 高亮 + 知识卡 ============ */
+var svg = document.getElementById('heartSvg');
+var kbBody = document.getElementById('kbBody');
+var currentId = null;
+
+function renderCard(id){
+  var k = KB[id];
+  if(!k) return;
+  kbBody.innerHTML =
+    '<div class="kb-card">'+
+      '<div class="kb-head"><span class="kb-type">'+k.type+'</span><span class="kb-name">'+k.name+'</span></div>'+
+      '<p class="kb-latin">'+k.latin+'</p>'+
+      '<div class="kb-sec"><h4>功能描述</h4><p>'+k.func+'</p></div>'+
+      '<div class="kb-sec kb-clin"><h4>临床意义</h4><p>'+k.clin+'</p></div>'+
+    '</div>';
+}
+function selectStructure(id, fromTable){
+  currentId = id;
+  var gs = svg.querySelectorAll('g.struct');
+  for(var i=0;i<gs.length;i++) gs[i].classList.remove('active');
+  var g = document.getElementById('struct-'+id);
+  if(g) g.classList.add('active');
+  var rows = document.querySelectorAll('#structTbody tr');
+  for(var j=0;j<rows.length;j++) rows[j].classList.remove('active');
+  var tr = document.getElementById('row-'+id);
+  if(tr) tr.classList.add('active');
+  renderCard(id);
+}
+var gsAll = svg.querySelectorAll('g.struct');
+for(var gi=0; gi<gsAll.length; gi++){
+  (function(g){
+    g.addEventListener('click', function(){ selectStructure(g.getAttribute('data-id')); });
+  })(gsAll[gi]);
+}
+
+/* ============ 交互4：结构速查表 ============ */
+var tbody = document.getElementById('structTbody');
+var html = '';
+for(var oi=0; oi<ORDER.length; oi++){
+  var key = ORDER[oi], info = KB[key];
+  html += '<tr id="row-'+key+'" data-id="'+key+'">'+
+    '<td>'+(oi+1)+'</td><td>'+info.name+'</td>'+
+    '<td class="latin">'+info.latin+'</td><td class="typ">'+info.type.split('（')[0]+'</td></tr>';
+}
+tbody.innerHTML = html;
+tbody.addEventListener('click', function(e){
+  var tr = e.target.closest('tr');
+  if(tr && tr.getAttribute('data-id')) selectStructure(tr.getAttribute('data-id'), true);
+});
+
+/* ============ 交互3：心动周期 + 瓣膜联动 ============ */
+var PHASES = {
+  atrial:{ra:0.87,rv:1.06,la:0.87,lv:1.05,av:1,sl:0,
+    name:'心房收缩期',
+    note:'心房收缩将最后约 30% 血液挤入心室（房室瓣开放、半月瓣关闭）'},
+  ventricular:{ra:1.0,rv:0.80,la:1.0,lv:0.76,av:0,sl:1,
+    name:'心室收缩期',
+    note:'心室内压骤升，房室瓣关闭产生 S1，半月瓣开放射血入主动脉与肺动脉'},
+  diastole:{ra:1.05,rv:1.03,la:1.05,lv:1.0,av:1,sl:0,
+    name:'舒张期（充盈期）',
+    note:'心房心室均舒张，静脉血回流充盈；半月瓣关闭产生 S2'}
+};
+var DUR = {atrial:0.35, ventricular:0.5, diastole:0.65};
+var cur = {ra:1,rv:1,la:1,lv:1,av:1,sl:0};
+var phase = 'diastole';
+var phaseT = 0;
+var animOn = false, speed = 1;
+var chambers = {
+  ra:document.querySelector('#struct-ra .main'),
+  rv:document.querySelector('#struct-rv .main'),
+  la:document.querySelector('#struct-la .main'),
+  lv:document.querySelector('#struct-lv .main')
+};
+var VALVES = {
+  tv:{leafs:[[222,295,272,300,258,330],[324,292,280,298,290,332]],g:'struct-tv',kind:'av'},
+  mv:{leafs:[[456,290,478,296,468,322],[504,286,486,294,496,320]],g:'struct-mv',kind:'av'},
+  pvv:{leafs:[[308,308,324,302,313,283],[338,306,323,302,330,285]],g:'struct-pvv',kind:'sl'},
+  av:{leafs:[[434,377,453,370,441,351],[472,371,455,370,464,349]],g:'struct-av',kind:'sl'}
+};
+for(var vk in VALVES){
+  var vg = document.getElementById(VALVES[vk].g);
+  VALVES[vk].leafEls = vg.querySelectorAll('line.leaf');
+}
+function applyChamber(el,s){
+  var cx=+el.getAttribute('data-cx'), cy=+el.getAttribute('data-cy');
+  el.setAttribute('transform','translate('+(cx*(1-s))+','+(cy*(1-s))+') scale('+s+')');
+}
+function applyValveOpen(v,t){
+  var L = VALVES[v].leafs;
+  for(var i=0;i<2;i++){
+    var l=L[i], el=VALVES[v].leafEls[i];
+    el.setAttribute('x2', l[2]+(l[4]-l[2])*t);
+    el.setAttribute('y2', l[3]+(l[5]-l[3])*t);
+  }
+}
+var stPhase=document.getElementById('stPhase'), stAv=document.getElementById('stAv'),
+    stSl=document.getElementById('stSl'), stNote=document.getElementById('stNote');
+function updatePhaseUI(){
+  var phBtns = document.querySelectorAll('button.ph');
+  for(var i=0;i<phBtns.length;i++)
+    phBtns[i].classList.toggle('active', phBtns[i].getAttribute('data-ph')===phase);
+  stPhase.textContent = PHASES[phase].name;
+  stAv.textContent = cur.av>0.5?'开放':'关闭';
+  stAv.style.color = cur.av>0.5?'#43A047':'#C62828';
+  stSl.textContent = cur.sl>0.5?'开放':'关闭';
+  stSl.style.color = cur.sl>0.5?'#43A047':'#C62828';
+  stNote.textContent = PHASES[phase].note;
+}
+function bindPhaseButtons(){
+  var btns = document.querySelectorAll('button.ph');
+  for(var i=0;i<btns.length;i++){
+    btns[i].addEventListener('click', function(){
+      phase = this.getAttribute('data-ph');
+      phaseT = 0;
+      stopAnim();
+      updatePhaseUI();
+    });
+  }
+}
+bindPhaseButtons();
+
+/* ============ 交互2：血液循环动画 ============ */
+var flowV=document.getElementById('flowV'), flowA=document.getElementById('flowA');
+var lenV=flowV.getTotalLength(), lenA=flowA.getTotalLength();
+var dotLayer=document.getElementById('dotLayer');
+var dots=dotLayer.querySelectorAll('circle');
+var flowT=0;
+var btnAnim=document.getElementById('btnAnim');
+function stopAnim(){
+  animOn=false;
+  btnAnim.textContent='播放血液循环动画';
+  btnAnim.classList.remove('on');
+  dotLayer.style.display='none';
+}
+function startAnim(){
+  animOn=true;
+  btnAnim.textContent='停止动画';
+  btnAnim.classList.add('on');
+  dotLayer.style.display='';
+}
+btnAnim.addEventListener('click', function(){ animOn?stopAnim():startAnim(); updatePhaseUI(); });
+var spdBtns=document.querySelectorAll('button.spd');
+for(var si=0;si<spdBtns.length;si++){
+  spdBtns[si].addEventListener('click', function(){
+    speed = +this.getAttribute('data-s');
+    for(var i=0;i<spdBtns.length;i++) spdBtns[i].classList.remove('active');
+    this.classList.add('active');
+  });
+}
+function putDot(el, path, len, frac){
+  var p = path.getPointAtLength(((frac%1)+1)%1*len);
+  el.setAttribute('cx',p.x); el.setAttribute('cy',p.y);
+}
+
+/* ============ 主渲染循环 ============ */
+var last = performance.now();
+function loop(now){
+  var dt = Math.min(0.05,(now-last)/1000); last = now;
+  var target = PHASES[phase];
+  if(animOn){
+    phaseT += dt*speed;
+    if(phaseT >= DUR[phase]){
+      phaseT = 0;
+      phase = (phase==='atrial')?'ventricular':(phase==='ventricular')?'diastole':'atrial';
+      updatePhaseUI();
+    }
+    flowT = (flowT + dt*speed/5.2)%1;
+    for(var d=0;d<4;d++) putDot(dots[d],flowV,lenV,flowT+d/4);
+    for(var e=0;e<4;e++) putDot(dots[4+e],flowA,lenA,flowT+e/4+0.5);
+    target = PHASES[phase];
+  }
+  var k = 1-Math.exp(-dt*7);
+  for(var c in chambers){ cur[c]+= (target[c]-cur[c])*k; applyChamber(chambers[c],cur[c]); }
+  cur.av += (target.av-cur.av)*k;
+  cur.sl += (target.sl-cur.sl)*k;
+  applyValveOpen('tv',cur.av); applyValveOpen('mv',cur.av);
+  applyValveOpen('pvv',cur.sl); applyValveOpen('av',cur.sl);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+updatePhaseUI();
+
+/* ============ 交互5：随堂小测 ============ */
+var QUIZ=[
+ {q:'血液从右心室流出时经过的瓣膜是？',
+  opts:['二尖瓣','三尖瓣','主动脉瓣','肺动脉瓣'],ans:3,
+  exp:'右心室的出口是肺动脉口，血液经肺动脉瓣进入肺动脉干流向肺部；三尖瓣位于右心房与右心室之间，是右心室的"入口"瓣膜。'},
+ {q:'下列血液循环路径正确的是？',
+  opts:['左心室 → 肺动脉 → 肺','上腔静脉 → 右心房 → 右心室 → 肺动脉','肺静脉 → 右心房 → 主动脉','右心室 → 二尖瓣 → 主动脉'],ans:1,
+  exp:'体循环回心 + 肺循环的正确顺序为：上 / 下腔静脉 → 右心房 →（三尖瓣）→ 右心室 →（肺动脉瓣）→ 肺动脉 → 肺；左心室出口接主动脉，肺静脉内的动脉血入左心房。'},
+ {q:'心动周期中，心室内压最高、主动脉瓣开放的时期是？',
+  opts:['心房收缩期','心室收缩期','心室舒张期','等容舒张期'],ans:1,
+  exp:'心室收缩期心室内压急剧升高，超过主动脉压时主动脉瓣开放、开始射血；同时房室瓣关闭，产生第一心音（S1）。'}
+];
+var score=0, answered=[false,false,false];
+var quizBox=document.getElementById('quizBox'), quizScore=document.getElementById('quizScore');
+function buildQuiz(){
+  score=0; answered=[false,false,false];
+  quizScore.textContent='得分：0 / 3';
+  var h='';
+  for(var i=0;i<QUIZ.length;i++){
+    h+='<div class="quiz-item" id="q'+i+'"><h3><em>第 '+(i+1)+' 题</em>'+QUIZ[i].q+'</h3><div class="quiz-opts">';
+    for(var o=0;o<QUIZ[i].opts.length;o++){
+      h+='<button class="opt" data-q="'+i+'" data-o="'+o+'">'+String.fromCharCode(65+o)+'. '+QUIZ[i].opts[o]+'</button>';
+    }
+    h+='</div><div class="quiz-exp" id="exp'+i+'"></div></div>';
+  }
+  quizBox.innerHTML=h;
+}
+buildQuiz();
+quizBox.addEventListener('click', function(e){
+  var btn=e.target.closest('button.opt');
+  if(!btn) return;
+  var qi=+btn.getAttribute('data-q');
+  if(answered[qi]) return;
+  answered[qi]=true;
+  var q=QUIZ[qi], pick=+btn.getAttribute('data-o'), exp=document.getElementById('exp'+qi);
+  var opts=document.querySelectorAll('#q'+qi+' .opt');
+  for(var i=0;i<opts.length;i++){
+    var oi=+opts[i].getAttribute('data-o');
+    if(oi===q.ans) opts[i].classList.add('right');
+    else if(oi===pick) opts[i].classList.add('wrong');
+    else opts[i].classList.add('dim');
+    opts[i].style.cursor='default';
+  }
+  if(pick===q.ans){ score++; exp.className='quiz-exp show ok'; exp.innerHTML='回答正确。'+q.exp; }
+  else { exp.className='quiz-exp show no'; exp.innerHTML='回答有误，正确答案是 '+String.fromCharCode(65+q.ans)+'。'+q.exp; }
+  quizScore.textContent='得分：'+score+' / 3';
+});
+document.getElementById('quizReset').addEventListener('click', buildQuiz);
+
+/* 初始默认选中右心房，直接展示知识卡 */
+selectStructure('ra');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宁德文旅智能导游 · 产品文档</title>
+<style>
+  :root {
+    --g1: #0d9668; --g2: #10b981; --g3: #34d399;
+    --ink: #1f3d33; --dim: #5b7a6e; --line: #d8eee7; --bg: #f4faf7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.75; font-size: 15px;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 0 22px 60px; }
+
+  /* ===== 封面 ===== */
+  .cover {
+    background: linear-gradient(135deg, #0b4a3f 0%, var(--g1) 45%, var(--g2) 100%);
+    border-radius: 0 0 26px 26px; color: #fff; padding: 46px 40px 38px;
+    position: relative; overflow: hidden;
+  }
+  .cover::after {
+    content: "🐾"; position: absolute; right: 34px; top: 22px;
+    font-size: 76px; opacity: .18; transform: rotate(12deg);
+  }
+  .cover .cat { font-size: 14px; opacity: .85; letter-spacing: 3px; margin-bottom: 8px; }
+  .cover h1 { font-size: 34px; letter-spacing: 2px; margin-bottom: 10px; }
+  .cover .slogan { font-size: 16px; opacity: .92; margin-bottom: 22px; }
+  .cover .badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge {
+    background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px; padding: 4px 14px; font-size: 12.5px; font-weight: 600;
+  }
+
+  /* ===== 通用卡片 ===== */
+  .card {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 24px 28px; margin-top: 22px; box-shadow: 0 2px 10px rgba(13,150,104,.06);
+  }
+  h2.sec {
+    font-size: 21px; margin-top: 34px; padding-left: 12px;
+    border-left: 5px solid var(--g2); scroll-margin-top: 20px;
+  }
+  h2.sec .no { color: var(--g2); margin-right: 8px; font-family: Georgia, serif; }
+  h3 { font-size: 16.5px; margin: 18px 0 8px; color: #0b6e58; }
+  p { margin: 7px 0; }
+  .dim { color: var(--dim); }
+  ul, ol { padding-left: 22px; margin: 6px 0; }
+  li { margin: 4px 0; }
+  b { color: #0b6e58; }
+
+  /* 概述三列 */
+  .ov-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+  .ov-item {
+    background: linear-gradient(135deg, #f0fdfa, #ecfdf5); border: 1px solid var(--line);
+    border-radius: 12px; padding: 14px 16px;
+  }
+  .ov-item .t { font-weight: 800; font-size: 14.5px; margin-bottom: 4px; }
+  .ov-item .d { font-size: 12.8px; color: var(--dim); line-height: 1.6; }
+
+  /* 模块卡 */
+  .mod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+  .mod {
+    border: 1px solid var(--line); border-radius: 13px; padding: 18px 20px;
+    background: #fdfffe;
+  }
+  .mod .mh { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+  .mod .mh .ico { font-size: 21px; }
+  .mod .mh .t { font-size: 16px; font-weight: 800; color: #0b6e58; }
+  .mod ul { font-size: 13.5px; color: #2d4a41; }
+  .mod li { margin: 5px 0; }
+
+  /* 表格 */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13.5px; }
+  th { background: #ecfdf5; color: #0b6e58; font-weight: 800; white-space: nowrap; }
+  th, td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; }
+  tr:nth-child(even) td { background: #f8fdfb; }
+
+  /* 架构图 */
+  .arch { font-size: 13px; margin: 14px 0; }
+  .arch .layer {
+    border-radius: 11px; padding: 10px 16px; margin: 8px 0; color: #fff;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .arch .layer .tag { font-weight: 800; white-space: nowrap; width: 88px; text-align: center; }
+  .arch .layer .items { flex: 1; opacity: .96; font-size: 12.8px; }
+  .L1 { background: linear-gradient(135deg, #0d9668, #10b981); }
+  .L2 { background: linear-gradient(135deg, #0f766e, #14b8a6); }
+  .L3 { background: linear-gradient(135deg, #92610a, #d97706); }
+  .L4 { background: linear-gradient(135deg, #334155, #64748b); }
+  .arrow { text-align: center; color: var(--dim); font-size: 15px; line-height: 1; }
+
+  /* 亮点 */
+  .hl { display: flex; gap: 10px; margin: 10px 0; align-items: flex-start; }
+  .hl .n {
+    flex: none; width: 26px; height: 26px; border-radius: 50%; margin-top: 3px;
+    background: linear-gradient(135deg, var(--g1), var(--g2)); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+  }
+  .hl .txt b { display: block; margin-bottom: 2px; }
+  .hl .txt .d { font-size: 13.5px; color: var(--dim); }
+
+  /* 版本时间线 */
+  .ver { border-left: 3px solid var(--g3); margin: 14px 0 4px 8px; padding-left: 20px; }
+  .ver .v { position: relative; padding-bottom: 13px; }
+  .ver .v::before {
+    content: ""; position: absolute; left: -27.5px; top: 6px; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--g2); border: 3px solid #eafff7;
+  }
+  .ver .v .vt { font-weight: 800; color: #0b6e58; font-size: 14px; }
+  .ver .v .vd { font-size: 13px; color: #2d4a41; }
+  .ver .v .date { color: var(--dim); font-size: 12px; margin-left: 8px; font-weight: 400; }
+
+  /* 步骤 */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 14px 0; }
+  .step { background: #f0fdfa; border: 1px solid var(--line); border-radius: 12px; padding: 14px; text-align: center; }
+  .step .sn { font-size: 24px; }
+  .step .st { font-weight: 800; font-size: 14px; margin: 4px 0; }
+  .step .sd { font-size: 12.5px; color: var(--dim); }
+
+  .note {
+    background: #fffbeb; border: 1px solid #fde68a; border-radius: 11px;
+    padding: 10px 16px; font-size: 13px; color: #92610a; margin: 10px 0;
+  }
+
+  .foot {
+    margin-top: 36px; padding: 20px 0 0; border-top: 1px dashed var(--line);
+    text-align: center; color: var(--dim); font-size: 12px;
+  }
+  .aigc { font-size: 11px; letter-spacing: .5px; opacity: .75; margin-top: 6px; }
+
+  @media (max-width: 760px) {
+    .ov-grid, .mod-grid, .steps { grid-template-columns: 1fr; }
+    .cover h1 { font-size: 25px; }
+  }
+  @media print {
+    body { background: #fff; }
+    .card { box-shadow: none; page-break-inside: avoid; }
+    .cover { border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ 封面 ============ -->
+  <div class="cover">
+    <div class="cat">AI × 文化旅游 · 行业智能体解决方案</div>
+    <h1>宁德文旅智能导游</h1>
+    <div class="slogan">山海宁德，贴身导游 —— 大模型 + 行业知识库 + 智能体架构的本地智能导览应用</div>
+    <div class="badges">
+      <span class="badge">🏷️ 版本 v11</span>
+      <span class="badge">🗣️ 三语气问答</span>
+      <span class="badge">📍 真实地图定位</span>
+      <span class="badge">📱 手机扫码即用</span>
+      <span class="badge">🔒 数据本地运行</span>
+      <span class="badge">🧩 全栈零第三方依赖</span>
+    </div>
+  </div>
+
+  <!-- ============ 一、产品概述 ============ -->
+  <h2 class="sec"><span class="no">01</span>产品概述</h2>
+  <div class="card">
+    <p><b>宁德文旅智能导游</b>（昵称「小喵」）是一款面向宁德市游客的智能导览 Web 应用，围绕「<b>大模型 + 行业知识库 + 智能体</b>」架构设计：以 22 个景区的结构化讲稿和 43 条领域问答为知识底座，以可选接入的星辰大模型为实时推理层，以浏览器定位、高德地图、联网检索为感知层，为游客提供「讲解—路线—攻略—文化」一站式陪伴式服务。</p>
+    <div class="ov-grid">
+      <div class="ov-item">
+        <div class="t">🎯 产品定位</div>
+        <div class="d">本地运行、开箱即用的城市级 AI 导游，演示与实用一体：双击即启动，无需账号、无需联网安装。</div>
+      </div>
+      <div class="ov-item">
+        <div class="t">👥 目标用户</div>
+        <div class="d">自驾/自由行游客、摄影爱好者（霞浦滩涂机位与潮汐）、亲子家庭（行程规划）、研学文化旅行者。</div>
+      </div>
+      <div class="ov-item">
+        <div class="t">💎 核心价值</div>
+        <div class="d">把「导游的经验」产品化：知道你在哪、能讲所见所闻、会排行程、懂当地文化，还能联网核实最新票价。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 二、功能全景 ============ -->
+  <h2 class="sec"><span class="no">02</span>功能全景</h2>
+  <div class="card">
+    <div class="mod-grid">
+      <div class="mod">
+        <div class="mh"><span class="ico">🎧</span><span class="t">智能导游</span></div>
+        <ul>
+          <li><b>定位自动开讲</b>：浏览器定位 + 精度分级，进入景区 20km 自动播报讲解（IP 低精度只排序不乱讲）</li>
+          <li><b>手动校准</b>：定位飘了？搜索地名或点选景区一键校准，全站距离/附近/路线同步更新</li>
+          <li><b>三语气问答</b>：正常 / 专业导游（联网检索最新票价）/ 小喵猫娘语气，一键切换</li>
+          <li><b>景区排行榜</b>：距离由近到远排序 + 关键词搜索 + 悬停预览卡（触屏自适应）</li>
+          <li><b>语音播报</b>：讲解与回答可 TTS 朗读，边走边听</li>
+        </ul>
+      </div>
+      <div class="mod">
+        <div class="mh"><span class="ico">🗺️</span><span class="t">地图路线</span></div>
+        <ul>
+          <li><b>路线规划</b>：驾车/公交/步行/骑行，支持多途经点，起终点一键「我的位置」并飞至街道级</li>
+          <li><b>附近查询</b>：卫生间/美食/景点/停车/加油站等 8 类，1–10km 半径，可设自定义中心</li>
+          <li><b>五类标记差分</b>：蓝点+精度圈（我）/ 绿 pin（景区）/ 青点（POI）/ 橙靶心（查询中心）/ 旗帜（起终点）</li>
+          <li><b>美食榜联动</b>：POI 命中小红书口碑榜即挂「🔥榜」角标，点击直达榜单</li>
+        </ul>
+      </div>
+      <div class="mod">
+        <div class="mh"><span class="ico">📸</span><span class="t">旅行攻略</span></div>
+        <ul>
+          <li><b>拍照出图攻略</b>：热门机位 + 光线穿搭建议 + <b>潮汐时刻表</b>（月相算法推算当日高潮低潮时刻）</li>
+          <li><b>美食榜单</b>：小红书真实口碑数据（评分、招牌菜、提及热度），支持地点搜索 + 7 档距离筛选</li>
+          <li><b>行程规划师</b>：同区县聚拢排程，含真实游玩时长，一键跳转讲解</li>
+          <li><b>数据自更新</b>：内置小红书更新器，扫码登录一次后全自动抓取（约 2 分钟），进度条 + 步骤时间线可视化</li>
+        </ul>
+      </div>
+      <div class="mod">
+        <div class="mh"><span class="ico">📖</span><span class="t">宁德文化</span></div>
+        <ul>
+          <li><b>七大文化专题</b>：福鼎白茶、畲族三月三、木拱廊桥世界非遗、陈靖姑信俗、红色下党、海洋渔文化、茶盐古道</li>
+          <li><b>必体验清单</b>：一地一特色，行前速览</li>
+          <li><b>节庆日历</b>：9 大节庆含日期/地点/贴士，可展开查看观礼建议</li>
+          <li><b>文化问答</b>：知识库内文化专题问答，结合当前讲解景区智能推荐</li>
+        </ul>
+      </div>
+    </div>
+    <h3>全局能力</h3>
+    <ul>
+      <li><b>📱 手机扫码访问</b>：主页一键生成局域网二维码（自研零依赖 QR 生成器），手机扫码即用，「添加到主屏幕」即变 App（PWA）</li>
+      <li><b>🌤️ 实时天气</b>：宁德各区县天气切换，详情弹层含实况 + 4 日预报 + 出行建议</li>
+      <li><b>🔒 数据本地运行</b>：服务、数据、登录会话全部留在本机，不依赖云服务即可跑</li>
+    </ul>
+  </div>
+
+  <!-- ============ 三、技术架构 ============ -->
+  <h2 class="sec"><span class="no">03</span>技术架构</h2>
+  <div class="card">
+    <div class="arch">
+      <div class="layer L1">
+        <span class="tag">呈现层</span>
+        <span class="items">原生 HTML / CSS / JavaScript 单页应用（无框架、无构建步骤）· 高德 JS API 地图 · 胶囊/卡片式 UI · 响应式（桌面/手机/横屏）· PWA</span>
+      </div>
+      <div class="arrow">▲ fetch /api/*</div>
+      <div class="layer L2">
+        <span class="tag">服务层</span>
+        <span class="items">Python 标准库 ThreadingHTTPServer（server.py，零第三方依赖）：静态服务 / 问答路由 / 高德转发 / 限流检测 / 配置管理 / 部署安全（单实例防幽灵监听）</span>
+      </div>
+      <div class="arrow">▲ 数据与子进程</div>
+      <div class="layer L3">
+        <span class="tag">智能层</span>
+        <span class="items">行业知识库（22 景区讲稿 / 43 问答 / 7 文化专题 / 9 节庆 / 潮汐 / 美食榜）· 星辰大模型 API（可选，OpenAI 兼容）· 联网检索 web_search.py（Playwright 抓取搜索结果，10 分钟缓存）· 小红书更新器 xhs_updater.py · 自研 QR 码生成器</span>
+      </div>
+      <div class="arrow">▲ 网络请求</div>
+      <div class="layer L4">
+        <span class="tag">外部依赖</span>
+        <span class="items">高德开放平台（JS API 地图 + Web 服务接口，经免 Key 代理转发，超限自动降级提示）· 公网搜索引擎（专业导游模式）</span>
+      </div>
+    </div>
+    <h3>关键技术决策</h3>
+    <table>
+      <tr><th>决策</th><th>方案</th><th>理由</th></tr>
+      <tr><td>零依赖后端</td><td>Python 标准库实现全部接口</td><td>双击 start.bat 即用，评委/用户环境免安装，演示零翻车</td></tr>
+      <tr><td>离线优先问答</td><td>本地知识库打底，LLM 可选增强</td><td>无 Key 可用、有 Key 更强；断网不罢工，演示不卡壳</td></tr>
+      <tr><td>定位可信分级</td><td>记录精度，&lt;5km 才自动开讲，否则提示手动校准</td><td>IP 定位可能偏移几十公里，避免「讲错景区」的尴尬</td></tr>
+      <tr><td>地图限流治理</td><td>转发层识别 429 → 前端统一「今日上限」降级文案</td><td>免费通道有每日配额，超限不影响其它功能</td></tr>
+      <tr><td>自研 QR 生成</td><td>60 行 JS 实现 byte 模式 / ECC-L / 掩码择优 → SVG</td><td>避免引第三方库，离线也能扫码</td></tr>
+      <tr><td>网页联网检索</td><td>Playwright 无头子进程抓取搜索引擎摘要</td><td>纯 HTTP 请求被反爬拦截，无头浏览器可用且与主服务隔离</td></tr>
+    </table>
+  </div>
+
+  <!-- ============ 四、产品亮点 ============ -->
+  <h2 class="sec"><span class="no">04</span>产品亮点</h2>
+  <div class="card">
+    <div class="hl"><div class="n">1</div><div class="txt"><b>三语气智能问答，一个产品三种人格</b>
+      <span class="d">正常（客观正式）/ 专业导游（联网检索最新票价与攻略，敬语服务腔）/ 小喵（猫娘亲切风）。同一个知识底座，满足评审演示、普通游客、年轻用户三类场景。</span></div></div>
+    <div class="hl"><div class="n">2</div><div class="txt"><b>定位可信分级 + 手动校准</b>
+      <span class="d">自动记录定位精度：GPS 级自动就近开讲；IP 级仅排序并警示偏差，支持搜索地名/选景区一键校准，全站（排行/附近/路线）同步生效——把「定位不准」从隐患变成可解释可控的功能点。</span></div></div>
+    <div class="hl"><div class="n">3</div><div class="txt"><b>地图信息差分设计</b>
+      <span class="d">蓝点+精度圈（我）、绿 pin（景区）、青点（POI）、橙靶心（查询中心）、旗帜（起终点）五类标记一次看懂；「我的位置」点击后平滑飞至街道级并保留精度圈，与手机地图体验对齐。</span></div></div>
+    <div class="hl"><div class="n">4</div><div class="txt"><b>数据自更新的活攻略</b>
+      <span class="d">内置小红书采集器：扫码登录一次后全自动更新拍照攻略与美食榜（约 2 分钟），进度条+步骤时间线全程可视化，三重反爬识别与伪店名过滤保障数据质量。</span></div></div>
+    <div class="hl"><div class="n">5</div><div class="txt"><b>摄影师专属：月相潮汐时刻表</b>
+      <span class="d">自研月相算法推算当日高潮/低潮时刻，配合霞浦滩涂机位攻略，解决摄影游客「赶潮」刚需，交叉验证误差小于 1.5 天。</span></div></div>
+    <div class="hl"><div class="n">6</div><div class="txt"><b>极简部署 + 手机秒连</b>
+      <span class="d">全栈零第三方依赖，Windows 双击 start.bat 即启动；主页 📱 按钮实时生成局域网二维码，手机扫码直连，可添加主屏幕当 App 用。</span></div></div>
+  </div>
+
+  <!-- ============ 五、快速上手 ============ -->
+  <h2 class="sec"><span class="no">05</span>快速上手</h2>
+  <div class="card">
+    <div class="steps">
+      <div class="step"><div class="sn">🖱️</div><div class="st">双击启动</div><div class="sd">Windows 下双击 start.bat，服务自动就绪</div></div>
+      <div class="step"><div class="sn">🌐</div><div class="st">打开页面</div><div class="sd">浏览器访问 http://127.0.0.1:8765</div></div>
+      <div class="step"><div class="sn">📱</div><div class="st">手机同游</div><div class="sd">同一 Wi-Fi 下扫主页 📱 二维码即用</div></div>
+    </div>
+    <h3>可选配置（Settings ⚙️）</h3>
+    <ul>
+      <li>接入大模型：填写 OpenAI 兼容 API 地址 / Key / 模型名（如电信星辰大模型），问答自动升级为实时回答</li>
+      <li>更新攻略数据：旅行攻略页点「更新小红书数据」，首次扫码登录后全自动</li>
+    </ul>
+    <div class="note">💡 演示小贴士：提前在导游页点「🔧 校准」把位置设到太姥山，再点地图「我的位置」即可演示平滑飞入效果；切「专业导游」问门票价格，可展示联网检索真实票价（百科实测 138 元含观光车）。</div>
+  </div>
+
+  <!-- ============ 六、版本迭代 ============ -->
+  <h2 class="sec"><span class="no">06</span>版本迭代史</h2>
+  <div class="card">
+    <div class="ver">
+      <div class="v"><span class="vt">v1 · 一期交付</span><span class="date">2026-10</span>
+        <div class="vd">22 景区讲稿、路线规划（真地图）、潮汐时刻表、美食榜、行程规划师、7 文化专题、节庆日历、实时天气；三轮无头浏览器验证零报错</div></div>
+      <div class="v"><span class="vt">v2 · 体验重构</span><span class="date">2026-10</span>
+        <div class="vd">主页 2×2 宫格导航 + 11 张定制插画；景点导览台（搜索/排行/悬停预览）；小红书更新全自动（扫码一次）；修复路线 0 公里问题（地理编码改 POI 优先）</div></div>
+      <div class="v"><span class="vt">v3–v5 · 定位体系</span><span class="date">2026-10</span>
+        <div class="vd">地图五类标记视觉差分；定位精度记录 + IP 级偏差警示；手动校准弹层（三层取址）；「我的位置」一键定位 + 平滑飞至街道级；修复视野抢占与隐藏地图动画问题</div></div>
+      <div class="v"><span class="vt">v10 · 三语气问答</span><span class="date">2026-10-13</span>
+        <div class="vd">「问小喵」更名「问问导游」；新增 正常/专业导游/小喵 三语气切换；专业导游联网检索通道（Playwright 抓搜索结果，失败静默降级）</div></div>
+      <div class="v"><span class="vt">v11 · 扫码访问（当前）</span><span class="date">2026-10-13</span>
+        <div class="vd">服务改绑 0.0.0.0 支持局域网访问；主页 📱 按钮实时生成访问二维码（自研 QR 生成器，cv2 解码闭环验证）；触屏按钮加大触控区；PWA 手机适配实测 21 项全过</div></div>
+    </div>
+  </div>
+
+  <!-- ============ 七、数据与合规 ============ -->
+  <h2 class="sec"><span class="no">07</span>数据来源与合规</h2>
+  <div class="card">
+    <table>
+      <tr><th>数据类别</th><th>来源</th><th>说明</th></tr>
+      <tr><td>景区讲稿/知识库问答</td><td>官方公开资料整理 + 模型预生成</td><td>离线 JSON 数据包，可人工校订</td></tr>
+      <tr><td>地图/POI/天气</td><td>高德开放平台（免费通道）</td><td>经代理转发，超每日配额自动降级提示</td></tr>
+      <tr><td>美食榜/拍照热帖</td><td>小红书公开笔记（本地登录会话）</td><td>会话仅存本机 server/xhs-profile/，仅用于个人研究演示</td></tr>
+      <tr><td>联网检索摘要</td><td>搜索引擎公开结果</td><td>专业导游模式按需抓取，结果注明「以景区官方公示为准」</td></tr>
+    </table>
+    <div class="note">🔒 门票等时效信息页面统一标注「以景区公示为准」；联网材料在回答中明确标注为参考信息；所有用户数据（定位、登录态、配置）均留在本机，不上传。</div>
+  </div>
+
+  <!-- ============ 八、已知限制与规划 ============ -->
+  <h2 class="sec"><span class="no">08</span>已知限制与后续规划</h2>
+  <div class="card">
+    <h3>当前限制</h3>
+    <ul>
+      <li>高德免费接口每日有配额，超限后地图查询降级（自动恢复，不影响讲解/问答）</li>
+      <li>语音播报依赖浏览器 TTS，微信内置浏览器可能静默无声，建议用系统浏览器</li>
+      <li>专业导游模式联网检索约需 6 秒（已展示进度提示）</li>
+    </ul>
+    <h3>规划方向</h3>
+    <ul>
+      <li>离线地图缓存与「无网络演示模式」，关键功能完全断网可用</li>
+      <li>美食店铺正文级统计（当前规则仅扫标题）</li>
+      <li>多城市复用：知识库/配置抽象后可快速复制到其它文旅目的地</li>
+    </ul>
+  </div>
+
+  <div class="foot">
+    <div>宁德文旅智能导游 · 产品文档 · 2026 年 10 月 · v11</div>
+    <div class="aigc">AIGC 标识：本文档由 AI 智能体辅助生成（ContentProducer: 001191110102MAD55U9H0F10002 · Label: 1）</div>
+  </div>
+</div>
+</body>
+</html>

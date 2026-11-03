@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../gate.js?v=20261103" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TA技能现场演示 · 文旅创意工坊（文生图/文生视频）</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#F4F6FA;color:#1F2937;line-height:1.7}
+.container{max-width:1120px;margin:0 auto;padding:22px 18px 70px}
+header.hero{background:linear-gradient(135deg,#0A2E5C,#0B57A4 60%,#2E7D32);color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:18px}
+header.hero h1{font-size:24px}
+header.hero .sub{font-size:13.5px;opacity:.92;margin-top:6px}
+.badges{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 13px;font-size:12.5px}
+.badge b{color:#FFD54F}
+.warn{background:#FFF8E1;border-left:4px solid #F9A825;border-radius:6px;padding:9px 13px;font-size:12.5px;margin-bottom:16px}
+.card{background:#fff;border-radius:14px;padding:22px 26px;box-shadow:0 2px 12px rgba(15,40,80,.07);margin-bottom:18px}
+.card h2{font-size:17px;color:#0A2E5C;border-left:5px solid #2E7D32;padding-left:11px;margin-bottom:12px}
+.scene{background:#F0F8F0;border:1px dashed #A5D6A7;border-radius:9px;padding:12px 15px;font-size:13px;margin-bottom:14px}
+.scene b{color:#1B5E20}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.grid4{grid-template-columns:repeat(2,1fr)}}
+.ph-item{border:1px solid #D7DEE8;border-radius:10px;overflow:hidden;background:#FCFDFE}
+.ph-item img{width:100%;height:200px;object-fit:cover;display:block}
+.ph-item .cap{padding:8px 10px;font-size:12px}
+.ph-item .cap b{display:block;color:#0A2E5C;font-size:12.5px}
+.mono{font-family:Consolas,monospace;font-size:12px;color:#555;background:#f4f4f4;border-radius:6px;padding:8px 10px;margin-top:8px;white-space:pre-wrap}
+.vid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;align-items:start}
+@media(max-width:860px){.vid{grid-template-columns:1fr}}
+video{width:100%;border-radius:10px;border:1px solid #D7DEE8;background:#000}
+.spec{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.spec div{background:#F0F6FF;border:1px solid #B9D4EE;border-radius:8px;padding:8px 12px;font-size:12.5px}
+.spec b{color:#0B57A4}
+.flow{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.step{background:#0A2E5C;color:#fff;border-radius:9px;padding:9px 14px;font-size:12.5px;position:relative}
+.step b{color:#FFD54F}
+.note{font-size:12px;color:#6B7280;margin-top:10px}
+.kb{background:#EAF3FC;border:1px solid #B9D4EE;border-radius:9px;padding:10px 14px;font-size:13px;margin-top:10px}
+footer{text-align:center;font-size:12px;color:#6B7280;padding:16px 0 8px}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="hero">
+  <h1>文旅创意工坊 · 文生图 / 文生视频 现场演示</h1>
+  <div class="sub">创作线 ｜ 文生图海报 · 文生视频情境片 · 知识库素材提取 ｜ 对应文旅学院智算建设场景</div>
+  <div class="badges"><span class="badge">演示动线：<b>一个教学主题，三分钟出"一图一片一题库"</b></span><span class="badge">客户：<b>文旅学院 · 数字媒体 / 研学 / 文创方向师生</b></span></div>
+</header>
+<div class="warn"><b>口径：</b>TA 负责生成与组织，审美判断、文化准确性与内容合规由师生负责；成稿可一键入库沉淀为校本素材库。本页素材均为 TA 生成。</div>
+
+<div class="card">
+  <h2>① 文生图 · 40秒出四张文旅海报</h2>
+  <div class="scene"><b>场景：</b>《文旅短视频创作》课，学生做"家乡文旅IP"作业——传统做法找图配图半天，TA 一句话出四版风格供选。</div>
+  <div class="grid4">
+    <div class="ph-item"><img src="../生成素材/文生图_永定土楼.jpg" alt="永定土楼"><div class="cap"><b>永定土楼 · 水墨国风</b>晨雾金光插画风海报</div></div>
+    <div class="ph-item"><img src="../生成素材/文生图_古田会址.jpg" alt="古田会址"><div class="cap"><b>古田会址 · 红色文旅</b>红金庄严宣传海报</div></div>
+    <div class="ph-item"><img src="../生成素材/文生图_长汀古城.jpg" alt="长汀古城"><div class="cap"><b>长汀古城 · 汀江夜色</b>暖调夜景数字插画</div></div>
+    <div class="ph-item"><img src="../生成素材/文生图_冠豸山.jpg" alt="冠豸山"><div class="cap"><b>冠豸山 · 丹霞云海</b>青绿山水传统风</div></div>
+  </div>
+  <div class="mono">提示词（第1张）：电影级航拍镜头，福建永定客家土楼群清晨全景，晨雾缭绕山谷，金色阳光穿过云层洒在环形土楼上，远处梯田层叠，写实风格，风景纪录片质感，镜头缓慢推进
+—— 同一组教学主题可批量换风格：水墨 / 剪纸 / 赛博 / 手账风，风格件可沉淀为校本预设</div>
+  <div class="note">演示讲法：先问老师"您带学生做文旅海报要多久"→现场改一句提示词（如换成剪纸风）→ 讲风格预设库与素材入库。</div>
+</div>
+
+<div class="card">
+  <h2>② 文生视频 · 5秒情境导入片</h2>
+  <div class="scene"><b>场景：</b>课程开场不再用静态PPT——"课程要讲海丝文化，先来一段扬帆起航"。TA 2分钟出 5 秒 16:9 情境片，直接嵌入课件。</div>
+  <div class="vid">
+    <div><video controls preload="metadata" src="../生成素材/文生视频_海洋帆船_情境导入.mp4"></video>
+      <div class="mono">提示词：一艘古老商船扬帆出海，海上丝绸之路，晨光金色海面，电影质感，镜头缓慢推进</div>
+    </div>
+    <div>
+      <div class="spec">
+        <div><b>分辨率</b><br>1344 × 768（16:9）</div>
+        <div><b>时长</b><br>5 秒 / 段，可多段拼接</div>
+        <div><b>生成耗时</b><br>约 2 分钟 / 段</div>
+        <div><b>推理步数</b><br>50 步（画质优先）</div>
+        <div><b>风格可控</b><br>写实 / 纪录片 / 国风写实</div>
+        <div><b>落点</b><br>情境导入 / 校园宣传 / 成果片头</div>
+      </div>
+      <div class="flow">
+        <div class="step">1 输入场景 <b>一句话</b></div>
+        <div class="step">2 TA 生成 <b>~2 分钟</b></div>
+        <div class="step">3 教师 <b>审看选段</b></div>
+        <div class="step">4 入库 <b>校本素材库</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="note">演示讲法：现场若在校园网内，可现场跑一段"土楼晨雾航拍"（内网生成通道约2分钟）；讲完接"知识库素材提取"。</div>
+</div>
+
+<div class="card">
+  <h2>③ 知识库素材提取 · 从"一段视频"到"一套教学素材"</h2>
+  <div class="scene"><b>场景：</b>知识库不只是存视频——素材入库后自动打标（场景/文化点/知识点），师生检索即取；配合"学生素材提取"需求，作业视频入库即成班级课程素材。</div>
+  <div class="flow">
+    <div class="step">素材入库 <b>图/视频/文档</b></div>
+    <div class="step">自动打标 <b>文化点·知识点</b></div>
+    <div class="step">检索即取 <b>一句话找素材</b></div>
+    <div class="step">组合成课 <b>互动课件引用</b></div>
+  </div>
+  <div class="kb">📌 与文旅学院建设方案的对应：智算平台"教学用AI智能体"三件套——<b>文生图</b>（海报/IP设计）+ <b>文生视频</b>（情境片/宣传片）+ <b>知识库素材提取</b>（学生作业与校本素材沉淀），本页演示三件套的教学闭环。</div>
+</div>
+
+<footer>TA教育版 · 文旅创意工坊演示页 ｜ 文生图 / 文生视频 / 知识库素材提取 ｜ 内部销售支持材料，请勿外发客户</footer>
+</div>
+</body>
+</html>

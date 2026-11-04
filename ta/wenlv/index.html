@@ -87,7 +87,7 @@ footer{text-align:center;font-size:12px;color:#6B7280;padding:16px 0 8px}
     <h3>可运行应用（本地版）</h3>
     <p>完整应用需本地运行：Windows 双击<b>一键启动.bat</b> → 自动检测环境并打开 127.0.0.1:8765。讲解、问答、地图、潮汐攻略、文化专题全部实测可演，断网亦可用主体功能。</p>
     <a class="go local" href="../ningde-travel-guide/一键启动.bat" target="_blank">▶ 下载一键启动脚本</a>
-    <a class="go" href="http://127.0.0.1:8765/" target="_blank">已启动 → 打开本地应用</a>
+    <a class="go" id="open-local" href="http://127.0.0.1:8765/" target="_blank">⏳ 正在检测本地应用…</a>
     <div class="meta">双击脚本即启动 · Python 零依赖 · 演示脚本 8 分钟走完</div>
   </div>
 </div>
@@ -121,5 +121,33 @@ footer{text-align:center;font-size:12px;color:#6B7280;padding:16px 0 8px}
   TA教育版 · 文旅 AI 导游全流程示范入口页 ｜ 应用 + 需求 + 产品文档三件套 ｜ 内部销售支持材料，请勿外发客户
 </footer>
 </div>
+<script>
+(function () {
+  var btn = document.getElementById('open-local');
+  if (!btn) return;
+  // 探测本地服务是否已启动（fetch 127.0.0.1 有 CORS 限制，用 image onerror 探测更可靠）
+  var img = new Image();
+  img.onload = function () {
+    btn.textContent = '已启动 → 打开本地应用';
+    btn.style.background = '#12937A';
+  };
+  img.onerror = function () {
+    // 加载失败不一定代表服务关闭（可能是图片路径 404），再试一次定时器兜底
+    setTimeout(function () {
+      var img2 = new Image();
+      img2.onload = function () { btn.textContent = '已启动 → 打开本地应用'; btn.style.background = '#12937A'; };
+      img2.onerror = function () {
+        btn.textContent = '未启动 → 请先双击一键启动.bat';
+        btn.style.background = '#B8860B';
+        btn.href = '../ningde-travel-guide/一键启动.bat';
+        btn.target = '_blank';
+        btn.setAttribute('download', '');
+      };
+      img2.src = 'http://127.0.0.1:8765/assets/img/icon-192.png';
+    }, 500);
+  };
+  img.src = 'http://127.0.0.1:8765/assets/img/icon-192.png';
+})();
+</script>
 </body>
 </html>

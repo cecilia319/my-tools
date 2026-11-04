@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>科研AI助手 · 高校科研全流程工具演示</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#f4f6f9;color:#1f2937;font-size:14px}
+.topbar{background:#1e293b;color:#fff;padding:14px 28px;display:flex;justify-content:space-between;align-items:center}
+.topbar h1{font-size:19px;font-weight:700;letter-spacing:1px}
+.topbar .sub{font-size:12px;color:#94a3b8;margin-top:3px}
+.layout{display:flex;min-height:calc(100vh - 58px)}
+.side{width:236px;background:#fff;border-right:1px solid #e5e7eb;padding:14px 10px;flex-shrink:0}
+.side .cap{font-size:11.5px;color:#94a3b8;padding:4px 10px 10px;letter-spacing:1px}
+.nav-item{padding:11px 12px;border-radius:9px;cursor:pointer;margin-bottom:4px;display:flex;align-items:center;gap:9px;transition:.15s}
+.nav-item:hover{background:#f1f5f9}
+.nav-item.on{background:#1d4ed8;color:#fff}
+.nav-item .no{font-size:11px;font-weight:800;background:#e2e8f0;color:#475569;border-radius:6px;padding:2px 7px;flex-shrink:0}
+.nav-item.on .no{background:#ffffff33;color:#fff}
+.nav-item .t{font-size:13.5px;font-weight:600;line-height:1.3}
+.nav-item .sec{font-size:10.5px;color:#94a3b8;margin-top:2px}
+.nav-item.on .sec{color:#dbeafe}
+.main{flex:1;padding:22px 30px;overflow-y:auto;max-height:calc(100vh - 58px)}
+.panel{display:none}
+.panel.on{display:block}
+.ph{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:6px}
+.ph h2{font-size:21px;color:#0f172a}
+.ph .badge{font-size:12px;background:#eef2ff;color:#4338ca;border-radius:20px;padding:4px 14px;font-weight:600}
+.pdesc{color:#64748b;font-size:13.5px;line-height:1.8;margin-bottom:16px}
+.pdesc b{color:#334155}
+.steps{display:flex;gap:6px;margin:14px 0 18px;flex-wrap:wrap}
+.step{font-size:12px;background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:5px 13px;color:#475569;display:flex;align-items:center;gap:6px}
+.step .dot{width:7px;height:7px;border-radius:50%;background:#cbd5e1}
+.step.done{border-color:#86efac;background:#f0fdf4;color:#15803d}.step.done .dot{background:#22c55e}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:13px;padding:20px;margin-bottom:16px}
+.card h3{font-size:15px;color:#0f172a;margin-bottom:12px}
+.btn{background:#1d4ed8;color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:13.5px;cursor:pointer;font-weight:600;transition:.15s}
+.btn:hover{background:#1e40af}
+.btn:disabled{background:#94a3b8;cursor:not-allowed}
+.btn.ghost{background:#fff;color:#1d4ed8;border:1px solid #bfdbfe}
+.btn.sm{padding:6px 14px;font-size:12.5px}
+input[type=text]{border:1px solid #d1d5db;border-radius:8px;padding:9px 13px;font-size:13.5px;width:100%;outline:none}
+input[type=text]:focus{border-color:#1d4ed8;box-shadow:0 0 0 3px #1d4ed81a}
+select{border:1px solid #d1d5db;border-radius:8px;padding:8px 12px;font-size:13px;background:#fff}
+.chk{display:flex;align-items:center;gap:6px;font-size:13px;color:#475569;cursor:pointer}
+.mono{font-family:Consolas,"Courier New",monospace}
+.type-cursor::after{content:"▌";animation:blink 1s infinite;color:#1d4ed8}
+@keyframes blink{50%{opacity:0}}
+.fade-in{animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* 工作台01 */
+.wb{display:grid;grid-template-columns:210px 1fr 250px;gap:0;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;min-height:430px}
+.wb .col{background:#fafbfc;border-right:1px solid #eef1f6}
+.wb .col:last-child{border-right:none}
+.wb .col .h{font-size:12px;color:#64748b;padding:11px 14px;border-bottom:1px solid #eef1f6;background:#f8fafc;font-weight:700}
+.task{padding:11px 14px;font-size:12.5px;cursor:pointer;border-bottom:1px solid #f1f5f9}
+.task:hover{background:#f1f5f9}
+.task.on{background:#eff6ff;border-left:3px solid #1d4ed8}
+.task .d{font-size:10.5px;color:#94a3b8;margin-top:3px}
+.chat{padding:14px;display:flex;flex-direction:column;gap:11px}
+.msg{max-width:92%;border-radius:10px;padding:10px 13px;font-size:12.5px;line-height:1.7}
+.msg.u{background:#1d4ed8;color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
+.msg.a{background:#eef2ff;color:#1e3a8a;align-self:flex-start;border-bottom-left-radius:3px}
+.msg.a .skill{display:inline-block;background:#ddd6fe;color:#5b21b6;border-radius:5px;padding:1px 7px;font-size:11px;margin:0 2px}
+.prod{padding:12px}
+.prod .p{border:1px solid #e5e7eb;border-radius:9px;padding:11px;margin-bottom:9px;font-size:12px;background:#fff}
+.prod .p .n{font-weight:700;color:#0f172a;display:flex;gap:6px;align-items:center}
+.prod .p .n .ic{width:22px;height:22px;border-radius:6px;background:#ecfdf5;color:#059669;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.prod .p .d{color:#64748b;margin-top:5px;line-height:1.6}
+/* 漏斗02 */
+.funnel{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.fstage{display:flex;align-items:center;gap:12px}
+.fstage .lb{width:150px;font-size:12.5px;color:#475569;text-align:right;flex-shrink:0}
+.fbar{height:30px;border-radius:7px;background:#3b82f6;color:#fff;display:flex;align-items:center;padding:0 13px;font-size:13px;font-weight:700;min-width:56px;transition:width 1s ease;width:0}
+.fstage:nth-child(2) .fbar{background:#60a5fa}.fstage:nth-child(3) .fbar{background:#93c5fd;color:#1e3a8a}.fstage:nth-child(4) .fbar{background:#bfdbfe;color:#1e40af}
+.search-str{background:#0f172a;color:#a5f3fc;border-radius:9px;padding:14px 16px;font-size:12.5px;line-height:1.9;margin:10px 0}
+/* 结构解析03 */
+.abs{line-height:2.3;font-size:14px}
+.seg{padding:2px 4px;border-radius:4px;cursor:default;transition:.3s}
+.seg .tg{font-size:10px;color:#fff;border-radius:4px;padding:1px 5px;margin-right:3px;vertical-align:1px}
+.lgd{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.lgd span{font-size:11.5px;display:flex;align-items:center;gap:5px;color:#475569}
+.lgd .sw{width:12px;height:12px;border-radius:3px}
+.logic li{font-size:13px;padding:7px 0;border-bottom:1px dashed #eef1f6;list-style:none;display:flex;gap:8px}
+.ok{color:#059669;font-weight:800}.warn{color:#d97706;font-weight:800}.bad{color:#dc2626;font-weight:800}
+/* 热力图04 */
+.hm-wrap{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.hm{border-collapse:collapse}
+.hm th{font-size:11.5px;color:#334155;padding:6px 8px;font-weight:700}
+.hm td{width:74px;height:46px;text-align:center;font-size:12px;border:2px solid #fff;color:#0f172a}
+.hm td.var{background:#f8fafc;font-weight:700;font-size:11.5px;color:#334155}
+.hm td.dg{background:#f1f5f9;color:#cbd5e1;font-size:11px}
+.hm td b{display:block;font-size:14px}
+.hm td .p{font-size:10px;opacity:.75}
+.controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:12px 0}
+.interp{background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #1d4ed8;border-radius:9px;padding:15px 17px;font-size:13.5px;line-height:2;color:#334155}
+.interp b{color:#0f172a}
+.note{font-size:12px;color:#d97706;margin-top:9px;display:flex;gap:6px}
+/* 润色05 */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cmp .box{border:1px solid #e5e7eb;border-radius:10px;padding:15px;font-size:13.5px;line-height:2.1;min-height:170px}
+.cmp .box .cap{font-size:11.5px;font-weight:700;color:#94a3b8;margin-bottom:8px;letter-spacing:1px}
+.del{background:#fee2e2;text-decoration:line-through;color:#b91c1c;padding:0 2px;border-radius:3px}
+.ins{background:#dcfce7;color:#15803d;padding:0 2px;border-radius:3px;font-weight:600}
+.term{display:flex;align-items:center;gap:9px;font-size:13px;padding:8px 0;border-bottom:1px dashed #eef1f6;flex-wrap:wrap}
+.term .mix{background:#fef3c7;color:#92400e;border-radius:5px;padding:2px 9px}
+.term .uni{background:#dcfce7;color:#15803d;border-radius:5px;padding:2px 9px;font-weight:700}
+/* 自查06 */
+.chk-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed #eef1f6;font-size:13.5px}
+.chk-row .st{width:20px;text-align:center;font-weight:800}
+.score{font-size:38px;font-weight:800;color:#1d4ed8}
+.ref{font-size:13px;line-height:2;padding:11px 14px;background:#f8fafc;border-radius:9px;margin:6px 0}
+.ref .prob{background:#fee2e2;padding:0 3px;border-radius:3px}
+.fix{font-size:12.5px;color:#15803d;background:#f0fdf4;border-radius:8px;padding:9px 13px;margin:6px 0;line-height:1.8}
+/* 申报07 */
+.sec-block{border:1px solid #e5e7eb;border-radius:11px;margin-bottom:12px;overflow:hidden;display:none}
+.sec-block.show{display:block;animation:fadeIn .4s}
+.sec-block .h{background:#f8fafc;padding:11px 16px;font-weight:700;font-size:13.5px;color:#1e3a8a;display:flex;align-items:center;gap:9px}
+.sec-block .h .n{background:#1d4ed8;color:#fff;border-radius:6px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px}
+.sec-block .b{padding:14px 17px;font-size:13.5px;line-height:2;color:#334155}
+.gantt-row{display:flex;align-items:center;gap:10px;margin:7px 0;font-size:12.5px}
+.gantt-row .gl{width:170px;color:#475569;text-align:right;flex-shrink:0}
+.gbar{height:22px;border-radius:6px;color:#fff;font-size:11px;display:flex;align-items:center;padding:0 10px;white-space:nowrap}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th,.tbl td{border:1px solid #e2e8f0;padding:7px 11px;text-align:left}
+.tbl th{background:#f8fafc;color:#475569}
+.hint{font-size:12px;color:#94a3b8;margin-top:10px;line-height:1.8}
+.dialog-tip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px 16px;font-size:13px;color:#1e40af;line-height:1.9;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div><h1>🔬 科研AI助手 · 高校科研全流程工具演示</h1><div class="sub">从选题检索到课题申报 · 七大板块 · 现场可操作 · 演示数据均为模拟</div></div>
+  <div class="sub" style="text-align:right">对标科研AI工作台形态<br>零依赖 · 本地运行</div>
+</div>
+<div class="layout">
+  <div class="side">
+    <div class="cap">科 研 全 流 程</div>
+    <div class="nav-item on" data-p="p1"><span class="no">01</span><div><div class="t">入门与工具</div><div class="sec">任务工作台 · Skill调用 · 10节</div></div></div>
+    <div class="nav-item" data-p="p2"><span class="no">02</span><div><div class="t">文献与检索</div><div class="sec">检索策略 · 综述框架 · 5节</div></div></div>
+    <div class="nav-item" data-p="p3"><span class="no">03</span><div><div class="t">结构规范</div><div class="sec">结构解析 · 逻辑一致性 · 4节</div></div></div>
+    <div class="nav-item" data-p="p4"><span class="no">04</span><div><div class="t">方法与数据呈现</div><div class="sec">相关矩阵 · 显著性 · 4节</div></div></div>
+    <div class="nav-item" data-p="p5"><span class="no">05</span><div><div class="t">表达与要素</div><div class="sec">学术润色 · 术语统一 · 3节</div></div></div>
+    <div class="nav-item" data-p="p6"><span class="no">06</span><div><div class="t">规范与格式自查</div><div class="sec">引用 · 排版 · 完整性 · 11节</div></div></div>
+    <div class="nav-item" data-p="p7"><span class="no">07</span><div><div class="t">课题申报</div><div class="sec">立项依据 · 技术路线 · 5节</div></div></div>
+  </div>
+  <div class="main">
+
+  <!-- ================= 01 入门与工具 ================= -->
+  <div class="panel on" id="p1">
+    <div class="ph"><h2>01 · 任务工作台</h2><span class="badge">入门与工具 · 10节</span></div>
+    <div class="pdesc">科研任务从"一句话"开始：左侧管理任务，中间与助手对话（<b class="mono">/调用技能</b> 直接挂载能力），右侧自动沉淀产物文件。<b>点左侧任务，看每类任务的对话与产物。</b></div>
+    <div class="steps"><div class="step done"><span class="dot"></span>安装部署</div><div class="step done"><span class="dot"></span>工具协作</div><div class="step done"><span class="dot"></span>工作台搭建</div><div class="step done"><span class="dot"></span>Skill 专题</div></div>
+    <div class="wb">
+      <div class="col"><div class="h">📌 置顶任务</div><div id="wbtasks"></div></div>
+      <div class="col" style="display:flex;flex-direction:column"><div class="h">💬 任务对话</div><div class="chat" id="wbchat"></div></div>
+      <div class="col"><div class="h">📦 产物</div><div class="prod" id="wbprod"></div></div>
+    </div>
+    <div class="dialog-tip">💡 演示话术：老师只需要说一句"帮我看看这几个变量的关系"，助手自动调用 <b>统计分析技能</b> 跑完检验、画图、写解读——就是右侧第 04 板块演示的能力。</div>
+  </div>
+
+  <!-- ================= 02 文献与检索 ================= -->
+  <div class="panel" id="p2">
+    <div class="ph"><h2>02 · 检索策略与综述框架生成</h2><span class="badge">文献与检索 · 5节</span></div>
+    <div class="pdesc">输入研究方向 → 自动生成<b>数据库检索式</b>（主题词布尔组合）→ 模拟<b>筛选漏斗</b>（检出→题筛→全文→纳入）→ 一键产出<b>综述写作框架</b>。</div>
+    <div class="card">
+      <h3>① 研究方向</h3>
+      <input type="text" id="litTopic" value="数字技术赋能乡村教育质量提升">
+      <div style="margin-top:12px"><button class="btn" id="litBtn1" onclick="litStep1()">生成检索策略</button>
+      <button class="btn ghost" id="litBtn2" onclick="litStep2()" disabled>生成综述框架</button></div>
+      <div id="litStr"></div>
+      <div id="litFunnel"></div>
+      <div id="litOutline"></div>
+    </div>
+  </div>
+
+  <!-- ================= 03 结构规范 ================= -->
+  <div class="panel" id="p3">
+    <div class="ph"><h2>03 · 摘要结构解析与逻辑一致性检查</h2><span class="badge">结构规范 · 4节</span></div>
+    <div class="pdesc">把摘要贴进来，自动标注 <b>背景 / 缺口 / 目的 / 方法 / 结果 / 结论</b> 六要素，并检查"问题—方法—结果—结论"是否对齐。</div>
+    <div class="card">
+      <div style="margin-bottom:10px"><button class="btn" id="absBtn" onclick="absParse()">解析结构</button></div>
+      <div class="abs" id="absText">随着"双减"政策推进与课后服务全面覆盖，<b>中小学生学业负担与课余时间分配发生显著变化</b>。然而现有研究多聚焦政策文本分析，<b>对课后服务参与度与学业、身心发展指标的量化关系缺乏大样本证据</b>。本研究旨在考察课后服务参与强度对学生学业成就、睡眠时长与心理健康的关联机制。基于西部两省12所初中的<b>分层抽样数据（N=240）</b>，采用 Pearson 相关与多元回归控制家庭背景变量进行分析。结果显示：<b>课后服务参与时长与学业成就正相关（r=0.36），与焦虑、孤独感显著负相关</b>；效应在寄宿学生中更强。研究建议将课后服务纳入教育质量监测体系，并关注寄宿群体的差异化设计。<span style="color:#dc2626">综上，课后服务能够全面提升学生的学业成绩与身心健康水平。</span></div>
+      <div class="lgd" id="absLgd" style="display:none">
+        <span><span class="sw" style="background:#94a3b8"></span>研究背景</span><span><span class="sw" style="background:#ef4444"></span>研究缺口</span><span><span class="sw" style="background:#3b82f6"></span>研究目的</span><span><span class="sw" style="background:#8b5cf6"></span>方法</span><span><span class="sw" style="background:#10b981"></span>结果</span><span><span class="sw" style="background:#f59e0b"></span>结论</span>
+      </div>
+      <div class="card" id="absLogic" style="display:none;background:#f8fafc">
+        <h3>逻辑一致性检查</h3>
+        <ul class="logic">
+          <li><span class="ok">✓</span>研究目的与方法对齐：目的声明"关联机制"，方法采用相关+回归，口径一致</li>
+          <li><span class="ok">✓</span>结果回应目的：学业成就、睡眠、心理健康三个目的变量均有对应结果</li>
+          <li><span class="warn">⚠</span>结论超出证据范围："全面提升"为因果表述，横断相关设计只能支持"关联"，建议改为"与…显著相关"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 04 方法与数据呈现 ================= -->
+  <div class="panel" id="p4">
+    <div class="ph"><h2>04 · 相关矩阵热力图与显著性检验</h2><span class="badge">方法与数据呈现 · 4节</span></div>
+    <div class="pdesc">导入问卷数据后自动完成：相关矩阵 → 显著性标注（*p&lt;.05 **p&lt;.01 ***p&lt;.001，Holm 校正）→ 可选聚类重排 → 自动生成<b>结果解读</b>。下方为模拟数据（N=240）。</div>
+    <div class="card">
+      <div class="controls">
+        <span style="font-size:13px;color:#475569">相关类型</span>
+        <select id="hmMethod" onchange="drawHM()"><option>Pearson</option><option>Spearman</option></select>
+        <label class="chk"><input type="checkbox" id="hmVal" checked onchange="drawHM()">单元格显示数值</label>
+        <label class="chk"><input type="checkbox" id="hmCluster" onchange="drawHM()">聚类重排</label>
+        <button class="btn ghost sm" onclick="exportHM()">导出 PNG 2x / CSV</button>
+        <span style="font-size:12px;color:#94a3b8" id="hmN"></span>
+      </div>
+      <div class="hm-wrap">
+        <table class="hm" id="hmTable"></table>
+        <div style="min-width:200px">
+          <div style="font-size:12px;color:#64748b;margin-bottom:7px">色阶（r）</div>
+          <div id="hmLegend" style="display:flex;flex-direction:column;gap:3px;font-size:11px;color:#475569"></div>
+          <div style="font-size:11.5px;color:#94a3b8;margin-top:10px;line-height:1.8">*** p&lt;.001<br>** p&lt;.01<br>* p&lt;.05（Holm 校正）<br>n.s. 不显著</div>
+        </div>
+      </div>
+      <div style="margin-top:16px" class="interp" id="hmInterp"></div>
+      <div class="note">⚠ 相关不等于因果：横断数据无法排除混淆与反向因果；数值随数据编辑实时更新（演示为预置模拟数据）。</div>
+    </div>
+  </div>
+
+  <!-- ================= 05 表达与要素 ================= -->
+  <div class="panel" id="p5">
+    <div class="ph"><h2>05 · 学术润色与术语统一</h2><span class="badge">表达与要素 · 3节</span></div>
+    <div class="pdesc">口语化初稿 → 学术表达改写（改动处高亮），并检查<b>术语一致性</b>（同一概念多种叫法一键统一）。</div>
+    <div class="card">
+      <button class="btn" id="polBtn" onclick="polish()">AI 润色</button>
+      <div style="margin-top:14px" class="cmp">
+        <div class="box"><div class="cap">原文（初稿）</div><div id="polSrc">现在很多村里的学校都装了智慧黑板和平板，就是说数字设备进校园已经挺普遍的了。但是我们发现，光有设备其实没什么大用，关键还是老师会不会用、愿不愿意用。我感觉如果培训跟得上，设备的利用率就会高很多，学生的成绩也会好一点。另外农村教育和乡村教育这两个说法，文中混着用，其实指的是一回事。</div></div>
+        <div class="box"><div class="cap">AI 润色后（点上方按钮生成）</div><div id="polDst"><span style="color:#cbd5e1">等待生成……</span></div></div>
+      </div>
+      <div style="margin-top:16px;display:none" id="termBox">
+        <h3 style="font-size:14px;margin-bottom:8px">术语一致性检查</h3>
+        <div class="term"><span>检出 3 种表述指代同一概念：</span><span class="mix">乡村教育</span><span class="mix">农村教育</span><span class="mix">乡下学校</span>
+        <button class="btn sm" onclick="unifyTerm()">统一为</button><span class="uni">乡村教育</span></div>
+        <div class="fix" id="termFix" style="display:none">已统一：全文 12 处"农村教育"、3 处"乡下学校" → "乡村教育"（术语出现频次 27 次，前后一致 ✓）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 06 规范与格式自查 ================= -->
+  <div class="panel" id="p6">
+    <div class="ph"><h2>06 · 引用格式与完整性自查</h2><span class="badge">规范与格式自查 · 11节</span></div>
+    <div class="pdesc">按 <b>GB/T 7714</b> 与期刊通例逐项自查：参考文献格式、图表编号连续性、三线表、术语统一。点"开始自查"看逐项结果。</div>
+    <div class="card">
+      <button class="btn" id="chkBtn" onclick="runCheck()">开始自查</button>
+      <div id="chkList" style="margin-top:14px"></div>
+      <div id="chkRefs" style="display:none;margin-top:14px">
+        <h3 style="font-size:14px;margin-bottom:8px">问题定位（参考文献 · 摘录）</h3>
+        <div class="ref">[2] 李明. 数字化转型对城乡教育差距的影响研究<span class="prob">.</span> 教育研究, 2023. <span class="prob">(缺卷期页码)</span></div>
+        <div class="ref">[3] Wang Y, Chen L. Digital divide and rural education: Evidence from China<span class="prob">. (缺文献类型标识 [J])</span> Journal of Rural Studies, 2022, 89: 45-58.</div>
+        <div class="ref">[5] 王芳, 张伟. 乡村教师数字素养问卷的编制<span class="prob">(文献类型标识错，[D]应为[J])</span>[D]. 中国电化教育, 2021(6): 33-40.</div>
+        <div class="fix">修改建议：[2] 补"38(4): 12-21"；[3] 标题后加 [J]；[5] 改为 [J]。图表编号：正文出现"图5"但前文无"图4"，需补图或改号。</div>
+        <div style="display:flex;align-items:center;gap:14px;margin-top:12px"><span class="score" id="chkScore">62</span><div style="font-size:13px;color:#64748b">当前格式合规分<br>按建议整改后预估 <b style="color:#059669">95 分</b></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 07 课题申报 ================= -->
+  <div class="panel" id="p7">
+    <div class="ph"><h2>07 · 课题申报框架生成</h2><span class="badge">课题申报 · 5节</span></div>
+    <div class="pdesc">输入选题 → 生成申报书五大件：<b>立项依据 / 目标内容 / 技术路线 / 创新点 / 进度与预算</b>。以省级教育科学规划课题为模板（预置示例，可替换）。</div>
+    <div class="card">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <input type="text" id="propTopic" value="数字技术赋能乡村教育质量提升：机制、路径与实证" style="flex:1;min-width:280px">
+        <button class="btn" id="propBtn" onclick="genProposal()">生成申报框架</button>
+      </div>
+      <div style="margin-top:16px" id="propOut"></div>
+    </div>
+  </div>
+
+  </div>
+</div>
+<script>
+/* ============ 导航 ============ */
+document.querySelectorAll('.nav-item').forEach(n=>n.onclick=()=>{
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+  n.classList.add('on');
+  document.getElementById(n.dataset.p).classList.add('on');
+});
+function typeInto(el, text, speed, cb){
+  el.textContent=''; el.classList.add('type-cursor');
+  let i=0; const t=setInterval(()=>{ el.textContent=text.slice(0,i+=2);
+    if(i>=text.length){clearInterval(t);el.classList.remove('type-cursor');cb&&cb();} }, speed||18);
+}
+/* ============ 01 工作台 ============ */
+const WB=[
+ {t:'绘制相关矩阵与分类变量关联图',d:'3天前',chat:[
+  ['u','帮我看看焦虑、孤独感、睡眠时长这几个变量的关系，画个图放进论文'],
+  ['a','已调用 <span class="skill">统计分析</span> 技能：检测到 6 个连续变量、N=240，完成 Pearson 相关 + Holm 校正，热力图已生成。9/10 对显著，最强共变：焦虑—孤独感（r=0.70）。详见产物。'],
+  ['u','把不显著的挑出来，再说下要不要补样本'],
+  ['a','焦虑—学业成就 r=-0.04（p=0.513）不显著。按效应量 0.27、power=0.80 估算，当前样本充足；该对不显著更可能是真无关联，而非样本不足。']],
+  prod:[['相关矩阵热力图.html','可交互：切换 Pearson/Spearman、聚类重排、导出 PNG/SVG/CSV'],['结果解读.txt','175 字标准解读，含 VIF 与因果性提醒']]},
+ {t:'审阅 Cover Letter',d:'10月4日',chat:[
+  ['u','这是投《电化教育研究》的 cover letter，帮我审一下'],
+  ['a','已调用 <span class="skill">投稿审阅</span> 技能：收稿范围匹配 ✓；创新点表述与摘要不一致（1处）；缺通讯作者承诺与利益冲突声明。修改稿已生成。']],
+  prod:[['CoverLetter_修改稿.docx','3处修订，修订痕迹保留'],['审阅意见.md','逐条意见+依据']]},
+ {t:'环境规制碳排放文献计量',d:'10月25日',chat:[
+  ['u','近十年环境规制与碳排放的文献，帮我做个计量综述框架'],
+  ['a','已调用 <span class="skill">文献计量</span> 技能：检索 WOS/CNKI 共 1,842 篇，去重后 1,236 篇。已输出年度趋势、关键词共现聚类（4个主题群）与综述框架。']],
+  prod:[['计量分析报告.html','趋势图+共现网络'],['综述框架.md','六节大纲，含每节引用建议']]},
+ {t:'评估乡村振兴数字素养问卷',d:'10月26日',chat:[
+  ['u','我编了个数字素养问卷，25题，帮忙看看结构效度'],
+  ['a','已调用 <span class="skill">心理测量</span> 技能：KMO=0.91，Bartlett p&lt;.001；探索性因子分析提取 4 因子，累计方差解释 63.8%；第 17 题在双因子载荷&gt;0.4，建议删除或改写。']],
+  prod:[['因子分析结果.html','载荷表+碎石图'],['问卷修订建议.md','逐题意见']]}];
+let wbCur=-1;
+function renderWB(){
+  document.getElementById('wbtasks').innerHTML=WB.map((t,i)=>
+   `<div class="task${i===wbCur?' on':''}" onclick="wbSel(${i})"><div>${t.t}</div><div class="d">${t.d}</div></div>`).join('');
+}
+function wbSel(i){
+  wbCur=i; renderWB();
+  const chat=document.getElementById('wbchat'); chat.innerHTML='';
+  const msgs=WB[i].chat;
+  msgs.forEach((m,k)=>setTimeout(()=>{
+    const d=document.createElement('div'); d.className='msg '+m[0];
+    chat.appendChild(d);
+    if(m[0]==='a'){ typeInto(d,m[1],10); }
+    else d.textContent=m[1];
+    setTimeout(()=>{ const pr=document.getElementById('wbprod');
+      pr.innerHTML=WB[i].prod.map(p=>`<div class="p"><div class="n"><span class="ic">📄</span>${p[0]}</div><div class="d">${p[1]}</div></div>`).join('');
+    }, k===msgs.length-1?1200:0);
+  }, k*900));
+}
+renderWB(); wbSel(0);
+/* ============ 02 文献 ============ */
+function litStep1(){
+  const topic=document.getElementById('litTopic').value||'数字技术赋能乡村教育';
+  document.getElementById('litOutline').innerHTML='';
+  const s=document.getElementById('litStr');
+  s.innerHTML='<div class="search-str fade-in mono">'
+   +'CNKI：SU=("乡村教育"+"农村学校"+"县域教育") * SU=("数字技术"+"智慧教育"+"教育数字化"+"信息化") <br>'
+   +'万方：主题:("数字技术" AND "乡村教育") NOT 综述 <br>'
+   +'Web of Science：TS=("digital technology*" AND "rural education*" AND ("China" OR "developing countries")) <br>'
+   +'时间窗：2015–2026 · 文献类型：期刊+核心 · 语言：中英文</div>';
+  const rows=[[ '数据库初检',1247,100],['题目/摘要筛选（剔除会议·综述·无关）',286,40],['全文精读（纳入标准）',89,20],['最终纳入综述',42,12]];
+  document.getElementById('litFunnel').innerHTML='<div class="funnel fade-in">'+rows.map((r,i)=>
+   `<div class="fstage"><span class="lb">${r[0]}</span><div class="fbar" data-w="${r[2]}"><span class="fv">0</span></div></div>`).join('')+'</div>';
+  document.querySelectorAll('#litFunnel .fbar').forEach((b,i)=>{
+    setTimeout(()=>{ b.style.width=b.dataset.w+'%';
+      const target=rows[i][1]; let cur=0;
+      const t=setInterval(()=>{cur=Math.min(target,cur+Math.ceil(target/30));b.querySelector('.fv').textContent=cur+' 篇';if(cur>=target)clearInterval(t);},40);
+    }, 300+i*500);
+  });
+  document.getElementById('litBtn2').disabled=false;
+}
+function litStep2(){
+  const o=document.getElementById('litOutline');
+  const txt='综述框架（建议 6 节）：\n1 引言：数字技术与乡村教育的政策脉络与研究意义\n2 理论基础：技术赋能理论·数字鸿沟三层次框架\n3 主题一：接入鸿沟——硬件覆盖与使用条件\n4 主题二：使用鸿沟——教师数字素养与应用深度\n5 主题三：效果评估——学业表现与素养发展的实证证据\n6 述评与展望：方法局限（横断为主、缺少因果识别）与未来方向';
+  const d=document.createElement('div'); d.className='fade-in';
+  d.style.cssText='white-space:pre-line;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 18px;margin-top:12px;font-size:13.5px;line-height:2.1;color:#334155';
+  o.innerHTML=''; o.appendChild(d); typeInto(d,txt,8);
+}
+/* ============ 03 结构解析 ============ */
+function absParse(){
+  const segs=[
+   ['随着"双减"政策推进与课后服务全面覆盖，中小学生学业负担与课余时间分配发生显著变化。','bg'],
+   ['然而现有研究多聚焦政策文本分析，对课后服务参与度与学业、身心发展指标的量化关系缺乏大样本证据。','gap'],
+   ['本研究旨在考察课后服务参与强度对学生学业成就、睡眠时长与心理健康的关联机制。','aim'],
+   ['基于西部两省12所初中的分层抽样数据（N=240），采用 Pearson 相关与多元回归控制家庭背景变量进行分析。','met'],
+   ['结果显示：课后服务参与时长与学业成就正相关（r=0.36），与焦虑、孤独感显著负相关；效应在寄宿学生中更强。','res'],
+   ['研究建议将课后服务纳入教育质量监测体系，并关注寄宿群体的差异化设计。','con'],
+   ['综上，课后服务能够全面提升学生的学业成绩与身心健康水平。','bad']];
+  const colors={bg:['#94a3b8','背景'],gap:['#ef4444','缺口'],aim:['#3b82f6','目的'],met:['#8b5cf6','方法'],res:['#10b981','结果'],con:['#f59e0b','结论'],bad:['#dc2626','过度结论']};
+  const el=document.getElementById('absText'); el.innerHTML='';
+  segs.forEach((s,i)=>setTimeout(()=>{
+    const sp=document.createElement('span'); sp.className='seg';
+    sp.style.background=colors[s[1]][0]+'22'; sp.style.borderLeft='3px solid '+colors[s[1]][0];
+    sp.innerHTML=`<span class="tg" style="background:${colors[s[1]][0]}">${colors[s[1]][1]}</span>${s[0]}`;
+    el.appendChild(sp);
+    if(i===segs.length-1){document.getElementById('absLgd').style.display='flex';
+      document.getElementById('absLogic').style.display='block';}
+  }, i*550));
+}
+/* ============ 04 热力图 ============ */
+const HV=['学业成就','焦虑','孤独感','睡眠时长','自我效能','手机依赖'];
+const PEAR=[[1,.28,-.31,.36,.42,-.19],[.28,1,.70,-.38,-.24,.55],[-.31,.70,1,-.35,-.36,.44],[.36,-.38,-.35,1,.48,-.33],[.42,-.24,-.36,.48,1,-.27],[-.19,.55,.44,-.33,-.27,1]];
+const SPEA=[[1,.25,-.28,.33,.39,-.17],[.25,1,.66,-.35,-.22,.52],[-.28,.66,1,-.32,-.33,.41],[.33,-.35,-.32,1,.44,-.30],[.39,-.22,-.33,.44,1,-.24],[-.17,.52,.41,-.30,-.24,1]];
+const SIG=[[0,2,3,3,3,2],[2,0,3,3,2,3],[3,3,0,3,3,3],[3,3,3,0,3,2],[3,2,3,3,0,2],[2,3,3,2,2,0]];
+function heatColor(r){ const v=Math.max(-1,Math.min(1,r));
+  return v>=0? `hsl(212,72%,${92-38*v}%)` : `hsl(6,74%,${92-34*Math.abs(v)}%)`; }
+function clusterOrder(){
+  // 简单贪心聚类：焦虑/孤独感/手机依赖 一组；学业成就/自我效能/睡眠时长 一组
+  return [1,2,5,0,4,3];
+}
+function drawHM(){
+  const M=document.getElementById('hmMethod').value==='Pearson'?PEAR:SPEA;
+  let order=HV.map((_,i)=>i);
+  if(document.getElementById('hmCluster').checked) order=clusterOrder();
+  const showV=document.getElementById('hmVal').checked;
+  const stars=s=>['','*','**','***'][s]||'';
+  let html='<tr><td class="var"></td>'+order.map(i=>`<th>${HV[i]}</th>`).join('')+'</tr>';
+  order.forEach((ri,a)=>{
+    html+=`<tr><td class="var">${HV[ri]}</td>`;
+    order.forEach((ci,b)=>{
+      if(a===b){html+='<td class="dg">1.00</td>';return;}
+      const r=M[ri][ci], s=SIG[ri][ci];
+      html+=`<td style="background:${heatColor(r)}">`+
+        (showV? `<b>${r.toFixed(2)}${stars(s)===''?'':'<span class="p">'+stars(s)+'</span>'}</b>`:`<b style="opacity:.55">${stars(s)||'·'}</b>`)+
+        `</td>`;
+    });
+    html+='</tr>';
+  });
+  document.getElementById('hmTable').innerHTML=html;
+  document.getElementById('hmN').textContent='N = 240（成对完整 n=234–236）· '+(document.getElementById('hmMethod').value==='Pearson'?'双变量正态近似':'基于秩');
+  // 色阶图例
+  document.getElementById('hmLegend').innerHTML=[1,.5,0,-.5,-1].map(v=>
+    `<div style="display:flex;align-items:center;gap:7px"><span style="width:34px;height:14px;border-radius:3px;background:${heatColor(v)};display:inline-block"></span>${v>0?'+':''}${v.toFixed(1)}</div>`).join('');
+  // 解读
+  const m=document.getElementById('hmMethod').value==='Pearson'?'Pearson':'Spearman';
+  document.getElementById('hmInterp').innerHTML=
+   `N=240 个有效个案中（成对完整，n=234–236），<b>焦虑与孤独感共变最强（r=${M[1][2].toFixed(2)}，${m}，Holm 校正后 p&lt;.001）</b>。`
+   +'10 对相关中 9 对显著，焦虑—学业成就不显著（r=-0.04 级别）。'
+   +'聚类重排后可辨识「焦虑/孤独感/手机依赖」与「睡眠时长/自我效能/学业成就」两个模块。'
+   +'最大 VIF=2.58（&lt;5），共线性可接受。<b>横断数据仅反映共变，不作因果解释。</b>';
+}
+drawHM();
+function exportHM(){alert('演示环境：正式版将导出 2x PNG（论文插图）与 CSV（相关系数+p值矩阵），可直接插入论文与补充材料。');}
+/* ============ 05 润色 ============ */
+function polish(){
+  const b=document.getElementById('polBtn'); b.disabled=true; b.textContent='生成中…';
+  const dst=document.getElementById('polDst');
+  const segs=[
+   ['现在很多村里的学校都装了智慧黑板和平板，就是说数字设备进校园已经挺普遍的了。',
+    '<span class="del">现在很多村里的学校都装了</span><span class="ins">调查数据显示，样本地区 87% 的乡村学校已配备</span>智慧黑板和平板<span class="ins">等数字终端</span>，<span class="del">就是说</span><span class="ins">表明</span>数字设备进校园已经<span class="del">挺普遍的了</span><span class="ins">具备较高普及率</span>。'],
+   ['但是我们发现，光有设备其实没什么大用，关键还是老师会不会用、愿不愿意用。',
+    '<span class="ins">然而，实证分析表明，</span>光有设备其实<span class="del">没什么大用</span><span class="ins">并未自动转化为教学效能提升，其关键变量在于教师的数字教学能力与应用意愿（β=0.41, p&lt;.01）</span>。'],
+   ['我感觉如果培训跟得上，设备的利用率就会高很多，学生的成绩也会好一点。',
+    '<span class="ins">回归结果进一步显示，</span><span class="del">我感觉</span>如果培训跟得上<span class="ins">，教师培训强度每提高一个标准差，设备利用率提升 0.38 个标准差，并与学生学业表现呈显著正相关</span>。'],
+   ['另外农村教育和乡村教育这两个说法，文中混着用，其实指的是一回事。',
+    '<span class="ins">需要说明的是，</span>农村教育和乡村教育这两个说法，文中<span class="del">混着用，其实指的是一回事</span><span class="ins">在本文中作同义使用，统一表述为"乡村教育"（见术语表）</span>。']];
+  dst.innerHTML=''; let i=0;
+  const t=setInterval(()=>{
+    const p=document.createElement('p'); p.innerHTML=segs[i][1]; p.style.marginBottom='10px'; dst.appendChild(p);
+    if(++i>=segs.length){clearInterval(t); b.disabled=false; b.textContent='重新润色';
+      document.getElementById('termBox').style.display='block';}
+  },700);
+}
+function unifyTerm(){
+  document.getElementById('termFix').style.display='block';
+}
+/* ============ 06 自查 ============ */
+const CHK=[['参考文献 GB/T 7714 格式','3 处问题：[2]缺卷期页码 [3]缺文献类型标识 [5]类型标识错误',0],
+ ['图表编号连续性','图3 之后出现"图5"，缺"图4"；表1–表3 连续 ✓',0],
+ ['三线表规范','表1/表2 为规范三线表 ✓',1],
+ ['术语一致性','"乡村教育/农村教育"混用 15 处',0],
+ ['计量单位与统计符号','r、p、N 斜体/正体使用符合规范 ✓',1],
+ ['标题层级','三级标题体系完整，无跳级 ✓',1],
+ ['摘要四要素','背景/方法/结果/结论齐备 ✓',1]];
+function runCheck(){
+  const b=document.getElementById('chkBtn'); b.disabled=true; b.textContent='自查中…';
+  const l=document.getElementById('chkList'); l.innerHTML='';
+  CHK.forEach((c,i)=>setTimeout(()=>{
+    const d=document.createElement('div'); d.className='chk-row fade-in';
+    d.innerHTML=`<span class="st" style="color:${c[2]?'#059669':'#dc2626'}">${c[2]?'✓':'✗'}</span><b style="width:190px;flex-shrink:0">${c[0]}</b><span style="color:#64748b">${c[1]}</span>`;
+    l.appendChild(d);
+    if(i===CHK.length-1){document.getElementById('chkRefs').style.display='block';
+      // 分数动画
+      const sc=document.getElementById('chkScore'); let v=0; const t=setInterval(()=>{v=Math.min(62,v+4);sc.textContent=v;if(v>=62)clearInterval(t);},30);
+      b.disabled=false; b.textContent='重新自查';}
+  }, 350+i*420));
+}
+/* ============ 07 申报 ============ */
+function genProposal(){
+  const topic=document.getElementById('propTopic').value||'数字技术赋能乡村教育质量提升';
+  const b=document.getElementById('propBtn'); b.disabled=true; b.textContent='生成中…';
+  const o=document.getElementById('propOut'); o.innerHTML='';
+  const blocks=[
+   {no:'1',title:'立项依据',items:[
+     '研究现状痛点：① 现有研究多描述"设备覆盖"，对"技术如何转化为质量提升"的机制解释不足；② 横断问卷为主，缺少追踪设计；③ 县域异质性（中心校/教学点）关注不够。',
+     '科学问题：数字技术通过哪些中介机制（教师数字素养·教学方式变革·家校协同）影响乡村教育质量？边界条件是什么？',
+     '政策依据：《教育数字化战略行动》《乡村振兴促进法》对县域教育数字化的部署。']},
+   {no:'2',title:'研究目标与内容',items:[
+     '总目标：识别数字技术影响乡村教育质量的因果机制，提出可复制推广的县域实施路径。',
+     '内容一：乡村学校数字化投入与使用现状追踪（两县 24 校面板数据）；内容二：教师数字素养的中介效应识别（DID/工具变量）；内容三：分层分类的实施路径与政策工具箱。']},
+   {no:'3',title:'技术路线',items:[
+     '现状诊断（问卷+访谈，N≈1,200）→ 机制识别（准实验设计：智慧教育平台分批接入作为自然实验）→ 路径仿真（系统动力学模型）→ 政策建议（县域试点验证）。',
+     '数据来源：教育局平台日志 + 三轮追踪问卷 + 深度访谈 40 人。']},
+   {no:'4',title:'创新点',items:[
+     '① 视角创新：从"投入—覆盖"转向"使用—机制—质量"的全链条分析；② 方法创新：以平台分批接入构造准自然实验，缓解内生性；③ 应用创新：形成可落地的县域差异化实施路径。']},
+   {no:'5',title:'进度安排（24个月）',gantt:true},
+   {no:'6',title:'经费预算',table:true}
+  ];
+  const gantt=[['阶段一 现状诊断','1-6月',24,0,'#60a5fa'],['阶段二 机制识别','7-14月',40,22,'#3b82f6'],['阶段三 路径仿真','15-20月',26,60,'#1d4ed8'],['阶段四 试点验证','19-24月',24,74,'#1e40af']];
+  blocks.forEach((bk,i)=>setTimeout(()=>{
+    const d=document.createElement('div'); d.className='sec-block show';
+    let inner='';
+    if(bk.gantt){
+      inner=gantt.map(g=>'<div class="gantt-row"><span class="gl">'+g[0]+'</span><div style="flex:1;background:#f1f5f9;border-radius:6px;height:22px;position:relative"><div class="gbar" style="width:'+g[2]+'%;margin-left:'+g[3]+'%;background:'+g[4]+'">'+g[1]+'</div></div></div>').join('');
+    } else if(bk.table){
+      inner='<table class="tbl"><tr><th>科目</th><th>金额（万元）</th><th>占比</th><th>用途</th></tr>'
+       +'<tr><td>数据采集与处理</td><td>4.8</td><td>32%</td><td>问卷平台·日志数据购置</td></tr>'
+       +'<tr><td>调研差旅</td><td>3.6</td><td>24%</td><td>两县24校三轮驻点</td></tr>'
+       +'<tr><td>劳务费</td><td>3.0</td><td>20%</td><td>研究生助研·访谈转录</td></tr>'
+       +'<tr><td>设备与软件</td><td>2.4</td><td>16%</td><td>分析软件许可</td></tr>'
+       +'<tr><td>其他（出版/会议）</td><td>1.2</td><td>8%</td><td>成果发表</td></tr>'
+       +'<tr><td><b>合计</b></td><td><b>15.0</b></td><td><b>100%</b></td><td></td></tr></table>';
+    } else {
+      inner=bk.items.map(x=>'<p style="margin-bottom:8px">• '+x+'</p>').join('');
+    }
+    d.innerHTML='<div class="h"><span class="n">'+bk.no+'</span>'+bk.title+'</div><div class="b">'+inner+'</div>';
+    o.appendChild(d);
+    if(i===blocks.length-1){b.disabled=false;b.textContent='重新生成';}
+    d.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }, 500+i*700));
+}
+</script>
+</body>
+</html>

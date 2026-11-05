@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../../gate.js?v=20261104" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>五轴机床数控加工仿真系统 · G 代码驱动</title>
+<style>
+:root{--bg:#10151a;--bg2:#151c22;--pn:#1c252d;--pn2:#222d36;--ln:#2c3a44;--tx:#d6dee4;--dim:#8a9ba6;--or:#FF6D00;--bl:#38a3d8;--gr:#43A047;--rd:#E53935}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:"Microsoft YaHei","PingFang SC",sans-serif;font-size:14px;line-height:1.55;padding-bottom:40px}
+.wrap{max-width:1420px;margin:0 auto;padding:0 14px}
+header{background:linear-gradient(135deg,#10161c,#1a2630);border-bottom:3px solid var(--or);padding:16px 0 12px}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}
+.logo{display:inline-block;background:var(--or);color:#101010;font-weight:900;font-size:13px;padding:2px 8px;border-radius:3px;letter-spacing:1px;transform:skewX(-8deg)}
+h1{font-size:22px;color:#fff;letter-spacing:1px;font-weight:800;margin-top:8px}h1 em{color:var(--or);font-style:normal}
+.sub{color:var(--dim);font-size:13px;margin-top:6px}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{background:#2b2016;border:1px solid var(--or);color:#ffb74d;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:700}
+.badge.b2{background:#102b3a;border-color:#38a3d8;color:#81d4fa}
+.layout{display:grid;grid-template-columns:310px minmax(0,1fr);gap:14px;margin-top:14px}
+@media(max-width:980px){.layout{grid-template-columns:1fr}}
+.panel{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:12px 14px;overflow:hidden}
+.panel h3{font-size:14px;color:#fff;font-weight:700;margin-bottom:10px;border-left:3px solid var(--or);padding-left:8px}
+.grp{margin-bottom:12px}
+.gt{font-size:11px;color:var(--dim);letter-spacing:1px;margin-bottom:5px;font-family:Consolas,monospace}
+textarea{width:100%;height:220px;background:#0e151b;color:#a9d6a5;border:1px solid var(--ln);border-radius:8px;font-family:Consolas,monospace;font-size:12px;line-height:1.6;padding:10px;resize:vertical}
+textarea:focus{outline:none;border-color:var(--bl)}
+.rowbtn{display:flex;gap:8px;flex-wrap:wrap}
+.btn{background:var(--pn2);border:1px solid #3c4f58;color:var(--tx);border-radius:6px;padding:7px 12px;font-size:13px;cursor:pointer;font-family:inherit;transition:.15s}
+.btn:hover{border-color:#5b7380;background:#2f3f47}
+.btn.pri{background:linear-gradient(180deg,#e66a00,#b04e00);border-color:#7a3702;color:#fff;font-weight:700}
+.btn.pri:hover{filter:brightness(1.1)}
+.btn.rd{background:#6e1f1f;border-color:#a03232;color:#f0c8c8}
+.btn.sm{padding:5px 10px;font-size:12px}
+.btn.on{background:linear-gradient(180deg,#2a6da1,#1b4f7a);border-color:#38a3d8;color:#fff;font-weight:700}
+.meters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.meter{background:var(--pn2);border:1px solid var(--ln);border-radius:8px;padding:7px 9px}
+.meter .lb{font-size:10.5px;color:var(--dim);font-family:Consolas,monospace}
+.meter .vl{font-size:19px;color:#fff;font-family:Consolas,monospace;font-weight:700;margin-top:2px}
+.meter .vl small{font-size:11px;color:var(--dim)}
+.viewtabs{display:flex;gap:6px;margin-bottom:10px}
+#view3d{width:100%;height:480px;background:#0d141a;border:1px solid var(--ln);border-radius:10px}
+.runstate{font-family:Consolas,monospace;font-size:12px;color:#81d4fa}
+#ncList{max-height:240px;overflow:auto;background:#0e151b;border:1px solid var(--ln);border-radius:8px;font-family:Consolas,monospace;font-size:12px;line-height:1.8}
+#ncList .ln{display:flex;padding:0 6px;cursor:pointer;border-left:3px solid transparent}
+#ncList .ln:hover{background:#18232b}
+#ncList .no{width:32px;flex:0 0 32px;text-align:right;padding-right:8px;color:#55666f;user-select:none}
+#ncList .code{flex:1;color:#c8d4db;white-space:pre;overflow:hidden}
+#ncList .ln.cur{background:linear-gradient(90deg,#2b4a12,#14250a);border-left-color:var(--or)}
+#ncList .ln.cur .code{color:#b5f08a;font-weight:700}
+#statusLine{font-size:12px;color:var(--dim);margin-top:8px;font-family:Consolas,monospace;min-height:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="hd">
+    <div>
+      <span class="logo">CNC · 五轴</span>
+      <h1>五轴机床 <em>数控加工仿真系统</em> · G 代码驱动</h1>
+      <div class="sub">G 代码导入 → 毛坯/工件坐标系/刀具配置 → 实时程序行高亮 · 轴坐标同步 · 单步/复位/仿真速度 · 三视角</div>
+    </div>
+    <div class="badges">
+      <span class="badge">SIM·GCODE</span>
+      <span class="badge b2">5-AXIS · X/Y/Z+A/C</span>
+      <span class="badge">零依赖 · 本地单文件</span>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- 左侧控制面板 -->
+  <div class="panel">
+    <div class="grp">
+      <div class="gt">// 控制</div>
+      <div class="rowbtn">
+        <button class="btn pri" id="btnRun">▶ 运行</button>
+        <button class="btn sm" id="btnStep">单步</button>
+        <button class="btn sm rd" id="btnReset">重置</button>
+      </div>
+    </div>
+    <div class="grp">
+      <div class="gt">仿真速度 <span id="spdLbl" style="float:right;color:var(--or)">1.0×</span></div>
+      <input type="range" id="speed" min="0.2" max="3" step="0.1" value="1" style="width:100%;accent-color:#ff9d00">
+    </div>
+    <div class="grp">
+      <div class="gt">机床参数</div>
+      <div class="rowbtn" style="gap:6px">
+        <button class="btn sm" onclick="setConfig('毛坯尺寸','80 × 80 × 40mm')">毛坯尺寸</button>
+        <button class="btn sm" onclick="setConfig('工件坐标系','G54')">工件坐标系</button>
+        <button class="btn sm" onclick="setConfig('刀具','T01 · Φ12 平底立铣刀')">刀具几何</button>
+        <button class="btn sm" onclick="setConfig('主轴转速','S8000 r/min')">主轴转速</button>
+      </div>
+      <div id="cfgBox" class="state" style="margin-top:8px"></div>
+    </div>
+    <div class="grp">
+      <div class="gt">实时坐标</div>
+      <div class="meters">
+        <div class="meter"><div class="lb">X</div><div class="vl" id="rdX">0.000</div></div>
+        <div class="meter"><div class="lb">Y</div><div class="vl" id="rdY">0.000</div></div>
+        <div class="meter"><div class="lb">Z</div><div class="vl" id="rdZ">0.000</div></div>
+        <div class="meter"><div class="lb">A°</div><div class="vl" id="rdA">0.0</div></div>
+        <div class="meter"><div class="lb">C°</div><div class="vl" id="rdC">0.0</div></div>
+        <div class="meter"><div class="lb">主轴/进给</div><div class="vl" id="rdSF" style="font-size:14px">S0·F0</div></div>
+      </div>
+    </div>
+    <div class="grp">
+      <div class="gt">程序列表（点击=单步执行）</div>
+      <div id="nc"></div>
+      <div id="statusLine">— 就绪 —</div>
+    </div>
+  </div>
+
+  <!-- 右侧视图 -->
+  <div class="panel">
+    <div class="rowbtn" style="justify-content:space-between;align-items:center">
+      <div class="viewtabs" id="viewtabs" style="margin-bottom:0">
+        <button class="btn sm on" data-v="iso">等轴侧</button>
+        <button class="btn sm" data-v="front">正面</button>
+        <button class="btn sm" data-v="top">俯视</button>
+      </div>
+      <span class="badge b2" id="runState">就绪</span>
+    </div>
+    <canvas id="view3d"></canvas>
+    <div class="grp" style="margin-top:12px">
+      <div class="gt">G 代码程序（可编辑 · 修改后点「重置」重载生效）</div>
+      <textarea id="gcode" spellcheck="false"></textarea>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+'use strict';
+function $(i){return document.getElementById(i)}
+function clamp(v,a,b){return v<a?a:(v>b?b:v)}
+
+/* ---------- 状态 ---------- */
+var pos={x:0,y:0,z:0,a:0,c:0};
+var spd={s:0,f:0,t:0};
+var cfg={毛坯尺寸:'80 × 80 × 40mm',工件坐标系:'G54',刀具:'T12 · Φ12mm 平底立铣刀',主轴转速:'S8000 r/min'};
+var ncLines=[],curLine=-1,done=false;
+var gAbs=true;   // G90 绝对坐标
+var timer=null;
+var view='iso';
+var trace=[];    // 走刀轨迹点
+function pushTrace(){trace.push({x:pos.x,y:pos.y,z:pos.z});}
+
+/* ---------- 3D 视图 ---------- */
+var cv=$('view3d'),ctx=cv.getContext('2d'),W=0,H=0;
+function sizeCanvas(){W=cv.width=cv.clientWidth;H=cv.height=cv.clientHeight;}
+function project(x,y,z){
+  if(view==='iso'){var a=Math.PI/6;return [W/2+(x*Math.cos(a)-y*Math.sin(a))*0.45, H/2 - z*0.45+(x*Math.sin(a)+y*Math.cos(a))*0.30];}
+  if(view==='front'){return [W/2+x*0.45, H/2-z*0.45];}
+  return [W/2+x*0.45, H/2+y*0.45];
+}
+function draw(){
+  sizeCanvas();
+  var g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0d141a');g.addColorStop(1,'#070b0f');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  // 地面网格
+  ctx.strokeStyle='#1b2a33';ctx.lineWidth=1;
+  for(var i=-4;i<=4;i++){
+    var p=project(i*24,-60,0),q=project(i*24,60,0);
+    ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();
+    p=project(-60,i*24,0);q=project(60,i*24,0);
+    ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();
+  }
+  // 工作台（固定底面）
+  drawBox(-30,-30,0, 110,110,4, '#2a3942','#3a4a54');
+  // 毛坯
+  drawBox(0,0,4, 80,80,40, '#44586a','#55718a');
+  // 走刀轨迹（仅当有移动）
+  if(trace.length>1){
+    ctx.strokeStyle='#ffb74d';ctx.lineWidth=1.5;ctx.globalAlpha=.85;
+    ctx.beginPath();
+    var tp0=project(trace[0].x,trace[0].y,trace[0].z);ctx.moveTo(tp0[0],tp0[1]);
+    for(var ti=1;ti<trace.length;ti++){var tp=project(trace[ti].x,trace[ti].y,trace[ti].z);ctx.lineTo(tp[0],tp[1]);}
+    ctx.stroke();ctx.globalAlpha=1;
+  }
+  // 刀具
+  var t=project(pos.x,pos.y,pos.z+2), t2=project(pos.x,pos.y,pos.z+24);
+  ctx.strokeStyle='#cfd8dc';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(t[0],t[1]);ctx.lineTo(t2[0],t2[1]);ctx.stroke();
+  ctx.fillStyle='#ff9d00';ctx.beginPath();ctx.arc(t[0],t[1],5,0,7);ctx.fill();
+  // 轴标签
+  ctx.fillStyle='#38a3d8';ctx.font='12px Consolas';ctx.textAlign='left';
+  ctx.fillText('X',W-30,H-12);ctx.fillText('Y',W-14,H-12);ctx.fillStyle='#ff9d00';ctx.fillText('Z',W-46,H-12);
+}
+function drawBox(x0,y0,z0,x1,y1,z1,fill,edgeC){
+  var c=[[x0,y0,z0],[x1,y0,z0],[x1,y1,z0],[x0,y1,z0],[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]];
+  function edge(a,b){var p=project(c[a][0],c[a][1],c[a][2]),q=project(c[b][0],c[b][1],c[b][2]);
+    ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();}
+  // 顶面填充
+  ctx.beginPath();var p0=project(c[4][0],c[4][1],c[4][2]),p1=project(c[5][0],c[5][1],c[5][2]),p2=project(c[6][0],c[6][1],c[6][2]),p3=project(c[7][0],c[7][1],c[7][2]);
+  ctx.moveTo(p0[0],p0[1]);ctx.lineTo(p1[0],p1[1]);ctx.lineTo(p2[0],p2[1]);ctx.lineTo(p3[0],p3[1]);ctx.closePath();
+  ctx.fillStyle=fill;ctx.globalAlpha=.5;ctx.fill();ctx.globalAlpha=1;
+  ctx.strokeStyle=edgeC;ctx.lineWidth=1.5;
+  var i;
+  for(i=0;i<4;i++)edge(i,(i+1)%4);
+  for(i=4;i<8;i++)edge(i,((i+1)%4)+4);
+  edge(0,4);edge(1,5);edge(2,6);edge(3,7);
+}
+
+/* ---------- G 代码 ---------- */
+var DEMO=[
+'O0001  (五轴数控仿真样例)',
+'N10 G90 G54 G17',
+'N20 S8000 M03',
+'N30 T12 M06',
+'N40 G43 H01 Z50',
+'N50 G00 X0 Y0 Z50',
+'N60 G01 Z5 F800',
+'N70 G01 X20 F1200',
+'N80 G01 Y60',
+'N90 G01 X40',
+'N100 G01 Y20',
+'N110 G01 X60',
+'N120 G01 Y60',
+'N130 G01 X80',
+'N140 G01 Y80',
+'N150 G01 Z45 F600',
+'N160 M05',
+'N170 M30'
+].join('\n');
+$('gcode').value=DEMO;
+parseNC(DEMO);
+
+function parseNC(code){
+  ncLines=[];curLine=-1;
+  code.split(/\r?\n/).forEach(function(raw){
+    var t=raw.replace(/\([^)]*\)/g,'').trim();
+    if(t)ncLines.push(t);
+  });
+  buildNCList();
+}
+function buildNCList(){
+  var el=$('nc');el.innerHTML='';
+  ncLines.forEach(function(l,i){
+    var d=document.createElement('div');d.className='ln';d.dataset.i=i;
+    d.innerHTML='<span class="no">'+(i+1)+'</span><span class="code"></span>';
+    d.querySelector('.code').textContent=l;
+    d.onclick=function(){runSingle(i);};
+    el.appendChild(d);
+  });
+}
+function setActive(i){
+  Array.from($('nc').children).forEach(function(c,k){
+    c.classList.toggle('cur',k===i);
+  });
+}
+
+/* ---------- 执行 ---------- */
+function parseCmd(line){
+  var r={};var re=/([GMSFTXYZAC])(-?\d+(?:\.\d+)?)/ig,m;
+  while((m=re.exec(line))){r[m[1].toUpperCase()]=+m[2];}
+  return r;
+}
+function runLine(i){
+  if(i<0||i>=ncLines.length)return;
+  var r=parseCmd(ncLines[i]);
+  var move=false;
+  if(r.G!==undefined){
+    var g=Math.round(r.G);
+    if(g===0||g===1)move=true;
+    else if(g===90)gAbs=true;
+    else if(g===91)gAbs=false;
+    else if(g===54||g===55||g===56){setStatus('工件坐标系 G'+g);}
+  }
+  if(move){
+    var nx=pos.x,ny=pos.y,nz=pos.z,na=pos.a,nc=pos.c;
+    if(r.X!==undefined)nx=gAbs?r.X:pos.x+r.X;
+    if(r.Y!==undefined)ny=gAbs?r.Y:pos.y+r.Y;
+    if(r.Z!==undefined)nz=gAbs?r.Z:pos.z+r.Z;
+    if(r.A!==undefined)na=gAbs?r.A:pos.a+r.A;
+    if(r.C!==undefined)nc=gAbs?r.C:pos.c+r.C;
+    pos.x=nx;pos.y=ny;pos.z=nz;pos.a=na;pos.c=nc;
+    pushTrace();
+  }
+  if(r.S!==undefined)spd.s=r.S;
+  if(r.F!==undefined)spd.f=r.F;
+  if(r.T!==undefined)spd.t=r.T;
+  if(r.M!==undefined){var m=Math.round(r.M);if(m===3)spd.s=spd.s||8000;if(m===5)spd.s=0;}
+  updateMeters();
+}
+
+function updateMeters(){
+  $('rdX').textContent=pos.x.toFixed(3);
+  $('rdY').textContent=pos.y.toFixed(3);
+  $('rdZ').textContent=pos.z.toFixed(3);
+  $('rdA').textContent=pos.a.toFixed(1);
+  $('rdC').textContent=pos.c.toFixed(1);
+  $('rdSF').textContent='S'+spd.s+'·F'+spd.f;
+}
+function setStatus(t){$('statusLine').textContent=t;}
+function setConfig(k,v){cfg[k]=v;renderCfg();setStatus('配置已设：'+k+'='+v);}
+function renderCfg(){
+  $('cfgBox').innerHTML=Object.keys(cfg).map(function(k){return k+': <b style="color:#ffd74d">'+cfg[k]+'</b>'}).join('<br>');
+}
+
+/* ---------- 运行控制 ---------- */
+function speed(){return parseFloat($('speed').value);}
+function startAuto(){
+  if(timer){clearInterval(timer);timer=null;$('btnRun').textContent='▶ 运行';$('runState').textContent='已暂停';setStatus('已暂停');return;}
+  if(curLine<0)curLine=0;
+  if(curLine>=ncLines.length){curLine=0;pos={x:0,y:0,z:0,a:0,c:0};spd={s:0,f:0,t:0};updateMeters();}
+  $('btnRun').textContent='⏸ 暂停';$('runState').textContent='运行中';
+  timer=setInterval(function(){
+    if(curLine>=ncLines.length){stopAuto();$('runState').textContent='加工完成';setStatus('加工完成');return;}
+    runLine(curLine);setActive(curLine);setStatus('第 '+(curLine+1)+' 行：'+ncLines[curLine]);curLine++;
+  },140/speed());
+}
+function stopAuto(){if(timer){clearInterval(timer);timer=null}$('btnRun').textContent='▶ 运行';}
+function runSingle(i){
+  if(timer)stopAuto();
+  if(i===undefined||i<0){
+    if(curLine<0)curLine=0;
+    if(curLine>=ncLines.length){setStatus('程序结束，请重置');$('runState').textContent='完成';return;}
+    runLine(curLine);setActive(curLine);setStatus('单步：第 '+(curLine+1)+' 行：'+ncLines[curLine]);curLine++;
+  }else{
+    curLine=i;runLine(i);setActive(i);setStatus('执行第 '+(i+1)+' 行：'+ncLines[i]);
+  }
+  $('runState').textContent='单步';
+}
+function resetAll(){
+  stopAuto();pos={x:0,y:0,z:0,a:0,c:0};spd={s:0,f:0,t:0};curLine=0;trace=[];
+  parseNC($('gcode').value);
+  updateMeters();setActive(-1);$('runState').textContent='就绪';setStatus('已重置');
+}
+
+$('btnRun').onclick=startAuto;
+$('btnStep').onclick=function(){runSingle();};
+$('btnReset').onclick=resetAll;
+$('speed').oninput=function(){$('spdLbl').textContent=this.value+'×';};
+Array.prototype.forEach.call($('viewtabs').querySelectorAll('button'),function(b){
+  b.onclick=function(){
+    Array.prototype.forEach.call($('viewtabs').querySelectorAll('button'),function(x){x.classList.remove('on')});
+    b.classList.add('on');view=b.dataset.v;
+  };
+});
+
+renderCfg();
+updateMeters();
+setInterval(draw,50);
+</script>
+</body>
+</html>

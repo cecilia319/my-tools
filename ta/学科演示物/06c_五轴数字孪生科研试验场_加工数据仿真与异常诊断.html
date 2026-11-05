@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../../gate.js?v=20261104" data-gate></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>五轴数字孪生 · 科研试验场 —— 加工数据仿真与异常诊断</title>
+<style>
+:root{--bg:#0f1419;--pn:#1a232b;--pn2:#212d37;--ln:#2d3d49;--tx:#d8e0e6;--dim:#8ba0ac;--or:#FF6D00;--bl:#38a3d8;--gr:#43A047;--rd:#E53935;--yl:#FBC02D;--pu:#9575CD}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:"Microsoft YaHei","PingFang SC",sans-serif;font-size:14px;line-height:1.55;padding-bottom:44px}
+.wrap{max-width:1460px;margin:0 auto;padding:0 14px}
+header{background:linear-gradient(135deg,#10161c,#1c2a36);border-bottom:3px solid var(--pu);padding:15px 0 12px}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}
+.logo{display:inline-block;background:var(--pu);color:#17121f;font-weight:900;font-size:13px;padding:2px 8px;border-radius:3px;letter-spacing:1px;transform:skewX(-8deg)}
+h1{font-size:21px;color:#fff;letter-spacing:1px;font-weight:800;margin-top:8px}h1 em{color:#b39ddb;font-style:normal}
+.sub{color:var(--dim);font-size:12.5px;margin-top:5px}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{background:#241b33;border:1px solid var(--pu);color:#cbb8e8;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:700}
+.badge.b2{background:#102b3a;border-color:#38a3d8;color:#81d4fa}
+.badge.b3{background:#27321a;border-color:#7cb342;color:#d4e8b0}
+.sci{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:900px){.sci{grid-template-columns:1fr}}
+.sci .sc{background:var(--pn);border:1px solid var(--ln);border-left:4px solid var(--pu);border-radius:10px;padding:12px 14px}
+.sci .sc h3{font-size:14.5px;color:#d1c4e9;margin-bottom:6px}
+.sci .sc p{font-size:12.5px;color:var(--dim);line-height:1.7}
+.sci .sc b{color:#b39ddb}
+.layout{display:grid;grid-template-columns:300px minmax(0,1.15fr) minmax(0,1fr);gap:13px;margin-top:13px}
+@media(max-width:1150px){.layout{grid-template-columns:1fr 1fr}.layout>.p3{grid-column:1/-1}}
+@media(max-width:760px){.layout{grid-template-columns:1fr}}
+.panel{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:12px 13px;min-width:0}
+.panel h3{font-size:13.5px;color:#fff;font-weight:700;margin-bottom:9px;border-left:3px solid var(--pu);padding-left:8px}
+.gt{font-size:11px;color:var(--dim);letter-spacing:1px;margin:9px 0 4px;font-family:Consolas,monospace}
+.rowbtn{display:flex;gap:7px;flex-wrap:wrap}
+.btn{background:var(--pn2);border:1px solid #3c505c;color:var(--tx);border-radius:6px;padding:6px 11px;font-size:12.5px;cursor:pointer;font-family:inherit;transition:.15s}
+.btn:hover{border-color:#5b7380;background:#2a3841}
+.btn.pri{background:linear-gradient(180deg,#7e57c2,#5e35b1);border-color:#4527a0;color:#fff;font-weight:700}
+.btn.rd{background:#6e1f1f;border-color:#a03232;color:#f0c8c8}
+.btn.sm{padding:4px 9px;font-size:12px}
+.btn.on{background:linear-gradient(180deg,#5e35b1,#311b92);border-color:#9575cd;color:#fff;font-weight:700}
+.pgrp{display:grid;grid-template-columns:72px 1fr 42px;gap:6px;align-items:center;margin-bottom:6px;font-size:12px}
+.pgrp label{color:var(--dim)}
+.pgrp input[type=range]{width:100%;accent-color:#9575cd}
+.pgrp b{color:#ffd74d;font-family:Consolas,monospace;text-align:right}
+select,input[type=number]{background:#0e151b;color:var(--tx);border:1px solid var(--ln);border-radius:6px;padding:5px 8px;font-family:inherit;font-size:12.5px;width:100%}
+textarea{width:100%;height:150px;background:#0e151b;color:#a9d6a5;border:1px solid var(--ln);border-radius:8px;font-family:Consolas,monospace;font-size:11.5px;line-height:1.55;padding:8px;resize:vertical}
+textarea:focus{outline:none;border-color:var(--bl)}
+.meters{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.meter{background:var(--pn2);border:1px solid var(--ln);border-radius:7px;padding:6px 8px}
+.meter .lb{font-size:10px;color:var(--dim);font-family:Consolas,monospace}
+.meter .vl{font-size:16px;color:#fff;font-family:Consolas,monospace;font-weight:700;margin-top:1px}
+.meter .vl small{font-size:9.5px;color:var(--dim)}
+.meter.warn .vl{color:#ffab91}
+canvas.sig{width:100%;height:86px;background:#0c1117;border:1px solid var(--ln);border-radius:7px;display:block;margin-bottom:7px}
+canvas.mach{width:100%;height:250px;background:#0c1117;border:1px solid var(--ln);border-radius:8px}
+#events{max-height:168px;overflow:auto;font-size:11.5px;font-family:Consolas,monospace}
+#events .ev{padding:5px 7px;border-left:3px solid var(--rd);background:#2a1616;border-radius:4px;margin-bottom:5px}
+#events .ev.w2{border-left-color:var(--yl);background:#292413}
+#events .ev .t{color:#ff8a80}.ev.w2 .t{color:#ffe082}
+#events .ev .ad{color:#9bb8c8;font-size:11px}
+#hist{max-height:150px;overflow:auto;font-size:11px;font-family:Consolas,monospace}
+#hist table{width:100%;border-collapse:collapse}
+#hist th{color:var(--dim);font-weight:400;text-align:right;padding:3px 5px;border-bottom:1px solid var(--ln);font-size:10.5px;white-space:nowrap}
+#hist td{text-align:right;padding:3px 5px;border-bottom:1px dashed #22303a;color:#cfe3ee;white-space:nowrap}
+#hist .last td{color:#ffd74d}
+#report{background:#122029;border:1px solid #2e4a58;border-radius:9px;padding:11px 13px;font-size:12.5px;display:none}
+#report h4{color:#81d4fa;font-size:13.5px;margin-bottom:6px}
+#report .kv{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;margin-bottom:8px}
+#report .kv div{color:var(--dim)}#report .kv b{color:#fff;font-family:Consolas,monospace}
+#report .adv{background:#1e2a1c;border-left:3px solid var(--gr);border-radius:4px;padding:6px 9px;margin-bottom:5px;color:#c8e6c9}
+#report .adv b{color:#a5d6a7}
+.runinfo{font-size:11.5px;color:var(--dim);font-family:Consolas,monospace}
+.note{font-size:11px;color:#6d8290;margin-top:8px;line-height:1.6}
+.coef{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;font-size:11px;color:var(--dim)}
+.coef label{display:block;font-size:10px;color:#6d8290;margin-bottom:1px}
+.coef input{width:100%;padding:3px 5px;font-size:11.5px;font-family:Consolas,monospace}
+details.coefd{background:var(--pn2);border:1px solid var(--ln);border-radius:7px;padding:6px 9px;margin-bottom:9px}
+details.coefd summary{font-size:11.5px;color:var(--pu);cursor:pointer;font-weight:700;letter-spacing:.5px;user-select:none}
+details.coefd[open] summary{margin-bottom:6px;border-bottom:1px dashed #38304d;padding-bottom:4px}
+details.coefd .note{margin-top:6px}
+#algoBox textarea{height:86px;font-size:11px}
+.algobadge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:9px;margin-left:5px;border:1px solid var(--gr);color:#a5d6a7}
+.algoname{font-size:11px;color:#ffd74d;font-weight:700}
+canvas.fft{width:100%;height:74px;background:#0c1117;border:1px solid var(--ln);border-radius:7px;display:block;margin-bottom:6px}
+.tip{font-size:10.5px;color:#7fa6c9;line-height:1.55;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="hd">
+    <div>
+      <span class="logo">RESEARCH · 数字孪生</span>
+      <h1>五轴数字孪生 <em>科研试验场</em> · 加工数据仿真与异常诊断</h1>
+      <div class="sub">G 代码 → 机理模型（切削力·热·磨损）→ 过程数据 → 异常检测 → 成效报告 → 参数优化 · 前沿算法在虚拟空间完成工程验证</div>
+    </div>
+    <div class="badges">
+      <span class="badge">集总简化机理 · 合成信号</span>
+      <span class="badge b2">无监督异常检测 · 3σ / 阈值双算法</span>
+      <span class="badge b3">热误差补偿演练</span>
+    </div>
+  </div>
+  <div class="sci">
+    <div class="sc"><h3>场景一 · 热误差补偿与精度控制</h3><p>机床主轴运行发热 → 热伸长 δZ 直接吃掉 Z 向精度。本系统建立<b>一阶热力学模型</b>预测热变形，可将<b>热误差补偿算法嵌入系统</b>，在虚拟空间对比"补偿开 / 关"的加工精度，验证效果后再上真实机床。<b>右侧「热误差补偿」开关即演练入口</b>。</p></div>
+    <div class="sc"><h3>场景二 · 智能状态监测与预测性维护</h3><p>以<b>主轴电流、振动、温度</b>信号为输入，采用<b>无监督残差基线 + 3σ 自适应</b>与固定阈值两种算法，识别刀具<b>渐进磨损 / 突发崩刃 / 颤振</b>——低数据依赖的设备健康管理打法，全程数据为下次调参提供依据。</p></div>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- 左：参数与控制 -->
+  <div class="panel p1">
+    <h3>试验设置</h3>
+    <div class="pgrp"><label>主轴 S</label><input type="range" id="pS" min="2000" max="12000" step="500" value="8000"><b id="pSv">8000</b></div>
+    <div class="pgrp"><label>进给 F</label><input type="range" id="pF" min="200" max="2400" step="50" value="1200"><b id="pFv">1200</b></div>
+    <div class="pgrp"><label>切深 ap</label><input type="range" id="pA" min="0.2" max="3" step="0.1" value="1.0"><b id="pAv">1.0</b></div>
+    <div class="pgrp"><label>材料</label><select id="pM"><option value="0.7">铝合金（易切）</option><option value="1.0" selected>45 钢（中等）</option><option value="1.5">淬硬钢（难切）</option></select><b></b></div>
+    <div class="pgrp"><label>初始磨损</label><input type="range" id="pVB" min="0" max="0.25" step="0.05" value="0"><b id="pVBv">0.00</b></div>
+    <div class="gt">算法开关</div>
+    <div class="rowbtn">
+      <button class="btn sm on" id="swComp">热误差补偿：开</button>
+      <button class="btn sm on" id="swAlg">检测算法：3σ 自适应</button>
+    </div>
+    <details class="coefd" id="coefPanel">
+      <summary>⚙ 机理模型系数辨识（科研口）</summary>
+      <div class="coef">
+        <div><label>发热系数 K_heat (A→℃)</label><input type="number" step="0.005" id="c_heat"></div>
+        <div><label>散热系数 K_cool (1/s)</label><input type="number" step="0.002" id="c_cool"></div>
+        <div><label>热伸长比 K_dz (μm/℃)</label><input type="number" step="0.05" id="c_dz"></div>
+        <div><label>磨损速率 K_wear</label><input type="number" step="0.0001" id="c_wear"></div>
+        <div><label>崩刃概率系数 K_crash</label><input type="number" step="0.0005" id="c_crash"></div>
+        <div><label>磨损颤振阈值 VB_ch (mm)</label><input type="number" step="0.01" id="c_chth"></div>
+      </div>
+      <div class="note">系数写进 physics() 机理模型，运行即按新系数仿真——可标定你的材料/机床热特性，或做系数敏感性试验。</div>
+    </details>
+    <div class="gt">实验管理</div>
+    <div class="rowbtn">
+      <button class="btn sm" id="btnCSV">⬇ 导出信号 CSV</button>
+      <button class="btn sm" id="btnSave">💾 保存配置</button>
+      <button class="btn sm" id="btnLoad">📂 载入配置</button>
+      <input type="file" id="fileCfg" accept=".json" style="display:none">
+    </div>
+    <div class="gt">运行控制</div>
+    <div class="rowbtn">
+      <button class="btn pri" id="btnRun">▶ 运行</button>
+      <button class="btn" id="btnFast">加速 ×5</button>
+      <button class="btn rd" id="btnReset">重置</button>
+    </div>
+    <div class="gt">实时读数</div>
+    <div class="meters">
+      <div class="meter"><div class="lb">电流 A</div><div class="vl" id="rdI">—</div></div>
+      <div class="meter"><div class="lb">振动 mm/s</div><div class="vl" id="rdV">—</div></div>
+      <div class="meter"><div class="lb">温升 ℃</div><div class="vl" id="rdT">—</div></div>
+      <div class="meter"><div class="lb">磨损 VB</div><div class="vl" id="rdVB">—</div></div>
+      <div class="meter"><div class="lb">热伸长 μm</div><div class="vl" id="rdDZ">—</div></div>
+      <div class="meter"><div class="lb">进度 %</div><div class="vl" id="rdP">0</div></div>
+    </div>
+    <div class="runinfo" id="runInfo" style="margin-top:8px">— 待运行 —</div>
+  </div>
+
+  <!-- 中：加工视图 + G代码 -->
+  <div class="panel p2">
+    <h3>加工过程仿真 · G 代码驱动</h3>
+    <canvas class="mach" id="mach"></canvas>
+    <div class="runinfo" id="ncline" style="margin:7px 0 4px">程序行：—</div>
+    <p style="font-size:11px;color:#8ba0ac;margin:0 0 4px">定位：数字孪生<b style="color:#cbb8e8">教学实验台</b> / <b style="color:#cbb8e8">算法对比沙箱</b> —— 不是高保真物理引擎，也不是真实 PHM 验证平台。</p>
+    <div class="gt">G 代码（可编辑 · 重置后生效）</div>
+    <textarea id="gcode" spellcheck="false"></textarea>
+    <div class="gt" style="margin-top:10px">频谱分析（DFT · N=256，非快速算法）· 振动信号</div>
+    <canvas class="fft" id="cF"></canvas>
+    <div class="gt" style="margin-top:8px">检测算法沙箱 · 接口 <span class="algoname">detect(vibArr, tick)</span> 返回 0/1</div>
+    <div id="algoBox">
+      <textarea id="algoCode" spellcheck="false"></textarea>
+      <div class="rowbtn" style="margin-top:6px">
+        <button class="btn sm" id="btnAlgoTest">▶ 编译并测试沙箱算法</button>
+        <span class="algobadge" id="algoStat">未编译</span>
+      </div>
+      <div class="tip">沙箱算法与内置算法（3σ / 固定阈值）并行运行在同一数据流上，报告自动给出检出/误报对比——把你的检测思路写进来跑分。</div>
+    </div>
+    <div class="note">集总简化机理模型（非 FEM / 多体动力学 / 真实切削力学）：电流随材料去除率与磨损上升 · 温升一阶惯性 → 热伸长入 Z · VB 按 Taylor 幂律累积 + 概率崩刃 · 颤振为经验项。全部信号由模型合成；走刀是在工件顶面画路径标记，不是材料去除 / 过切检测。</div>
+  </div>
+
+  <!-- 右：信号 + 异常 + 报告 -->
+  <div class="panel p3">
+    <h3>过程数据 · 信号曲线（实时）</h3>
+    <div class="gt">SPINDLE CURRENT 主轴电流</div><canvas class="sig" id="cI"></canvas>
+    <div class="gt">VIBRATION RMS 振动</div><canvas class="sig" id="cV"></canvas>
+    <div class="gt">TEMP RISE 温升 → 热伸长 δZ</div><canvas class="sig" id="cT"></canvas>
+    <div class="gt">TOOL WEAR VB 刀具磨损</div><canvas class="sig" id="cW"></canvas>
+    <h3 style="margin-top:9px">异常事件</h3>
+    <div id="events"><div class="ev w2"><span class="t">[待机]</span> 运行后自动监测：磨损 / 崩刃 / 热漂移 / 颤振</div></div>
+    <h3 style="margin-top:9px">加工成效报告（完成自动生成）</h3>
+    <div id="report" class="show"></div>
+    <h3 style="margin-top:9px">运行历史 · 调参对比</h3>
+    <div id="hist"><div class="runinfo">暂无记录 —— 每次运行自动留档，第二次起生成对比建议</div></div>
+  </div>
+</div>
+
+<div class="panel" style="margin-top:13px">
+  <h3>能力边界 · 诚实口径</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12.5px">
+    <div>
+      <div style="color:#a5d6a7;font-weight:700;margin-bottom:5px">✓ 可用于</div>
+      <div style="color:#c8d4db;line-height:1.75">
+        ① <b>参数估计与敏感性实验</b>——系数面板开放发热/散热/热伸长/磨损/崩刃/颤振六系数，可做单因素与正交设计，观察指标响应；<br>
+        ② <b>算法对比课程作业</b>——"写一个检测器干掉 3σ 基线"，报告自动给检出率/误报数三算法对比；<br>
+        ③ <b>颤振频率诊断活教材</b>——频谱窗（DFT）可见磨损后期特征峰，讲频域诊断；<br>
+        ④ 加工参数与成效的定性关联、数字孪生概念演示。
+      </div>
+    </div>
+    <div>
+      <div style="color:#ff8a80;font-weight:700;margin-bottom:5px">✗ 不能用于</div>
+      <div style="color:#c8d4db;line-height:1.75">
+        ① <b>替代 FEM / 多体动力学 / 真实切削力学</b>——本模型为集总简化（一阶热、Taylor 幂律、经验颤振、概率崩刃），是"可调的教学模型"不是高保真引擎；<br>
+        ② <b>"系数辨识"≠ 标定真实机床传递函数</b>——只能做参数估计与灵敏度分析；<br>
+        ③ <b>真实 PHM 验证</b>——信号由模型自生成，异常检测抓的是"模型注入的异常"，方法可教、结论不可外推真机；<br>
+        ④ <b>论文级仿真结果</b>——无真实传感器数据闭环；走刀为顶面路径标记，非材料去除/过切检测；频谱为 N=256 的直接 DFT。
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+'use strict';
+function $(i){return document.getElementById(i)}
+function rnd(){return Math.random()*2-1}
+function lerp(a,b,t){return a+(b-a)*t}
+function f2(v){return (+v).toFixed(2)}
+
+/* ================= 状态 ================= */
+var P={S:8000,F:1200,ap:1.0,mat:1.0,vb0:0};       // 用户参数
+var COEF={heat:0.05,cool:0.01,dz:1.35,wear:0.00042,crash:0.0022,chth:0.22,loadK:3.575,wearI:7,vibW:3.2}; // 机理系数（科研口可调）
+var comp=true, alg3=true;                           // 补偿开关 / 3σ算法
+var pos={x:0,y:0,z:0}, trace=[];
+var sig={I:[],V:[],T:[],W:[],DZ:[]};                // 信号历史
+var sigCut=[];                                      // 切削状态历史（CSV 用）
+var truth=[];                                       // 每tick真值异常标记（机理注入口）
+var stats={s3:{tp:0,fp:0},fixed:{tp:0,fp:0},cust:{tp:0,fp:0}}; // 三算法混淆计数
+var custFn=null;                                    // 沙箱算法
+var cur={I:0,V:0,T:0,VB:0,DZ:0};
+var events=[], baseline=null;
+var hist=[];                                        // 运行历史
+var running=false, timer=null, fast=false;
+var tick=0, prog=null, seg=null, lineIdx=0;
+var cutTime=0;                                      // 累计切削时间(等效)
+var lastResult=null;
+var VB_MAX=0.35, TAU=95, T_MAX=32;
+
+/* ================= G 代码 ================= */
+var DEMO=[
+'O0001 (科研试验场 · 平底铣削样例)',
+'N10 G90 G54 G17',
+'N20 M03',
+'N30 G00 X0 Y0 Z46',
+'N40 G01 Z41 F400',
+'N50 G01 X60 F1200',
+'N60 G01 Y12',
+'N70 G01 X0',
+'N80 G01 Y24',
+'N90 G01 X60',
+'N100 G01 Y36',
+'N110 G01 X0',
+'N120 G01 Y48',
+'N130 G01 X60',
+'N140 G01 Y60',
+'N150 G01 X0',
+'N160 G01 Y72',
+'N170 G01 X60',
+'N180 G01 Y78',
+'N190 G00 Z46',
+'N200 M05',
+'N210 M30'].join('\n');
+$('gcode').value=DEMO;
+
+function parseCmd(line){
+  var r={};var re2=/([GMFSXYZ])(-?\d+(?:\.\d+)?)/g,m;
+  while((m=re2.exec(line))){r[m[1]]=+m[2];}
+  return r;
+}
+function parseProg(code){
+  var L=[];
+  code.split(/\r?\n/).forEach(function(raw){
+    var t=raw.replace(/\([^)]*\)/g,'').trim();
+    if(t)L.push({raw:t,cmd:parseCmd(t)});
+  });
+  return L;
+}
+
+/* ================= tick 引擎 ================= */
+function startSeg(){
+  while(lineIdx<prog.length){
+    var c=prog[lineIdx].cmd, g=c.G!==undefined?Math.round(c.G):null;
+    if(g===null){lineIdx++;continue}
+    if(c.S!==undefined)P.S=c.S;
+    if(c.F!==undefined)P.F=c.F;
+    if(g===0||g===1){
+      var tx=pos.x,ty=pos.y,tz=pos.z;
+      if(c.X!==undefined)tx=c.X; if(c.Y!==undefined)ty=c.Y; if(c.Z!==undefined)tz=c.Z;
+      var dist=Math.hypot(tx-pos.x,ty-pos.y,tz-pos.z);
+      var cuts=g===1;
+      seg={sx:pos.x,sy:pos.y,sz:pos.z,tx:tx,ty:ty,tz:tz,
+           n:cuts?Math.max(2,Math.min(14,Math.round(dist/12))):1,i:0,cuts:cuts};
+      if(cuts&&dist<0.01){lineIdx++;continue}
+      pos.x=tx;pos.y=ty;pos.z=tz;   // 目标（绘制用插补位置在 tick 中更新）
+      pos.x=seg.sx;pos.y=seg.sy;pos.z=seg.sz;
+      return true;
+    }
+    if(g===90||g===54||g===17){lineIdx++;continue}
+    if(g===43){lineIdx++;continue}
+    lineIdx++;
+  }
+  return false;
+}
+function physics(cutting){
+  var mrr=P.ap*P.F/1200*0.9*P.mat*(P.S/8000)*(cutting?1:0);
+  // 电流：空载+负载+磨损项
+  var I0=3.5+P.S/12000*1.5;
+  cur.I=I0+COEF.loadK*(mrr>0?mrr:0)*0.55+COEF.wearI*Math.pow(cur.VB/VB_MAX,2)*(cutting?1:0)+(cutting?rnd()*0.5:rnd()*0.1);
+  if(!cutting)cur.I=I0+rnd()*0.15;
+  // 振动
+  var baseV=cutting?(0.9+cur.I*0.12):0.3;
+  var chatter=cutting&&cur.VB>COEF.chth?(cur.VB-COEF.chth)*18*(0.6+0.4*Math.sin(tick/3)):0;
+  cur.V=Math.max(0.05,baseV+COEF.vibW*Math.pow(cur.VB/VB_MAX,1.5)*(cutting?1:0)+chatter+rnd()*0.12);
+  // 温升（一阶惯性）+热伸长
+  var heat=cutting?(cur.I-4)*COEF.heat*P.mat:0;
+  var cool=(cur.T)*COEF.cool;
+  cur.T=Math.max(0,cur.T+heat-cool);
+  cur.DZ=cur.T*COEF.dz;   // 热伸长正比系数（μm/℃）
+  // 真值异常注入标记（供算法评估）
+  var tAnom=0;
+  if(chatter>0.35)tAnom=1;                                   // 真实颤振成分显著（渐变）
+  if(cur.VB>VB_MAX)tAnom=1;                                 // 磨损超标真值
+  // 磨损（切削时累积）
+  if(cutting){
+    var dw=COEF.wear*Math.pow(P.ap*P.mat*(P.F/1200),1.2)*Math.pow(P.S/8000,0.5);
+    // 崩刃概率
+    if(cur.VB>0.18&&Math.random()<COEF.crash*Math.pow(cur.VB/VB_MAX,4)){doChatterCrash();}
+    cur.VB=Math.min(VB_MAX*1.6,cur.VB+dw);
+    cutTime++;
+  }
+  if(chatterFlag)tAnom=1;                                   // 崩刃 tick 真值
+  truth.push(tAnom);sigCut.push(cutting?1:0);
+}
+var chatterFlag=false;
+function doChatterCrash(){
+  cur.VB=Math.min(VB_MAX*1.6,cur.VB+0.09);
+  chatterFlag=true;
+}
+function anomaly(){
+  var t;
+  // 基线（前 12 tick 建立，3σ）
+  if(tick<=12){
+    if(!baseline)baseline={I:[],V:[]};
+    baseline.I.push(cur.I);baseline.V.push(cur.V);
+    return;
+  }
+  var mI=baseline.I.reduce(function(a,b){return a+b},0)/baseline.I.length;
+  var sI=Math.sqrt(baseline.I.reduce(function(a,b){return a+Math.pow(b-mI,2)},0)/baseline.I.length)||0.1;
+  var mV=baseline.V.reduce(function(a,b){return a+b},0)/baseline.V.length;
+  var sV=Math.sqrt(baseline.V.reduce(function(a,b){return a+Math.pow(b-mV,2)},0)/baseline.V.length)||0.1;
+  function fire(type,cls,val,adv){
+    var last=events[events.length-1];
+    if(last&&last.type===type&&tick-last.tick<18)return;
+    events.push({type:type,tick:tick,val:val});
+    var d=document.createElement('div');
+    d.className='ev '+(cls||'');
+    d.innerHTML='<span class="t">[t='+tick+'s]</span> '+type+'　<b style="color:#fff">'+val+'</b><br><span class="ad">→ '+adv+'</span>';
+    $('events').insertBefore(d,$('events').firstChild);
+  }
+  var thrI=alg3?mI+3*sI:12, thrV=alg3?mV+3*sV:3.6;
+  // ---- 三算法并行评估（tick 级二分类，与真值比对）----
+  var i3=(cur.I>thrI||cur.V>mV+3*sV)?1:0;             // 3σ 自适应（当前选定算法）
+  var fx=(cur.I>12||cur.V>3.6)?1:0;                   // 固定阈值（对照）
+  var ct=0;                                            // 沙箱算法（若编译）
+  if(custFn){try{ct=custFn(sig.V.slice(),tick)?1:0;}catch(e){ct=0;}}
+  var tv=truth[tick]||0;
+  [[i3,'s3'],[fx,'fixed'],[ct,'cust']].forEach(function(p){
+    var st=stats[p[1]];if(!st)return;
+    if(p[0]){tv?st.tp++:st.fp++;}
+  });
+  // ---- 专家规则事件流（展示层）----
+  // 崩刃
+  if(chatterFlag){fire('刀具崩刃（电流阶跃）','',f2(cur.I)+' A','立即换刀 · 本次工件检测尺寸 · 建议降 ap 20%');chatterFlag=false;}
+  // 磨损预警
+  if(cur.VB>0.30&&cur.VB<=0.35)fire('刀具渐进磨损预警','w2','VB='+f2(cur.VB)+' mm','接近寿命阈值 0.35 · 计划换刀，可继续至工步结束');
+  else if(cur.VB>VB_MAX)fire('刀具磨损超标','', VB_MAX.toFixed(2)+' mm','超差加工中：Ra 将恶化 · 立即换刀并复测首件');
+  // 颤振
+  if(cur.V>thrV&&cur.VB>0.2)fire('颤振（振动超限）','w2',f2(cur.V)+' mm/s','降 S 15% 或降 F 20% 抑制再生颤振');
+  // 热漂移
+  if(cur.DZ>25)fire('热漂移预警','w2',f2(cur.DZ)+' μm','Z 向精度受热伸长侵蚀 · '+(comp?'补偿已开，残余按 15% 计入':'建议开启热误差补偿'));
+}
+function doTick(){
+  if(!seg){if(!startSeg()){finish();return}}
+  var g=prog[lineIdx].cmd;
+  var t=(seg.i+1)/seg.n;
+  var ix=lerp(seg.sx,seg.tx,t),iy=lerp(seg.sy,seg.ty,t),iz=lerp(seg.sz,seg.tz,t);
+  pos.x=ix;pos.y=iy;pos.z=iz;
+  if(seg.cuts)trace.push({x:ix,y:iy,z:iz});
+  physics(seg.cuts);
+  anomaly();
+  sig.I.push(cur.I);sig.V.push(cur.V);sig.T.push(cur.T);sig.W.push(cur.VB);sig.DZ.push(cur.DZ);
+  ['I','V','T','W','DZ'].forEach(function(k){if(sig[k].length>420)sig[k].shift()});
+  seg.i++;
+  if(seg.i>=seg.n){seg=null;lineIdx++;}
+  tick++;
+  updateHUD(); drawSig();
+  if(tick%6===0)drawFFT();
+  drawMach();
+  if(tick%40===0&&lineIdx<prog.length){
+    $('ncline').textContent='程序行：'+(lineIdx+1)+' / '+prog.length+'　'+(prog[lineIdx].raw);
+  }
+}
+function updateHUD(){
+  $('rdI').textContent=f2(cur.I);
+  $('rdV').textContent=f2(cur.V);
+  $('rdT').textContent=f2(cur.T);
+  $('rdVB').textContent=f2(cur.VB);
+  $('rdDZ').textContent=f2(cur.DZ);
+  var pr=prog?Math.round(lineIdx/prog.length*100):0;
+  $('rdP').textContent=Math.min(100,pr);
+  if(cur.VB>VB_MAX||cur.V>4){$('rdVB').parentNode.classList.add('warn')}else{$('rdVB').parentNode.classList.remove('warn')}
+}
+function finish(){
+  stopRun();
+  // 成效计算
+  var errRaw=cur.DZ+2.5+Math.abs(rnd())*1.5;      // 未补偿误差
+  var errZ=comp?errRaw*0.15+0.8:errRaw;            // 补偿后
+  var Ra=0.35+0.0011*P.F+0.6*cur.VB+(chatterFlag?0.5:0);
+  var life=Math.min(100,cur.VB/VB_MAX*100);
+  var nEv=events.length;
+  lastResult={errZ:errZ,Ra:Ra,life:life,nEv:nEv};
+  // 报告
+  var adv=[];
+  if(errZ>10)adv.push('尺寸误差 '+f2(errZ)+' μm 超差：'+(comp?'补充残余热漂移，建议班中分 2 段插空冷却':'开启热误差补偿可降至约 '+(errRaw*0.15+0.8).toFixed(1)+' μm'));
+  else adv.push('尺寸误差 '+f2(errZ)+' μm 合格（'+(comp?'热补偿生效，残余 15%':'未开补偿')+'）');
+  if(Ra>1.6)adv.push('Ra='+f2(Ra)+' μm 超过精铣要求 1.6：进给 F 由 '+P.F+' 降至 '+Math.round(P.F*0.75)+' 或换新刀');
+  else adv.push('Ra='+f2(Ra)+' μm 达标：当前 F/ap 组合可沿用');
+  if(life>85)adv.push('刀具寿命消耗 '+Math.round(life)+'%：本组参数偏激进，建议 ap×0.85 或 S×0.9，预测寿命 +35%');
+  if(nEv>2)adv.push('异常事件 '+nEv+' 起：崩刃/颤振多——建议 ap 降 20% 并复核装夹刚性');
+  var h='';
+  h+='<h4>第 '+(hist.length+1)+' 次运行结果 · '+(comp?'补偿 ON':'补偿 OFF')+' · '+($('pM').options[$('pM').selectedIndex].text)+'</h4>';
+  h+='<div class="kv">'
+   +'<div>尺寸误差（Z）：<b>'+f2(errZ)+' μm</b></div>'
+   +'<div>表面粗糙度 Ra：<b>'+f2(Ra)+' μm</b></div>'
+   +'<div>刀具寿命消耗：<b>'+Math.round(life)+'%</b></div>'
+   +'<div>异常事件：<b>'+nEv+' 起</b></div>'
+   +'<div>等效切削时间：<b>'+cutTime+' s</b></div>'
+   +'<div>终态热伸长：<b>'+f2(cur.DZ)+' μm</b></div></div>';
+  // ---- 算法对比（真值 = 机理注入的异常 tick）----
+  var nTrue=truth.reduce(function(a,b){return a+b},0);
+  if(nTrue>0){
+    h+='<h4 style="margin-top:4px">检测算法对比 · 真值异常 '+nTrue+' tick</h4><div class="kv">';
+    [['s3','3σ 自适应'],['fixed','固定阈值'],['cust','沙箱自定义']].forEach(function(a){
+      var st=stats[a[0]];
+      if(a[0]==='cust'&&!custFn){h+='<div>'+a[1]+'：<b>未编译</b></div>';return;}
+      h+='<div>'+a[1]+'：<b>'+Math.round(st.tp/nTrue*100)+'% 检出</b> / 误报 '+st.fp+'</div>';
+    });
+    h+='</div>';
+    h+='<div class="tip">解读：3σ 检出低往往是「基线污染」——基线期混入空载/切削两类样本把阈值抬高；固定阈值误报多则是阈值保守。这正是沙箱的改进空间：试写<b>分态基线（按 sigCut 区分空载/切削）或 MAD 稳健统计</b>。</div>';
+  }
+  adv.forEach(function(a){h+='<div class="adv"><b>◆</b> '+a+'</div>'});
+  // 历史对比建议
+  if(hist.length>0){
+    var p=hist[hist.length-1];
+    var de=errZ-p.errZ, dr=Ra-p.Ra;
+    h+='<div class="adv" style="border-left-color:#38a3d8"><b>对比上次：</b>误差 '+(de>=0?'+':'')+f2(de)+' μm · Ra '+(dr>=0?'+':'')+f2(dr)+' μm —— '+(de<0&&dr<0?'参数方向正确，可固化工艺卡':'方向未改善，按下述建议回退调整')+'</div>';
+  }
+  $('report').innerHTML=h;
+  $('report').style.display='block';
+  hist.push({no:hist.length+1,S:P.S,F:P.F,ap:P.ap,mat:$('pM').options[$('pM').selectedIndex].text,comp:comp,errZ:+f2(errZ),Ra:+f2(Ra),life:Math.round(life),nEv:nEv});
+  renderHist();
+  $('runInfo').textContent='t='+tick+'s · 加工完成 · 报告已生成';
+}
+function renderHist(){
+  if(!hist.length)return;
+  var h='<table><tr><th>#</th><th>S</th><th>F</th><th>ap</th><th>材料</th><th>补偿</th><th>误差μm</th><th>Ra</th><th>寿命%</th><th>异常</th></tr>';
+  hist.forEach(function(r,i){
+    h+='<tr'+(i===hist.length-1?' class="last"':'')+'><td>'+r.no+'</td><td>'+r.S+'</td><td>'+r.F+'</td><td>'+r.ap+'</td><td>'+r.mat.slice(0,3)+'</td><td>'+(r.comp?'开':'关')+'</td><td>'+r.errZ+'</td><td>'+r.Ra+'</td><td>'+r.life+'</td><td>'+r.nEv+'</td></tr>';
+  });
+  h+='</table>';
+  $('hist').innerHTML=h;
+}
+
+/* ================= 运行控制 ================= */
+function startRun(){
+  if(running){stopRun();return}
+  if(tick===0){resetAll(true)}
+  running=true;
+  $('btnRun').textContent='⏸ 暂停';
+  timer=setInterval(doTick,fast?24:120);
+}
+function stopRun(){
+  running=false;
+  if(timer){clearInterval(timer);timer=null}
+  $('btnRun').textContent='▶ 运行';
+}
+function resetAll(keep){
+  stopRun();
+  if(!keep){
+    prog=parseProg($('gcode').value);
+    P.S=+$('pS').value;P.F=+$('pF').value;P.ap=+$('pA').value;
+    P.mat=+$('pM').value;P.vb0=+$('pVB').value;
+    $('pSv').textContent=P.S;$('pFv').textContent=P.F;$('pAv').textContent=P.ap;
+    $('pVBv').textContent=(+P.vb0).toFixed(2);
+  }
+  pos={x:0,y:0,z:46};trace=[];tick=0;seg=null;lineIdx=0;
+  cur={I:0,V:0,T:0,VB:P.vb0,DZ:0};
+  sig={I:[],V:[],T:[],W:[],DZ:[]};events=[];baseline=null;chatterFlag=false;cutTime=0;
+  sigCut=[];truth=[];
+  stats={s3:{tp:0,fp:0},fixed:{tp:0,fp:0},cust:{tp:0,fp:0}};
+  $('events').innerHTML='<div class="ev w2"><span class="t">[监测中]</span> 基线建立中（前12s）· '+($('swAlg').textContent)+'</div>';
+  $('report').style.display='none';
+  $('runInfo').textContent='t=0s · 就绪';
+  updateHUD(); drawSig(); drawMach(); drawFFT();
+}
+
+/* ================= 绘制 ================= */
+function fit(cvObj){
+  var dpr=window.devicePixelRatio||1;
+  var w=cvObj.clientWidth,h=cvObj.clientHeight;
+  if(cvObj.width!==w*dpr){cvObj.width=w*dpr;cvObj.height=h*dpr}
+  var c=cvObj.getContext('2d');
+  c.setTransform(dpr,0,0,dpr,0,0);
+  return {c:c,w:w,h:h};
+}
+var COL={I:'#4fc3f7',V:'#ff8a65',T:'#ffd54f',W:'#aed581',DZ:'#ce93d8'};
+function drawSig(){
+  [['cI','I'],['cV','V'],['cT','T'],['cW','W']].forEach(function(pair){
+    var o=fit($(pair[0])),c=o.c,w=o.w,h=o.h,k=pair[1];
+    c.clearRect(0,0,w,h);
+    var d=sig[k];if(d.length<2)return;
+    var mx=Math.max.apply(null,d)*1.15||1, mn=Math.min(0,Math.min.apply(null,d));
+    // 网格
+    c.strokeStyle='#1a2630';c.lineWidth=1;
+    for(var g=1;g<4;g++){c.beginPath();c.moveTo(0,h*g/4);c.lineTo(w,h*g/4);c.stroke();}
+    // 曲线
+    c.strokeStyle=COL[k];c.lineWidth=1.6;c.beginPath();
+    d.forEach(function(v,i){
+      var x=i/(d.length-1)*w;
+      var y=h-(v-mn)/(mx-mn)*h*0.92-4;
+      if(i===0)c.moveTo(x,y);else c.lineTo(x,y);
+    });
+    c.stroke();
+    // 当前值
+    c.fillStyle=COL[k];c.font='bold 11px Consolas';
+    c.fillText(f2(d[d.length-1]),4,12);
+    c.fillStyle='#5a707e';c.font='10px Consolas';
+    c.fillText('max '+f2(Math.max.apply(null,d)),w-64,12);
+  });
+}
+function drawMach(){
+  var o=fit($('mach')),c=o.c,w=o.w,h=o.h;
+  c.clearRect(0,0,w,h);
+  var g=c.createLinearGradient(0,0,0,h);g.addColorStop(0,'#0e161d');g.addColorStop(1,'#090e12');
+  c.fillStyle=g;c.fillRect(0,0,w,h);
+  function pr(x,y,z){
+    var a=Math.PI/6;
+    return [w/2+(x*Math.cos(a)-y*Math.sin(a))*0.42, h*0.72 - z*0.42+(x*Math.sin(a)+y*Math.cos(a))*0.26];
+  }
+  // 工作台
+  c.fillStyle='#22323c';c.strokeStyle='#3a4e5a';c.lineWidth=1.5;
+  var tb=[[pr(-20,-20,0)],[pr(90,-20,0)],[pr(90,90,0)],[pr(-20,90,0)]];
+  c.beginPath();c.moveTo(tb[0][0][0],tb[0][0][1]);
+  tb.forEach(function(p){c.lineTo(p[0],p[1])});
+  c.closePath();c.fill();c.stroke();
+  // 毛坯
+  var zs=40, s0=pr(0,0,zs),s1=pr(80,0,zs),s2=pr(80,80,zs),s3=pr(0,80,zs);
+  c.fillStyle='#3d5266';c.globalAlpha=.85;
+  c.beginPath();c.moveTo(s0[0],s0[1]);c.lineTo(s1[0],s1[1]);c.lineTo(s2[0],s2[1]);c.lineTo(s3[0],s3[1]);c.closePath();c.fill();c.globalAlpha=1;
+  c.strokeStyle='#58748c';c.stroke();
+  // 走刀轨迹
+  if(trace.length>1){
+    c.strokeStyle='#ffb74d';c.lineWidth=1.4;c.globalAlpha=.9;
+    c.beginPath();
+    var p0=pr(trace[0].x,trace[0].y,trace[0].z);c.moveTo(p0[0],p0[1]);
+    trace.forEach(function(p){var q=pr(p.x,p.y,p.z);c.lineTo(q[0],q[1])});
+    c.stroke();c.globalAlpha=1;
+  }
+  // 刀具（含热伸长可视化：δZ>20 μm 变红）
+  var tp=pr(pos.x,pos.y,pos.z),tq=pr(pos.x,pos.y,pos.z+26);
+  c.strokeStyle=cur.DZ>20?'#ff5252':'#cfd8dc';c.lineWidth=3;
+  c.beginPath();c.moveTo(tp[0],tp[1]-cur.DZ*0.06);c.lineTo(tq[0],tq[1]);c.stroke();
+  c.fillStyle='#ff9d00';c.beginPath();c.arc(tp[0],tp[1]-cur.DZ*0.06,4,0,7);c.fill();
+  // 标签
+  c.fillStyle='#8ba0ac';c.font='10.5px Consolas';
+  c.fillText('AP='+P.ap+'mm  F='+P.F+'  S='+P.S+'  VB='+f2(cur.VB)+'  δZ='+f2(cur.DZ)+'μm'+(cur.DZ>20?' !':''),8,14);
+  c.fillStyle='#42586a';
+  c.fillText('毛坯 80×80 · 走刀轨迹 · 热伸长>20μm 刀具变红',8,h-8);
+}
+
+/* ================= 事件绑定 ================= */
+$('btnRun').onclick=startRun;
+$('btnReset').onclick=function(){resetAll(false)};
+$('btnFast').onclick=function(){
+  fast=!fast;
+  $('btnFast').className='btn'+(fast?' on':'');
+  $('btnFast').textContent=fast?'加速 ×5（中）':'加速 ×5';
+  if(running){stopRun();startRun()}
+};
+$('pS').oninput=function(){$('pSv').textContent=this.value};
+$('pF').oninput=function(){$('pFv').textContent=this.value};
+$('pA').oninput=function(){$('pAv').textContent=this.value};
+$('pVB').oninput=function(){$('pVBv').textContent=(+this.value).toFixed(2)};
+$('swAlg').onclick=function(){
+  alg3=!alg3;
+  this.textContent='检测算法：'+(alg3?'3σ 自适应':'固定阈值');
+  this.className='btn sm'+(alg3?' on':'');
+};
+$('swComp').onclick=function(){
+  comp=!comp;
+  this.textContent='热误差补偿：'+(comp?'开':'关');
+  this.className='btn sm'+(comp?' on':'');
+};
+
+/* ================= 科研口：系数 / CSV / 配置 / 沙箱 / FFT ================= */
+var COEF_MAP=[['c_heat','heat',0.005],['c_cool','cool',0.002],['c_dz','dz',0.05],['c_wear','wear',0.0001],['c_crash','crash',0.0005],['c_chth','chth',0.01]];
+function initCoef(){
+  COEF_MAP.forEach(function(m){
+    var el=$(m[0]);el.value=COEF[m[1]];el.step=m[2];
+    el.oninput=function(){var v=parseFloat(this.value);if(!isNaN(v))COEF[m[1]]=v;};
+  });
+}
+function dl(name,content,mime){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([content],{type:mime||'text/plain'}));
+  a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},800);
+}
+$('btnCSV').onclick=function(){
+  if(!sig.I.length){alert('请先运行，再导出');return}
+  var rows=['tick,cutting,I_A,V_mms,T_C,VB_mm,DZ_um,truth'];
+  for(var i=0;i<sig.I.length;i++){
+    rows.push([i,sigCut[i]||0,sig.I[i].toFixed(3),sig.V[i].toFixed(3),sig.T[i].toFixed(3),sig.W[i].toFixed(4),sig.DZ[i].toFixed(3),truth[i]||0].join(','));
+  }
+  dl('五轴孪生_信号_'+new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')+'.csv','\ufeff'+rows.join('\n'),'text/csv');
+};
+$('btnSave').onclick=function(){
+  var cfg={v:1,P:P,COEF:COEF,comp:comp,alg3:alg3,gcode:$('gcode').value,algo:$('algoCode').value};
+  dl('五轴孪生_实验配置.json',JSON.stringify(cfg,null,1),'application/json');
+};
+$('btnLoad').onclick=function(){$('fileCfg').click()};
+$('fileCfg').onchange=function(){
+  var f=this.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(){
+    try{
+      var c=JSON.parse(r.result);
+      if(c.P){Object.keys(P).forEach(function(k){if(c.P[k]!==undefined)P[k]=c.P[k]})}
+      if(c.COEF){Object.keys(COEF).forEach(function(k){if(c.COEF[k]!==undefined)COEF[k]=c.COEF[k]})}
+      if(c.gcode)$('gcode').value=c.gcode;
+      if(c.algo)$('algoCode').value=c.algo;
+      comp=c.comp!==false;alg3=c.alg3!==false;
+      $('pS').value=P.S;$('pF').value=P.F;$('pA').value=P.ap;$('pM').value=P.mat;$('pVB').value=P.vb0;
+      $('pSv').textContent=P.S;$('pFv').textContent=P.F;$('pAv').textContent=P.ap;$('pVBv').textContent=(+P.vb0).toFixed(2);
+      $('swComp').textContent='热误差补偿：'+(comp?'开':'关');$('swComp').className='btn sm'+(comp?' on':'');
+      initCoef();
+      resetAll(false);
+      alert('配置已载入：'+f.name);
+    }catch(e){alert('配置文件解析失败：'+e.message)}
+  };
+  r.readAsText(f);this.value='';
+};
+var ALGO_TMPL="// 沙箱算法：输入振动历史（最近420点）与当前tick，返回 1=异常\nvar win=vibArr.slice(-14);\nvar m=win.reduce((a,b)=>a+b,0)/win.length;\nreturn (vibArr[vibArr.length-1] > m*1.18) ? 1 : 0;";
+$('algoCode').value=ALGO_TMPL;
+$('btnAlgoTest').onclick=function(){
+  try{
+    var body=$('algoCode').value;
+    /* 编译为函数（本地单文件科研用途，代码由使用者本人提供） */
+    custFn=new Function('vibArr','tickN','"use strict";var win=Object.prototype.toString.call(vibArr)==="[object Array]"?vibArr:[];'+body);
+    var probe=custFn([1,1,1,1,1,1,1,1,1,1,1,1,1,5], 99);
+    $('algoStat').textContent='已编译 ✓ 探针输出='+probe;
+    $('algoStat').style.color='#a5d6a7';
+  }catch(e){
+    custFn=null;
+    $('algoStat').textContent='编译失败：'+e.message.slice(0,40);
+    $('algoStat').style.color='#ff8a80';
+  }
+};
+function drawFFT(){
+  var o=fit($('cF')),c=o.c,w=o.w,h=o.h;
+  c.clearRect(0,0,w,h);
+  var d=sig.V.slice(-256);
+  if(d.length<16){c.fillStyle='#42586a';c.font='10px Consolas';c.fillText('运行后显示振动频谱（DFT）',8,h/2);return}
+  var N=d.length,mx=0,amp=[];
+  for(var k=1;k<=N/2;k++){
+    var re=0,im=0;
+    for(var n2=0;n2<N;n2++){var a2=2*Math.PI*k*n2/N;re+=d[n2]*Math.cos(a2);im-=d[n2]*Math.sin(a2)}
+    var m=Math.sqrt(re*re+im*im)/N;amp.push(m);if(m>mx)mx=m;
+  }
+  c.strokeStyle='#1a2630';c.lineWidth=1;
+  [0.25,0.5,0.75].forEach(function(f){c.beginPath();c.moveTo(0,h*f);c.lineTo(w,h*f);c.stroke()});
+  c.strokeStyle='#80cbc4';c.lineWidth=1.4;c.beginPath();
+  amp.forEach(function(v,i){
+    var x=i/(amp.length-1)*w,y=h-6-(mx?v/mx*(h-14):0);
+    if(i===0)c.moveTo(x,y);else c.lineTo(x,y);
+  });
+  c.stroke();
+  c.fillStyle='#5a707e';c.font='10px Consolas';
+  c.fillText('0',2,h-2);c.fillText((N/2)+'/256bin',w-70,h-2);
+  c.fillStyle='#80cbc4';c.fillText('峰值 '+(mx||0).toFixed(2)+'（磨损后期特征峰可见）',8,12);
+}
+window.addEventListener('resize',function(){drawSig();drawMach();drawFFT()});
+
+resetAll(false);
+initCoef();
+drawFFT();
+</script>
+</body>
+</html>

@@ -1296,6 +1296,26 @@ var TOTAL_DATA={
     "pnl_pct": 0.0,
     "days_held": 0,
     "note": "T+1按条件触发成交(平铺试错)"
+   },
+   {
+    "id": "2026-11-18-sz301288",
+    "type": "个股",
+    "symbol": "sz301288",
+    "name": "清研环境",
+    "rule": "volume_breakout",
+    "style": "duanxian",
+    "signal_date": "2026-11-18",
+    "status": "pending",
+    "buy_date": null,
+    "entry_price": 22.83,
+    "stop_price": 21.23,
+    "target_price": 24.66,
+    "latest_price": 22.83,
+    "latest_date": "2026-11-18",
+    "pct_day": 0.0,
+    "pnl_pct": 0.0,
+    "days_held": 0,
+    "note": "T+1按条件触发成交(平铺试错)"
    }
   ],
   "closed": [
@@ -1812,7 +1832,7 @@ var TOTAL_DATA={
   "stats": {
    "total_closed": 21,
    "open": 5,
-   "pending": 3,
+   "pending": 4,
    "wins": 5,
    "losses": 16,
    "winrate": 23.8,
@@ -2150,7 +2170,7 @@ var TOTAL_DATA={
    }
   ],
   "stats": {
-   "pending": 3,
+   "pending": 4,
    "total_closed": 21,
    "winrate": 23.8
   }

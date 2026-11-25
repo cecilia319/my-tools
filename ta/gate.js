@@ -4,8 +4,8 @@
  */
 (function () {
   var CFG = {
-    ver: "V202611240850",        // 密码版本（每日轮换时更新）
-    hash: "3ac14e67d19a5b2117e2c046b00e00bb730a137fc5f5d8324fabde72d114659b",       // SHA-256(salt + password) 十六进制
+    ver: "V202611250850",        // 密码版本（每日轮换时更新）
+    hash: "29a60d1dfbf99e16826d824e4987f4136784e0e8074b8adcd915b3d64acb2373",       // SHA-256(salt + password) 十六进制
     salt: "cecilia@my-tools",
     mail: "1091773@qq.com",
     key: "cec_gate_v1"
